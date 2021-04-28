@@ -27,3 +27,5 @@ Imports:
     readr,
     tidyr,
     IRanges
+Remotes: bioc::IRanges, bioc::GenomicRanges
+URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
