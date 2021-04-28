@@ -26,6 +26,7 @@ testing:
     script:
         - Rscript -e 'devtools::install()'
         - Rscript -e 'install.packages("covr")'
+        - Rscript -e 'install.packages("DT")'
         - Rscript -e 'covr::gitlab(quiet = FALSE)'
     artifacts:
         paths:
