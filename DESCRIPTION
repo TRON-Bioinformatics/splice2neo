@@ -25,4 +25,5 @@ Imports:
     stringr,
     dplyr,
     readr,
-    tidyr
+    tidyr,
+    IRanges

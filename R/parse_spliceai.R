@@ -1,11 +1,11 @@
 
-#' Parse VCF output file from spliceAI as data.frame
+#' Parse VCF output file from spliceAI as table
 #'
 #' requires the vcfR package.
 #'
 #' @param vcf_file path to a single VCF file, the output of spliceAI
-#' @return a data.frame like object with one row per variant and colums for
-#' annotation
+#' @return a [tibble][tibble::tibble-package] with one row per variant
+#' annotation. Each input variant can have multiple annotations.
 #'
 #' @examples
 #'
@@ -31,7 +31,7 @@ parse_spliceai <- function(vcf_file){
       Key = row_number()
     )
 
-  # spliceai_df <-
+  # get annotations
   splice_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
     mutate(
@@ -40,8 +40,16 @@ parse_spliceai <- function(vcf_file){
     select(-SpliceAI) %>%
     unnest(fields) %>%
     separate(fields, into = col_names, sep = "\\|") %>%
-    mutate_at(vars(starts_with("DS_")), as.numeric) %>%
-    mutate_at(vars(starts_with("DP_")), as.integer)
+    mutate(
+
+      # replace missing data with "." with NA
+      across(starts_with("DS_"), na_if, "."),
+      across(starts_with("DP_"), na_if, "."),
+
+      # convert scores as numeric and positions as integers
+      across(starts_with("DS_"), as.numeric),
+      across(starts_with("DP_"), as.integer)
+    )
 
   fix_df %>%
     left_join(splice_df, by = "Key")

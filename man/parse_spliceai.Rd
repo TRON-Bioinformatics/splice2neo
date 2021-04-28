@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_spliceai.R
 \name{parse_spliceai}
 \alias{parse_spliceai}
-\title{Parse VCF output file from spliceAI as data.frame}
+\title{Parse VCF output file from spliceAI as table}
 \usage{
 parse_spliceai(vcf_file)
 }
@@ -10,8 +10,8 @@ parse_spliceai(vcf_file)
 \item{vcf_file}{path to a single VCF file, the output of spliceAI}
 }
 \value{
-a data.frame like object with one row per variant and colums for
-annotation
+a \link[tibble:tibble-package]{tibble} with one row per variant
+annotation. Each input variant can have multiple annotations.
 }
 \description{
 requires the vcfR package.
