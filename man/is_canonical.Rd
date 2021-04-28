@@ -22,3 +22,8 @@ overlaps (completley within) a canonical exon from \code{exons_gr}.
 \description{
 test if junction is canonical junction
 }
+\examples{
+
+is_canonical(junc_id, ref_junc, exons_gr)
+
+}

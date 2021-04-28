@@ -9,6 +9,10 @@
 #' consists of two directly adjacent positions (intron retention) and
 #' overlaps (completley within) a canonical exon from `exons_gr`.
 #'
+#'@examples
+#'
+#' is_canonical(junc_id, ref_junc, exons_gr)
+#'
 #' @import GenomicRanges
 is_canonical <- function(junc_id, ref_junc, exons_gr){
 
