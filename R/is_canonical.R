@@ -13,7 +13,7 @@
 #'
 #' is_canonical(junc_id, ref_junc, exons_gr)
 #'
-#' @import GenomicRanges
+#' @importFrom IRanges overlapsAny
 is_canonical <- function(junc_id, ref_junc, exons_gr){
 
   in_ref_junc <- junc_id %in% ref_junc

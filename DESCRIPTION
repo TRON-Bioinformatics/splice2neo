@@ -21,4 +21,8 @@ Language: en-US
 Imports: 
     magrittr,
     GenomicRanges,
-    tibble
+    tibble,
+    stringr,
+    dplyr,
+    readr,
+    tidyr
