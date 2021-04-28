@@ -1,0 +1,24 @@
+Package: splice2neo
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Jonas",
+           family = "Ibn-Salem",
+           role = c("aut", "cre"),
+           email = "joans.ibn-salem@tron-mainz.de",
+           comment = c(ORCID = "0000-0001-9886-113X"))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
+Imports: 
+    magrittr,
+    GenomicRanges,
+    tibble
