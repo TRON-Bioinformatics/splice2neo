@@ -25,6 +25,7 @@ testing:
         - master
     script:
         - Rscript -e 'devtools::install()'
+        - Rscript -e 'install.packages("covr")'
         - Rscript -e 'covr::gitlab(quiet = FALSE)'
     artifacts:
         paths:
@@ -42,6 +43,7 @@ pages:
         - Rscript -e 'devtools::install()'
         - Rscript -e 'install.packages("pkgdown")'
         - Rscript -e "pkgdown::build_site()"
+        - mkdir -p public
         - cp -r docs/* public
     artifacts:
         paths:
