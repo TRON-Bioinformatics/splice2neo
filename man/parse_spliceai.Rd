@@ -22,3 +22,6 @@ spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice
 parse_spliceai(spliceai_file)
 
 }
+\seealso{
+\code{\link{format_spliceai}}, \code{\link{annotate_junction}}
+}
