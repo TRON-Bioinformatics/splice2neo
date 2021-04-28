@@ -13,11 +13,11 @@ The goal of splice2neo is to …
 
 ### Install this package from this GitLab
 
-This R packge is not yet on [CRAN](https://CRAN.R-project.org) or
-[Biodonducotr](https://www.bioconductor.org/). Therefore, you have to
-install it form this GitLap repository.
+This R package is not yet on [CRAN](https://CRAN.R-project.org) or
+[Bioconductor](https://www.bioconductor.org/). Therefore, you have to
+install it form this GitLab repository.
 
-However, this repository is a private GitLab reposoritory and therfore
+However, this repository is a private GitLab reposoritory and therefore
 you have to create an personal access token (PAT) first. This is
 described
 [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).

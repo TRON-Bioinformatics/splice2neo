@@ -17,13 +17,8 @@ is_canonical(junc_id, ref_junc, exons_gr)
 logical vector of same length as \code{junc_id} indicating
 if the input \code{junc_id} is in the set of reference junctions \code{ref_junc} or
 consists of two directly adjacent positions (intron retention) and
-overlaps (completley within) a canonical exon from \code{exons_gr}.
+overlaps (completely within) a canonical exon from \code{exons_gr}.
 }
 \description{
 test if junction is canonical junction
-}
-\examples{
-
-is_canonical(junc_id, ref_junc, exons_gr)
-
 }

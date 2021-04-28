@@ -2,19 +2,19 @@
 % Please edit documentation in R/format_spliceai.R
 \name{format_spliceai}
 \alias{format_spliceai}
-\title{Formates spliceAI output and filter for predcited effects}
+\title{Formats spliceAI output and filter for predicted effects}
 \usage{
 format_spliceai(spliceai_variants)
 }
 \arguments{
-\item{spliceai_varaints}{\link[tibble:tibble-package]{tibble} with parsed
+\item{spliceai_variants}{\link[tibble:tibble-package]{tibble} with parsed
 spliceAI mutations from \code{\link{parse_spliceai}}}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with spliceing effects per row
 }
 \description{
-Refromats the data for each annotated effect per row and filters effects
+Reformats the data for each annotated effect per row and filters effects
 to have a probability not NA and score > 0.
 }
 \examples{
@@ -24,5 +24,5 @@ format_spliceai(df)
 
 }
 \seealso{
-\code{\link{parse_spliceai}}, \code{\link{annotate_junction}}
+\code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
 }

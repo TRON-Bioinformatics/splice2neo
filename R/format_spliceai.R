@@ -1,10 +1,10 @@
 
-#' Formates spliceAI output and filter for predcited effects
+#' Formats spliceAI output and filter for predicted effects
 #'
-#' Refromats the data for each annotated effect per row and filters effects
+#' Reformats the data for each annotated effect per row and filters effects
 #' to have a probability not NA and score > 0.
 #'
-#' @param spliceai_varaints [tibble][tibble::tibble-package] with parsed
+#' @param spliceai_variants [tibble][tibble::tibble-package] with parsed
 #' spliceAI mutations from \code{\link{parse_spliceai}}
 #'
 #' @return A [tibble][tibble::tibble-package] with spliceing effects per row
@@ -14,7 +14,7 @@
 #' df <- parse_spliceai(spliceai_file)
 #' format_spliceai(df)
 #'
-#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_junction}}
+#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
 #' @export
 format_spliceai <- function(spliceai_variants){
 

@@ -7,11 +7,8 @@
 #' @return logical vector of same length as `junc_id` indicating
 #' if the input `junc_id` is in the set of reference junctions `ref_junc` or
 #' consists of two directly adjacent positions (intron retention) and
-#' overlaps (completley within) a canonical exon from `exons_gr`.
+#' overlaps (completely within) a canonical exon from `exons_gr`.
 #'
-#'@examples
-#'
-#' is_canonical(junc_id, ref_junc, exons_gr)
 #'
 #' @importFrom IRanges overlapsAny
 is_canonical <- function(junc_id, ref_junc, exons_gr){
