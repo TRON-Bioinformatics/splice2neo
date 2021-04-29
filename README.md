@@ -15,6 +15,8 @@ splice junction format based on genomic coordinates. Splice junctions
 can be annotated with affected transcript sequences, CDS, and resulting
 peptide sequences.
 
+Website: <https://tron.pages.gitlab.rlp.net/splice2neo>
+
 ## Installation
 
 ### Install this package from this GitLab
