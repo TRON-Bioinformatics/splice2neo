@@ -7,7 +7,13 @@
 
 <!-- badges: end -->
 
-The goal of splice2neo is to …
+This package provides functions for the analysis of alternative or
+aberrant splicing junctions and their creation from or association with
+somatic mutations. It integrates the output of several tools which
+predict splicing effects from mutation or RNA-seq data into a common
+splice junction format based on genomic coordinates. Splice junctions
+can be annotated with affected transcript sequences, CDS, and resulting
+peptide sequences.
 
 ## Installation
 
