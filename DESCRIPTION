@@ -2,15 +2,17 @@ Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
 Version: 0.0.1
 Authors@R: 
+    c(
     person(given = "Jonas",
            family = "Ibn-Salem",
            role = c("aut", "cre"),
            email = "joans.ibn-salem@tron-mainz.de",
-           comment = c(ORCID = "0000-0001-9886-113X"))
+           comment = c(ORCID = "0000-0001-9886-113X")),
     person(given = "Franziska",
            family = "Lang",
-           role = c("aut", "cre"),
+           role = c("aut"),
            email = "franziska.lang@tron-mainz.de")
+    )
 Description: This package provides functions for the analysis of alternative or 
  aberrant splicing junctions and their creation from or association with 
  somatic mutations. It integrates the output of several tools which predict 
