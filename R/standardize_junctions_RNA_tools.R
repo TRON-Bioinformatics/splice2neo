@@ -4,7 +4,7 @@
 #' @param tib A tibble with the following as given in the description.
 #'
 #' @return A tibble with sorted columns as given above
-#' 
+#'
 #' @examples
 #'
 #' library(tibble)
@@ -14,26 +14,26 @@
 #'
 #' @export
 sort_columns <- function(tib){
-  column_order <- c("junction_start", "junction_end", "strand", "chromosome", 
-                    "Gene", "class", 
-                    #"junction_info", 
+  column_order <- c("junction_start", "junction_end", "strand", "chromosome",
+                    "Gene", "class",
+                    #"junction_info",
                     "AS_event_ID", "junction_id")
   tib[column_order]
 }
 
 
-#' Sorts columns of junction output file in the following order: "junction_start", "junction_end", "strand", "chromosome", "Gene", "class", "AS_event_ID", "junction_id"
+#' Transforms events from alternative 3' splice sites from SPLADDER output format into standardized junction format
 #'
-#' @param x A tibble with the following as given in the description.
+#' @param tib A tibble in SPLADDER output format
 #'
-#' @return A tibble with sorted columns as given above
-#' 
+#' @return A tibble in standardized junction format
+#'
 #' @examples
 #'
 #' library(tibble)
 #' x <- tibble("strand" = "+", "chromosome" = "chr1", "Gene" = NA,"junction_start" = 0, "junction_end" = 111,  "class" = "intron_retention", "AS_event_ID" = NA, "junction_id" = "chr1_0_111_+")
 #' x1 <- sort_columns(x)
-#' str(snvs)
+#' print(x1)
 #'
 #' @export
 spladder.transform.a3ss <- function(tib){
@@ -49,7 +49,20 @@ spladder.transform.a3ss <- function(tib){
     dplyr::select(junction_id, gene_name, class, AS_event_ID)
 }
 
-# A5SS
+#' Transforms events from alternative 5' splice sites from SPLADDER output format into standardized junction format
+#'
+#' @param x A tibble in SPLADDER output format
+#'
+#' @return A tibble in standardized junction format
+#'
+#' @examples
+#'
+#' library(tibble)
+#' x <- tibble("strand" = "+", "chromosome" = "chr1", "Gene" = NA,"junction_start" = 0, "junction_end" = 111,  "class" = "intron_retention", "AS_event_ID" = NA, "junction_id" = "chr1_0_111_+")
+#' x1 <- sort_columns(x)
+#' print(x1)
+#'
+#' @export
 spladder.transform.a5ss <- function(df){
   df %>%
     mutate(junc_id1 = ifelse(strand == "+", paste(contig, exon_alt1_end, exon_const_start, strand, sep = "_"),
@@ -118,7 +131,7 @@ spladder.transform.format <- function(list.dfs){
     mutate(junction_start = as.numeric(junction_start), junction_end = as.numeric(junction_end))%>%
     dplyr::rename(., Gene = gene_name ) %>%
     sort_columns()
-  
+
 }
 
 
@@ -127,7 +140,7 @@ spladder.transform.format <- function(list.dfs){
 # import filtered leafcutter output
 leafcutter.import <- function(file.name){
   myData <- read_delim(file.name, delim = " ", skip = 1,
-                       col_names = F)  
+                       col_names = F)
   col.nams <- c("intron_cluster", "counts")
   colnames(myData) <- col.nams
   return(myData)
@@ -137,7 +150,7 @@ leafcutter.import <- function(file.name){
 import.bam <- function(file.name){
   bam.file <- read_delim(file.name,
                          delim = "\t", col_names = F)
-  bam.cols <- c("chromosome", "junction_start", "junction_end", 
+  bam.cols <- c("chromosome", "junction_start", "junction_end",
                 "dot", "count", "strand")
   colnames(bam.file) <- bam.cols
   return(bam.file)
@@ -149,13 +162,13 @@ leafcutter.transform.input <- function(x){
     separate(intron_cluster, sep = ":", into = c("chromosome","junction_start","junction_end", "cluster")) %>%
     mutate(junction_start = as.numeric(junction_start),
            junction_end = as.numeric(junction_end),
-           junc_id = paste(chromosome, junction_start, junction_end, sep = "_")) 
+           junc_id = paste(chromosome, junction_start, junction_end, sep = "_"))
 }
 
 # adds junc id for matching with strand information to leafcutter junctions output
 transform.bam <- function(x){
   x %>%
-    mutate(junc_id = paste(chromosome, junction_start, junction_end + 1, 
+    mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
                            sep = "_")) %>%
     select(junc_id, strand)
 }
@@ -169,7 +182,7 @@ leafcutter.generate.output <- function(x){
   return(x)
 }
 
-# combines junction/events tibbles of replicates into one tibble and groups by patient 
+# combines junction/events tibbles of replicates into one tibble and groups by patient
 combine_reps2tibble <- function(list.tibbles.replicates){
   list.tibbles.replicates %>%
     bind_rows(.id = "replicate") %>%
