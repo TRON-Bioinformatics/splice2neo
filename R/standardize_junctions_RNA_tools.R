@@ -73,7 +73,7 @@ spladder.transform.a3ss <- function(tib) {
 #' Transforms events from alternative 5' splice sites from SPLADDER output
 #' format into standardized junction format
 #'
-#' @param x A tibble in SPLADDER output format
+#' @param tib A tibble in SPLADDER output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -227,7 +227,7 @@ spladder.transform.format <- function(l) {
     spladder.transform.mutex_exon(l$mutex_exons)
   )
   df %>%
-    separate(
+    tidyr::separate(
       junction_id,
       into = c("chromosome", "junction_start", "junction_end", "strand"),
       sep = "_",
@@ -240,110 +240,4 @@ spladder.transform.format <- function(l) {
     dplyr::rename(., Gene = gene_name) %>%
     sort_columns()
 
-}
-
-
-# TODO: add function for spladder output import
-# LEAFCUTTER --------------------------------------------------------------
-
-# import filtered leafcutter output
-leafcutter.import <- function(file.name) {
-  myData <- read_delim(file.name,
-                       delim = " ",
-                       skip = 1,
-                       col_names = F)
-  col.nams <- c("intron_cluster", "counts")
-  colnames(myData) <- col.nams
-  return(myData)
-}
-
-# import leafcutter junction file
-import.bam <- function(file.name) {
-  bam.file <- read_delim(file.name,
-                         delim = "\t", col_names = F)
-  bam.cols <- c("chromosome",
-                "junction_start",
-                "junction_end",
-                "dot",
-                "count",
-                "strand")
-  colnames(bam.file) <- bam.cols
-  return(bam.file)
-}
-
-# adds junc id for matching with strand information to filtered leafcutter output
-leafcutter.transform.input <- function(x) {
-  x %>%
-    separate(
-      intron_cluster,
-      sep = ":",
-      into = c("chromosome", "junction_start", "junction_end", "cluster")
-    ) %>%
-    mutate(
-      junction_start = as.numeric(junction_start),
-      junction_end = as.numeric(junction_end),
-      junc_id = paste(chromosome, junction_start, junction_end, sep = "_")
-    )
-}
-
-# adds junc id for matching with strand information to leafcutter junctions output
-transform.bam <- function(x) {
-  x %>%
-    mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
-                           sep = "_")) %>%
-    select(junc_id, strand)
-}
-
-# transforms into standardised output
-leafcutter.generate.output <- function(x) {
-  x <- x %>%
-    mutate(
-      Gene = NA,
-      class = NA,
-      AS_event_ID = NA,
-      junction_id = paste(chromosome, junction_start, junction_end, strand, sep =
-                            "_")
-    ) %>%
-    select(
-      junction_start,
-      junction_end,
-      strand,
-      chromosome,
-      Gene,
-      class,
-      AS_event_ID,
-      junction_id
-    )
-  return(x)
-}
-
-# combines junction/events tibbles of replicates into one tibble and groups by patient
-combine_reps2tibble <- function(list.tibbles.replicates) {
-  list.tibbles.replicates %>%
-    bind_rows(.id = "replicate") %>%
-    mutate(
-      tumour = gsub("_R[1,2]", "", replicate),
-      junc_tumor = paste0(junction_id, "&", tumour)
-    ) %>%
-    group_by(junc_tumor) %>%
-    summarise(
-      replicates = paste(replicate, collapse = ","),
-      junction_start = junction_start,
-      junction_end = junction_end,
-      strand = strand,
-      Gene = Gene,
-      class = class,
-      AS_event_ID = AS_event_ID,
-      junction_id = junction_id,
-      tumour = tumour
-    ) %>%
-    separate(replicates,
-             into = c("replicate1", "replicate2"),
-             sep = ",") %>%
-    mutate(replicate1 = ifelse(is.na(replicate1), F, T),
-           replicate2 = ifelse(is.na(replicate2), F, T)) %>%
-    ungroup() %>%
-    select(-junc_tumor) %>%
-    distinct() %>%
-    group_by(tumour)
 }
