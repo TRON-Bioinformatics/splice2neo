@@ -2,10 +2,12 @@
 
 library(tibble)
 
+
 unsorted_junc_df = tibble(
   "strand" = "+", "chromosome" = "chr1", "Gene" = NA,
   "junction_start" = 0, "junction_end" = 111,  "class" = "intron_retention",
   "AS_event_ID" = NA, "junction_id" = "chr1_0_111_+")
+
 
 
 spladder_output.a3ss <- tibble(
@@ -26,23 +28,6 @@ spladder_output.a3ss <- tibble(
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
 )
 
-spladder_output.a5ss <- tibble(
-  "contig" = "chr1",
-  "strand" = "-",
-  "event_id" = "alt_5prime.1",
-  "gene_name" = "ENSG00000171163.16_6",
-  "exon_const_start" = "59228292",
-  "exon_const_end" = "59228349",
-  "exon_alt1_start" = "59222127",
-  "exon_alt1_end" = "59222216",
-  "exon_alt2_start" = "59222127",
-  "exon_alt2_end" = "59222281",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
-)
 
 spladder_output.a5ss <- tibble(
   "contig" = "chr1",
@@ -61,6 +46,8 @@ spladder_output.a5ss <- tibble(
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
 )
+
+
 
 spladder_output.exonskip <- tibble(
   "contig" = "chr1",
@@ -80,6 +67,7 @@ spladder_output.exonskip <- tibble(
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
 )
 
+
 spladder_output.intronreten <- tibble(
   "contig" = "chr1",
   "strand" = "-",
@@ -97,6 +85,7 @@ spladder_output.intronreten <- tibble(
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
 )
+
 
 spladder_output.mutexon <- tibble(
   "contig" = "chr1",
@@ -117,6 +106,7 @@ spladder_output.mutexon <- tibble(
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
   "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
 )
+
 
 spladder_output <- list(
   "A3SS" = spladder_output.a3ss,
