@@ -2,6 +2,7 @@
 
 export("%>%")
 export(format_spliceai)
+export(generate_combined_dataset)
 export(import_leafcutter.bam)
 export(import_leafcutter.counts)
 export(import_spladder)

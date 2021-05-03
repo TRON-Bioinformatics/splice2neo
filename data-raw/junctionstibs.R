@@ -6,7 +6,7 @@ library(tibble)
 unsorted_junc_df = tibble(
   "strand" = "+", "chromosome" = "chr1", "Gene" = NA,
   "junction_start" = 0, "junction_end" = 111,  "class" = "intron_retention",
-  "AS_event_ID" = NA, "junction_id" = "chr1_0_111_+")
+  "AS_event_ID" = NA, "junc_id" = "chr1_0_111_+")
 
 
 

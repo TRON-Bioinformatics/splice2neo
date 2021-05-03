@@ -31,7 +31,7 @@ sort_columns <- function(tib) {
     "class",
     #"junction_info",
     "AS_event_ID",
-    "junction_id"
+    "junc_id"
   )
   tib[column_order]
 }
@@ -64,12 +64,12 @@ spladder.transform.a3ss <- function(tib) {
         paste(contig, exon_const_end, exon_alt2_start, strand, sep = "_"),
         paste(contig, exon_alt2_end, exon_const_start, strand, sep = "_")
       ),
-      junction_id = paste(junc_id1, junc_id2, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = "A3SS",
       AS_event_ID = event_id
     ) %>%
-    tidyr::separate_rows(junction_id, sep = ";") %>%
-    dplyr::select(junction_id, gene_name, class, AS_event_ID)
+    tidyr::separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 
@@ -100,12 +100,12 @@ spladder.transform.a5ss <- function(tib) {
         paste(contig, exon_alt2_end, exon_const_start, strand, sep = "_"),
         paste(contig, exon_const_end, exon_alt2_start, strand, sep = "_")
       ),
-      junction_id = paste(junc_id1, junc_id2, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = "A5SS",
       AS_event_ID = event_id
     ) %>%
-    tidyr::separate_rows(junction_id, sep = ";") %>%
-    dplyr::select(junction_id, gene_name, class, AS_event_ID)
+    tidyr::separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 #' Transforms events resulting from exon skipping from SPLADDER output
@@ -129,12 +129,12 @@ spladder.transform.exon_skipping <- function(tib) {
       junc_id1 = paste(contig, exon_pre_end, exon_start, strand, sep = "_"),
       junc_id2 = paste(contig, exon_end, exon_aft_start, strand, sep = "_"),
       junc_id3 = paste(contig, exon_pre_end, exon_aft_start, strand, sep = "_"),
-      junction_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
       class = "cassette_exon",
       AS_event_ID = event_id
     ) %>%
-    separate_rows(junction_id, sep = ";") %>%
-    dplyr::select(junction_id, gene_name, class, AS_event_ID)
+    separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 
@@ -160,10 +160,10 @@ spladder.transform.intron_retention <- function(tib) {
       junc_id2 = paste(contig, intron_end, exon2_start, strand, sep = "_"),
       class = "intron_retention",
       AS_event_ID = event_id,
-      junction_id = paste(junc_id1, junc_id2, sep = ";")
+      junc_id = paste(junc_id1, junc_id2, sep = ";")
     ) %>%
-    separate_rows(junction_id, sep = ";") %>%
-    dplyr::select(junction_id, gene_name, class, AS_event_ID)
+    separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 
@@ -189,12 +189,12 @@ spladder.transform.mutex_exon <- function(tib) {
       junc_id2 = paste(contig, exon1_end, exon_aft_start, strand, sep = "_"),
       junc_id3 = paste(contig, exon_pre_end, exon2_start, strand, sep = "_"),
       junc_id3 = paste(contig, exon2_end, exon_aft_start, strand, sep = "_"),
-      junction_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
       class = "mutex_exon",
       AS_event_ID = event_id
     ) %>%
-    separate_rows(junction_id, sep = ";") %>%
-    dplyr::select(junction_id, gene_name, class, AS_event_ID)
+    separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 
@@ -231,7 +231,7 @@ spladder.transform.format <- function(l) {
   )
   df %>%
     tidyr::separate(
-      junction_id,
+      junc_id,
       into = c("chromosome", "junction_start", "junction_end", "strand"),
       sep = "_",
       remove = F
@@ -279,7 +279,7 @@ import_spladder <- function(path){
 spladder_transform <- function(path){
   dat <- import_spladder(path)
   juncs <- spladder.transform.format(dat)
-  return(dat)
+  return(juncs)
 }
 
 # LEAFCUTTER FUNCTIONS -----------------------------------------------------
@@ -390,7 +390,7 @@ leafcutter.generate.output <- function(tib) {
       Gene = NA,
       class = NA,
       AS_event_ID = NA,
-      junction_id = paste(chromosome, junction_start, junction_end, strand,
+      junc_id = paste(chromosome, junction_start, junction_end, strand,
                           sep = "_")
     ) %>%
     dplyr::select(
@@ -401,7 +401,7 @@ leafcutter.generate.output <- function(tib) {
       Gene,
       class,
       AS_event_ID,
-      junction_id
+      junc_id
     )
   return(tib)
 }
@@ -429,5 +429,41 @@ leafcutter_transform <- function(path) {
   dat <- left_join(counts, juncs, by = "junc_id")
   dat_out <- leafcutter.generate.output(dat)
   return(dat_out)
+}
+
+
+
+# COMBINED DATASET --------------------------------------------------------
+
+
+#' Combines tibbles with junctions from Spladder and Leafcutter
+#'
+#' @param leafcutter_tib A tibble the junctions identified by Leafcutter in
+#'   standardized format
+#' @param spladder_tib A tibble the junctions identified by Spladder in
+#'   standardized format
+#'
+#' @return A combined table with unique junctions. The columns RNA_tool
+#'   contains information which tools identified the given junction
+#'
+#'
+#' @import readr
+#' @import dplyr
+#' @import tidyr
+#' @export
+generate_combined_dataset <- function(spladder_tib, leafcutter_tib){
+
+  # TODO: add info about canonical
+  spladder_tib %>%
+    bind_rows(leafcutter_tib) %>%
+    distinct(junc_id, .keep_all = T) %>%
+    mutate(
+      leafcutter = ifelse(junc_id %in% leafcutter_tib$junc_id, "leafcutter", "")
+      ,
+      spladder = ifelse(junc_id %in% spladder_tib$junc_id, "spladder", "")
+      ) %>%
+    unite(leafcutter, spladder, col = "RNA_tool", sep = ",") %>%
+    mutate(RNA_tool = gsub("^,", "", RNA_tool))
+
 }
 
