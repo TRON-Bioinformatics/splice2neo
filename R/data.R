@@ -42,7 +42,7 @@
 #' A tibble containing events from mutually exclusive exons identified by
 #' Spladder
 #'
-#' @format A tibble frame with 1 and 17 variables:
+#' @format A tibble frame with 1 row and 17 variables:
 #'
 #' @source random
 "spladder_output.mutexon"
@@ -56,3 +56,25 @@
 #' @source random
 "spladder_output"
 
+
+#' A tibble with junction in standardized format. example data
+#'
+#' @format A tibble frame with 11 variables
+#'
+#' @source random
+"leafcutter_juncs"
+
+#' A tibble with junction in standardized format.  example data
+#'
+#' @format A tibble frame with 11 variables
+#'
+#' @source random
+"spladder_juncs"
+
+#' A tibble with canonical junctions and their source (comma, separated).
+#' example data
+#'
+#' @format A tibble frame with 2 variables
+#'
+#' @source random
+"canonical_juncs"

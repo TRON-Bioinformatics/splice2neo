@@ -438,32 +438,43 @@ leafcutter_transform <- function(path) {
 
 #' Combines tibbles with junctions from Spladder and Leafcutter
 #'
-#' @param leafcutter_tib A tibble the junctions identified by Leafcutter in
+#' @param leafcutter_juncs A tibble the junctions identified by Leafcutter in
 #'   standardized format
-#' @param spladder_tib A tibble the junctions identified by Spladder in
+#' @param spladder_juncs A tibble the junctions identified by Spladder in
 #'   standardized format
+#' @param spladder_tib A tibble with canonical junctions. It should contain the
+#'   column `junc_id` and the column `origin`
 #'
 #' @return A combined table with unique junctions. The columns RNA_tool
 #'   contains information which tools identified the given junction
 #'
+#' @examples
+#' dat.combined <- generate_combined_dataset(spladder_juncs,
+#'   leafcutter_juncs, canonical_juncs)
+#' colnames(dat.combined)
 #'
 #' @import readr
 #' @import dplyr
 #' @import tidyr
 #' @export
-generate_combined_dataset <- function(spladder_tib, leafcutter_tib){
+generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs,
+                                      canonical_juncs){
 
   # TODO: add info about canonical
-  spladder_tib %>%
-    bind_rows(leafcutter_tib) %>%
+  spladder_juncs %>%
+    bind_rows(leafcutter_juncs) %>%
     distinct(junc_id, .keep_all = T) %>%
     mutate(
-      leafcutter = ifelse(junc_id %in% leafcutter_tib$junc_id, "leafcutter", "")
+      leafcutter = ifelse(junc_id %in% leafcutter_juncs$junc_id, "leafcutter", "")
       ,
-      spladder = ifelse(junc_id %in% spladder_tib$junc_id, "spladder", "")
+      spladder = ifelse(junc_id %in% spladder_juncs$junc_id, "spladder", "")
       ) %>%
     unite(leafcutter, spladder, col = "RNA_tool", sep = ",") %>%
-    mutate(RNA_tool = gsub("^,", "", RNA_tool))
+    mutate(RNA_tool = gsub("^,", "", RNA_tool)) %>%
+    mutate(
+      is_canonical = ifelse(junc_id %in% canonical_juncs$junc_id, T, F),
+    ) %>%
+    left_join(canonical_juncs, by = "junc_id")
 
 }
 

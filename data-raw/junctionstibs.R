@@ -116,6 +116,13 @@ spladder_output <- list(
   "mutex_exons" = spladder_output.mutexon
 )
 
+
+
+leafcutter_juncs <- feather::read_feather("data-raw/leafcutter_example.feather")
+spladder_juncs <- feather::read_feather("data-raw/spladder_example.feather")
+canonical_juncs <- feather::read_feather("data-raw/canonical_example.feather")
+
+
 usethis::use_data(unsorted_junc_df, overwrite = TRUE)
 usethis::use_data(spladder_output.a3ss, overwrite = TRUE)
 usethis::use_data(spladder_output.a5ss, overwrite = TRUE)
@@ -123,3 +130,6 @@ usethis::use_data(spladder_output.exonskip, overwrite = TRUE)
 usethis::use_data(spladder_output.intronreten, overwrite = TRUE)
 usethis::use_data(spladder_output.mutexon, overwrite = TRUE)
 usethis::use_data(spladder_output, overwrite = TRUE)
+usethis::use_data(leafcutter_juncs, overwrite = TRUE)
+usethis::use_data(spladder_juncs, overwrite = TRUE)
+usethis::use_data(canonical_juncs, overwrite = TRUE)
