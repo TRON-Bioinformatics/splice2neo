@@ -1,5 +1,8 @@
 
 
+# SPLADDER FUNCTION -------------------------------------------------------
+
+
 #' Sorts columns of junction output file in the following order:
 #' "junction_start", "junction_end", "strand", "chromosome", "Gene",
 #' "class", "AS_event_ID", "junction_id"
@@ -241,3 +244,190 @@ spladder.transform.format <- function(l) {
     sort_columns()
 
 }
+
+
+#' Imports SPLADDER output from a given path
+#'
+#' @param path The path to a folder with spladder output
+#'
+#' @return A list with tibbles. Each tibble is a Spladder output for "A5SS",
+#'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
+#'
+#'
+#' @import readr
+#' @export
+import_spladder <- function(path){
+  files <- list.files(path, "confirmed.txt.gz")
+  path_files <- paste(path, files ,sep = "/" )
+  files <- lapply(path_files, function(x) if(file.exists(x)) {read_delim(x, delim = "\t")})
+  names(files) <- c("A3SS", "A5SS", "cassette_exon", "intron_retention", "mutex_exons")
+  return(files)
+}
+
+
+#' Imports SPLADDER output from a given path and transforms it into standardized
+#' junction format
+#'
+#' @param path The path to a folder with spladder output
+#'
+#' @return A tibble in standardized junction format, combining all alternative
+#'   splicing classes that are covered by Spladder
+#'
+#'
+#' @import readr
+#' @export
+spladder_transform <- function(path){
+  dat <- import_spladder(path)
+  juncs <- spladder.transform.format(dat)
+  return(dat)
+}
+
+# LEAFCUTTER FUNCTIONS -----------------------------------------------------
+
+#' Imports "_perind.counts.gz" from Leafcutter outpu.
+#'
+#' @param file.name The path to the file
+#'
+#' @return A tibble with columns "intron_cluster" and "counts
+#'
+#'
+#' @import readr
+#' @export
+import_leafcutter.counts <- function(file.name) {
+  if(!file.exists(file.name)){
+    stop("Aligned.out.bam.junc file is missing")
+  }
+  myData <- read_delim(file.name,
+                       delim = " ",
+                       skip = 1,
+                       col_names = F)
+  col.nams <- c("intron_cluster", "counts")
+  colnames(myData) <- col.nams
+  return(myData)
+}
+
+
+#' Transforms Leafcutter counts file
+#'
+#' @param tib Leafcutter counts file as tibble
+#'
+#' @return A tibble with columns "chromosome", "junction_start", "junction_end",
+#'  "cluster"
+#'
+#'
+#' @import dplyr
+#' @export
+transform_leafcutter.counts <- function(tib) {
+  tib %>%
+    separate(
+      intron_cluster,
+      sep = ":",
+      into = c("chromosome", "junction_start", "junction_end", "cluster")
+    ) %>%
+    mutate(
+      junction_start = as.numeric(junction_start),
+      junction_end = as.numeric(junction_end),
+      junc_id = paste(chromosome, junction_start, junction_end, sep = "_")
+    )
+}
+
+
+#' Imports "_Aligned.out.bam.junc" file from Leafcutter output
+#'
+#' @param file.name The path to the file
+#'
+#' @return A tibble with columns "chromosome", "junction_start", "junction_end",
+#' "dot", "count", "strand"
+#'
+#'
+#' @import readr
+#' @export
+import_leafcutter.bam <- function(file.name) {
+  if(!file.exists(file.name)){
+    stop("Aligned.out.bam.junc file is missing")
+  }
+  bam.file <- read_delim(file.name,
+                         delim = "\t", col_names = F)
+  bam.cols <- c("chromosome",
+                "junction_start",
+                "junction_end",
+                "dot",
+                "count",
+                "strand")
+  colnames(bam.file) <- bam.cols
+  return(bam.file)
+}
+
+#' Transforms Leafcutter bam junc file
+#'
+#' @param tib Leafcutter bam junc file as tibble
+#'
+#' @return A tibble including a column with the junction id
+#'
+#'
+#' @import dplyr
+#' @export
+transform_leafcutter.bam <- function(tib) {
+  tib %>%
+    mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
+                           sep = "_")) %>%
+    select(junc_id, strand)
+}
+
+
+#' Transforms Leafcutter intermediate files into standardized format
+#'
+#' @param tib a tibble from leafcutter intermediate format
+#'
+#' @return A tibble in standardized junction format
+#'
+#'
+#' @import dplyr
+#' @export
+leafcutter.generate.output <- function(tib) {
+  tib <- tib %>%
+    mutate(
+      Gene = NA,
+      class = NA,
+      AS_event_ID = NA,
+      junction_id = paste(chromosome, junction_start, junction_end, strand,
+                          sep = "_")
+    ) %>%
+    dplyr::select(
+      junction_start,
+      junction_end,
+      strand,
+      chromosome,
+      Gene,
+      class,
+      AS_event_ID,
+      junction_id
+    )
+  return(tib)
+}
+
+#' Imports "_perind.counts.gz" from Leafcutter outpu.
+#'
+#' @param path The path to leafcutter output
+#'
+#' @return A tibble with columns "intron_cluster" and "counts
+#'
+#'
+#' @import readr
+#' @export
+leafcutter_transform <- function(path) {
+  file.counts <- list.files(path, pattern = "_perind.counts.gz")
+  file.counts <- paste0(path, "/", file.counts)
+  counts <- file.counts %>%
+    import_leafcutter.counts() %>%
+    transform_leafcutter.counts()
+  file.bam <- list.files(path, pattern = "_Aligned.out.bam.junc")
+  file.bam <- paste0(path, "/", file.bam)
+  juncs <- file.bam %>%
+    import_leafcutter.bam() %>%
+    transform_leafcutter.bam()
+  dat <- left_join(counts, juncs, by = "junc_id")
+  dat_out <- leafcutter.generate.output(dat)
+  return(dat_out)
+}
+
