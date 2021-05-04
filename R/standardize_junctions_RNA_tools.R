@@ -442,7 +442,7 @@ leafcutter_transform <- function(path) {
 #'   standardized format
 #' @param spladder_juncs A tibble the junctions identified by Spladder in
 #'   standardized format
-#' @param spladder_tib A tibble with canonical junctions. It should contain the
+#' @param canonical_juncs A tibble with canonical junctions. It should contain the
 #'   column `junc_id` and the column `origin`
 #'
 #' @return A combined table with unique junctions. The columns RNA_tool
