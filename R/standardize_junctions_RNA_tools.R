@@ -406,11 +406,12 @@ leafcutter.generate.output <- function(tib) {
   return(tib)
 }
 
-#' Imports "_perind.counts.gz" from Leafcutter outpu.
+#' Imports "_perind.counts.gz" from Leafcutter output and tranforms it
+#' into standardized output format
 #'
 #' @param path The path to leafcutter output
 #'
-#' @return A tibble with columns "intron_cluster" and "counts
+#' @return A tibble in standardized junction format
 #'
 #'
 #' @import readr
@@ -460,7 +461,6 @@ leafcutter_transform <- function(path) {
 generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs,
                                       canonical_juncs){
 
-  # TODO: add info about canonical
   spladder_juncs %>%
     bind_rows(leafcutter_juncs) %>%
     distinct(junc_id, .keep_all = T) %>%
@@ -472,7 +472,7 @@ generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs,
     unite(leafcutter, spladder, col = "RNA_tool", sep = ",") %>%
     mutate(RNA_tool = gsub("^,", "", RNA_tool)) %>%
     mutate(
-      is_canonical = ifelse(junc_id %in% canonical_juncs$junc_id, T, F),
+      is_canonical = ifelse(junc_id %in% canonical_juncs$junc_id, TRUE, FALSE),
     ) %>%
     left_join(canonical_juncs, by = "junc_id")
 
