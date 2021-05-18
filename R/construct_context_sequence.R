@@ -157,51 +157,42 @@ get_context_sequence <-
            window_size = 200) {
 
     # genomic ranges of wt transcript
-    transcript.wt <- transcript_db[[transcript_id]]
+    wt_transcript_range <- transcript_db[[transcript_id]]
 
     # identify exons which overlap with junction
     exon1_index <-
-      findOverlaps(transcript.wt, junc_pos1)@from
+      findOverlaps(wt_transcript_range, junc_pos1)@from
     exon2_index <-
-      findOverlaps(transcript.wt, junc_pos2)@from
+      findOverlaps(wt_transcript_range, junc_pos2)@from
     print(exon2_index - exon1_index)
 
     #  construct mutated ranges
-    transcript.mut <-
+    mutated_transcript_range <-
       construct_mutated_range(
         exon.index1 = exon1_index,
         exon.index2 = exon2_index,
-        transcript_range.wt = transcript.wt,
+        transcript_range.wt = wt_transcript_range,
         strand = strand,
         junction_start = start(junc_pos1),
         junction_end = start(junc_pos2)
       )
-    print(transcript.mut)
-    if (is_empty(transcript.mut)) {
+    print(mutated_transcript_range)
+    if (is_empty(mutated_transcript_range)) {
       return("")
     } else{
-      #=============================================================================
-      # 3.) Add transcript coordinates to genomic coordinates
-      #=============================================================================
-      transcript.mut <- add_transcript_coordinates(transcript.mut)
 
-      #=============================================================================
-      # 4.) mutated transcript sequence
-      #=============================================================================
-      mutated.transcript.seq <-
-        BSgenome::getSeq(genome_db
-            , transcript.mut)
-      mutated.transcript.seq <- unlist(mutated.transcript.seq)
-      #print(mutated.transcript.seq)
+      # Add transcript coordinates to genomic coordinates
+      mutated_transcript_range <- add_transcript_coordinates(mutated_transcript_range)
 
-      #=============================================================================
-      # 5.) Calculate window of defined size around junction
-      #=============================================================================
-      # transcript sequence coordinates around junction
+      # get mutated transcript sequence
+      mutated_transcript_sequence <- genome_db[mutated_transcript_range]
+      mutated_transcript_sequence <- unlist(mutated_transcript_sequence)
+
+      # extract window of defined size around junction
       context_info <-
         extract_sequence_window(
-          mutated_sequence = mutated.transcript.seq,
-          mutated_ranges = transcript.mut,
+          mutated_sequence = mutated_transcript_sequence,
+          mutated_ranges = mutated_transcript_range,
           junction_start_range = junc_pos1,
           window.size = window_size
         )
