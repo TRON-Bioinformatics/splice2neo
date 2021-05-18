@@ -2,24 +2,22 @@
 #'
 #' @param junc_id A junction id
 #' @param transcript_db a GRangesList with transcripts composed of exon ranges
+#' @param genome_db a GRangesList with transcripts composed of exon ranges
+#' @param window_size number of nucleotides left and right from the "breakpoint"
 #'
 #' @return A tibble with sorted columns as given above
 #'
 #' @examples
 #'
-#' unsorted_junc_df
-#' sorted_junc_df <- sort_columns(unsorted_junc_df)
-#' sorted_junc_df
 #'
 #'@import dplyr
-#'@import GenomicRanges
 #'
 #'@export
 juncid2context <-
   function(junc_id,
            transcript_db,
-           genome.seqs,
-           window.size = 200) {
+           genome_db,
+           window_size = 200) {
     # junction table
     junc_df <- tibble(junc_id = junc_id) %>%
       separate(
@@ -31,16 +29,16 @@ juncid2context <-
       mutate(pos1 = as.integer(pos1), pos2 = as.integer(pos2))
     # build GRanges object for both junction positions
     junc_pos1 <-
-      GRanges(junc_df$chr, junc_df$pos1, strand = junc_df$strand)
+      GenomicRanges::GRanges(junc_df$chr, junc_df$pos1, strand = junc_df$strand)
     junc_pos2 <-
-      GRanges(junc_df$chr, junc_df$pos2, strand = junc_df$strand)
+      GenomicRanges::GRanges(junc_df$chr, junc_df$pos2, strand = junc_df$strand)
 
     # identify transcripts that relate to junction id
     transcripts4junc <-
       map_junc_transcript(
         junc_id = junc_id,
-        junc1_gr = junc_pos1,
-        junc2_gr = junc_pos2,
+        junc_pos1 = junc_pos1,
+        junc_pos2 = junc_pos2,
         junc_df = junc_df,
         transcript_db = transcript_db
       )
@@ -49,12 +47,12 @@ juncid2context <-
     context_seq <- lapply(transcripts4junc$enst, function(x) {
       get_context_sequence(
         transcript_id = x,
-        junc1_gr = junc1_gr,
-        junc2_gr = junc2_gr,
+        junc_pos1 = junc_pos1,
+        junc_pos2 = junc_pos2,
         transcript_db = transcript_db,
-        strand.dir = junc_df$strand,
-        genome.seqs = genome.seqs,
-        window.size = window.size
+        strand = junc_df$strand,
+        genome_db = genome_db,
+        window_size = window_size
       )
     })
 
@@ -76,12 +74,7 @@ juncid2context <-
 #'
 #' @examples
 #'
-#' unsorted_junc_df
-#' sorted_junc_df <- sort_columns(unsorted_junc_df)
-#' sorted_junc_df
-#'
 #'@import dplyr
-#'@import GenomicRanges
 #'
 #'@export
 # this function returns transcripts to which predicted splicing events represent alternative events
@@ -96,9 +89,9 @@ map_junc_transcript <-
 
     # Get transcripts overlapping both junctions
     transcripts_pos1 <-
-      findOverlaps(junc_pos1, transcript_db) %>% as.data.frame() %>% as_tibble()
+      GenomicRanges::findOverlaps(junc_pos1, transcript_db) %>% as.data.frame() %>% as_tibble()
     transcripts_pos2 <-
-      findOverlaps(junc_pos2, transcript_db) %>% as.data.frame() %>% as_tibble()
+      GenomicRanges::findOverlaps(junc_pos2, transcript_db) %>% as.data.frame() %>% as_tibble()
 
     if (nrow(transcripts_pos1) > 0 & nrow(transcripts_pos2) > 0) {
       # both coordinates of junction event are located in exon sequence related to a transcript
@@ -137,11 +130,13 @@ map_junc_transcript <-
 #' Given the coordinates of junctions( junc1_gr, junc2_gr, strand.dir),
 #' returns the context sequence
 #'
-#' @param junc_id A junction id
+#' @param transcript_id An ENSEMBL transcript id
+#' @param transcript_db a GRangesList with transcripts composed of exon ranges
 #' @param junc_pos1 GRanges object for junction position 1
 #' @param junc_pos2 GRanges object for junction position 2
-#' @param junc_df A tibble with columns `junc_id`, `chr`, `pos1`, `pos2`, `strand`
-#' @param transcript_db a GRangesList with transcripts composed of exon ranges
+#' @param genome_db a GRangesList with transcripts composed of exon ranges
+#' @param strand strand direction. Shall be "+" or "-"
+#' @param window_size number of nucleotides left and right from the "breakpoint"
 #'
 #' @return A tibble with columns `junc_id`, `chr`, `pos1`, `pos2`, `strand`,
 #'   `jidx`, `subjectHits`, `enst`. This tibble returns all transcripts that are
@@ -149,44 +144,37 @@ map_junc_transcript <-
 #'
 #' @examples
 #'
-#' unsorted_junc_df
-#' sorted_junc_df <- sort_columns(unsorted_junc_df)
-#' sorted_junc_df
-#'
 #'@import dplyr
-#'@import GenomicRanges
 #'
 #'@export
 get_context_sequence <-
   function(transcript_id,
            transcript_db,
-           junc1_gr,
-           junc2_gr,
-           strand.dir,
-           genome.seqs,
-           window.size) {
+           junc_pos1,
+           junc_pos2,
+           strand,
+           genome_db,
+           window_size = 200) {
+
     # genomic ranges of wt transcript
     transcript.wt <- transcript_db[[transcript_id]]
 
-    #=============================================================================
-    # 2.) identify exons which overlap with junction
-    #=============================================================================
-    start.junc.ind <-
-      GenomicRanges::findOverlaps(transcript.wt, junc1_gr)@from
-    end.junc.ind <-
-      GenomicRanges::findOverlaps(transcript.wt, junc2_gr)@from
-    print(end.junc.ind - start.junc.ind)
-    #=============================================================================
-    # 2.) construct mutated ranges
-    #=============================================================================
+    # identify exons which overlap with junction
+    exon1_index <-
+      findOverlaps(transcript.wt, junc_pos1)@from
+    exon2_index <-
+      findOverlaps(transcript.wt, junc_pos2)@from
+    print(exon2_index - exon1_index)
+
+    #  construct mutated ranges
     transcript.mut <-
       construct_mutated_range(
-        exon.index1 = start.junc.ind,
-        exon.index2 = end.junc.ind,
+        exon.index1 = exon1_index,
+        exon.index2 = exon2_index,
         transcript_range.wt = transcript.wt,
-        strand.dir = strand.dir,
-        junction_start = start(junc1_gr),
-        junction_end = start(junc2_gr)
+        strand = strand,
+        junction_start = start(junc_pos1),
+        junction_end = start(junc_pos2)
       )
     print(transcript.mut)
     if (is_empty(transcript.mut)) {
@@ -201,7 +189,8 @@ get_context_sequence <-
       # 4.) mutated transcript sequence
       #=============================================================================
       mutated.transcript.seq <-
-        BSgenome::getSeq(genome.seqs, transcript.mut)
+        BSgenome::getSeq(genome_db
+            , transcript.mut)
       mutated.transcript.seq <- unlist(mutated.transcript.seq)
       #print(mutated.transcript.seq)
 
@@ -213,8 +202,8 @@ get_context_sequence <-
         extract_sequence_window(
           mutated_sequence = mutated.transcript.seq,
           mutated_ranges = transcript.mut,
-          junction_start_range = junc1_gr,
-          window.size = window.size
+          junction_start_range = junc_pos1,
+          window.size = window_size
         )
 
       return(
