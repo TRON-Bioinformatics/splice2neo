@@ -38,6 +38,11 @@ Imports:
     dplyr,
     readr,
     tidyr,
-    vcfR
+    vcfR,
+    furrr,
+    BiocGenerics,
+    GenomeInfoDb
 Remotes: bioc::IRanges, bioc::GenomicRanges
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
+Depends: 
+    R (>= 2.10)
