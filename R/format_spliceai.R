@@ -1,13 +1,13 @@
 
 #' Formats spliceAI output and filter for predicted effects
 #'
-#' Reformats the data for each annotated effect per row and filters effects
+#' Reformat the data for each annotated effect per row and filters effects
 #' to have a probability not NA and score > 0.
 #'
 #' @param spliceai_variants [tibble][tibble::tibble-package] with parsed
 #' spliceAI mutations from \code{\link{parse_spliceai}}
 #'
-#' @return A [tibble][tibble::tibble-package] with spliceing effects per row
+#' @return A [tibble][tibble::tibble-package] with splicing effects per row
 #'
 #' @examples
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")

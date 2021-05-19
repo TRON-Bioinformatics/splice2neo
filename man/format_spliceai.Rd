@@ -11,10 +11,10 @@ format_spliceai(spliceai_variants)
 spliceAI mutations from \code{\link{parse_spliceai}}}
 }
 \value{
-A \link[tibble:tibble-package]{tibble} with spliceing effects per row
+A \link[tibble:tibble-package]{tibble} with splicing effects per row
 }
 \description{
-Reformats the data for each annotated effect per row and filters effects
+Reformat the data for each annotated effect per row and filters effects
 to have a probability not NA and score > 0.
 }
 \examples{

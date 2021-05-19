@@ -3,10 +3,9 @@
 \docType{data}
 \name{toy_transcripts}
 \alias{toy_transcripts}
-\title{An example transcript annotation GRangsList from a subset of human
-chromosome 2.}
+\title{An example transcript annotation GRangesList from a subset of human genome}
 \format{
-A GRangesList object with 1951 GRanges objects.
+A GRangesList object with GRanges objects.
 }
 \source{
 \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz}
@@ -15,8 +14,14 @@ A GRangesList object with 1951 GRanges objects.
 toy_transcripts
 }
 \description{
-This is a GRangesList object with 1951 transcrpts consisting of exon ranges.
-This data set is a subset of annotations of human (hg19) chromosome 2 restricted
-to this region: chr2:152000000-180000000 .
+This is a GRangesList object with transcripts consisting of exon ranges.
+This data set is a subset of annotations of human (hg19) restricted
+to this regions:
+}
+\details{
+\itemize{
+\item chr2:152000000-180000000
+\item chr17:41100000-41280000
+}
 }
 \keyword{datasets}
