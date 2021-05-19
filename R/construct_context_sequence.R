@@ -34,7 +34,7 @@ juncid2context <-
       GenomicRanges::GRanges(junc_df$chr, junc_df$pos2, strand = junc_df$strand)
 
     # identify transcripts that relate to junction id
-    transcripts4junc <-
+    transcripts_covering_junction <-
       map_junc_transcript(
         junc_id = junc_id,
         junc_pos1 = junc_pos1,
@@ -44,7 +44,7 @@ juncid2context <-
       )
 
     #get context sequences for all transcripts covering a junction
-    context_seq <- lapply(transcripts4junc$enst, function(x) {
+    context_sequences <- lapply(transcripts_covering_junction$enst, function(x) {
       get_context_sequence(
         transcript_id = x,
         junc_pos1 = junc_pos1,
@@ -56,7 +56,7 @@ juncid2context <-
       )
     })
 
-    return(context_seq)
+    return(context_sequences)
   }
 
 
@@ -189,10 +189,10 @@ get_context_sequence <-
       # extract window of defined size around junction
       context_info <-
         extract_sequence_window(
-          mutated_sequence = mutated_transcript_sequence,
-          mutated_ranges = mutated_transcript_range,
-          junction_start_range = junc_pos1,
-          window.size = window_size
+          transcript_sequence = mutated_transcript_sequence,
+          transcript_range = mutated_transcript_range,
+          junc_pos1 = junc_pos1,
+          window_size = window_size
         )
 
       return(
@@ -205,248 +205,83 @@ get_context_sequence <-
     }
   }
 
-#' returns genomic range of mutated transcript according to the splice event
+
+
+#' adds transcript coordinates in the resulting transcript to the genomic
+#' ranges of the exome
 #'
-#' @param exon1_index index of exon related to first position of junction in
-#'   transcript ranges
-#' @param exon2_index index of exon related to second position of junction in
-#'   transcript ranges
-#' @param wt_transcript_range Genomic range of wildtype transcript in which the
-#'   alternative splicing event is taking place
-#' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
+#' @param transcript_range Genomic range of a transcript
 #'
-#' @return A tibble with columns `junc_id`, `chr`, `pos1`, `pos2`, `strand`,
-#'   `jidx`, `subjectHits`, `enst`. This tibble returns all transcripts that are
-#'   affected by a given junction.
+#' @return The Genomic range of a transcript with transcript coordinates
 #'
 #'
 #'@import dplyr
 #'
-construct_mutated_range <-
-  function(exon1_index,
-           exon2_index,
-           wt_transcript_range,
-           strand_direction,
-           junction_start,
-           junction_end) {
-
-    mutated_transcript_range <- as.data.frame(wt_transcript_range)
-
-    if (!(is_empty(exon1_index) | is_empty(exon2_index))) {
-      # both junction coordinats are located within an exon
-      mutated_transcript_range <- construct_range_both_in_exon(
-        exon1_index,
-        exon2_index,
-        mutated_transcript_range,
-        strand_direction,
-        junction_start,
-        junction_end
-      )
-
-    } else if (!is_empty(exon1_index) & is_empty(exon2_index)) {
-      # first coordinate located in exon, second coordinate located in intron
-      mutated_transcript_range <- construct_range_first_in_exon(
-        exon1_index,
-        mutated_transcript_range,
-        strand_direction,
-        junction_start,
-        junction_end
-      )
-    } else if (is_empty(exon1_index) & !is_empty(exon2_index)) {
-
-      # first coordinate located in intron, second coordinate located in exon
-      mutated_transcript_range <- construct_range_second_in_exon(exon2_index,
-                                     mutated_transcript_range,
-                                     strand_direction,
-                                     junction_start,
-                                     junction_end)
-    }
-    # check for validity of ranges
-    mutated_transcript_range <- GRanges(mutated_transcript_range)
-    return(mutated_transcript_range)
-  }
-
-
-#' returns genomic range of mutated transcript for junction with both coordinates
-#' in an exon
-#'
-#' @param exon1_index index of exon related to first position of junction in
-#'   transcript ranges
-#' @param exon2_index index of exon related to second position of junction in
-#'   transcript ranges
-#' @param transcript_range Genomic range of mutated transcript in which
-#'   the alternative splicing event is taking place
-#' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
-#'
-#' @return a mutated transcript range based on the presented parameters
-#'
-#'
-#'@import dplyr
-#'
-construct_range_both_in_exon <- function(exon1_index,
-                                         exon2_index,
-                                         transcript_range,
-                                         strand_direction,
-                                         junction_start,
-                                         junction_end) {
-  if (exon2_index == exon1_index) {
-    # both coordinates of these junction are within the same exon
-    # true junctions should not be within one exon --> false predicted events
-    transcript_range <- GRanges()
-
-  } else if (abs(exon2_index - exon1_index) == 1) {
-    # CASE 1
-    # junction coordinates cover consecutive exons
-    # insert junction coordinates into exon end / exon start
-    # e.g alternative splice sites
-
-    transcript_range$end[exon1_index] <- junction_start
-    transcript_range$start[exon2_index] <-  junction_end
-
-  } else if (abs(exon2_index - exon1_index) != 1) {
-    # CASE2
-    # junction coordinates cover non-consecutive exons
-    # complete exons were removed in these events
-    # insert junction coordinates into exon end / exon start
-    # remove spliced out exons from granges object
-    # e.g. exon skipping events
-
-    transcript_range$end[exon1_index] <- junction_start
-    transcript_range$start[exon2_index] <- junction_end
-    if (strand_direction == "-") {
-      removed_exons_index <-
-        seq(from = exon2_index + 1,
-            to = exon1_index - 1,
-            by = 1)
-    } else if (strand_direction == "+") {
-      removed_exons_index <-
-        seq(from = exon1_index + 1,
-            to = exon2_index - 1,
-            by = 1)
-    }
-    transcript_range <-
-      transcript_range[-removed_exons_index, ]
-  }
-  return(transcript_range)
-}
-
-#' returns genomic range of mutated transcript for junctions with first
-#' coordinate in an exon and seconde coordinate located in an intron
-#'
-#' @param exon1_index index of exon related to first position of junction in
-#'   transcript ranges
-#' @param transcript_range Genomic range of mutated transcript in which
-#'   the alternative splicing event is taking place
-#' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
-#'
-#' @return a mutated transcript range based on the presented parameters
-#'
-#'
-#'@import dplyr
-#'
-construct_range_first_in_exon <- function(exon1_index,
-                                          transcript_range,
-                                          strand_direction,
-                                          junction_start,
-                                          junction_end) {
-  # first coordinate located in exon, second coordinate located in intron
-  # e.g intron retention, 3' ASS acceptor gain in intron (+)
-  # CASE3
-  if (abs(junction_end - junction_start) == 1) {
-    # intron retention
-    if (strand_direction == "+") {
-      transcript_range$end[exon1_index] <-
-        transcript_range$end[exon1_index + 1]
-      transcript_range <-
-        transcript_range[-(exon1_index + 1), ]
-    } else if (strand_direction == "-") {
-      transcript_range$end[exon1_index] <-
-        transcript_range$end[exon1_index - 1]
-      transcript_range <-
-        transcript_range[-(exon1_index - 1),]
-    }
+#
+add_transcript_coordinates <- function(transcript_range) {
+  transcript_data <- as.data.frame(transcript_range)
+  transcript_data$start_transcript <-
+    rep(0, length(transcript_range))
+  transcript_data$end_transcript <-  rep(0, length(transcript_range))
+  if (nrow(transcript_data) == 1) {
+    # only one exon
+    transcript_data$end_transcript <- width(transcript_range)
   } else {
-    # CASE 4
-    if (strand_direction == "+") {
-      # ASS 3' on positive strand
-      transcript_range$start[(exon1_index + 1)] <-
-        junction_end
-    } else if (strand_direction == "-") {
-      # ASS 5' on negative strand strand
-      transcript_range$start[(exon1_index - 1)] <-
-        junction_end
+    for (i in 2:length(transcript_range)) {
+      transcript_data$start_transcript[i] =
+        transcript_data$start_transcript[i -1] +
+        width(transcript_range)[i - 1] + 1
     }
-
+    for (i in 1:length(transcript_range)) {
+      transcript_data$end_transcript[i] = transcript_data$start_transcript[i] +
+        width(transcript_range)[i]
+    }
   }
-  return(transcript_range)
+  extended_transcript_range <- GRanges(transcript_data)
+  return(extended_transcript_range)
 }
 
 
-#' returns genomic range of mutated transcript for junctions with first
-#' coordinate in an exon and seconde coordinate located in an intron
+#' adds transcript coordinates in the resulting transcript to the genomic
+#' ranges of the exome
 #'
-#' @param exon2_index index of exon related to second position of junction in
-#'   transcript ranges
-#' @param transcript_range Genomic range of mutated transcript in which
-#'   the alternative splicing event is taking place
-#' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
+#' @param transcript_sequence Sequence of the full transcript
+#' @param transcript_range Genomic range of a transcript
+#' @param junc_pos1 Genomic range of the first junction coordinate
+#' @param window_size number of nucleotides left and right from the "breakpoint"
 #'
-#' @return a mutated transcript range based on the presented parameters
+#'
+#' @return The Genomic range of a transcript with transcript coordinates
 #'
 #'
 #'@import dplyr
 #'
-construct_range_second_in_exon <- function(exon2_index,
-                                           transcript_range,
-                                           strand_direction,
-                                           junction_start,
-                                           junction_end){
-  if (abs(junction_end - junction_start) == 1) {
-    # intron retention
-    # CASE 6
-    if (strand_direction == "+") {
-      transcript_range$start[exon2_index] <-
-        transcript_range$start[exon2_index - 1]
-      transcript_range <- mutated_transcript_range[-(exon2_index - 1),]
-    } else if (strand_direction == "-") {
-      transcript_range$start[exon2_index] <-
-        transcript_range$start[exon2_index + 1]
-      transcript_range <- transcript_range[-(exon2_index + 1), ]
+#
+extract_sequence_window <-
+  function(transcript_sequence,
+           transcript_range,
+           junc_pos1,
+           window_size = 200) {
+    transcript_data <- as.data.frame(transcript_range)
+    junction_exon_index <-
+      findOverlaps(transcript_range, junc_pos1)@from
+    junction_position_transcript <-
+      transcript_data$end_transcript[junction_exon_index]
+    if (junction_position_transcript - window_size > 0) {
+      start_pos <- junction_position_transcript - window_size
+      junction_position_context <- window_size
+    } else{
+      start_pos <- 1
+      junction_position_context <- junction_position_transcript
     }
-  } else{
-    # CASE 5
-    # e.g 5' ASS donor gain in intron (+)
-    if (strand_direction == "+") {
-      exon1_index <- which(!junction_start < transcript_range$start)[length(which(!junction_start < transcript_range$start))]
-      transcript_range$end[exon.1] <- junction_start
-      if (abs(exon1_index - exon2_index) != 1) {
-        # there are some examples of junctions ids with splice donor in intron sequence with additional exon skipping
-        exons_removed_index <-
-          seq(from = exon1_index + 1,
-              to = exon2_index - 1,
-              by = 1)
-        transcript_range <- transcript_range[-exons_removed_index, ]
-      }
-      # e.g 3' ASS acceptor gain in intron (-)
-    } else if (strand_direction == "-") {
-      exon1_index <- which(junction_start > transcript_range$end)[1]
-      transcript_range$end[exon.1] <- junction_start
-      if (abs(exon1_index - exon2_index) != 1) {
-        exons_removed_index <-
-          seq(from = exon2_index + 1,
-              to = exon1_index - 1,
-              by = 1)
-        transcript_range <- transcript_range[-exons_removed_index, ]
-      }
+    if (junction_position_transcript + window_size < length(transcript_sequence)) {
+      end_pos <- junction_position_transcript + window_size
+    } else{
+      end_pos <- length(transcript_sequence)
     }
+    context.sequence <-
+      as.character(transcript_sequence[start_pos:end_pos])
+    res <-
+      list(position_junction = junction_position_context, context_sequence = context.sequence)
+    return(res)
   }
-  return(transcript_range)
-}
