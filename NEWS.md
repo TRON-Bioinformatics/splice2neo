@@ -4,6 +4,6 @@
 
 # splice2neo 0.0.1
 
-* Added basic package struture
+* Added basic package structure
 * Added functions `parse_spliceai()` and `format_spliceai()`
 * Automatic build of pkgdown website

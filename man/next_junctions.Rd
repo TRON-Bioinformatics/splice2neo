@@ -14,11 +14,11 @@ Usually this is \verb{<chr>_<pos>_<alt>}.}
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
 created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
 
-\item{transcripts_gr}{a GRanges object with transcript rantes created by
+\item{transcripts_gr}{a GRanges object with transcript ranges created by
 \code{GenomicFeatures::transcripts(txdb)}}
 }
 \value{
-A data.frame with possible upstream and downstream exon coordinats for
+A data.frame with possible upstream and downstream exon coordinates for
 all overlapping transcripts. The data frame contains the following columns:
 mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
 upstream_end, downstream_start, downstream_end.

@@ -77,10 +77,10 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
-#' @param transcripts_gr a GRanges object with transcript rantes created by
+#' @param transcripts_gr a GRanges object with transcript ranges created by
 #'   `GenomicFeatures::transcripts(txdb)`
 #'
-#' @return A data.frame with possible upstream and downstream exon coordinats for
+#' @return A data.frame with possible upstream and downstream exon coordinates for
 #' all overlapping transcripts. The data frame contains the following columns:
 #'  mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
 #'  upstream_end, downstream_start, downstream_end.
@@ -92,7 +92,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
   message("INFO: get overlapping transcripts..." )
   # get overlapping transcripts
-  hits <- GenomicRanges::findOverlaps(var_gr, transcripts)
+  hits <- suppressWarnings(GenomicRanges::findOverlaps(var_gr, transcripts))
 
   message("INFO: Build df ..." )
   var_to_transcript <- hits %>%
@@ -114,6 +114,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
     )
 
   message("INFO: find overlapping exons..." )
+
   var_to_transcript <- var_to_transcript %>%
     mutate(
 
@@ -126,7 +127,10 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       tx_id = as.character(transcripts_gr$tx_name)[tx_nr],
 
       # get upstream donor and downstream acceptor
-      exon_idx = furrr::future_map2_int(tx_gr, var_gr, ~which(IRanges::overlapsAny(.x, .y))),
+      exon_idx = furrr::future_map2_int(tx_gr, var_gr,
+                                        ~which(suppressWarnings(
+                                          IRanges::overlapsAny(.x, .y)
+                                          ))),
 
       # get the next upstream exon (if exists) and take the end coordinate
       upstream_start = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y > 1, IRanges::start(.x)[.y - 1], NA)),
