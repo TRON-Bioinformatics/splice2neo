@@ -106,3 +106,9 @@
 #' @source random
 "canonical_juncs"
 
+#' A DNAStringSet of sub-sequence from chrom17 as toy genome
+#'
+#' @format A DNAStringSet
+#'
+#' @source random
+"genome"

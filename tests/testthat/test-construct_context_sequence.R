@@ -1,5 +1,6 @@
 test_that("map_junc_transcript works", {
-  junc_id <- "chr2_100722033_100722195_+"
+  # junc_id <- "chr2_158156177_158157190_+"
+  junc_id <- "chr17_41152048_41152092_+"
   junc_df <- tibble(junc_id = junc_id) %>%
     separate(
       junc_id,
@@ -18,9 +19,9 @@ test_that("map_junc_transcript works", {
       junc_pos1 = junc_pos1,
       junc_pos2 = junc_pos2,
       junc_df = junc_df,
-      transcript_db = toy_transcripts_gr
+      transcript_db = toy_transcripts
     )
   expect_true(nrow(transcripts_covering_junction) == 1)
   expect_true(ncol(transcripts_covering_junction) == 8)
-  expect_true(transcripts_covering_junction$enst[1] == "ENST00000434301.1_1")
+  expect_true(transcripts_covering_junction$enst[1] == "ENST00000259056")
 })
