@@ -21,9 +21,9 @@ test_that("map_junc_transcript works", {
       junc_df = junc_df,
       transcript_db = toy_transcripts
     )
-  expect_true(nrow(transcripts_covering_junction) == 1)
+  expect_true(nrow(transcripts_covering_junction) == 6)
   expect_true(ncol(transcripts_covering_junction) == 8)
-  expect_true(transcripts_covering_junction$enst[1] == "ENST00000259056")
+  expect_true(transcripts_covering_junction$enst[1] == "ENST00000589037")
 })
 
 # test_that("juncid2context works"){
