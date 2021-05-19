@@ -41,7 +41,9 @@ Imports:
     readr,
     tidyr,
     vcfR,
-    furrr
+    furrr,
+    purrr,
+    S4Vectors
 Remotes: bioc::IRanges, bioc::GenomicRanges
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 

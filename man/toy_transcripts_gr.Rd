@@ -3,10 +3,9 @@
 \docType{data}
 \name{toy_transcripts_gr}
 \alias{toy_transcripts_gr}
-\title{An example dataset of full transcript ranges from a subset of human
-chromosome 2.}
+\title{An example dataset of full transcript ranges from a subset of human genome.}
 \format{
-A GRanges object with 1951 regions.
+A GRanges object with regions.
 }
 \source{
 \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz}
@@ -15,8 +14,14 @@ A GRanges object with 1951 regions.
 toy_transcripts_gr
 }
 \description{
-This is a GRanges object with 1951 full transcript ranges.
-This data set is a subset of annotations of human (hg19) chromosome 2
-restricted to this region: chr2:152000000-180000000 .
+This is a GRanges object with full transcript ranges.
+This data set is a subset of annotations of human genome (hg19)
+restricted to this regions:
+}
+\details{
+\itemize{
+\item chr2:152000000-180000000
+\item chr17:41100000-41280000
+}
 }
 \keyword{datasets}

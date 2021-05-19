@@ -4,7 +4,6 @@
 # splice2neo
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative or
@@ -25,7 +24,7 @@ This R package is not yet on [CRAN](https://CRAN.R-project.org) or
 [Bioconductor](https://www.bioconductor.org/). Therefore, you have to
 install it form this GitLab repository.
 
-However, this repository is a private GitLab reposoritory and therefore
+However, this repository is a private GitLab repository and therefore
 you have to create an personal access token (PAT) first. This is
 described
 [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
