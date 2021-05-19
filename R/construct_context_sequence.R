@@ -144,6 +144,7 @@ map_junc_transcript <-
 #'
 #'
 #'@import dplyr
+#'@import rlang
 #'
 get_context_sequence <-
   function(transcript_id,
@@ -159,9 +160,9 @@ get_context_sequence <-
 
     # identify exons which overlap with junction
     exon1_index <-
-      findOverlaps(wt_transcript_range, junc_pos1)@from
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos1)@from
     exon2_index <-
-      findOverlaps(wt_transcript_range, junc_pos2)@from
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos2)@from
     print(exon2_index - exon1_index)
 
     #  construct mutated ranges

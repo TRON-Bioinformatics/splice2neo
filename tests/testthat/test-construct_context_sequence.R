@@ -25,3 +25,12 @@ test_that("map_junc_transcript works", {
   expect_true(ncol(transcripts_covering_junction) == 8)
   expect_true(transcripts_covering_junction$enst[1] == "ENST00000259056")
 })
+
+# test_that("juncid2context works"){
+#   junc_id <- "chr17_41152048_41152092_+"
+#
+#   res <- juncid2context(junc_id,
+#                  transcript_db = toy_transcripts,
+#                  genome_db = genome,
+#                  window_size = 200)
+# }

@@ -16,6 +16,7 @@
 #'
 #'
 #'@import dplyr
+#'@import rlang
 #'
 construct_mutated_range <-
   function(exon1_index,
