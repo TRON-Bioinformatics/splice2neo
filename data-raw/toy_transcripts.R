@@ -1,5 +1,11 @@
 ## code to prepare `toy_transcript` dataset goes here
-## This dataset contains human genomic annotations for the region hg19 chr2 152000000 - 180000000
+## This dataset contains human genomic annotations for the region hg19:
+##
+##  chr2  152000000 - 180000000 # example data for SpliceAI
+##  chr17 41100000 - 41280000   # example data for MMSplice
+
+# 17:41197805
+# 17:41277297
 
 require(tidyverse)
 
@@ -26,7 +32,10 @@ exons_gr <- GenomicFeatures::exons(txdb, columns = "exon_name", use.names = TRUE
 
 
 # Restict toy data to hg19 chr2 152000000 - 180000000
-sub_gr <- GenomicRanges::GRanges("chr2:152000000-180000000")
+sub_gr <- GenomicRanges::GRanges(c(
+  "chr2:152000000-180000000",
+  "chr17:41100000-41280000"
+  ))
 
 toy_transcripts <- transcripts %>%
   IRanges::subsetByOverlaps(sub_gr)

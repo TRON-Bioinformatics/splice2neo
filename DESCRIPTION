@@ -32,6 +32,8 @@ Language: en-US
 Imports: 
     IRanges,
     GenomicRanges,
+    BiocGenerics,
+    GenomeInfoDb,
     magrittr,
     tibble,
     stringr,
@@ -39,9 +41,7 @@ Imports:
     readr,
     tidyr,
     vcfR,
-    furrr,
-    BiocGenerics,
-    GenomeInfoDb
+    furrr
 Remotes: bioc::IRanges, bioc::GenomicRanges
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
