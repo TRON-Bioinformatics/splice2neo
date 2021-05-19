@@ -21,8 +21,6 @@ testing:
     stage: test
     allow_failure: true
     when: on_success
-    only:
-        - master
     script:
         - Rscript -e 'devtools::install()'
         - Rscript -e 'install.packages("covr")'
@@ -49,5 +47,3 @@ pages:
     artifacts:
         paths:
             - public
-    only:
-        - master
