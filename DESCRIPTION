@@ -46,7 +46,7 @@ Imports:
     S4Vectors,
     rlang,
     Biostrings
-Remotes: bioc::IRanges, bioc::GenomicRanges
+Remotes: bioc::IRanges, bioc::GenomicRanges, bioc::Biostrings
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
     R (>= 2.10)
