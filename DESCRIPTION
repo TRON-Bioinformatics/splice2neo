@@ -48,7 +48,14 @@ Imports:
     GenomicFeatures,
     Biostrings,
     XVector
-Remotes: bioc::IRanges, bioc::GenomicRanges
+Remotes: 
+    bioc::IRanges, 
+    bioc::GenomicRanges, 
+    bioc::GenomicFeatures, 
+    bioc::Biostrings, 
+    bioc::BSgenome.Hsapiens.UCSC.hg19
+    bioc::XVector,
+    bioc::S4Vectors
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
     R (>= 2.10)
