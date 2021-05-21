@@ -57,7 +57,7 @@ construct_mutated_range <-
                                                                  junction_end)
     }
     # check for validity of ranges
-    mutated_transcript_range <- GRanges(mutated_transcript_range)
+    mutated_transcript_range <- GenomicRanges::GRanges(mutated_transcript_range)
     return(mutated_transcript_range)
   }
 
@@ -89,7 +89,7 @@ construct_range_both_in_exon <- function(exon1_index,
   if (exon2_index == exon1_index) {
     # both coordinates of these junction are within the same exon
     # true junctions should not be within one exon --> false predicted events
-    transcript_range <- GRanges()
+    transcript_range <- GenomicRanges::GRanges()
 
   } else if (abs(exon2_index - exon1_index) == 1) {
     # CASE 1
