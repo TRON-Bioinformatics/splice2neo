@@ -6,19 +6,25 @@
 \usage{
 seq_extract_nonstop(seq, pos)
 }
-\description{
-@param seq Sequence
-@param pos position relative to sequence
-}
-\details{
-@return a data.frame
+\arguments{
+\item{seq}{Sequence}
 
-@examples
-seq <-  "QIP\emph{LGSNSLLFPYQLMAGSTRP}SWALGC"
-seq <-  c(
-"QIP\emph{LGSNSLLFPYQLMAGSTRP}SWALGC",
-"LKMRGDTNDILSHLD\emph{REQRVGQ}AEAASP"
+\item{pos}{position relative to sequence}
+}
+\value{
+a data.frame
+}
+\description{
+Extract sequence at position from after previous stop codon and before next.
+}
+\examples{
+
+seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+seq <- c(
+ "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC",
+ "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
 )
 pos <- c(14, 14)
-seq_extract_nonstop(seq, pos)
+splice2neo:::seq_extract_nonstop(seq, pos)
+
 }

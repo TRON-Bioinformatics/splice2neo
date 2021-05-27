@@ -18,3 +18,28 @@ test_that("junc_to_peptide works on example data", {
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
 
 })
+
+test_that("seq_extract_nonstop works on example data with single seq", {
+
+  seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+  pos <- 14
+
+  df <-  seq_extract_nonstop(seq, pos)
+
+  expect_true(is.data.frame(df))
+  expect_equal(nrow(df), 1)
+})
+
+test_that("seq_extract_nonstop works on example data with multiple seq", {
+
+  seq <- c(
+   "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC",
+   "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
+  )
+  pos <- c(14, 14)
+  df <- splice2neo:::seq_extract_nonstop(seq, pos)
+
+  expect_true(is.data.frame(df))
+  expect_equal(nrow(df), 2)
+
+})

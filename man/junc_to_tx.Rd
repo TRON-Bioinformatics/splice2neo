@@ -36,7 +36,7 @@ shorten \code{e} to start at \code{pos2}
 else:
 get next exon \code{e} right of \code{pos2}:
 extend \code{e} to start in \code{pos2}
-\item remove all exons completeley contained in the interval \link[=`pos1`, `pos2`]{\code{pos1}, \code{pos2}}.
+\item remove all exons completeley contained in the interval [\code{pos1}, \code{pos2}].
 }
 }
 

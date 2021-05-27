@@ -25,7 +25,7 @@
 #'    else:
 #'      get next exon `e` right of `pos2`:
 #'      extend `e` to start in `pos2`
-#'   - remove all exons completeley contained in the interval [`pos1`, `pos2`].
+#'   - remove all exons completeley contained in the interval \[`pos1`, `pos2`\].
 #'
 #' TODO:
 #'  - [ ] vectorize over multiple input junctions

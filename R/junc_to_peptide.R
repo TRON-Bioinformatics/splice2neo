@@ -101,22 +101,24 @@ junc_to_peptide <- function(junc_id, cds, size = 30, bsg){
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
 }
 
+
 #' Extract sequence at position from after previous stop codon and before next.
 #'
-#'  @param seq Sequence
-#'  @param pos position relative to sequence
+#' @param seq Sequence
+#' @param pos position relative to sequence
+#' @return a data.frame
 #'
-#'  @return a data.frame
+#' @examples
 #'
-#'  @examples
-#'  seq <-  "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
-#'  seq <-  c(
-#'    "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC",
-#'    "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
-#'  )
-#'  pos <- c(14, 14)
-#'  seq_extract_nonstop(seq, pos)
+#' seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+#' seq <- c(
+#'  "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC",
+#'  "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
+#' )
+#' pos <- c(14, 14)
+#' splice2neo:::seq_extract_nonstop(seq, pos)
 #'
+#' @export
 seq_extract_nonstop <- function(seq, pos){
   df <- tibble(
     seq = as.character(seq),
@@ -124,15 +126,15 @@ seq_extract_nonstop <- function(seq, pos){
   ) %>%
     mutate(
       cds = str_locate_all(seq, "[^*]+") %>%
-        map(as_tibble),
-      cds = map2(cds, pos, ~filter(.x, start <= .y, end >= .y)),
-      cds = map2(cds, pos, function(cds, pos){
+        purrr::map(as_tibble),
+      cds = purrr::map2(cds, pos, ~filter(.x, start <= .y, end >= .y)),
+      cds = purrr::map2(cds, pos, function(cds, pos){
         if(nrow(cds) > 0)
           cds
         else
           tibble(start = pos, end = pos)
       }),
-      n_cds = map_int(cds, nrow)
+      n_cds = purrr::map_int(cds, nrow)
     ) %>%
     unnest(cds) %>%
     mutate(
@@ -145,4 +147,6 @@ seq_extract_nonstop <- function(seq, pos){
   return(select(df, seq_sub, seq_sub_pos))
 
 }
+
+
 
