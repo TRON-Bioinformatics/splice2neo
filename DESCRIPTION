@@ -25,7 +25,9 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
+    BSgenome.Hsapiens.UCSC.hg19,
     spelling,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
@@ -43,8 +45,12 @@ Imports:
     vcfR,
     furrr,
     purrr,
-    S4Vectors
-Remotes: bioc::IRanges, bioc::GenomicRanges
+    S4Vectors,
+    GenomicFeatures,
+    Biostrings,
+    XVector
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
     R (>= 2.10)
+biocViews: AlternativeSplicing
+VignetteBuilder: knitr

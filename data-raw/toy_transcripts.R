@@ -30,7 +30,12 @@ transcripts_gr <- GenomicFeatures::transcripts(txdb)
 # # Build GRanges of all exons
 # exons_gr <- GenomicFeatures::exons(txdb, columns = "exon_name", use.names = TRUE)
 
-# Restict toy data to hg19 chr2 152000000 - 180000000
+cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Restict toy data to hg19 chr2 152000000 - 180000000 --------------------------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sub_gr <- GenomicRanges::GRanges(c(
   "chr2:152000000-180000000",
   "chr17:41100000-41280000"
@@ -45,7 +50,12 @@ toy_transcripts_gr <- transcripts_gr %>%
 # toy_exons_gr <- exons_gr %>%
 #   IRanges::subsetByOverlaps(sub_gr)
 
-# convert transcript name ENST ids by removing the vetrsion number
+toy_cds <- cds %>%
+  IRanges::subsetByOverlaps(sub_gr)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# convert transcript name ENST ids by removing the version number suffix -------
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 names(toy_transcripts) <- names(toy_transcripts) %>%
   str_extract("^ENST\\d{11}")
 toy_transcripts <- toy_transcripts %>%
@@ -59,6 +69,31 @@ toy_transcripts_gr$tx_name <- toy_transcripts_gr$tx_name %>%
 usethis::use_data(toy_transcripts, overwrite = TRUE)
 usethis::use_data(toy_transcripts_gr, overwrite = TRUE)
 # usethis::use_data(toy_exons_gr, overwrite = TRUE)
+usethis::use_data(toy_cds, overwrite = TRUE)
 
+
+################################################################################
+## Toy junction IDs
+################################################################################
+
+# The toy junction ids were generated from the spliceAI example file with
+# splice2neo v 0.0.1 as follows
+#
+#
+# spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+# df_raw <- parse_spliceai(spliceai_file)
+# df <- format_spliceai(df_raw)
+# annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+# annot_df %>% select(junc_id) %>% distinct() %>% pull() %>% dput()
+
+toy_junc_id <- c("chr2_152389996_152392205_-", "chr2_152389996_152390729_-",
+  "chr2_152389955_152389956_-", "chr2_152388410_152392205_-", "chr2_152388410_152390729_-",
+  "chr2_179415981_179416357_-", "chr2_179415987_179415988_-", "chr2_179415000_179416357_-",
+  "chr2_179445336_179446207_-", "chr2_179446225_179446226_-", "chr2_179445336_179446633_-",
+  "chr2_179642187_179644565_+", "chr2_179642044_179642187_-", "chr2_179642147_179642148_+",
+  "chr2_179638062_179644565_+", NA, "chr2_179642146_179642147_-",
+  "chr2_179642044_179642431_-")
+
+usethis::use_data(toy_junc_id, overwrite = TRUE)
 
 
