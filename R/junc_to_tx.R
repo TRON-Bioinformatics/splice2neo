@@ -29,6 +29,7 @@
 #'
 #' TODO:
 #'  - [ ] vectorize over multiple input junctions
+#'    - [ ] consider multiple junctions in same transcripts
 #'  - [x] add `tx_name` as output column
 #'  - [ ] Support junctions with both positions in the same exon
 #'
