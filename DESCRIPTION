@@ -27,6 +27,7 @@ RoxygenNote: 7.1.1
 Suggests: 
     BSgenome.Hsapiens.UCSC.hg19,
     spelling,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Language: en-US
@@ -45,6 +46,9 @@ Imports:
     furrr,
     purrr,
     S4Vectors,
+    GenomicFeatures,
+    Biostrings,
+    XVector
     rlang,
     Biostrings,
     BSgenome.Hsapiens.UCSC.hg19
@@ -52,3 +56,5 @@ Remotes: bioc::IRanges, bioc::GenomicRanges, bioc::Biostrings, bioc::BSgenome.Hs
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
     R (>= 2.10)
+biocViews: AlternativeSplicing
+VignetteBuilder: knitr
