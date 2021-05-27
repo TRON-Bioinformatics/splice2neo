@@ -51,3 +51,5 @@ Imports:
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 
     R (>= 2.10)
+biocViews: AlternativeSplicing
+VignetteBuilder: knitr
