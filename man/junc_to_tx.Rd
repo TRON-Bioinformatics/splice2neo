@@ -43,10 +43,14 @@ extend \code{e} to start in \code{pos2}
 TODO:
 \itemize{
 \item [ ] vectorize over multiple input junctions
+\itemize{
+\item [ ] consider multiple junctions in same transcripts
+}
 \item [x] add \code{tx_name} as output column
 \item [ ] Support junctions with both positions in the same exon
 }
 
+[ ]: R:\%20
 [ ]: R:\%20
 [x]: R:x
 [ ]: R:\%20
