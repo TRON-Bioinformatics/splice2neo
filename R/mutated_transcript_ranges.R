@@ -1,14 +1,10 @@
 #' returns genomic range of mutated transcript according to the splice event
 #'
-#' @param exon1_index index of exon related to first position of junction in
-#'   transcript ranges
-#' @param exon2_index index of exon related to second position of junction in
-#'   transcript ranges
+#' @param junc_pos1 GRanges object for junction position 1
+#' @param junc_pos2 GRanges object for junction position 2
 #' @param wt_transcript_range Genomic range of wildtype transcript in which the
 #'   alternative splicing event is taking place
 #' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
 #'
 #' @return A tibble with columns `junc_id`, `chr`, `pos1`, `pos2`, `strand`,
 #'   `jidx`, `subjectHits`, `enst`. This tibble returns all transcripts that are
@@ -19,14 +15,26 @@
 #'@import rlang
 #'
 construct_mutated_range <-
-  function(exon1_index,
-           exon2_index,
+  function(junc_pos1,
+           junc_pos2,
            wt_transcript_range,
-           strand_direction,
-           junction_start,
-           junction_end) {
+           strand_direction) {
 
     mutated_transcript_range <- as.data.frame(wt_transcript_range)
+    junction_start = junc_pos1@ranges@start
+    junction_end = junc_pos2@ranges@start
+
+    # identify exons which overlap with junction
+    exon1_index <-
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos1)@from
+    print(exon1_index)
+    exon2_index <-
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos2)@from
+
+
+
+    print(exon2_index - exon1_index)
+
 
     if (!(is_empty(exon1_index) | is_empty(exon2_index))) {
       # both junction coordinats are located within an exon
@@ -58,7 +66,7 @@ construct_mutated_range <-
                                                                  junction_end)
     }
     # check for validity of ranges
-    mutated_transcript_range <- GRanges(mutated_transcript_range)
+    mutated_transcript_range <- GenomicRanges::GRanges(mutated_transcript_range)
     return(mutated_transcript_range)
   }
 
@@ -90,7 +98,7 @@ construct_range_both_in_exon <- function(exon1_index,
   if (exon2_index == exon1_index) {
     # both coordinates of these junction are within the same exon
     # true junctions should not be within one exon --> false predicted events
-    transcript_range <- GRanges()
+    transcript_range <- GenomicRanges::GRanges()
 
   } else if (abs(exon2_index - exon1_index) == 1) {
     # CASE 1

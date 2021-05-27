@@ -158,22 +158,14 @@ get_context_sequence <-
     # genomic ranges of wt transcript
     wt_transcript_range <- transcript_db[[transcript_id]]
 
-    # identify exons which overlap with junction
-    exon1_index <-
-      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos1)@from
-    exon2_index <-
-      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos2)@from
-    print(exon2_index - exon1_index)
 
     #  construct mutated ranges
     mutated_transcript_range <-
       construct_mutated_range(
-        exon1_index = exon1_index,
-        exon2_index = exon2_index,
         wt_transcript_range = wt_transcript_range,
         strand_direction = strand_direction,
-        junction_start = start(junc_pos1),
-        junction_end = start(junc_pos2)
+        junc_pos1 = junc_pos1,
+        junc_pos2 = junc_pos2
       )
     print(mutated_transcript_range)
     if (is_empty(mutated_transcript_range)) {
@@ -184,7 +176,8 @@ get_context_sequence <-
       mutated_transcript_range <- add_transcript_coordinates(mutated_transcript_range)
 
       # get mutated transcript sequence
-      mutated_transcript_sequence <- genome_db[mutated_transcript_range]
+      #mutated_transcript_sequence <- genome_db[mutated_transcript_range]
+      mutated_transcript_sequence <- Biostrings::getSeq(genome_db, mutated_transcript_range)
       mutated_transcript_sequence <- unlist(mutated_transcript_sequence)
 
       # extract window of defined size around junction
@@ -217,7 +210,6 @@ get_context_sequence <-
 #'
 #'
 #'@import dplyr
-#'
 #
 add_transcript_coordinates <- function(transcript_range) {
   transcript_data <- as.data.frame(transcript_range)
@@ -226,19 +218,19 @@ add_transcript_coordinates <- function(transcript_range) {
   transcript_data$end_transcript <-  rep(0, length(transcript_range))
   if (nrow(transcript_data) == 1) {
     # only one exon
-    transcript_data$end_transcript <- width(transcript_range)
+    transcript_data$end_transcript <- IRanges::width(transcript_range)
   } else {
     for (i in 2:length(transcript_range)) {
       transcript_data$start_transcript[i] =
         transcript_data$start_transcript[i -1] +
-        width(transcript_range)[i - 1] + 1
+        IRanges::width(transcript_range)[i - 1] + 1
     }
     for (i in 1:length(transcript_range)) {
       transcript_data$end_transcript[i] = transcript_data$start_transcript[i] +
-        width(transcript_range)[i]
+        IRanges::width(transcript_range)[i]
     }
   }
-  extended_transcript_range <- GRanges(transcript_data)
+  extended_transcript_range <- GenomicRanges::GRanges(transcript_data)
   return(extended_transcript_range)
 }
 
@@ -265,7 +257,7 @@ extract_sequence_window <-
            window_size = 200) {
     transcript_data <- as.data.frame(transcript_range)
     junction_exon_index <-
-      findOverlaps(transcript_range, junc_pos1)@from
+      GenomicRanges::findOverlaps(transcript_range, junc_pos1)@from
     junction_position_transcript <-
       transcript_data$end_transcript[junction_exon_index]
     if (junction_position_transcript - window_size > 0) {
