@@ -1,14 +1,10 @@
 #' returns genomic range of mutated transcript according to the splice event
 #'
-#' @param exon1_index index of exon related to first position of junction in
-#'   transcript ranges
-#' @param exon2_index index of exon related to second position of junction in
-#'   transcript ranges
+#' @param junc_pos1 GRanges object for junction position 1
+#' @param junc_pos2 GRanges object for junction position 2
 #' @param wt_transcript_range Genomic range of wildtype transcript in which the
 #'   alternative splicing event is taking place
 #' @param strand_direction strand direction. Shall be "+" or "-"
-#' @param junction_start junction start coordinate
-#' @param junction_end junction end coordinate
 #'
 #' @return A tibble with columns `junc_id`, `chr`, `pos1`, `pos2`, `strand`,
 #'   `jidx`, `subjectHits`, `enst`. This tibble returns all transcripts that are
@@ -16,16 +12,29 @@
 #'
 #'
 #'@import dplyr
+#'@import rlang
 #'
 construct_mutated_range <-
-  function(exon1_index,
-           exon2_index,
+  function(junc_pos1,
+           junc_pos2,
            wt_transcript_range,
-           strand_direction,
-           junction_start,
-           junction_end) {
+           strand_direction) {
 
     mutated_transcript_range <- as.data.frame(wt_transcript_range)
+    junction_start = junc_pos1@ranges@start
+    junction_end = junc_pos2@ranges@start
+
+    # identify exons which overlap with junction
+    exon1_index <-
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos1)@from
+    print(exon1_index)
+    exon2_index <-
+      GenomicRanges::findOverlaps(wt_transcript_range, junc_pos2)@from
+
+
+
+    print(exon2_index - exon1_index)
+
 
     if (!(is_empty(exon1_index) | is_empty(exon2_index))) {
       # both junction coordinats are located within an exon

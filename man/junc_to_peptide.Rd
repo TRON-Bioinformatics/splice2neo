@@ -29,5 +29,4 @@ bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
 junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
 
-
 }
