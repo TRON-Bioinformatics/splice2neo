@@ -5,29 +5,21 @@
 \title{returns genomic range of mutated transcript according to the splice event}
 \usage{
 construct_mutated_range(
-  exon1_index,
-  exon2_index,
+  junc_pos1,
+  junc_pos2,
   wt_transcript_range,
-  strand_direction,
-  junction_start,
-  junction_end
+  strand_direction
 )
 }
 \arguments{
-\item{exon1_index}{index of exon related to first position of junction in
-transcript ranges}
+\item{junc_pos1}{GRanges object for junction position 1}
 
-\item{exon2_index}{index of exon related to second position of junction in
-transcript ranges}
+\item{junc_pos2}{GRanges object for junction position 2}
 
 \item{wt_transcript_range}{Genomic range of wildtype transcript in which the
 alternative splicing event is taking place}
 
 \item{strand_direction}{strand direction. Shall be "+" or "-"}
-
-\item{junction_start}{junction start coordinate}
-
-\item{junction_end}{junction end coordinate}
 }
 \value{
 A tibble with columns \code{junc_id}, \code{chr}, \code{pos1}, \code{pos2}, \code{strand},

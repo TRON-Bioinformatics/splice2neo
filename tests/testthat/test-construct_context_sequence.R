@@ -87,14 +87,14 @@ test_that("construct_mutated_range works for exon-skipping event on negative str
 })
 
 
-# test_that("juncid2context works"){
+test_that("juncid2context works"){
   junc_id <- "chr17_41152048_41152092_+"
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   junc_id <- "chr2_158156177_158157190_+"
   genome <-  BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
-  #genome <- genome.seqs
   res <- juncid2context(junc_id,
                  transcript_db = toy_transcripts,
                  genome_db = genome,
                  window_size = 200)
-# }
+  expect_true(nchar(res) == 405)
+}
