@@ -2,7 +2,7 @@
 #'
 #' @param junc_id A junction id
 #' @param transcript_db a GRangesList with transcripts composed of exon ranges
-#' @param genome_db a GRangesList with transcripts composed of exon ranges
+#' @param genome_db The genome as DNAStringSet of the genomic sequences of each chromosome or a BSGenome object e.g. BSgenome.Hsapiens.UCSC.hg19
 #' @param window_size number of nucleotides left and right from the "breakpoint"
 #'
 #' @return A tibble with sorted columns as given above
@@ -134,7 +134,7 @@ map_junc_transcript <-
 #' @param transcript_db a GRangesList with transcripts composed of exon ranges
 #' @param junc_pos1 GRanges object for junction position 1
 #' @param junc_pos2 GRanges object for junction position 2
-#' @param genome_db a GRangesList with transcripts composed of exon ranges
+#' @param genome_db The genome as DNAStringSet of the genomic sequences of each chromosome or a BSGenome object e.g. BSgenome.Hsapiens.UCSC.hg19
 #' @param strand_direction strand direction. Shall be "+" or "-"
 #' @param window_size number of nucleotides left and right from the "breakpoint"
 #'

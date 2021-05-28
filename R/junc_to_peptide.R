@@ -16,6 +16,7 @@
 #'
 #' junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
 #'
+#'@import dplyr
 #'
 #' @export
 junc_to_peptide <- function(junc_id, cds, size = 30, bsg){
