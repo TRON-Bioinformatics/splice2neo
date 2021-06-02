@@ -1,6 +1,6 @@
 #' Imports re-quantification results with easyquant
 #'
-#' @param path The path to easyquant folder
+#' @param path_folder The path to easyquant folder
 #'
 #' @return A tibble with with the requantification results. One junction might be re-presented by multiple context sequences, i.e. transcripts
 #'
@@ -28,7 +28,8 @@ read_requant <- function(path_folder){
 #'
 #' @param dat The path to easyquant folder
 #'
-#' @return A tibble with with the requantification results. One junction is represented by one row.
+#' @return A tibble with with the requantification results. One junction is represented by one row with the maximal and mean junction reads across transcripts
+#'   associatd with junction
 #'
 #' @examples
 #'
@@ -47,6 +48,4 @@ transform_requant <- function(dat) {
       number_transcripts = length(junc),
       transcripts = paste(transcript_id, collapse = ",")
     )
-
-
 }
