@@ -11,7 +11,7 @@ juncid2context(junc_id, transcript_db, genome_db, window_size = 200)
 
 \item{transcript_db}{a GRangesList with transcripts composed of exon ranges}
 
-\item{genome_db}{a GRangesList with transcripts composed of exon ranges}
+\item{genome_db}{The genome as DNAStringSet of the genomic sequences of each chromosome or a BSGenome object e.g. BSgenome.Hsapiens.UCSC.hg19}
 
 \item{window_size}{number of nucleotides left and right from the "breakpoint"}
 }

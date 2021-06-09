@@ -26,7 +26,7 @@ get_context_sequence(
 
 \item{strand_direction}{strand direction. Shall be "+" or "-"}
 
-\item{genome_db}{a GRangesList with transcripts composed of exon ranges}
+\item{genome_db}{The genome as DNAStringSet of the genomic sequences of each chromosome or a BSGenome object e.g. BSgenome.Hsapiens.UCSC.hg19}
 
 \item{window_size}{number of nucleotides left and right from the "breakpoint"}
 }
