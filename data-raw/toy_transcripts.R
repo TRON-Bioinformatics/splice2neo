@@ -47,9 +47,6 @@ toy_transcripts <- transcripts %>%
 toy_transcripts_gr <- transcripts_gr %>%
   IRanges::subsetByOverlaps(sub_gr)
 
-# toy_exons_gr <- exons_gr %>%
-#   IRanges::subsetByOverlaps(sub_gr)
-
 toy_cds <- cds %>%
   IRanges::subsetByOverlaps(sub_gr)
 
@@ -65,10 +62,8 @@ toy_transcripts_gr$tx_name <- toy_transcripts_gr$tx_name %>%
   str_extract("^ENST\\d{11}")
 
 # Add data to package
-# usethis::use_data(txdb, overwrite = TRUE)
 usethis::use_data(toy_transcripts, overwrite = TRUE)
 usethis::use_data(toy_transcripts_gr, overwrite = TRUE)
-# usethis::use_data(toy_exons_gr, overwrite = TRUE)
 usethis::use_data(toy_cds, overwrite = TRUE)
 
 
