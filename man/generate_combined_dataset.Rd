@@ -4,7 +4,7 @@
 \alias{generate_combined_dataset}
 \title{Combines tibbles with junctions from Spladder and Leafcutter}
 \usage{
-generate_combined_dataset(spladder_juncs, leafcutter_juncs, canonical_juncs)
+generate_combined_dataset(spladder_juncs, leafcutter_juncs)
 }
 \arguments{
 \item{spladder_juncs}{A tibble the junctions identified by Spladder in
@@ -12,9 +12,6 @@ standardized format}
 
 \item{leafcutter_juncs}{A tibble the junctions identified by Leafcutter in
 standardized format}
-
-\item{canonical_juncs}{A tibble with canonical junctions. It should contain the
-column \code{junc_id} and the column \code{origin}}
 }
 \value{
 A combined table with unique junctions. The columns RNA_tool
@@ -25,7 +22,7 @@ Combines tibbles with junctions from Spladder and Leafcutter
 }
 \examples{
 dat.combined <- generate_combined_dataset(spladder_juncs,
-  leafcutter_juncs, canonical_juncs)
+  leafcutter_juncs)
 colnames(dat.combined)
 
 }

@@ -167,7 +167,7 @@ get_context_sequence <-
         junc_pos1 = junc_pos1,
         junc_pos2 = junc_pos2
       )
-    print(mutated_transcript_range)
+    #print(mutated_transcript_range)
     if (is_empty(mutated_transcript_range)) {
       return("")
     } else{

@@ -1,8 +1,15 @@
-#' Imports re-quantification results with easyquant
+#' Imports re-quantification from analysis with easyquant
 #'
 #' @param path_folder The path to easyquant folder
 #'
-#' @return A tibble with with the requantification results. One junction might be re-presented by multiple context sequences, i.e. transcripts
+#' @return A tibble with with the requantification results. This tibble has the columns
+#' - `name`: name of the input sequence. this will be a hash id.
+#' -  `pos`: position of interest relative to input sequence
+#' - `junc`: reads overlapping the position of interest
+#' - `span`: read pairs spanning the position of interest
+#' - `anch`: maximal number of bases next to position of interest that are overlaped by a single read
+#' - `a`: reads mapping to sequence left of the position of interest
+#' - `b`: reads mapping to sequence right of the position of interest
 #'
 #' @examples
 #'
@@ -16,20 +23,25 @@ read_requant <- function(path_folder){
   if(!file.exists(path.to.easyquant.file)){
     stop("quantification.tsv file is missing")
   }
-  dat.easyqant <- path.to.easyquant.file %>%
+  dat_easyqant <- path.to.easyquant.file %>%
     readr::read_delim(delim = "\t") %>%
-    tidyr::separate(name, into = c("chrom", "start", "end", "strand", "transcript_id"), sep = "_", remove = F) %>%
-    mutate(junc_id = paste(chrom, start, end, strand ,sep = "_")) %>%
-  return(dat.easyqant)
+  return(dat_easyqant)
 }
 
 
-#' Transforms re-quantification results into junc_id centric tibble
+#' Map the re-quantification result on the junction-transcript centric data by hash id.
 #'
-#' @param dat The path to easyquant folder
+#' @param path_to_easyquant_folder The path to easyquant folder
+#' @param dat_mutation The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column `hash_id`
 #'
-#' @return A tibble with with the requantification results. One junction is represented by one row with the maximal and mean junction reads across transcripts
-#'   associatd with junction
+#' @return Extended junction tibble with re-quantification results.  Followin columns are added:
+#' -  `pos`: position of interest relative to input sequence
+#' - `junc`: reads overlapping the position of interest
+#' - `span`: read pairs spanning the position of interest
+#' - `anch`: maximal number of bases next to position of interest that are overlaped by a single read
+#' - `a`: reads mapping to sequence left of the position of interest
+#' - `b`: reads mapping to sequence right of the position of interest
+#
 #'
 #' @examples
 #'
@@ -37,15 +49,11 @@ read_requant <- function(path_folder){
 #'@import dplyr
 #'
 #'@export
-transform_requant <- function(dat) {
-  dat_junc <- dat %>%
-    group_by(junc_id) %>%
-    summarise(
-      mean_junc =  mean(junc),
-      max_junc = max(junc),
-      mean_span =  mean(span),
-      max_span = max(span),
-      number_transcripts = length(junc),
-      transcripts = paste(transcript_id, collapse = ",")
-    )
+map_requant <- function(path_to_easyquant_folder, dat_mutation) {
+  dat_easyqant <- read_requant(path_to_easyquant_folder)
+  dat_junc <- dat_mutation %>%
+    left_join(dat_easyqant, by = c("hash_id" = "name"))
+  return(dat_junc)
 }
+
+

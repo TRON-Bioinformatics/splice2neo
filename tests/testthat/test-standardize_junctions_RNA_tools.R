@@ -1,7 +1,7 @@
 test_that("generate_combined_dataset works", {
   dat.combined <- generate_combined_dataset(spladder_juncs,
-                                            leafcutter_juncs, canonical_juncs)
-  expect_true(ncol(dat.combined) == 12)
+                                            leafcutter_juncs)
+  expect_true(ncol(dat.combined) == 10)
 })
 
 

@@ -55,21 +55,21 @@ spladder.transform.a3ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
-        strand == "+",
-        paste(contig, exon_const_end, exon_alt1_start, strand, sep = "_"),
-        paste(contig, exon_alt1_end, exon_const_start, strand, sep = "_")
+        .data$strand == "+",
+        paste(.data$contig, .data$exon_const_end, .data$exon_alt1_start, .data$strand, sep = "_"),
+        paste(.data$contig, .data$exon_alt1_end, .data$exon_const_start, .data$strand, sep = "_")
       ),
       junc_id2 = ifelse(
-        strand == "+",
-        paste(contig, exon_const_end, exon_alt2_start, strand, sep = "_"),
-        paste(contig, exon_alt2_end, exon_const_start, strand, sep = "_")
+        .data$strand == "+",
+        paste(.data$contig, .data$exon_const_end, .data$exon_alt2_start, .data$strand, sep = "_"),
+        paste(.data$contig, .data$exon_alt2_end, .data$exon_const_start, .data$strand, sep = "_")
       ),
-      junc_id = paste(junc_id1, junc_id2, sep = ";"),
+      junc_id = paste(.data$junc_id1, .data$junc_id2, sep = ";"),
       class = "A3SS",
       AS_event_ID = event_id
     ) %>%
-    tidyr::separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
+    tidyr::separate_rows(.data$junc_id, sep = ";") %>%
+    dplyr::select(.data$junc_id, .data$gene_name, .data$class, .data$AS_event_ID)
 }
 
 
@@ -443,38 +443,58 @@ leafcutter_transform <- function(path) {
 #'   standardized format
 #' @param spladder_juncs A tibble the junctions identified by Spladder in
 #'   standardized format
-#' @param canonical_juncs A tibble with canonical junctions. It should contain the
-#'   column `junc_id` and the column `origin`
 #'
 #' @return A combined table with unique junctions. The columns RNA_tool
 #'   contains information which tools identified the given junction
 #'
 #' @examples
 #' dat.combined <- generate_combined_dataset(spladder_juncs,
-#'   leafcutter_juncs, canonical_juncs)
+#'   leafcutter_juncs)
 #' colnames(dat.combined)
 #'
-#' @import readr
 #' @import dplyr
-#' @import tidyr
 #' @export
-generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs,
-                                      canonical_juncs){
+generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs){
 
-  spladder_juncs %>%
+  rna_juncs <- spladder_juncs %>%
     bind_rows(leafcutter_juncs) %>%
     distinct(junc_id, .keep_all = T) %>%
     mutate(
-      leafcutter = ifelse(junc_id %in% leafcutter_juncs$junc_id, "leafcutter", "")
+      identified_by_leafcutter = ifelse(junc_id %in% leafcutter_juncs$junc_id, TRUE, FALSE)
       ,
-      spladder = ifelse(junc_id %in% spladder_juncs$junc_id, "spladder", "")
-      ) %>%
-    unite(leafcutter, spladder, col = "RNA_tool", sep = ",") %>%
-    mutate(RNA_tool = gsub("^,", "", RNA_tool)) %>%
-    mutate(
-      is_canonical = ifelse(junc_id %in% canonical_juncs$junc_id, TRUE, FALSE),
-    ) %>%
-    left_join(canonical_juncs, by = "junc_id")
+      identified_by_spladder = ifelse(junc_id %in% spladder_juncs$junc_id, TRUE, FALSE)
+    )
+  return(rna_juncs)
 
 }
 
+#' This is wrapper function to map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+#'
+#' @param path_to_spladder The path to the results from RNA-seq analysis with spladder
+#' @param path_to_leafcutter The path to the results from RNA-seq analysis with leafcutter
+#' @param mutation_juncs The junction-transcript centric data predicted from WES data.
+#'
+#' @return The junction-transcript centric data predicted from WES data is extedended by the information if a respective aberrant junctions was
+#' identified by spladder or leafcutter. (`identified_by_leafcutter`, `identified_by_spladder`)
+#'
+#' @examples
+#'
+#' @import dplyr
+#' @export
+#'
+add_identified_in_RNA <- function(mutation_juncs, path_to_spladder, path_to_leafcutter){
+
+  spladder_juncs <- spladder_transform(path_to_spladder)
+  leafcutter_juncs <- leafcutter_transform(path_to_leafcutter)
+
+  rna_juncs <- generate_combined_dataset(spladder_juncs = spladder_juncs, leafcutter_juncs = leafcutter_juncs)
+
+  rna_juncs <- rna_juncs %>%
+    select(junc_id, identified_by_leafcutter, identified_by_spladder)
+
+  mutation_juncs <- mutation_juncs %>%
+    left_join(rna_juncs, by = "junc_id")
+
+  return(mutation_juncs)
+
+}
