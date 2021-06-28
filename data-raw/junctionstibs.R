@@ -21,11 +21,11 @@ spladder_output.a3ss <- tibble(
   "exon_alt1_end" = "21877890",
   "exon_alt2_start" = "21877709",
   "exon_alt2_end" = "21877997",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
+  "sample_Aligned.out_sorted:exon_diff_cov" = 0,
+  "sample_Aligned.out_sorted:exon_const_cov" = 0,
+  "sample_Aligned.out_sorted:intron1_conf" = 0,
+  "sample_Aligned.out_sorted:intron2_conf" = 0,
+  "sample_Aligned.out_sorted:psi" = NA
 )
 
 
@@ -40,11 +40,11 @@ spladder_output.a5ss <- tibble(
   "exon_alt1_end" = "59222216",
   "exon_alt2_start" = "59222127",
   "exon_alt2_end" = "59222281",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
+  "sample_Aligned.out_sorted:exon_diff_cov" = 0,
+  "sample_Aligned.out_sorted:exon_const_cov" = 0,
+  "sample_Aligned.out_sorted:intron1_conf" = 0,
+  "sample_Aligned.out_sorted:intron2_conf" = 0,
+  "sample_Aligned.out_sorted:psi" = NA
 )
 
 
@@ -60,11 +60,11 @@ spladder_output.exonskip <- tibble(
   "exon_end" = "59228749",
   "exon_aft_start" = "59229049",
   "exon_aft_end" = "59229949",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
+  "sample_Aligned.out_sorted:exon_diff_cov" = 0,
+  "sample_Aligned.out_sorted:exon_const_cov" = 0,
+  "sample_Aligned.out_sorted:intron1_conf" = 0,
+  "sample_Aligned.out_sorted:intron2_conf" = 0,
+  "sample_Aligned.out_sorted:psi" = NA
 )
 
 
@@ -79,11 +79,11 @@ spladder_output.intronreten <- tibble(
   "intron_end" = "249512",
   "exon2_start" = "249513",
   "exon2_end" = "249631",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 4,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 1,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
+  "sample_Aligned.out_sorted:exon_diff_cov" = 4,
+  "sample_Aligned.out_sorted:exon_const_cov" = 1,
+  "sample_Aligned.out_sorted:intron1_conf" = 0,
+  "sample_Aligned.out_sorted:intron2_conf" = 0,
+  "sample_Aligned.out_sorted:psi" = NA
 )
 
 
@@ -100,11 +100,11 @@ spladder_output.mutexon <- tibble(
   "exon2_end" = "249631",
   "exon_aft_start" = "249513",
   "exon_aft_end" = "249631",
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_diff_cov" = 4,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:exon_const_cov" = 1,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron1_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:intron2_conf" = 0,
-  "IE000073B2_FF_capture_R1_Aligned.out_sorted:psi" = NA
+  "sample_Aligned.out_sorted:exon_diff_cov" = 4,
+  "sample_Aligned.out_sorted:exon_const_cov" = 1,
+  "sample_Aligned.out_sorted:intron1_conf" = 0,
+  "sample_Aligned.out_sorted:intron2_conf" = 0,
+  "sample_Aligned.out_sorted:psi" = NA
 )
 
 
@@ -118,8 +118,8 @@ spladder_output <- list(
 
 
 
-leafcutter_juncs <- feather::read_feather("data-raw/leafcutter_example.feather")
-spladder_juncs <- feather::read_feather("data-raw/spladder_example.feather")
+leafcutter_juncs <- feather::read_feather("inst/extdata/leafcutter_example.feather")
+spladder_juncs <- feather::read_feather("inst/extdata/leafcutter_example.feather")
 canonical_juncs <- feather::read_feather("data-raw/canonical_example.feather")
 
 
