@@ -18,7 +18,6 @@
 #'
 #'@export
 read_requant <- function(path_folder){
-  path_folder <- "/scratch/info/projects/SUMMIT/WP1.1/alternative_splicing/data/polyA/20210217_easyquant/S01_rep1"
   path.to.easyquant.file <- paste(path_folder, "quantification.tsv" ,sep = "/" )
   if(!file.exists(path.to.easyquant.file)){
     stop("quantification.tsv file is missing")
