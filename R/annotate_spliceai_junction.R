@@ -22,8 +22,11 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
       mut_id = str_c(CHROM, POS, REF, ALT, sep = "_")
     )
 
-  var_gr <- GenomicRanges::GRanges(str_c(var_df$CHROM, ":",
-                          as.integer(var_df$POS) + var_df$pos_rel))
+  var_gr <- GenomicRanges::GRanges(str_c(
+    var_df$CHROM,
+    ":",
+    as.integer(var_df$POS) + var_df$pos_rel
+    ))
   names(var_gr) <- var_df$mut_id
 
   message("INFO: calculate coordinates of upstream and downstream exons...")
@@ -98,7 +101,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
   var_to_transcript <- hits %>%
     as.data.frame() %>%
     as_tibble() %>%
-    rename(
+    dplyr::rename(
       var_nr = queryHits,
       tx_nr = subjectHits
     )
