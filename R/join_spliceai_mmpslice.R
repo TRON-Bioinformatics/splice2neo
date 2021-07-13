@@ -27,15 +27,20 @@ combine_mut_junc <- function(spliceai_juncs, mmsplice_juncs){
     dplyr::rename(class_mmsplice = effect)%>%
     dplyr::rename(efficiency_mmsplice = efficiency)
 
-  juncs <- bind_rows(spliceai_juncs, mmsplice_juncs)
+  #juncs <- bind_rows(spliceai_juncs, mmsplice_juncs)
+  juncs <- spliceai_juncs %>%
+    full_join(mmsplice_juncs, by = "junc_tx_id" )
   juncs <- juncs %>%
     distinct(junc_tx_id, .keep_all = T) %>%
     mutate(identified_by_spliceai = ifelse(junc_tx_id %in% spliceai_juncs$junc_tx_id, TRUE, FALSE),
            identified_by_mmsplice = ifelse(junc_tx_id %in% mmsplice_juncs$junc_tx_id, TRUE, FALSE )) %>%
-    select(junc_tx_id, mut_id, tx_id, junc_id, junc_tx_id,
+    dplyr::select(junc_tx_id, mut_id.x, tx_id.x, junc_id.x, junc_tx_id,
            identified_by_spliceai, identified_by_mmsplice,
            prob_spliceai, class_spliceai, delta_logit_psi_mmsplice,
            pathogenicity_mmsplice, efficiency_mmsplice,  class_mmsplice) %>%
+    dplyr::rename(mut_id = mut_id.x) %>%
+    dplyr::rename(junc_id = junc_id.x) %>%
+    dplyr::rename(tx_id = tx_id.x)%>%
     filter(!is.na(junc_id))
   return(juncs)
 
