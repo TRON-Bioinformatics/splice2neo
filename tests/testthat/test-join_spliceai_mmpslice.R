@@ -14,6 +14,6 @@ test_that("join_spliceai_mmpslice works", {
 
   df_comb <- combine_mut_junc(annot_df, junc_annot)
 
-  expect_true(nrow(df_comb) == 160)
+  expect_true(nrow(df_comb) == 74)
 
 })
