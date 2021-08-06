@@ -27,6 +27,7 @@ is_canonical <- function(junc_id, ref_junc, exons_gr){
 #' Convert junc_id to GRanges
 #'
 #' @param junc_id junction id
+#' @param use_strand If TRUE, strand information is used. Otherwise strand is set to "*".
 #' @return GRanges object of with the ranges defined in junc_id
 #'
 junc_id_to_gr <- function(junc_id, use_strand = TRUE){
