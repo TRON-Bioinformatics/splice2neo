@@ -22,3 +22,29 @@ is_canonical <- function(junc_id, ref_junc, exons_gr){
   return(in_ref_junc | (in_exon & is_adjacent))
 
 }
+
+
+#' Convert junc_id to GRanges
+#'
+#' @param junc_id junction id
+#' @param use_strand If TRUE, strand information is used. Otherwise strand is set to "*".
+#' @return GRanges object of with the ranges defined in junc_id
+#'
+junc_id_to_gr <- function(junc_id, use_strand = TRUE){
+
+  m <- junc_id %>%
+    str_split_fixed("_", 4)
+
+  if(use_strand){
+    strand <- m[,4]
+  }else{
+    strand <- "*"
+  }
+
+  GenomicRanges::GRanges(
+    m[,1],
+    IRanges::IRanges(as.integer(m[,2]), as.integer(m[,3])),
+    strand = strand,
+    name = junc_id
+  )
+}
