@@ -8,7 +8,11 @@
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #'
-#' @return a GRangesList with alternative transcripts.
+#' @return a data.frame with affected transcripts in rows and the following
+#'  columns:
+#'   - `tx_grl` a GRangesList with altered transcripts.
+#'   - `tx_id` transcript id
+#'   - `junc_pos_tx` : position of the junction in altered transcript
 #'
 #' The algorithm works in the following steps.
 #'
@@ -30,15 +34,21 @@
 #' TODO:
 #'  - [ ] vectorize over multiple input junctions
 #'    - [ ] consider multiple junctions in same transcripts
-#'  - [x] add `tx_name` as output column
+#'  - [x] add `tx_id` as output column
 #'  - [ ] Support junctions with both positions in the same exon
 #'
 #' @examples
 #'
 #' junc_to_tx("chr2", 152389996, 152392205, toy_transcripts)
 #'
+#' junc_to_tx("chr2", 152389996, 152392205, toy_transcripts["ENST00000397345"])
+#'
 #' @export
 junc_to_tx <- function(chr, pos1, pos2, transcripts){
+
+  if(class(transcripts) == "GRanges"){
+    transcripts <- GenomicRanges::GRangesList(transcripts)
+  }
 
   ## assume pos1 to be smaller than pos2
   stopifnot(length(chr) == 1)
@@ -62,7 +72,7 @@ junc_to_tx <- function(chr, pos1, pos2, transcripts){
   # Get indexes of affected exons ==============================================
   tx_df <- tibble::tibble(
     tx = as.list(txs),
-    tx_name = names(txs),
+    tx_id = names(txs),
     exon_idx1 = purrr::map_int(tx, ~GenomicRanges::findOverlaps(gr1, .x, select = "first")),
     left_exon_idx = purrr::map_int(tx, ~GenomicRanges::follow(gr1, .x, ignore.strand = TRUE)),
     exon_idx2 = purrr::map_int(tx, ~GenomicRanges::findOverlaps(gr2, .x, select = "first")),
@@ -102,7 +112,7 @@ junc_to_tx <- function(chr, pos1, pos2, transcripts){
 
   # add coordinate in transcript sequence ====================================
   tx_grl <- GenomicRanges::GRangesList(tx_df$tx)
-  names(tx_grl) <- tx_df$tx_name
+  names(tx_grl) <- tx_df$tx_id
   pos1_tx <- GenomicFeatures::mapToTranscripts(gr1, tx_grl) %>% BiocGenerics::start()
   pos2_tx <- GenomicFeatures::mapToTranscripts(gr2, tx_grl) %>% BiocGenerics::start()
   strand_tx <- tx_grl %>% BiocGenerics::strand() %>% unique() %>% as.character()
