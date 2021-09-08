@@ -86,7 +86,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   if(nrow(cont_df) > 0){
     peptide_junc_pos <- ceiling(cont_df$junc_pos_tx / 3)
   }else{
-    peptide_junc_pos <- ceiling(numeric() / 3)
+    peptide_junc_pos <- numeric()
   }
   peptide_size = size
   pep_len <- BiocGenerics::width(peptide)
@@ -119,13 +119,13 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   junc_df %>%
     left_join(cont_df,
-              by = c("junc_id", "chr", "pos1", "pos2", "strand")) %>%
+              by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id")) %>%
     select(junc_id, tx_id, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
 }
 
 
-#' Extract sequence at position from after previous stop codon and before next.
+#' Extract sub-sequence around input position between stop codons (`*`).
 #'
 #' @param seq Sequence
 #' @param pos position relative to sequence
