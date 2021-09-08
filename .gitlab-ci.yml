@@ -1,4 +1,4 @@
-image: bioconductor/bioconductor_docker:devel
+image: bioconductor/bioconductor_docker:RELEASE_3_13
 
 stages:
   - build
