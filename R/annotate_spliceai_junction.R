@@ -19,15 +19,18 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
   var_df <- var_df %>%
     mutate(
-      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_")
+      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
+      mut_effect_id = str_c(mut_id, "_", row_number())
     )
 
   var_gr <- GenomicRanges::GRanges(str_c(
     var_df$CHROM,
     ":",
     as.integer(var_df$POS) + var_df$pos_rel
-    ))
-  names(var_gr) <- var_df$mut_id
+    ),
+    # var_effect_id = var_df$var_effect_id
+  )
+  names(var_gr) <- var_df$mut_effect_id
 
   message("INFO: calculate coordinates of upstream and downstream exons...")
   # get all possible junctions of by start and end coordinates of upsteam and downstream exons
@@ -38,7 +41,7 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
   junc_df <- var_df %>%
 
     # add next exon coordinates of next exons
-    left_join(next_junc_df, by = "mut_id") %>%
+    left_join(next_junc_df, by = "mut_effect_id") %>%
 
     # add rules
     mutate(
@@ -122,7 +125,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
     mutate(
 
       # var annot
-      mut_id = var_names[var_nr],
+      mut_effect_id = var_names[var_nr],
 
       # tx annotation
       tx_chr = as.character(GenomeInfoDb::seqnames(transcripts_gr)[tx_nr]),
@@ -142,7 +145,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       downstream_end = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y < length(.x), IRanges::end(.x)[.y + 1], NA))
     )  %>%
 
-    select(mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
+    dplyr::select(mut_effect_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
            upstream_end, downstream_start, downstream_end)
 
 }
