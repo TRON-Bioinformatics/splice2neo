@@ -42,6 +42,7 @@ Annotate splice junctions with resulting transcripts and peptide sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-junc_to_cts(toy_junc_id, toy_transcripts, size = 400, bsg = bsg)
+junc_to_cts(toy_junc_id, toy_transcripts, tx_id = toy_junc_id_enst,
+   size = 400, bsg = bsg)
 
 }
