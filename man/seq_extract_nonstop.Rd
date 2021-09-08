@@ -2,7 +2,7 @@
 % Please edit documentation in R/junc_to_peptide.R
 \name{seq_extract_nonstop}
 \alias{seq_extract_nonstop}
-\title{Extract sequence at position from after previous stop codon and before next.}
+\title{Extract sub-sequence around input position between stop codons (\code{*}).}
 \usage{
 seq_extract_nonstop(seq, pos)
 }
@@ -15,7 +15,7 @@ seq_extract_nonstop(seq, pos)
 a data.frame
 }
 \description{
-Extract sequence at position from after previous stop codon and before next.
+Extract sub-sequence around input position between stop codons (\code{*}).
 }
 \examples{
 
