@@ -19,6 +19,8 @@
 #'  - `cts_seq` the context sequence
 #'  - `cts_junc_pos` the junction position in the context sequence
 #'  - `cts_junc_pos` the size of the context sequence
+#'  - `cts_id` a unique id for the context sequence as hash value using the
+#'   XXH128 hash algorithm
 #'
 #' @examples
 #'
@@ -36,11 +38,6 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
     bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
   }
-
-  # junc_id <- toy_junc_id
-  # tx_id <- toy_junc_id_enst
-  # transcripts <- toy_transcripts
-  # size = 400
 
   #-----------------------------------------------------------------------------
   # build junction dataset with separte columns
@@ -109,7 +106,8 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
     mutate(
       cts_seq = as.character(cts_seq),
       cts_junc_pos = cts_junc_pos,
-      cts_size = BiocGenerics::width(cts_seq)
+      cts_size = BiocGenerics::width(cts_seq),
+      cts_id = furrr::future_map_chr(cts_seq, rlang::hash)
     )
 
   # join with original input data.frame to preserve rows with NA in `junc_id`
@@ -119,7 +117,7 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
       by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")
     ) %>%
     select(junc_id, tx_id, junc_pos_tx, tx_id_alt, cts_seq, cts_junc_pos,
-           cts_size)
+           cts_size, cts_id)
 
 }
 

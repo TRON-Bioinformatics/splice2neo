@@ -30,6 +30,8 @@ A data.frame with annotated input junctions with colums:
 \item \code{cts_seq} the context sequence
 \item \code{cts_junc_pos} the junction position in the context sequence
 \item \code{cts_junc_pos} the size of the context sequence
+\item \code{cts_id} a unique id for the context sequence as hash value using the
+XXH128 hash algorithm
 }
 }
 \description{

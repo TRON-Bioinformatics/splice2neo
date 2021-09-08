@@ -12,5 +12,5 @@ test_that("junc_to_cts works on example data with tx_id", {
   cts_df <- junc_to_cts(junc_id, transcripts, tx_id = tx_id, size = size, bsg = bsg)
 
   expect_true(nrow(cts_df) >= length(junc_id))
-  expect_true(all(c("cts_seq", "cts_junc_pos") %in% names(cts_df)))
+  expect_true(all(c("cts_seq", "cts_junc_pos", "cts_id") %in% names(cts_df)))
 })
