@@ -5,7 +5,7 @@
 #' @param cds \code{\link[GenomicRanges]{GRangesList}} of CDS
 #' @param tx_id a vector of transcript ids in the same length as `junc_id`. If
 #'    provided, only transcripts with the associated id will be considered for
-#'    each junction. If NA (default) all input CDS are considered for each junction.
+#'    each junction. If NA (default) no input CDS will be considered.
 #' @param size the total size of the output sequence (might be shorter if peptide is shorter)
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
