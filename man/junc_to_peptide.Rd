@@ -4,12 +4,16 @@
 \alias{junc_to_peptide}
 \title{Annotate splice junctions with resulting CDS and peptide sequence}
 \usage{
-junc_to_peptide(junc_id, cds, size = 30, bsg)
+junc_to_peptide(junc_id, cds, tx_id = NA, size = 30, bsg = NULL)
 }
 \arguments{
 \item{junc_id}{junction id consisting of genomic coordinates}
 
 \item{cds}{\code{\link[GenomicRanges]{GRangesList}} of CDS}
+
+\item{tx_id}{a vector of transcript ids in the same length as \code{junc_id}. If
+provided, only transcripts with the associated id will be considered for
+each junction. If NA (default) no input CDS will be considered.}
 
 \item{size}{the total size of the output sequence (might be shorter if peptide is shorter)}
 

@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 docs
+fix_issue_*.R

@@ -49,7 +49,6 @@ Imports:
     Biostrings,
     XVector,
     rlang,
-    Biostrings,
     BSgenome.Hsapiens.UCSC.hg19
 URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
 Depends: 

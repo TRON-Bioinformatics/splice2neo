@@ -61,6 +61,10 @@ toy_transcripts <- toy_transcripts %>%
 toy_transcripts_gr$tx_name <- toy_transcripts_gr$tx_name %>%
   str_extract("^ENST\\d{11}")
 
+names(toy_cds) <- names(toy_cds) %>%
+  str_extract("^ENST\\d{11}")
+
+
 # Add data to package
 usethis::use_data(toy_transcripts, overwrite = TRUE)
 usethis::use_data(toy_transcripts_gr, overwrite = TRUE)
@@ -89,6 +93,14 @@ toy_junc_id <- c("chr2_152389996_152392205_-", "chr2_152389996_152390729_-",
   "chr2_179638062_179644565_+", NA, "chr2_179642146_179642147_-",
   "chr2_179642044_179642431_-")
 
+# Toy ENST IDs are unique ENST ID per junc ID that is affected by the junction
+toy_junc_id_enst <- c("ENST00000409198", "ENST00000409198", "ENST00000409198", "ENST00000409198",
+                      "ENST00000409198", "ENST00000342992", "ENST00000342992", "ENST00000342992",
+                      "ENST00000342992", "ENST00000342992", "ENST00000342992", "ENST00000342992",
+                      "ENST00000342992", NA, "ENST00000342992", NA, "ENST00000342992",
+                      "ENST00000342992")
+
 usethis::use_data(toy_junc_id, overwrite = TRUE)
+usethis::use_data(toy_junc_id_enst, overwrite = TRUE)
 
 

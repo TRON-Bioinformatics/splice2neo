@@ -78,6 +78,8 @@ test_that("junc_to_tx works with provided toy data", {
 
   tx_df <- junc_to_tx(chr, pos1, pos2, toy_transcripts)
 
+  # junc_to_tx(chr, pos1, pos2, toy_transcripts["ENST00000409198"])
+
   expect_true(nrow(tx_df) > 0)
   expect_true(ncol(tx_df) > 0)
   expect_true(length(tx_df$tx[[1]]) <= length(toy_transcripts))

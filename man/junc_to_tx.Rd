@@ -18,7 +18,13 @@ junc_to_tx(chr, pos1, pos2, transcripts)
 created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
 }
 \value{
-a GRangesList with alternative transcripts.
+a data.frame with affected transcripts in rows and the following
+columns:
+\itemize{
+\item \code{tx_grl} a GRangesList with altered transcripts.
+\item \code{tx_id} transcript id
+\item \code{junc_pos_tx} : position of the junction in altered transcript
+}
 
 The algorithm works in the following steps.
 \itemize{
@@ -46,7 +52,7 @@ TODO:
 \itemize{
 \item [ ] consider multiple junctions in same transcripts
 }
-\item [x] add \code{tx_name} as output column
+\item [x] add \code{tx_id} as output column
 \item [ ] Support junctions with both positions in the same exon
 }
 
@@ -62,5 +68,7 @@ convert a \code{junc_id} into a dataset of altered transcript
 \examples{
 
 junc_to_tx("chr2", 152389996, 152392205, toy_transcripts)
+
+junc_to_tx("chr2", 152389996, 152392205, toy_transcripts["ENST00000397345"])
 
 }

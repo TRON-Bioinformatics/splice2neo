@@ -46,6 +46,16 @@
 #' @source They were created from the spliceAI example file
 "toy_junc_id"
 
+#' An example dataset of 18 transcript IDs matching to the junctions in `toy_junc_id`
+#'
+#' @format A character vector with ENSEMBL transcript ids
+#'
+#' @source They were created using transcript annotations from
+#' \url{https://www.ensembl.org}
+#'
+"toy_junc_id_enst"
+
+
 #' A tibble in junction format but unsorted columns
 #'
 #' @format A tibble frame with 1 and 8 variables:
