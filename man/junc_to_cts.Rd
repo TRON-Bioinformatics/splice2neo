@@ -24,6 +24,7 @@ each junction. If NA (default) no input transcripts will be considered.}
 A data.frame with annotated input junctions with colums:
 \itemize{
 \item \code{junc_id} the input \code{junc_id}
+\item \code{tx_id_input} the input \code{tx_id}
 \item \code{tx_id} the id of the used transcript
 \item \code{junc_pos_tx} the junction position in the modified transcript sequence
 \item \code{tx_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
