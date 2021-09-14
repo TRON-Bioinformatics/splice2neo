@@ -50,15 +50,24 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   # compute affected cds
   cds_df <- junc_df %>%
+
     # filter out NA junctions
     filter(!is.na(junc_id)) %>%
-    filter(!is.na(tx_id_input)) %>%
+
     mutate(
-      # sub_cds = map(tx_id_input, ~cds[.x]),
-      gr = as.list(cds[tx_id_input]) ,
+
+      # get the relevant cds, if ID given use specific cds, otherwise take all
+      cds_grl = furrr::future_map_if(
+        .x = tx_id_input,
+        .p = ~!is.na(.x),
+        .f = ~cds[.],
+        .else = ~ cds
+      ),
+
+      # apply junc_to_tx() to modify transcript ranges according to the junction
       cds_df = furrr::future_pmap(
-        list(chr, pos1, pos2),
-        junc_to_tx, transcripts = cds)
+        list(chr, pos1, pos2, cds_grl),
+        junc_to_tx)
     )
 
   # build junction and cds specific data sets
@@ -88,10 +97,10 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   }else{
     peptide_junc_pos <- numeric()
   }
-  peptide_size = size
+
   pep_len <- BiocGenerics::width(peptide)
-  pep_start <- pmax(peptide_junc_pos - (peptide_size/2) + 1, 1)
-  pep_end <- pmin(peptide_junc_pos + (peptide_size/2), pep_len)
+  pep_start <- pmax(peptide_junc_pos - (size/2) + 1, 1)
+  pep_end <- pmin(peptide_junc_pos + (size/2), pep_len)
 
   # test if junction position is in ORF (no stop codone in whole CDS before)
   junc_in_orf <- XVector::subseq(peptide, start = 1, end = pmin(peptide_junc_pos, pep_len)) %>%
@@ -120,7 +129,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   junc_df %>%
     left_join(cont_df,
               by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")) %>%
-    select(junc_id, tx_id_input, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
+    select(junc_id, tx_id_input, tx_id, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
 
 }

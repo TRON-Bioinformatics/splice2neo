@@ -1,4 +1,4 @@
-test_that("junc_to_peptide works on example data", {
+test_that("junc_to_peptide works on example data (without input tx_id)", {
 
   # testthat::skip("Not implemented yet")
 
@@ -8,12 +8,14 @@ test_that("junc_to_peptide works on example data", {
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-  pep_df <- junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
+  junc_id <- toy_junc_id[c(1, 6, 10)]
+
+  pep_df <- junc_to_peptide(junc_id, toy_cds, size = 30, bsg = bsg)
 
   expect_true(nrow(pep_df) > 0)
-  expect_true(nrow(pep_df) >= length(toy_junc_id))
-  expect_equal(unique(pep_df$junc_id), unique(toy_junc_id))
-
+  expect_true(nrow(pep_df) >= length(junc_id))
+  expect_equal(unique(pep_df$junc_id), unique(junc_id))
+  expect_true(!any(is.na(pep_df$peptide_context)))
   # check that peptides have expcted size
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
 
