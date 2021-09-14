@@ -66,3 +66,20 @@ test_that("seq_extract_nonstop works on example data with multiple seq", {
   expect_equal(nrow(df), 2)
 
 })
+
+
+test_that("seq_truncate_nonstop works on example data", {
+
+
+  s1 <- seq_truncate_nonstop("1234*6789", 2) # "1234"
+  expect_equal(s1, "1234")
+
+  s2 <- seq_truncate_nonstop("1234*6789", 8) # "1234*6789"
+  expect_equal(s2, "1234*6789")
+
+  seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+  s3 <- seq_truncate_nonstop(seq, 14) #"QIP*LGSNSLLFPYQLMAGSTRP"
+  expect_equal(s3, "QIP*LGSNSLLFPYQLMAGSTRP")
+
+
+})

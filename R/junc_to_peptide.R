@@ -124,9 +124,8 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   # calculate junction position relative to context sequence
   peptide_context_junc_pos <- peptide_junc_pos - pep_start
 
-  # get sequence of non-stop-codon around junction position
-  pep_context_seq_df <- seq_extract_nonstop(pep_context_seq_full,
-                                            peptide_context_junc_pos)
+  # get sequence of non-stop-codon after junction position
+  peptide_context <- seq_truncate_nonstop(pep_context_seq_full, peptide_context_junc_pos)
 
   # Annotate table
   cont_df <- cont_df %>%
@@ -135,8 +134,8 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
       peptide_junc_pos = peptide_junc_pos,
       junc_in_orf = junc_in_orf,
       pep_context_seq_full = as.character(pep_context_seq_full),
-      peptide_context = pep_context_seq_df$seq_sub,
-      peptide_context_junc_pos = pep_context_seq_df$seq_sub_pos,
+      peptide_context = peptide_context,
+      peptide_context_junc_pos = peptide_context_junc_pos,
     )
 
   junc_df %>%
@@ -144,6 +143,34 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
               by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")) %>%
     select(junc_id, tx_id_input, tx_id, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
+
+}
+
+
+#' Truncate input sequence after input position before next stop codons (`*`).
+#'
+#' @param seq Sequence
+#' @param pos position relative to sequence
+#' @return a character
+#'
+#' @examples
+#'
+#' seq_truncate_nonstop("1234*6789", 2) # "1234"
+#' seq_truncate_nonstop("1234*6789", 8) # "1234*6789"
+#'
+#' seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+#' seq_truncate_nonstop(seq, 14) #"QIP*LGSNSLLFPYQLMAGSTRP"
+#'
+#' @export
+seq_truncate_nonstop <- function(seq, pos){
+
+  prefix <- str_sub(seq, 1, pos)
+  suffix <-  str_sub(seq, start = pos + 1)
+
+  suffix_before_stop <- suffix %>%
+    str_extract("[^*]+")
+
+  str_c(prefix, suffix_before_stop)
 
 }
 
@@ -162,7 +189,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 #'  "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
 #' )
 #' pos <- c(14, 14)
-#' splice2neo:::seq_extract_nonstop(seq, pos)
+#' seq_extract_nonstop(seq, pos)
 #'
 #' @export
 seq_extract_nonstop <- function(seq, pos){

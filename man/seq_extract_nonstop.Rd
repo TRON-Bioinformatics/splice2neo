@@ -25,6 +25,6 @@ seq <- c(
  "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
 )
 pos <- c(14, 14)
-splice2neo:::seq_extract_nonstop(seq, pos)
+seq_extract_nonstop(seq, pos)
 
 }
