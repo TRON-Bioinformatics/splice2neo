@@ -13,6 +13,7 @@
 #' @return A data.frame with annotated input junctions with colums:
 #'
 #'  - `junc_id` the input `junc_id`
+#'  - `tx_id_input` the input `tx_id`
 #'  - `tx_id` the id of the used transcript
 #'  - `junc_pos_tx` the junction position in the modified transcript sequence
 #'  - `tx_id_alt` an identifier made from `tx_id` and `junc_id`
@@ -54,18 +55,35 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
       pos2 = as.integer(pos2)
     )
 
+  tmp <- junc_df %>%
+    # filter out NA junctions
+    filter(!is.na(junc_id)) %>%
+    mutate(
+      tx_grl = furrr::future_map_if(
+        .x = tx_id_input,
+        .p = ~!is.na(.x),
+        .f = ~transcripts[.],
+        .else = ~ transcripts
+      )
+    )
+
   # compute affected transcripts
   transcript_df <- junc_df %>%
     # filter out NA junctions
     filter(!is.na(junc_id)) %>%
     mutate(
-      gr = furrr::future_map_if(.x = tx_id_input,
-                                .p = ~!is.na(.x),
-                                .f = ~transcripts[.x],
-                                .else = function(){transcripts}
-                                ),
+
+      # get the relevant transcripts, if ID given use specific transcript, otherwise take all
+      tx_grl = furrr::future_map_if(
+        .x = tx_id_input,
+        .p = ~!is.na(.x),
+        .f = ~transcripts[.],
+        .else = ~ transcripts
+      ),
+
+      # apply junc_to_tx() to modify transcript ranges according to the junction
       tx_df = furrr::future_pmap(
-        list(chr, pos1, pos2, gr),
+        list(chr, pos1, pos2, tx_grl),
         junc_to_tx)
     )
 
@@ -76,13 +94,7 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
       tx_id_alt = str_c(tx_id, "|", junc_id)
     )
 
-  if(nrow(cont_df) > 0){
-    peptide_junc_pos <- ceiling(cont_df$junc_pos_tx / 3)
-  }else{
-    peptide_junc_pos <- numeric()
-  }
-
-  # prepare transcripts and junctoin position depending on 0 or more input data
+  # prepare transcripts and junction position depending on 0 or more input data
   if(nrow(cont_df) > 0){
     tx_grl <- GenomicRanges::GRangesList(cont_df$tx)
     junc_pos_tx <- cont_df$junc_pos_tx
@@ -120,7 +132,7 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
       cont_df,
       by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")
     ) %>%
-    select(junc_id, tx_id, junc_pos_tx, tx_id_alt, cts_seq, cts_junc_pos,
+    select(junc_id, tx_id_input, tx_id, junc_pos_tx, tx_id_alt, cts_seq, cts_junc_pos,
            cts_size, cts_id)
 
 }
