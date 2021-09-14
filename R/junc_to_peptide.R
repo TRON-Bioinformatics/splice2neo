@@ -12,12 +12,25 @@
 #'
 #' @return A data.frame with annotated input junctions
 #'
+#'  - `junc_id` the input `junc_id`
+#'  - `tx_id_input` the input `tx_id`
+#'  - `tx_id` the id of the used cds
+#'  - `tx_id_alt` a combination of the used cds id with the junction id
+#'  - `peptide` the full pepetide sequence of the translated cds.
+#'  - `peptide_junc_pos` The position of the junctino in the `peptide` sequence
+#'  - `junc_in_orf` Indicator whehter the junction is located in an open reading frame.
+#'  - `pep_context_seq_full` the peptide sequence around the junction includig stop codons.
+#'  - `peptide_context` the peptide sequence around the junction without stop codons.
+#'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
+#'
 #' @examples
 #'
 #' requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 #' bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #'
-#' junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
+#' junc_to_peptide("chr2_152389996_152392205_-", toy_cds, size = 30, bsg = bsg)
+#'
+#' junc_to_peptide(toy_junc_id, toy_cds, tx_id = toy_junc_id_enst, size = 30, bsg = bsg)
 #'
 #'@import dplyr
 #'

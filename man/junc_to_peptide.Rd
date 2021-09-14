@@ -22,6 +22,18 @@ each junction. If NA (default) no input CDS will be considered.}
 }
 \value{
 A data.frame with annotated input junctions
+\itemize{
+\item \code{junc_id} the input \code{junc_id}
+\item \code{tx_id_input} the input \code{tx_id}
+\item \code{tx_id} the id of the used cds
+\item \code{tx_id_alt} a combination of the used cds id with the junction id
+\item \code{peptide} the full pepetide sequence of the translated cds.
+\item \code{peptide_junc_pos} The position of the junctino in the \code{peptide} sequence
+\item \code{junc_in_orf} Indicator whehter the junction is located in an open reading frame.
+\item \code{pep_context_seq_full} the peptide sequence around the junction includig stop codons.
+\item \code{peptide_context} the peptide sequence around the junction without stop codons.
+\item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
+}
 }
 \description{
 Annotate splice junctions with resulting CDS and peptide sequence
@@ -31,6 +43,8 @@ Annotate splice junctions with resulting CDS and peptide sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
+junc_to_peptide("chr2_152389996_152392205_-", toy_cds, size = 30, bsg = bsg)
+
+junc_to_peptide(toy_junc_id, toy_cds, tx_id = toy_junc_id_enst, size = 30, bsg = bsg)
 
 }

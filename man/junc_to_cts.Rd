@@ -21,7 +21,7 @@ each junction. If NA (default) no input transcripts will be considered.}
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}
 }
 \value{
-A data.frame with annotated input junctions with colums:
+A data.frame with annotated input junctions with columns:
 \itemize{
 \item \code{junc_id} the input \code{junc_id}
 \item \code{tx_id_input} the input \code{tx_id}

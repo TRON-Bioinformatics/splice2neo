@@ -10,7 +10,7 @@
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
 #'
-#' @return A data.frame with annotated input junctions with colums:
+#' @return A data.frame with annotated input junctions with columns:
 #'
 #'  - `junc_id` the input `junc_id`
 #'  - `tx_id_input` the input `tx_id`
