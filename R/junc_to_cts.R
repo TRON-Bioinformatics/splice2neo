@@ -55,18 +55,6 @@ junc_to_cts <- function(junc_id, transcripts, tx_id = NA, size = 400, bsg = NULL
       pos2 = as.integer(pos2)
     )
 
-  tmp <- junc_df %>%
-    # filter out NA junctions
-    filter(!is.na(junc_id)) %>%
-    mutate(
-      tx_grl = furrr::future_map_if(
-        .x = tx_id_input,
-        .p = ~!is.na(.x),
-        .f = ~transcripts[.],
-        .else = ~ transcripts
-      )
-    )
-
   # compute affected transcripts
   transcript_df <- junc_df %>%
     # filter out NA junctions
