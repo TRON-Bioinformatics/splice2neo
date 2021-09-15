@@ -67,6 +67,9 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
     # filter out NA junctions
     filter(!is.na(junc_id)) %>%
 
+    # filter tx_id is NA or in input cds object
+    filter(is.na(tx_id_input) | tx_id_input %in% names(cds)) %>%
+
     mutate(
 
       # get the relevant cds, if ID given use specific cds, otherwise take all
@@ -87,6 +90,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   cont_df <- cds_df %>%
     unnest(cds_df) %>%
     mutate(
+      tx_id = ifelse("tx_id" %in% names(.), tx_id, NA),
       tx_id_alt = str_c(tx_id, "|", junc_id)
     )
 
@@ -141,7 +145,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   junc_df %>%
     left_join(cont_df,
               by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")) %>%
-    select(junc_id, tx_id_input, tx_id, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
+    dplyr::select(junc_id, tx_id_input, tx_id, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
 
 }
