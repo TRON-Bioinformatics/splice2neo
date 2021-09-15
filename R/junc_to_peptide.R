@@ -12,12 +12,25 @@
 #'
 #' @return A data.frame with annotated input junctions
 #'
+#'  - `junc_id` the input `junc_id`
+#'  - `tx_id_input` the input `tx_id`
+#'  - `tx_id` the id of the used cds
+#'  - `tx_id_alt` a combination of the used cds id with the junction id
+#'  - `peptide` the full pepetide sequence of the translated cds.
+#'  - `peptide_junc_pos` The position of the junctino in the `peptide` sequence
+#'  - `junc_in_orf` Indicator whehter the junction is located in an open reading frame.
+#'  - `pep_context_seq_full` the peptide sequence around the junction includig stop codons.
+#'  - `peptide_context` the peptide sequence around the junction without stop codons.
+#'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
+#'
 #' @examples
 #'
 #' requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 #' bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #'
-#' junc_to_peptide(toy_junc_id, toy_cds, size = 30, bsg = bsg)
+#' junc_to_peptide("chr2_152389996_152392205_-", toy_cds, size = 30, bsg = bsg)
+#'
+#' junc_to_peptide(toy_junc_id, toy_cds, tx_id = toy_junc_id_enst, size = 30, bsg = bsg)
 #'
 #'@import dplyr
 #'
@@ -50,15 +63,24 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   # compute affected cds
   cds_df <- junc_df %>%
+
     # filter out NA junctions
     filter(!is.na(junc_id)) %>%
-    filter(!is.na(tx_id_input)) %>%
+
     mutate(
-      # sub_cds = map(tx_id_input, ~cds[.x]),
-      gr = as.list(cds[tx_id_input]) ,
+
+      # get the relevant cds, if ID given use specific cds, otherwise take all
+      cds_grl = furrr::future_map_if(
+        .x = tx_id_input,
+        .p = ~!is.na(.x),
+        .f = ~cds[.],
+        .else = ~ cds
+      ),
+
+      # apply junc_to_tx() to modify transcript ranges according to the junction
       cds_df = furrr::future_pmap(
-        list(chr, pos1, pos2),
-        junc_to_tx, transcripts = cds)
+        list(chr, pos1, pos2, cds_grl),
+        junc_to_tx)
     )
 
   # build junction and cds specific data sets
@@ -88,10 +110,10 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   }else{
     peptide_junc_pos <- numeric()
   }
-  peptide_size = size
+
   pep_len <- BiocGenerics::width(peptide)
-  pep_start <- pmax(peptide_junc_pos - (peptide_size/2) + 1, 1)
-  pep_end <- pmin(peptide_junc_pos + (peptide_size/2), pep_len)
+  pep_start <- pmax(peptide_junc_pos - (size/2) + 1, 1)
+  pep_end <- pmin(peptide_junc_pos + (size/2), pep_len)
 
   # test if junction position is in ORF (no stop codone in whole CDS before)
   junc_in_orf <- XVector::subseq(peptide, start = 1, end = pmin(peptide_junc_pos, pep_len)) %>%
@@ -102,9 +124,8 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   # calculate junction position relative to context sequence
   peptide_context_junc_pos <- peptide_junc_pos - pep_start
 
-  # get sequence of non-stop-codon around junction position
-  pep_context_seq_df <- seq_extract_nonstop(pep_context_seq_full,
-                                            peptide_context_junc_pos)
+  # get sequence of non-stop-codon after junction position
+  peptide_context <- seq_truncate_nonstop(pep_context_seq_full, peptide_context_junc_pos)
 
   # Annotate table
   cont_df <- cont_df %>%
@@ -113,15 +134,43 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
       peptide_junc_pos = peptide_junc_pos,
       junc_in_orf = junc_in_orf,
       pep_context_seq_full = as.character(pep_context_seq_full),
-      peptide_context = pep_context_seq_df$seq_sub,
-      peptide_context_junc_pos = pep_context_seq_df$seq_sub_pos,
+      peptide_context = peptide_context,
+      peptide_context_junc_pos = peptide_context_junc_pos,
     )
 
   junc_df %>%
     left_join(cont_df,
               by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")) %>%
-    select(junc_id, tx_id_input, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
+    select(junc_id, tx_id_input, tx_id, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
+
+}
+
+
+#' Truncate input sequence after input position before next stop codons (`*`).
+#'
+#' @param seq Sequence
+#' @param pos position relative to sequence
+#' @return a character
+#'
+#' @examples
+#'
+#' seq_truncate_nonstop("1234*6789", 2) # "1234"
+#' seq_truncate_nonstop("1234*6789", 8) # "1234*6789"
+#'
+#' seq <- "QIP*LGSNSLLFPYQLMAGSTRP*SWALGC"
+#' seq_truncate_nonstop(seq, 14) #"QIP*LGSNSLLFPYQLMAGSTRP"
+#'
+#' @export
+seq_truncate_nonstop <- function(seq, pos){
+
+  prefix <- str_sub(seq, 1, pos)
+  suffix <-  str_sub(seq, start = pos + 1)
+
+  suffix_before_stop <- suffix %>%
+    str_extract("[^*]+")
+
+  str_c(prefix, suffix_before_stop)
 
 }
 
@@ -140,7 +189,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 #'  "LKMRGDTNDILSHLD*REQRVGQ*AEAASP"
 #' )
 #' pos <- c(14, 14)
-#' splice2neo:::seq_extract_nonstop(seq, pos)
+#' seq_extract_nonstop(seq, pos)
 #'
 #' @export
 seq_extract_nonstop <- function(seq, pos){
