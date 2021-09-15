@@ -39,7 +39,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   #-----------------------------------------------------------------------------
   junc_df <- tibble::tibble(
     junc_id = junc_id,
-    tx_id = tx_id
+    tx_id_input = tx_id
     ) %>%
     separate(junc_id, sep = "_",
              into = c("chr", "pos1", "pos2", "strand"), remove = FALSE) %>%
@@ -52,10 +52,10 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   cds_df <- junc_df %>%
     # filter out NA junctions
     filter(!is.na(junc_id)) %>%
-    filter(!is.na(tx_id)) %>%
+    filter(!is.na(tx_id_input)) %>%
     mutate(
-      # sub_cds = map(tx_id, ~cds[.x]),
-      gr = as.list(cds[tx_id]) ,
+      # sub_cds = map(tx_id_input, ~cds[.x]),
+      gr = as.list(cds[tx_id_input]) ,
       cds_df = furrr::future_pmap(
         list(chr, pos1, pos2),
         junc_to_tx, transcripts = cds)
@@ -119,9 +119,10 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   junc_df %>%
     left_join(cont_df,
-              by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id")) %>%
-    select(junc_id, tx_id, peptide, peptide_junc_pos, junc_in_orf,
+              by = c("junc_id", "chr", "pos1", "pos2", "strand", "tx_id_input")) %>%
+    select(junc_id, tx_id_input, tx_id_alt, peptide, peptide_junc_pos, junc_in_orf,
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
+
 }
 
 
