@@ -24,7 +24,8 @@ transform_for_requant <- function(cts_id, cts_seq, junc_position){
     position = junc_position
   )
   dat <- dat %>%
-    distinct()
+    distinct()%>%
+    filter(!is.na(sequence))
   return(dat)
 }
 
