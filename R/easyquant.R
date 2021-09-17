@@ -1,3 +1,34 @@
+#' Create table for re-quantification analysis with easyquant
+#'
+#' @param cts_id An id for the cts sequence to be re-quantified. If the
+#' context sequence was determined with the function `junct_to_cts` the associated hash id `cts_id` can be used.
+#' @param cts_seq The context sequence.
+#' @param junc_position The position of the junction within the context sequence.  If the
+#' context sequence was determined with `junct_to_cts` the associated hash id `cts_junc_pos` can be used.
+#'
+#' @return A tibble that can be used for requantification with easyquant. This tibble has the columns
+#' - `name`: Name of the input sequence.
+#' -  `sequence`: The context sequence that will be requantified.
+#' - `position`: The position of the junction within the context sequence.
+#'
+#' @examples
+#'
+#'
+#'@import dplyr
+#'
+#'@export
+transform_for_requant <- function(cts_id, cts_seq, junc_position){
+  dat <- tibble(
+    name = cts_id,
+    sequence = cts_seq,
+    position = junc_position
+  )
+  dat <- dat %>%
+    distinct()
+  return(dat)
+}
+
+
 #' Imports re-quantification from analysis with easyquant
 #'
 #' @param path_folder The path to easyquant folder
