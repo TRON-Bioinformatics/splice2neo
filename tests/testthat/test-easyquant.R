@@ -16,3 +16,5 @@ test_that("transform_for_requant works", {
   expect_equal(nrow(df_easy), 2)
   expect_equal(ncol(df_easy), 3)
 })
+
+

@@ -63,9 +63,9 @@ read_requant <- function(path_folder){
 #' Map the re-quantification result on the junction-transcript centric data by hash id.
 #'
 #' @param path_to_easyquant_folder The path to easyquant folder
-#' @param dat_mutation The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column `hash_id`
+#' @param junc_tib The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column `hash_id`
 #'
-#' @return Extended junction tibble with re-quantification results.  Followin columns are added:
+#' @return Extended junction tibble with re-quantification results.  The ollowing columns are added:
 #' -  `pos`: position of interest relative to input sequence
 #' - `junc`: reads overlapping the position of interest
 #' - `span`: read pairs spanning the position of interest
@@ -80,10 +80,10 @@ read_requant <- function(path_folder){
 #'@import dplyr
 #'
 #'@export
-map_requant <- function(path_to_easyquant_folder, dat_mutation) {
+map_requant <- function(path_to_easyquant_folder, junc_tib) {
   dat_easyqant <- read_requant(path_to_easyquant_folder)
-  dat_junc <- dat_mutation %>%
-    left_join(dat_easyqant, by = c("hash_id" = "name"))
+  dat_junc <- junc_tib %>%
+    left_join(dat_easyqant, by = c("cts_id" = "name"))
   return(dat_junc)
 }
 
