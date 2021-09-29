@@ -131,15 +131,16 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
   # get sequence of non-stop-codon after junction position
   peptide_context <- seq_truncate_nonstop(pep_context_seq_full, peptide_context_junc_pos)
 
+
   # Annotate table
   cont_df <- cont_df %>%
     mutate(
       peptide = as.character(peptide),
       peptide_junc_pos = peptide_junc_pos,
       junc_in_orf = junc_in_orf,
-      pep_context_seq_full = as.character(pep_context_seq_full),
-      peptide_context = peptide_context,
-      peptide_context_junc_pos = peptide_context_junc_pos,
+      pep_context_seq_full = ifelse(junc_in_orf, as.character(pep_context_seq_full), NA),
+      peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
+      peptide_context_junc_pos = ifelse(junc_in_orf, peptide_context_junc_pos, NA),
     )
 
   junc_df %>%
@@ -149,7 +150,6 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
            pep_context_seq_full, peptide_context, peptide_context_junc_pos)
 
 }
-
 
 #' Truncate input sequence after input position before next stop codons (`*`).
 #'
