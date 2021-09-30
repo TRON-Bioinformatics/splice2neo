@@ -4,15 +4,15 @@
 \alias{map_requant}
 \title{Map the re-quantification result on the junction-transcript centric data by hash id.}
 \usage{
-map_requant(path_to_easyquant_folder, dat_mutation)
+map_requant(path_to_easyquant_folder, junc_tib)
 }
 \arguments{
 \item{path_to_easyquant_folder}{The path to easyquant folder}
 
-\item{dat_mutation}{The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column \code{hash_id}}
+\item{junc_tib}{The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column \code{hash_id}}
 }
 \value{
-Extended junction tibble with re-quantification results.  Followin columns are added:
+Extended junction tibble with re-quantification results.  The ollowing columns are added:
 \itemize{
 \item \code{pos}: position of interest relative to input sequence
 \item \code{junc}: reads overlapping the position of interest
