@@ -36,6 +36,8 @@
 #'
 #' @export
 junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
+  print(junc_id)
+  print(tx_id)
 
   if(is.null(bsg)){
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
@@ -105,7 +107,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   # translate to protein seq
   suppressWarnings(
-    peptide <- Biostrings::translate(cds_seq)
+    peptide <- Biostrings::translate(cds_seq, if.fuzzy.codon = "solve")
   )
 
   # Get peptides around junction
