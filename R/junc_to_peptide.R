@@ -105,7 +105,7 @@ junc_to_peptide <- function(junc_id, cds, tx_id = NA, size = 30, bsg = NULL){
 
   # translate to protein seq
   suppressWarnings(
-    peptide <- Biostrings::translate(cds_seq)
+    peptide <- Biostrings::translate(cds_seq, if.fuzzy.codon = "solve")
   )
 
   # Get peptides around junction
