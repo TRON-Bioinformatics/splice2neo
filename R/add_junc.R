@@ -76,18 +76,6 @@ add_junc <- function(tx, jx){
   # modify exon start position for second junction pos
   tx_lst = grl_update_start_at(tx_lst, used_exon_idx2, BiocGenerics::end(jx))
 
-  ## OLD code:
-  # modify exon end position for first junction pos
-  tx_lst = purrr::modify2(tx_lst, used_exon_idx1, ~update_end_at(.x, BiocGenerics::start(jx), .y))
-
-  # # modify exon start position for second junction pos
-  tx = purrr::modify2(tx, used_exon_idx2, ~update_start_at(.x, pos2, .y))
-
-  # delete exon_rank colum
-  tx = purrr::map(tx, function(tx){
-    tx$exon_rank = NULL
-    return(tx)
-  })
 
 #
 #   # In case of pos1 and pos2 on the same exon, ignore transcript
@@ -95,22 +83,6 @@ add_junc <- function(tx, jx){
 #     # either different exon, or one position not on any exon
 #     filter(exon_idx1 != exon_idx2 | is.na(exon_idx1) | is.na(exon_idx2), )
 
-  # Modify affected exon start and end coordinates ============================
-  tx_df <- tx_df %>%
-    mutate(
-
-      # modify exon end position for first junction pos
-      tx = purrr::modify2(tx, used_exon_idx1, ~update_end_at(.x, pos1, .y)),
-
-      # # modify exon start position for second junction pos
-      tx = purrr::modify2(tx, used_exon_idx2, ~update_start_at(.x, pos2, .y)),
-
-      # delete exon_rank colum
-      tx = purrr::map(tx, function(tx){
-        tx$exon_rank = NULL
-        return(tx)
-      }),
-    )
   # remove all exons inbetween =================================================
   tx_df <- tx_df %>%
     mutate(
