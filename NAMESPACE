@@ -2,6 +2,8 @@
 
 export("%>%")
 export(add_identified_in_RNA)
+export(add_junc)
+export(add_junc_pos)
 export(annotate_mmsplice)
 export(combine_mut_junc)
 export(format_spliceai)

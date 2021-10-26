@@ -48,7 +48,7 @@ add_junc <- function(tx, jx){
   jx_lst <- S4Vectors::split(jx, 1:length(jx)) %>% as.list()
   j1_lst <- S4Vectors::split(j1, 1:length(j1)) %>% as.list()
   j2_lst <- S4Vectors::split(j2, 1:length(j2)) %>% as.list()
-  # tx_id <- names(tx)
+
 
   # Get indexes of affected exons ==============================================
   # get exon index in transcripts that are affected by the first position of the junction
@@ -83,11 +83,21 @@ add_junc <- function(tx, jx){
 #     # either different exon, or one position not on any exon
 #     filter(exon_idx1 != exon_idx2 | is.na(exon_idx1) | is.na(exon_idx2), )
 
-  # remove all exons inbetween =================================================
-  tx_df <- tx_df %>%
-    mutate(
-      tx = purrr::map(tx, ~.x[!IRanges::overlapsAny(.x, junc_space_gr, type="within")])
-    )
+  # remove all exons in between ================================================
+
+  # Build rangs of *intronic* space between junctions, +/-1bp inwards of the exon start/end postions
+  jx_space_lst <- jx %>%
+    narrow(start = 2, end = -2) %>%
+
+    # convert into list
+    S4Vectors::split(1:length(.)) %>% as.list()
+
+  # iterate over transcripts and keep only exons that do not be contained in the junction range
+  tx_lst <- purrr::map2(tx_lst, jx_space_lst, ~.x[!IRanges::overlapsAny(.x, .y, type="within")])
+
+  tx_out <- GenomicRanges::GRangesList(tx_lst)
+
+  return(tx_out)
 
 }
 

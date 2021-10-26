@@ -53,29 +53,18 @@ test_that("add_junc works with toy example data", {
   tx_alt <- add_junc(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
+  expect_equal(end(tx_alt[[1]])[1], 7)
 
 })
 
 test_that("grl_update_end_at and grl_update_end_at works with toy example data", {
 
-  tx <- new("CompressedGRangesList", unlistData = new("GRanges", seqnames = new("Rle",
-                                                                                values = structure(1L, .Label = "1", class = "factor"), lengths = 6L,
-                                                                                elementMetadata = NULL, metadata = list()), ranges = new("IRanges",
-                                                                                                                                         start = c(5L, 12L, 18L, 25L, 5L, 12L), width = c(4L, 3L,
-                                                                                                                                                                                          4L, 2L, 4L, 3L), NAMES = NULL, elementType = "ANY", elementMetadata = NULL,
-                                                                                                                                         metadata = list()), strand = new("Rle", values = structure(1L, .Label = c("+",
-                                                                                                                                                                                                                   "-", "*"), class = "factor"), lengths = 6L, elementMetadata = NULL,
-                                                                                                                                                                          metadata = list()), seqinfo = new("Seqinfo", seqnames = "1",
-                                                                                                                                                                                                            seqlengths = NA_integer_, is_circular = NA, genome = NA_character_),
-                                                      elementMetadata = new("DFrame", rownames = NULL, nrows = 6L,
-                                                                            listData = structure(list(), .Names = character(0)),
-                                                                            elementType = "ANY", elementMetadata = NULL, metadata = list()),
-                                                      elementType = "ANY", metadata = list()), elementMetadata = new("DFrame",
-                                                                                                                     rownames = NULL, nrows = 2L, listData = structure(list(), .Names = character(0)),
-                                                                                                                     elementType = "ANY", elementMetadata = NULL, metadata = list()),
-            elementType = "GRanges", metadata = list(), partitioning = new("PartitioningByEnd",
-                                                                           end = c(4L, 6L), NAMES = c("tx1", "tx3"), elementType = "ANY",
-                                                                           elementMetadata = NULL, metadata = list()))
+  tx <- GenomicRanges::GRangesList(list(
+    GenomicRanges::GRanges(c("1:5-8:+", "1:12-14:+", "1:18-21:+", "1:25-26:+")),
+    GenomicRanges::GRanges(c("1:5-8:+", "1:12-14:+"))
+  ))
+
+
   at = c(1, 1)
   pos = c(7, 7)
 
