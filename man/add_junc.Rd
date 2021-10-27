@@ -10,7 +10,7 @@ add_junc(tx, jx)
 \item{tx}{transcripts a named \code{\link[GenomicRanges]{GRangesList}} with
 transcripts defined as GRanges of exons.}
 
-\item{jx}{splice junctions as GRanges objects}
+\item{jx}{splice junctions as GRanges objects with the same length as \code{tx}.}
 }
 \value{
 a \code{\link[GenomicRanges]{GRangesList}} with altered transcripts.
@@ -21,6 +21,8 @@ The algorithm works in the following steps.
 \code{pos2} as GRangesList of GRanges of exons
 \item For each tx in transcripts do
 \itemize{
+\item if \code{pos1} amd \code{pos2} are on the same exon, duplicate exon and consider
+the first for \code{pos1} and the second for \code{pos2}.
 \item if \code{pos1} overlaps an exon \code{e}:
 shorten \code{e} to end at \code{pos1}
 else:
@@ -34,17 +36,6 @@ extend \code{e} to start in \code{pos2}
 \item remove all exons completeley contained in the interval [\code{pos1}, \code{pos2}].
 }
 }
-
-Limitations:
-\itemize{
-\item [ ] vectorize over multiple input junctions
-\item [ ] Both junction positions in same exon (Exitrons) are ignored
-\item [ ] consider multiple junctions in same transcripts
-}
-
-[ ]: R:\%20
-[ ]: R:\%20
-[ ]: R:\%20
 }
 \description{
 modifies transcripts by applying splice-junctions

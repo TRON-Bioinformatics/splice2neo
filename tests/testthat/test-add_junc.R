@@ -40,8 +40,8 @@ test_that("add_junc works with toy example data", {
     "1",  8, 13, "-", "alt 5prim in exon, neg",
     "1",  6, 7, "+", "adjacent within exon, no effect!"
   ) %>%
-    mutate(
-      junc_id = str_c(chr, pos1, pos2, strand, sep = "_")
+    dplyr::mutate(
+      junc_id = stringr::str_c(chr, pos1, pos2, strand, sep = "_")
     )
 
   # Test with toy data ---------------------------------------------------------
@@ -53,9 +53,51 @@ test_that("add_junc works with toy example data", {
   tx_alt <- add_junc(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
-  expect_equal(end(tx_alt[[1]])[1], 7)
+  expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
 
 })
+
+test_that("add_junc work for exon exclusion junctions on toy data", {
+
+  tx <- GenomicRanges::GRangesList(list(
+    GenomicRanges::GRanges(c("1:2-3:+",
+                             "1:5-6:+",
+                             "1:10-15:+"))
+    ))
+
+  jx <- GenomicRanges::GRanges(c("1:3-10:+"))
+
+  tx_alt <- add_junc(tx, jx)
+
+  expect_equal(length(tx_alt), length(tx))
+  expect_equal(tx_alt[[1]], tx[[1]][c(1, 3)])
+
+})
+
+
+test_that("add_junc work for exitorn junction on toy data", {
+
+  tx <- GenomicRanges::GRangesList(list(
+    GenomicRanges::GRanges(c("1:2-3:+",
+                             "1:10-30:+",
+                             "1:40-50:+"))
+  ) %>% rep(3))
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:3-10:+",  # canonical
+    "1:15-20:+", # exitron in second exon
+    "1:30-40:+"  # canonical
+  ))
+
+  tx_alt <- add_junc(tx, jx)
+
+  expect_equal(length(tx_alt[[2]]), length(tx[[2]]) + 1)
+  expect_equal(tx_alt[[1]], tx[[1]])
+  expect_equal(tx_alt[[3]], tx[[3]])
+  expect_equal(length(tx_alt), length(tx))
+
+})
+
 
 test_that("grl_update_end_at and grl_update_end_at works with toy example data", {
 
