@@ -124,52 +124,6 @@ add_junc <- function(tx, jx){
 
 }
 
-#' update end coordinate of a subset of ranges by given indices
-#'
-#' @param grl A \code{\link[GenomicRanges]{GRangesList}} object
-#' @param pos The new coordinate
-#' @param at The indices of ranges to update
-#'
-#' @return A modified list object
-grl_update_end_at <- function(grl, at, pos){
-
-  stopifnot(length(grl) == length(at) | length(at) == 1)
-  stopifnot(length(grl) == length(pos) | length(pos) == 1)
-
-  furrr::future_pmap(
-    list(gr = as.list(grl),
-         at = at,
-         pos = pos),
-    .f = function(gr, at, pos){
-            BiocGenerics::end(gr[at]) <- pos
-            return(gr)
-          }
-  )
-}
-
-
-#' update start coordinate of a subset of ranges by given indices
-#'
-#' @param grl A \code{\link[GenomicRanges]{GRangesList}} object
-#' @param pos The new coordinate
-#' @param at The indices of ranges to update
-#'
-#' @return A modified list object
-grl_update_start_at <- function(grl, at, pos){
-
-  stopifnot(length(grl) == length(at) | length(at) == 1)
-  stopifnot(length(grl) == length(pos) | length(pos) == 1)
-
-  furrr::future_pmap(
-    list(gr = as.list(grl),
-         at = at,
-         pos = pos),
-    .f = function(gr, at, pos){
-      BiocGenerics::start(gr[at]) <- pos
-      return(gr)
-    }
-  )
-}
 
 #' adds junction position in transcripts
 #'
@@ -181,5 +135,21 @@ grl_update_start_at <- function(grl, at, pos){
 #'
 #' @export
 add_junc_pos <- function(tx, jx){
-  # TODO
+
+  # assume same length of tx and jx
+  stopifnot(length(tx) == length(jx))
+
+  # convert to GRangesList
+  if(! class(tx) %in% c("GRangesList", "CompressedGRangesList")){
+    tx <- GenomicRanges::GRangesList(tx)
+  }
+
+  # get individual GRanges objects for start and end position of junction
+  j_start <- GenomicRanges::resize(jx, width = 1, fix="start")
+
+  # map junction positions on transcript sequence position
+  pos_tx <- GenomicFeatures::pmapToTranscripts(j_start, tx) %>%
+    BiocGenerics::start()
+
+  return(pos_tx)
 }

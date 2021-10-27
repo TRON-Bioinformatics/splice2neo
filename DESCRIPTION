@@ -45,7 +45,7 @@ Imports:
     furrr,
     purrr,
     S4Vectors,
-    GenomicFeatures,
+    GenomicFeatures (>= 1.21.10),
     Biostrings,
     XVector,
     rlang,

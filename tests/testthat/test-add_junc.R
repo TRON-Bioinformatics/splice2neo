@@ -99,40 +99,34 @@ test_that("add_junc work for exitorn junction on toy data", {
 })
 
 
-test_that("grl_update_end_at and grl_update_end_at works with toy example data", {
+test_that("add_junc_pos works on toy data", {
 
-  tx <- GenomicRanges::GRangesList(list(
-    GenomicRanges::GRanges(c("1:5-8:+", "1:12-14:+", "1:18-21:+", "1:25-26:+")),
-    GenomicRanges::GRanges(c("1:5-8:+", "1:12-14:+"))
+  tx <- GenomicRanges::GRangesList(
+    c(
+      list(
+        GenomicRanges::GRanges(c("1:2-3:+",
+                             "1:10-30:+",
+                             "1:40-50:+"))
+      ) %>% rep(3),
+      GenomicRanges::GRanges(c("1:2-3:-",
+                               "1:5-8:-",
+                               "1:10-12:-"))
+    )
+  )
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:3-10:+",  # canonical
+    "1:15-20:+", # exitron in second exon
+    "1:30-40:+", # canonical
+    "1:7-10:-"  # canonical neg. strand
   ))
 
+  pos <- add_junc_pos(tx, jx)
 
-  at = c(1, 1)
-  pos = c(7, 7)
-
-  # modify end -----------------------------------------------------------------
-  tx_alt_end <- grl_update_end_at(tx, at, pos)
-
-  end_alt = tx_alt_end %>%
-    as.list() %>%
-    purrr::map2(at, magrittr::extract) %>%
-    purrr::map_int(BiocGenerics::end)
-  names(end_alt) <- NULL
-
-  expect_equal(end_alt, pos)
-
-  # modify start -----------------------------------------------------------------
-  tx_alt_start <- grl_update_start_at(tx, at, pos)
-
-  start_alt = tx_alt_start %>%
-    as.list() %>%
-    purrr::map2(at, magrittr::extract) %>%
-    purrr::map_int(BiocGenerics::start)
-  names(start_alt) <- NULL
-
-  expect_equal(start_alt, pos)
+  expect_equal(length(tx), length(pos))
 
 })
+
 
 
 
