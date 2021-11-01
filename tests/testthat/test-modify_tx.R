@@ -1,4 +1,4 @@
-test_that("add_junc works with toy example data", {
+test_that("modify_tx works with toy example data", {
 
   # example data
   transcripts <- GenomicRanges::GRangesList(list(
@@ -50,14 +50,14 @@ test_that("add_junc works with toy example data", {
                                IRanges::IRanges(junc_df$pos1, junc_df$pos2),
                                 strand = junc_df$strand)[c(2, 2)]
 
-  tx_alt <- add_junc(tx, jx)
+  tx_alt <- modify_tx(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
   expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
 
 })
 
-test_that("add_junc work for exon exclusion junctions on toy data", {
+test_that("modify_tx work for exon exclusion junctions on toy data", {
 
   tx <- GenomicRanges::GRangesList(list(
     GenomicRanges::GRanges(c("1:2-3:+",
@@ -67,7 +67,7 @@ test_that("add_junc work for exon exclusion junctions on toy data", {
 
   jx <- GenomicRanges::GRanges(c("1:3-10:+"))
 
-  tx_alt <- add_junc(tx, jx)
+  tx_alt <- modify_tx(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
   expect_equal(tx_alt[[1]], tx[[1]][c(1, 3)])
@@ -75,7 +75,7 @@ test_that("add_junc work for exon exclusion junctions on toy data", {
 })
 
 
-test_that("add_junc work for exitorn junction on toy data", {
+test_that("modify_tx work for exitorn junction on toy data", {
 
   tx <- GenomicRanges::GRangesList(list(
     GenomicRanges::GRanges(c("1:2-3:+",
@@ -89,7 +89,7 @@ test_that("add_junc work for exitorn junction on toy data", {
     "1:30-40:+"  # canonical
   ))
 
-  tx_alt <- add_junc(tx, jx)
+  tx_alt <- modify_tx(tx, jx)
 
   expect_equal(length(tx_alt[[2]]), length(tx[[2]]) + 1)
   expect_equal(tx_alt[[1]], tx[[1]])
@@ -97,36 +97,6 @@ test_that("add_junc work for exitorn junction on toy data", {
   expect_equal(length(tx_alt), length(tx))
 
 })
-
-
-test_that("add_junc_pos works on toy data", {
-
-  tx <- GenomicRanges::GRangesList(
-    c(
-      list(
-        GenomicRanges::GRanges(c("1:2-3:+",
-                             "1:10-30:+",
-                             "1:40-50:+"))
-      ) %>% rep(3),
-      GenomicRanges::GRanges(c("1:2-3:-",
-                               "1:5-8:-",
-                               "1:10-12:-"))
-    )
-  )
-
-  jx <- GenomicRanges::GRanges(c(
-    "1:3-10:+",  # canonical
-    "1:15-20:+", # exitron in second exon
-    "1:30-40:+", # canonical
-    "1:7-10:-"  # canonical neg. strand
-  ))
-
-  pos <- add_junc_pos(tx, jx)
-
-  expect_equal(length(tx), length(pos))
-
-})
-
 
 
 
