@@ -46,8 +46,8 @@ modify_tx <- function(tx, jx){
   stopifnot(length(tx) == length(jx))
 
   # get individual GRanges objects for start and end position of junction
-  j1 <- GenomicRanges::resize(jx, width = 1, fix="start")
-  j2 <- GenomicRanges::resize(jx, width = 1, fix="end")
+  j1 <- GenomicRanges::resize(jx, width = 1, fix="start", ignore.strand = TRUE)
+  j2 <- GenomicRanges::resize(jx, width = 1, fix="end", ignore.strand = TRUE)
 
   # convert GRangesLists as natural list objects
   tx_lst <- as.list(tx)
@@ -129,8 +129,14 @@ modify_tx <- function(tx, jx){
   # iterate over transcripts and keep only exons that do not be contained in the junction range
   tx_lst <- furrr::future_map2(tx_lst, jx_space_lst, ~.x[!IRanges::overlapsAny(.x, .y, type="within")])
 
-  tx_out <- GenomicRanges::GRangesList(tx_lst)
 
-  return(tx_out)
+  # delete exon_rank column ====================================================
+  tx_lst = furrr::future_map(tx_lst, function(tx){
+    tx$exon_rank = NULL
+    return(tx)
+  })
+
+
+  return(GenomicRanges::GRangesList(tx_lst))
 
 }

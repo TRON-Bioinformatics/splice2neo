@@ -55,6 +55,28 @@ test_that("modify_tx works with toy example data", {
   expect_equal(length(tx_alt), length(tx))
   expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
 
+  # Test with full example data ---------------------------------------------------------
+  junc_tx_df <- junc_df %>%
+    add_tx(transcripts) %>%
+    filter(!is.na(tx_id))
+
+  jx <- junc_to_gr(junc_tx_df$junc_id)
+  tx <- junc_tx_df$tx_lst
+
+  tx_alt <- modify_tx(tx, jx)
+
+  expect_equal(length(tx_alt), length(tx))
+  # expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
+
+})
+
+test_that("modify_tx works with negativ strand", {
+  jx <- GenomicRanges::GRanges("1:8-15:-")
+  tx <- GenomicRanges::GRangesList(
+    GenomicRanges::GRanges(c("1:5-8:-", "1:18-21:-"))
+  )
+  tx_alt <- modify_tx(tx, jx)
+  expect_equal(length(tx_alt), length(tx))
 })
 
 test_that("modify_tx work for exon exclusion junctions on toy data", {

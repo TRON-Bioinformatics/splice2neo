@@ -28,3 +28,12 @@ test_that("get_junc_pos works on toy data", {
 })
 
 
+test_that("get_junc_pos works with negativ strand", {
+  jx <- GenomicRanges::GRanges("1:8-15:-")
+  tx <- GenomicRanges::GRangesList(
+    GenomicRanges::GRanges(c("1:5-8:-", "1:18-21:-"))
+  )
+  tx_alt <- modify_tx(tx, jx)
+  pos <- get_junc_pos(tx_alt, jx)
+  expect_equal(pos, 7)
+})

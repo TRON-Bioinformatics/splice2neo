@@ -53,12 +53,26 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(splice2neo)
-## basic example code
+
+# load human genome reference sequence
+requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+# load toy example splice junctions
+junc_df <- tibble::tibble(
+  junc_id = toy_junc_id[c(1, 6, 10)]
+)
+
+junc_df
+
+# add transcripts that are affected by splice junction
+junc_df <- junc_df %>% 
+  add_tx(toy_transcripts)
+
+# modify transcripts by junctions and add context sequence around junction position
+junc_df <- junc_df %>% 
+  add_context_seq(size = 400, bsg = bsg)
+
+junc_df
+
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-

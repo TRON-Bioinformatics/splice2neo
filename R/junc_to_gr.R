@@ -24,8 +24,8 @@ junc_to_gr <- function(junc_id){
   end <- fields[,4] %>% as.integer
   strand <- fields[,5]
 
-  gr <- GenomicRanges::GRanges(chr, IRanges::IRanges(start, end), strand = strand,
-                         names = junc_id)
+  gr <- GenomicRanges::GRanges(chr, IRanges::IRanges(start, end),
+                               strand = strand)
   names(gr) <- junc_id
   return(gr)
 }

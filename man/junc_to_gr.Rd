@@ -4,10 +4,10 @@
 \alias{junc_to_gr}
 \title{Convert a splice junction ID into a GRanges object}
 \usage{
-junc_to_gr(junc)
+junc_to_gr(junc_id)
 }
 \arguments{
-\item{junc}{A character vector with a junction IDs}
+\item{junc_id}{A character vector with a junction IDs}
 }
 \value{
 A \code{\link[GenomicRanges]{GRanges}} object
@@ -16,5 +16,9 @@ A \code{\link[GenomicRanges]{GRanges}} object
 Convert a splice junction ID into a GRanges object
 }
 \examples{
+junc_to_gr("chr1_5_10_+")
+
+junc_id <- c("chr1_5_10_+", "chr_special1_5_20_-")
+junc_to_gr(junc_id)
 
 }

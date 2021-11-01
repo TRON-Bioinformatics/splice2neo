@@ -15,10 +15,11 @@ add_tx(df, transcripts)
 \item{transcripts}{\code{\link[GenomicRanges]{GRangesList}} of transcripts}
 }
 \value{
-A data.frame as the input with but with potentially multiple rows
+A data.frame as the input but with potentially multiple rows
 and with the additional column(s):
 \itemize{
 \item \code{tx_id} the ID of the affected transcript
+\item \code{tx_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the transcript
 }
 }
 \description{

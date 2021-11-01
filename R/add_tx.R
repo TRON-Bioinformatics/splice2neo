@@ -7,7 +7,7 @@
 #'
 #' @param transcripts \code{\link[GenomicRanges]{GRangesList}} of transcripts
 #'
-#' @return A data.frame as the input with but with potentially multiple rows
+#' @return A data.frame as the input but with potentially multiple rows
 #'     and with the additional column(s):
 #'
 #'  - `tx_id` the ID of the affected transcript
@@ -36,7 +36,7 @@ add_tx <- function(df, transcripts){
   # build data.frame to associate junc_id to transcripts
   junc_to_tx <- tibble::tibble(
     junc_id = df$junc_id[jx_idx],
-    tx_ids = names(transcripts)[tx_idx],
+    tx_id = names(transcripts)[tx_idx],
     tx_lst = as.list(transcripts[tx_idx])
   )
 
