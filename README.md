@@ -63,6 +63,21 @@ junc_df
 junc_df <- junc_df %>% 
   add_tx(toy_transcripts)
 
+junc_df
+#> # A tibble: 21 × 3
+#>    junc_id                    tx_id           tx_lst      
+#>    <chr>                      <chr>           <named list>
+#>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
+#>  2 chr2_152389996_152392205_- ENST00000172853 <GRanges>   
+#>  3 chr2_152389996_152392205_- ENST00000397345 <GRanges>   
+#>  4 chr2_152389996_152392205_- ENST00000427231 <GRanges>   
+#>  5 chr2_152389996_152392205_- ENST00000618972 <GRanges>   
+#>  6 chr2_152389996_152392205_- ENST00000413693 <GRanges>   
+#>  7 chr2_152389996_152392205_- ENST00000603639 <GRanges>   
+#>  8 chr2_152389996_152392205_- ENST00000604864 <GRanges>   
+#>  9 chr2_152389996_152392205_- ENST00000420924 <GRanges>   
+#> 10 chr2_179415981_179416357_- ENST00000342992 <GRanges>   
+#> # … with 11 more rows
 # modify transcripts by junctions and add context sequence around junction position
 junc_df <- junc_df %>% 
   add_context_seq(size = 400, bsg = bsg)

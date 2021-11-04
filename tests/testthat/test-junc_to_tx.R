@@ -43,12 +43,51 @@ test_that("junc_to_tx works with custom toy data", {
     mutate(
       junc_id = str_c(chr, pos1, pos2, strand, sep = "_")
     )
+  junc_gr <- junc_to_gr(junc_df$junc_id)
+
+  Gviz::plotTracks(list(
+    Gviz::GenomeAxisTrack(),
+    Gviz::AnnotationTrack(transcripts[[1]], name = "tx1", grid = TRUE, v = -25, shape = "smallArrow"),
+    Gviz::AnnotationTrack(transcripts[[2]], name = "tx2", grid = TRUE, v = -25, shape = "smallArrow"),
+    Gviz::AnnotationTrack(transcripts[[3]], name = "tx3", grid = TRUE, v = -25, shape = "smallArrow"),
+    Gviz::AnnotationTrack(junc_gr, name = "junctions",
+                          fill = "red", type = "g",
+                          shape="box",
+                          id = str_c("junc_", seq_along(junc_gr), "_",
+                                     strand(junc_gr)
+                          ),
+                          stacking = "full",
+                          showFeatureId=TRUE,
+                          showId=FALSE,
+                          size = 0.5,
+                          grid = TRUE,
+                          v = -25)
+
+
+    # Gviz::AnnotationTrack(junc_gr[strand(junc_gr) == "-"], name = "junctions (-)",
+    #                       fill = "red", type = "g",
+    #                       shape="box", showId=TRUE, group = 1:2,
+    #                       size = 0.5)
+    # Gviz::DataTrack(name = "uniform")
+  )
+  )
 
   # junc_gr <- GenomicRanges::GRanges(
   #   junc_df$chr,
   #   IRanges::IRanges(junc_df$pos1, junc_df$pos2),
   #   strand = junc_df$strand
   #   )
+
+  require(ggbio)
+  autoplot(transcripts)
+  ggplot() +
+    geom_alignment(transcripts) +
+    geom_alignment(junc_gr, fill = "brown")
+
+  tks <- tracks(tx = transcripts,
+                junctions = junc_gr) +
+    theme_tracks_sunset()
+  tks
 
   # Test with toy data ---------------------------------------------------------
 

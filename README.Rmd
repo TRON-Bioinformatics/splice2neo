@@ -69,6 +69,8 @@ junc_df
 junc_df <- junc_df %>% 
   add_tx(toy_transcripts)
 
+junc_df
+
 # modify transcripts by junctions and add context sequence around junction position
 junc_df <- junc_df %>% 
   add_context_seq(size = 400, bsg = bsg)
