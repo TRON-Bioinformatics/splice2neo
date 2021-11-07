@@ -39,6 +39,14 @@ modified CDS ranges.
 Annotate splice junctions with resulting CDS and peptide sequence
 }
 \examples{
+requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
+junc_df <- toy_junc_df \%>\%
+  mutate(
+    cds_lst = as.list(toy_cds[tx_id])
+  )
+
+add_peptide(junc_df, size = 30, bsg = bsg)
 
 }

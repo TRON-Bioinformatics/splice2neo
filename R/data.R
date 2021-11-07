@@ -55,6 +55,16 @@
 #'
 "toy_junc_id_enst"
 
+#' An example dataset of 18 splice junctions from human
+#' (hg19) genome as a data.frame
+#'
+#' The data.frame has the following columns:
+#'
+#'   - `junc_id` see \link{toy_junc_id}
+#'   - `tx_id` see \link{toy_junc_id_enst}
+#'
+#' @source They were created from the spliceAI example file
+"toy_junc_df"
 
 #' A tibble in junction format but unsorted columns
 #'
