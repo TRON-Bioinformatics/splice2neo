@@ -1,5 +1,5 @@
 
-#' adds junction position in transcripts
+#' Get the position of input junction in the transcript sequences
 #'
 #' @param tx transcripts a \code{\link[GenomicRanges]{GRangesList}} with
 #' transcripts defined as GRanges of exons.

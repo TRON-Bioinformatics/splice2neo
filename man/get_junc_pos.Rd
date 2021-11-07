@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_junc_pos.R
 \name{get_junc_pos}
 \alias{get_junc_pos}
-\title{adds junction position in transcripts}
+\title{Get the position of input junction in the transcript sequences}
 \usage{
 get_junc_pos(tx, jx)
 }
@@ -16,5 +16,5 @@ transcripts defined as GRanges of exons.}
 an integer vector with junction positions
 }
 \description{
-adds junction position in transcripts
+Get the position of input junction in the transcript sequences
 }
