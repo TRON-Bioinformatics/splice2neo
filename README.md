@@ -46,25 +46,33 @@ library(splice2neo)
 # load human genome reference sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+```
 
+### Start with some example splice junctions
+
+``` r
 # load toy example splice junctions
 junc_df <- tibble::tibble(
   junc_id = toy_junc_id[c(1, 6, 10)]
 )
 
 junc_df
-#> # A tibble: 3 × 1
+#> # A tibble: 3 x 1
 #>   junc_id                   
 #>   <chr>                     
 #> 1 chr2_152389996_152392205_-
 #> 2 chr2_179415981_179416357_-
 #> 3 chr2_179446225_179446226_-
-# add transcripts that are affected by splice junction
+```
+
+### add transcripts that are affected by the splice junction
+
+``` r
 junc_df <- junc_df %>% 
   add_tx(toy_transcripts)
 
 junc_df
-#> # A tibble: 21 × 3
+#> # A tibble: 21 x 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
 #>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
@@ -78,23 +86,53 @@ junc_df
 #>  9 chr2_152389996_152392205_- ENST00000420924 <GRanges>   
 #> 10 chr2_179415981_179416357_- ENST00000342992 <GRanges>   
 #> # … with 11 more rows
-# modify transcripts by junctions and add context sequence around junction position
+```
+
+### Modify transcripts by junctions and add context sequence around junction position
+
+``` r
 junc_df <- junc_df %>% 
   add_context_seq(size = 400, bsg = bsg)
 
-junc_df
-#> # A tibble: 21 × 10
-#>    junc_id  tx_id  tx_lst tx_alt_lst tx_id_alt junc_pos_tx cts_seq  cts_junc_pos
-#>    <chr>    <chr>  <name> <named li> <chr>           <int> <chr>           <dbl>
-#>  1 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       16412 AAGAAGA…          199
-#>  2 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       16412 AAGAAGA…          199
-#>  3 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       21515 AAGAAGA…          199
-#>  4 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       21515 AAGAAGA…          199
-#>  5 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       21515 AAGAAGA…          199
-#>  6 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…        5502 AAGAAGA…          199
-#>  7 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       21312 AAGAAGA…          199
-#>  8 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…       21312 AAGAAGA…          199
-#>  9 chr2_15… ENST0… <GRan… <GRanges>  ENST0000…         576 AAGAAGA…          199
-#> 10 chr2_17… ENST0… <GRan… <GRanges>  ENST0000…       83789 TGGATTC…          199
-#> # … with 11 more rows, and 2 more variables: cts_size <int>, cts_id <chr>
+junc_df %>% 
+  dplyr::select(junc_id, tx_id, junc_pos_tx, cts_seq, cts_junc_pos, cts_id)
+#> # A tibble: 21 x 6
+#>    junc_id     tx_id   junc_pos_tx cts_seq               cts_junc_pos cts_id    
+#>    <chr>       <chr>         <int> <chr>                        <dbl> <chr>     
+#>  1 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
+#>  2 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
+#>  3 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…
+#>  4 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
+#>  5 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…
+#>  6 chr2_15238… ENST00…        5502 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
+#>  7 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 729100c15…
+#>  8 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
+#>  9 chr2_15238… ENST00…         576 AAGAAGACTTGACTTGGCTT…          199 8c2b828f5…
+#> 10 chr2_17941… ENST00…       83789 TGGATTCCATGTTGAAAAGA…          199 744c11d66…
+#> # … with 11 more rows
+```
+
+### Add resulting CDS and pepetide sequence
+
+``` r
+junc_df <- junc_df %>% 
+  dplyr::mutate(cds_lst = as.list(toy_cds[tx_id])) %>% 
+  add_peptide(size = 30, bsg = bsg)
+
+junc_df %>% 
+  dplyr::select(junc_id, tx_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
+#> # A tibble: 21 x 5
+#>    junc_id        tx_id     junc_in_orf peptide_context       peptide_context_j…
+#>    <chr>          <chr>     <lgl>       <chr>                              <dbl>
+#>  1 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  2 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  3 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  4 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  5 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  6 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  7 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  8 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#>  9 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
+#> 10 chr2_17941598… ENST0000… TRUE        PSDPSKFTLAVSPVAGTPDY…                 14
+#> # … with 11 more rows
 ```
