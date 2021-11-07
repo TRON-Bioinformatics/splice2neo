@@ -42,7 +42,11 @@ Annotate splice junctions with resulting transcript sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-junc_to_cts(toy_junc_id, toy_transcripts, tx_id = toy_junc_id_enst,
-   size = 400, bsg = bsg)
+junc_df <- toy_junc_df \%>\%
+  dplyr::mutate(
+    tx_lst = as.list(toy_transcripts[tx_id])
+  )
+
+add_context_seq(junc_df, size = 30, bsg = bsg)
 
 }

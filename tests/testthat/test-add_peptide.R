@@ -4,7 +4,7 @@ test_that("add_peptide works on toy example data", {
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
   junc_df <- toy_junc_df %>%
-    mutate(
+    dplyr::mutate(
       cds_lst = as.list(toy_cds[tx_id])
     )
 

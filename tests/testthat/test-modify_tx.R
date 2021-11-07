@@ -120,6 +120,16 @@ test_that("modify_tx work for exitorn junction on toy data", {
 
 })
 
+test_that("modify_tx works with provided toy example data", {
+
+  jx <- junc_to_gr(toy_junc_id)
+  tx <- toy_transcripts[toy_junc_id_enst]
+
+  alt_tx <- modify_tx(tx, jx)
+
+  expect_equal(length(alt_tx), length(tx))
+})
+
 
 test_that("faster version of modify_tx works", {
 
