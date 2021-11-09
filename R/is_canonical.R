@@ -14,7 +14,7 @@ is_canonical <- function(junc_id, ref_junc, exons_gr){
   in_ref_junc <- junc_id %in% ref_junc
 
   # get junction range
-  junc_gr <- junc_id_to_gr(junc_id)
+  junc_gr <- junc_to_gr(junc_id)
 
   in_exon <- IRanges::overlapsAny(junc_gr, exons_gr, type = "within")
   is_adjacent <- BiocGenerics::width(junc_gr) == 2
@@ -23,28 +23,3 @@ is_canonical <- function(junc_id, ref_junc, exons_gr){
 
 }
 
-
-#' Convert junc_id to GRanges
-#'
-#' @param junc_id junction id
-#' @param use_strand If TRUE, strand information is used. Otherwise strand is set to "*".
-#' @return GRanges object of with the ranges defined in junc_id
-#'
-junc_id_to_gr <- function(junc_id, use_strand = TRUE){
-
-  m <- junc_id %>%
-    str_split_fixed("_", 4)
-
-  if(use_strand){
-    strand <- m[,4]
-  }else{
-    strand <- "*"
-  }
-
-  GenomicRanges::GRanges(
-    m[,1],
-    IRanges::IRanges(as.integer(m[,2]), as.integer(m[,3])),
-    strand = strand,
-    name = junc_id
-  )
-}
