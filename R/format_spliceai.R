@@ -1,13 +1,14 @@
 
 #' Formats spliceAI output and filter for predicted effects
 #'
-#' Reformats the data for each annotated effect per row and filters effects
-#' to have a probability not NA and score > 0.
+#' Reformat the data for each annotated effect per row, filters effects
+#' to have a probability not NA and score > 0, and removes gene symbol from
+#' data to make non-redundant output.
 #'
 #' @param spliceai_variants [tibble][tibble::tibble-package] with parsed
 #' spliceAI mutations from \code{\link{parse_spliceai}}
 #'
-#' @return A [tibble][tibble::tibble-package] with spliceing effects per row
+#' @return A [tibble][tibble::tibble-package] with splicing effects per row
 #'
 #' @examples
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
@@ -25,9 +26,13 @@ format_spliceai <- function(spliceai_variants){
       names_to = c(".value", "change"),
       names_pattern = "(DS|DP)_(\\w*)",
     ) %>%
-    rename(prob = DS, pos_rel = DP) %>%
+    dplyr::rename(prob = DS, pos_rel = DP) %>%
     mutate(change = as.factor(change)) %>%
 
     # filter effects without probability given
-    filter(!is.na(prob) & prob > 0)
+    filter(!is.na(prob) & prob > 0) %>%
+
+    # remove gene symbol and make non-redundant output
+    dplyr::select(-c("SYMBOL")) %>%
+    dplyr::distinct()
 }

@@ -11,11 +11,12 @@ format_spliceai(spliceai_variants)
 spliceAI mutations from \code{\link{parse_spliceai}}}
 }
 \value{
-A \link[tibble:tibble-package]{tibble} with spliceing effects per row
+A \link[tibble:tibble-package]{tibble} with splicing effects per row
 }
 \description{
-Reformats the data for each annotated effect per row and filters effects
-to have a probability not NA and score > 0.
+Reformat the data for each annotated effect per row, filters effects
+to have a probability not NA and score > 0, and removes gene symbol from
+data to make non-redundant output.
 }
 \examples{
 spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")

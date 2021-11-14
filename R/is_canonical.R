@@ -9,18 +9,17 @@
 #' consists of two directly adjacent positions (intron retention) and
 #' overlaps (completely within) a canonical exon from `exons_gr`.
 #'
-#'
-#' @importFrom IRanges overlapsAny
 is_canonical <- function(junc_id, ref_junc, exons_gr){
 
   in_ref_junc <- junc_id %in% ref_junc
 
   # get junction range
-  junc_gr <- junc_id_to_gr(junc_id)
+  junc_gr <- junc_to_gr(junc_id)
 
-  in_exon <- overlapsAny(junc_gr, exons_gr, type = "within")
-  is_adjacent <- width(junc_gr) == 2
+  in_exon <- IRanges::overlapsAny(junc_gr, exons_gr, type = "within")
+  is_adjacent <- BiocGenerics::width(junc_gr) == 2
 
   return(in_ref_junc | (in_exon & is_adjacent))
 
 }
+
