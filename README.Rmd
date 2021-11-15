@@ -21,9 +21,9 @@ knitr::opts_chunk$set(
 This package provides functions for the analysis of alternative or 
  aberrant splicing junctions and their creation from or association with 
  somatic mutations. It integrates the output of several tools which predict 
- splicing effects from mutation or RNA-seq data into a common splice junction 
+ splicing effects from mutation (SpliceAI, MMSplice) or which detect expressed splice junctions from RNA-seq data (Leafcutter, Spladder) into a common splice junction 
  format based on genomic coordinates. Splice junctions can be annotated with 
- affected transcript sequences, CDS, and resulting peptide sequences.  
+ affected transcript sequences, CDS, and resulting peptide sequences. Resulting peptide sequences may form neoantigens.    
 
 Website: https://tron.pages.gitlab.rlp.net/splice2neo
  
@@ -33,17 +33,12 @@ Website: https://tron.pages.gitlab.rlp.net/splice2neo
 
 This R package is not yet on [CRAN](https://CRAN.R-project.org) or
 [Bioconductor](https://www.bioconductor.org/). Therefore, you have to install it
-form this GitLab repository. 
-
-However, this repository is a private GitLab repository and therefore you have to 
-create an personal access token (PAT) first. This is described [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html).
-As Scope use `api` or `read_api`.  
-
+form this GitHub repository. 
 
 ``` r
-install.packages("remotes") # if needed
+install.packages("devtools") # if needed
 
-remotes::install_gitlab("tron/splice2neo", host = "gitlab.rlp.net", auth_token = "YOUR_ACCESS_TOKEN")
+devtools::install_github("TRON-Bioinformatics/splice2neo")
 
 ```
 
@@ -70,7 +65,7 @@ junc_df <- tibble::tibble(
 junc_df
 ```
 
-### add transcripts that are affected by the splice junction
+### Add transcripts that are affected by the splice junction
 
 ```{r}
 junc_df <- junc_df %>% 
@@ -79,7 +74,7 @@ junc_df <- junc_df %>%
 junc_df
 ```
 
-### Modify transcripts by junctions and add context sequence around junction position
+### Modify canonical transcripts by altered splice junction and add context sequence around junction position
 
 ```{r}
 junc_df <- junc_df %>% 
@@ -90,7 +85,7 @@ junc_df %>%
 
 ```
 
-### Add resulting CDS and pepetide sequence
+### Add resulting CDS and peptide sequence
 
 ```{r}
 
