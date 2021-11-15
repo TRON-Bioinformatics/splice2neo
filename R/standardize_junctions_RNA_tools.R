@@ -207,13 +207,13 @@ spladder_transform_mutex_exon <- function(tib) {
 #'
 #' @examples
 #'spladder_output
-#'transformed_spladder <- spladder.transform.format(
+#'transformed_spladder <- spladder_transform_format(
 #'  spladder_output)
 #'transformed_spladder
 #'
 #'@import dplyr
 #' @export
-spladder.transform.format <- function(l) {
+spladder_transform_format <- function(l) {
 
   l_new <- l
   
@@ -272,7 +272,7 @@ import_spladder <- function(path){
   files <- lapply(path_files, read_delim, delim = "\t")
   
   if(length(files) == 0){
-    stop("There are no SPLADDER input files")
+    stop("There are no SPLADDER confirmed.txt.gz input files")
   }
   names_events <-
     c(
@@ -300,13 +300,13 @@ import_spladder <- function(path){
 #' @export
 spladder_transform <- function(path){
   dat <- import_spladder(path)
-  juncs <- spladder.transform.format(dat)
+  juncs <- spladder_transform_format(dat)
   return(juncs)
 }
 
 # LEAFCUTTER FUNCTIONS -----------------------------------------------------
 
-#' Imports "_perind.counts.gz" from Leafcutter outpu.
+#' Imports "_perind.counts.gz" from Leafcutter output.
 #'
 #' @param file.name The path to the file
 #'
@@ -315,7 +315,7 @@ spladder_transform <- function(path){
 #'
 #' @import readr
 #' @export
-import_leafcutter.counts <- function(file.name) {
+import_leafcutter_counts <- function(file.name) {
   if(!file.exists(file.name)){
     stop("Aligned.out.bam.junc file is missing")
   }
@@ -329,7 +329,7 @@ import_leafcutter.counts <- function(file.name) {
 }
 
 
-#' Transforms Leafcutter counts file
+#' Transforms Leafcutter counts file into standardized junction format.  
 #'
 #' @param tib Leafcutter counts file as tibble
 #'
@@ -339,7 +339,7 @@ import_leafcutter.counts <- function(file.name) {
 #'
 #' @import dplyr
 #' @export
-transform_leafcutter.counts <- function(tib) {
+transform_leafcutter_counts <- function(tib) {
   tib %>%
     separate(
       intron_cluster,
@@ -364,7 +364,7 @@ transform_leafcutter.counts <- function(tib) {
 #'
 #' @import readr
 #' @export
-import_leafcutter.bam <- function(file.name) {
+import_leafcutter_bam <- function(file.name) {
   if(!file.exists(file.name)){
     stop("Aligned.out.bam.junc file is missing")
   }
@@ -389,7 +389,7 @@ import_leafcutter.bam <- function(file.name) {
 #'
 #' @import dplyr
 #' @export
-transform_leafcutter.bam <- function(tib) {
+transform_leafcutter_bam <- function(tib) {
   tib %>%
     mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
                            sep = "_")) %>%
@@ -406,7 +406,7 @@ transform_leafcutter.bam <- function(tib) {
 #'
 #' @import dplyr
 #' @export
-leafcutter.generate.output <- function(tib) {
+leafcutter_transform_format <- function(tib) {
   tib <- tib %>%
     mutate(
       Gene = NA,
@@ -428,8 +428,8 @@ leafcutter.generate.output <- function(tib) {
   return(tib)
 }
 
-#' Imports "_perind.counts.gz" from Leafcutter output and tranforms it
-#' into standardized output format
+#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output 
+#' into standardized junction output format
 #'
 #' @param path The path to leafcutter output
 #'
@@ -442,15 +442,15 @@ leafcutter_transform <- function(path) {
   file.counts <- list.files(path, pattern = "_perind.counts.gz")
   file.counts <- paste0(path, "/", file.counts)
   counts <- file.counts %>%
-    import_leafcutter.counts() %>%
-    transform_leafcutter.counts()
+    import_leafcutter_counts() %>%
+    transform_leafcutter_counts()
   file.bam <- list.files(path, pattern = "_Aligned.out.bam.junc")
   file.bam <- paste0(path, "/", file.bam)
   juncs <- file.bam %>%
-    import_leafcutter.bam() %>%
-    transform_leafcutter.bam()
+    import_leafcutter_bam() %>%
+    transform_leafcutter_bam()
   dat <- left_join(counts, juncs, by = "junc_id")
-  dat_out <- leafcutter.generate.output(dat)
+  dat_out <- leafcutter_transform_format(dat)
   return(dat_out)
 }
 
