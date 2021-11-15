@@ -19,7 +19,6 @@
 #'
 #'@import dplyr
 #'
-#'@export
 sort_columns <- function(tib) {
   column_order <-
   c(
@@ -46,12 +45,12 @@ sort_columns <- function(tib) {
 #'
 #' @examples
 #' spladder_output.a3ss
-#' transformed_spladder.a3ss <- spladder.transform.a3ss(spladder_output.a3ss)
+#' transformed_spladder.a3ss <- spladder_transform_a3ss(spladder_output.a3ss)
 #' transformed_spladder.a3ss
 #'
 #' @import dplyr
 #' @export
-spladder.transform.a3ss <- function(tib) {
+spladder_transform_a3ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
@@ -82,12 +81,12 @@ spladder.transform.a3ss <- function(tib) {
 #'
 #' @examples
 #'spladder_output.a5ss
-#'transformed_spladder.a5ss <- spladder.transform.a5ss(spladder_output.a5ss)
+#'transformed_spladder.a5ss <- spladder_transform_a5ss(spladder_output.a5ss)
 #'transformed_spladder.a5ss
 #'
 #'@import dplyr
 #' @export
-spladder.transform.a5ss <- function(tib) {
+spladder_transform_a5ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
@@ -117,13 +116,13 @@ spladder.transform.a5ss <- function(tib) {
 #'
 #' @examples
 #'spladder_output.exonskip
-#'transformed_spladder.exonskip <- spladder.transform.exon_skipping(
+#'transformed_spladder.exonskip <- spladder_transform_exon_skipping(
 #'  spladder_output.exonskip)
 #'transformed_spladder.exonskip
 #'
 #'@import dplyr
 #' @export
-spladder.transform.exon_skipping <- function(tib) {
+spladder_transform_exon_skipping <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon_pre_end, exon_start, strand, sep = "_"),
@@ -147,13 +146,13 @@ spladder.transform.exon_skipping <- function(tib) {
 #'
 #' @examples
 #'spladder_output.intronreten
-#'transformed_spladder.intronreten <- spladder.transform.intron_retention(
+#'transformed_spladder.intronreten <- spladder_transform_intron_retention(
 #'  spladder_output.intronreten)
 #'transformed_spladder.intronreten
 #'
 #'@import dplyr
 #' @export
-spladder.transform.intron_retention <- function(tib) {
+spladder_transform_intron_retention <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon1_end, intron_start, strand, sep = "_"),
@@ -176,13 +175,13 @@ spladder.transform.intron_retention <- function(tib) {
 #'
 #' @examples
 #'spladder_output.mutexon
-#'transformed_spladder.mutexon <- spladder.transform.mutex_exon(
+#'transformed_spladder.mutexon <- spladder_transform_mutex_exon(
 #'  spladder_output.mutexon)
 #'transformed_spladder.mutexon
 #'
 #'@import dplyr
 #' @export
-spladder.transform.mutex_exon <- function(tib) {
+spladder_transform_mutex_exon <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon_pre_end, exon1_start, strand, sep = "_"),
@@ -198,13 +197,13 @@ spladder.transform.mutex_exon <- function(tib) {
 }
 
 
-#' Transforms SPLADDER output into standardized junction format
+#' Transforms Spladder output into standardized junction format
 #'
-#' @param l A list with tibbles. Each tibble is a Spladder output for "A5SS",
-#'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
+#' @param l A list with tibbles that contain the spladder output - each for one type of alternative splicing. These types can be "A5SS",
+#'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons". 
 #'
 #' @return A tibble in standardized junction format, combining all alternative
-#'   splicing classes that are covered by Spladder
+#'   splicing classes that are were determined with Spladder
 #'
 #' @examples
 #'spladder_output
@@ -216,18 +215,26 @@ spladder.transform.mutex_exon <- function(tib) {
 #' @export
 spladder.transform.format <- function(l) {
 
-  if(!all(c("A5SS","A3SS", "cassette_exon", "intron_retention",
-            "mutex_exons") %in% names(l))){
-    stop("The input list must contain the tibbles: A5SS, A3SS, cassette_exon,
-    intron_retention, mutex_exons")
+  l_new <- l
+  
+  if("A5SS" %in% names(l)){
+    l_new$A5SS <- spladder_transform_a5ss(l$A5SS)
+  }
+  if("A3SS" %in% names(l)){
+    l_new$A3SS <- spladder_transform_a3ss(l$A3SS)
+  }
+  if("cassette_exon" %in% names(l)){
+    l_new$cassette_exon <- spladder_transform_exon_skipping(l$cassette_exon)
+  }
+  if("intron_retention" %in% names(l)){
+    l_new$intron_retention <- spladder_transform_intron_retention(l$intron_retention)
+  }
+  if("mutex_exons" %in% names(l)){
+    l_new$mutex_exons <- spladder_transform_mutex_exon(l$mutex_exons)
   }
 
   df <- bind_rows(
-    spladder.transform.a5ss(l$A5SS),
-    spladder.transform.a3ss(l$A3SS),
-    spladder.transform.exon_skipping(l$cassette_exon),
-    spladder.transform.intron_retention(l$intron_retention),
-    spladder.transform.mutex_exon(l$mutex_exons)
+    l_new
   )
   df %>%
     tidyr::separate(
@@ -246,9 +253,9 @@ spladder.transform.format <- function(l) {
 }
 
 
-#' Imports SPLADDER output from a given path
+#' Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.  
 #'
-#' @param path The path to a folder with spladder output
+#' @param path The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.  
 #'
 #' @return A list with tibbles. Each tibble is a Spladder output for "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
@@ -258,9 +265,24 @@ spladder.transform.format <- function(l) {
 #' @export
 import_spladder <- function(path){
   files <- list.files(path, "confirmed.txt.gz")
+  as_types <- gsub("_C3.confirmed.txt.gz", "", files)
+  as_types <- gsub("merge_graphs_", "", as_types)
   path_files <- paste(path, files ,sep = "/" )
-  files <- lapply(path_files, function(x) if(file.exists(x)) {read_delim(x, delim = "\t")})
-  names(files) <- c("A3SS", "A5SS", "cassette_exon", "intron_retention", "mutex_exons")
+  
+  files <- lapply(path_files, read_delim, delim = "\t")
+  
+  if(length(files) == 0){
+    stop("There are no SPLADDER input files")
+  }
+  names_events <-
+    c(
+      "alt_3prime" = "A3SS",
+      "alt_5prime" = "A5SS",
+      "exon_skip" = "cassette_exon",
+      "intron_retention" = "intron_retention",
+      "mutex_exons" = "mutex_exons"
+    )
+  names(files) <- names_events[as_types]
   return(files)
 }
 
