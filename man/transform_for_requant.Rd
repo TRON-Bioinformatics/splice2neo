@@ -2,7 +2,7 @@
 % Please edit documentation in R/easyquant.R
 \name{transform_for_requant}
 \alias{transform_for_requant}
-\title{Create table for re-quantification analysis with easyquant}
+\title{Creates a table with context sequences for re-quantification analysis with Easyquant.}
 \usage{
 transform_for_requant(cts_id, cts_seq, junc_position)
 }
@@ -24,7 +24,7 @@ A tibble that can be used for requantification with easyquant. This tibble has t
 }
 }
 \description{
-Create table for re-quantification analysis with easyquant
+Creates a table with context sequences for re-quantification analysis with Easyquant.
 }
 \examples{
 

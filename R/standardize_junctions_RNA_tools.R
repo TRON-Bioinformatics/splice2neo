@@ -11,12 +11,6 @@
 #'
 #' @return A tibble with sorted columns as given above
 #'
-#' @examples
-#'
-#' unsorted_junc_df
-#' sorted_junc_df <- sort_columns(unsorted_junc_df)
-#' sorted_junc_df
-#'
 #'@import dplyr
 #'
 sort_columns <- function(tib) {
@@ -200,7 +194,7 @@ spladder_transform_mutex_exon <- function(tib) {
 #' Transforms Spladder output into standardized junction format
 #'
 #' @param l A list with tibbles that contain the spladder output - each for one type of alternative splicing. These types can be "A5SS",
-#'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons". 
+#'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 #'
 #' @return A tibble in standardized junction format, combining all alternative
 #'   splicing classes that are were determined with Spladder
@@ -216,7 +210,7 @@ spladder_transform_mutex_exon <- function(tib) {
 spladder_transform_format <- function(l) {
 
   l_new <- l
-  
+
   if("A5SS" %in% names(l)){
     l_new$A5SS <- spladder_transform_a5ss(l$A5SS)
   }
@@ -253,9 +247,9 @@ spladder_transform_format <- function(l) {
 }
 
 
-#' Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.  
+#' Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.
 #'
-#' @param path The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.  
+#' @param path The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.
 #'
 #' @return A list with tibbles. Each tibble is a Spladder output for "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
@@ -268,9 +262,9 @@ import_spladder <- function(path){
   as_types <- gsub("_C3.confirmed.txt.gz", "", files)
   as_types <- gsub("merge_graphs_", "", as_types)
   path_files <- paste(path, files ,sep = "/" )
-  
+
   files <- lapply(path_files, read_delim, delim = "\t")
-  
+
   if(length(files) == 0){
     stop("There are no SPLADDER confirmed.txt.gz input files")
   }
@@ -329,7 +323,7 @@ import_leafcutter_counts <- function(file.name) {
 }
 
 
-#' Transforms Leafcutter counts file into standardized junction format.  
+#' Transforms Leafcutter counts file into standardized junction format.
 #'
 #' @param tib Leafcutter counts file as tibble
 #'
@@ -428,7 +422,7 @@ leafcutter_transform_format <- function(tib) {
   return(tib)
 }
 
-#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output 
+#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output
 #' into standardized junction output format
 #'
 #' @param path The path to leafcutter output
@@ -459,7 +453,7 @@ leafcutter_transform <- function(path) {
 # COMBINED DATASET --------------------------------------------------------
 
 
-#' Combines tibbles with junctions from Spladder and Leafcutter
+#' Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions
 #'
 #' @param leafcutter_juncs A tibble the junctions identified by Leafcutter in
 #'   standardized format
@@ -490,7 +484,7 @@ generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs){
 
 }
 
-#' This is wrapper function to map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
 #'
 #' @param path_to_spladder The path to the results from RNA-seq analysis with spladder
 #' @param path_to_leafcutter The path to the results from RNA-seq analysis with leafcutter

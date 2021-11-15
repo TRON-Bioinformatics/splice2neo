@@ -2,8 +2,8 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{leafcutter_transform}
 \alias{leafcutter_transform}
-\title{Imports "_perind.counts.gz" from Leafcutter output and tranforms it
-into standardized output format}
+\title{Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output
+into standardized junction output format}
 \usage{
 leafcutter_transform(path)
 }
@@ -14,6 +14,6 @@ leafcutter_transform(path)
 A tibble in standardized junction format
 }
 \description{
-Imports "_perind.counts.gz" from Leafcutter output and tranforms it
-into standardized output format
+Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output
+into standardized junction output format
 }
