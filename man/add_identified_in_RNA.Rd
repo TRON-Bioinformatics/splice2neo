@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{add_identified_in_RNA}
 \alias{add_identified_in_RNA}
-\title{This is wrapper function to map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder}
+\title{This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder}
 \usage{
 add_identified_in_RNA(mutation_juncs, path_to_spladder, path_to_leafcutter)
 }
@@ -18,7 +18,7 @@ The junction-transcript centric data predicted from WES data is extedended by th
 identified by spladder or leafcutter. (\code{identified_by_leafcutter}, \code{identified_by_spladder})
 }
 \description{
-This is wrapper function to map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
 }
 \examples{
 

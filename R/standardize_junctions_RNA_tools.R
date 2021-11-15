@@ -11,15 +11,8 @@
 #'
 #' @return A tibble with sorted columns as given above
 #'
-#' @examples
-#'
-#' unsorted_junc_df
-#' sorted_junc_df <- sort_columns(unsorted_junc_df)
-#' sorted_junc_df
-#'
 #'@import dplyr
 #'
-#'@export
 sort_columns <- function(tib) {
   column_order <-
   c(
@@ -46,12 +39,12 @@ sort_columns <- function(tib) {
 #'
 #' @examples
 #' spladder_output.a3ss
-#' transformed_spladder.a3ss <- spladder.transform.a3ss(spladder_output.a3ss)
+#' transformed_spladder.a3ss <- spladder_transform_a3ss(spladder_output.a3ss)
 #' transformed_spladder.a3ss
 #'
 #' @import dplyr
 #' @export
-spladder.transform.a3ss <- function(tib) {
+spladder_transform_a3ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
@@ -82,12 +75,12 @@ spladder.transform.a3ss <- function(tib) {
 #'
 #' @examples
 #'spladder_output.a5ss
-#'transformed_spladder.a5ss <- spladder.transform.a5ss(spladder_output.a5ss)
+#'transformed_spladder.a5ss <- spladder_transform_a5ss(spladder_output.a5ss)
 #'transformed_spladder.a5ss
 #'
 #'@import dplyr
 #' @export
-spladder.transform.a5ss <- function(tib) {
+spladder_transform_a5ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
@@ -117,13 +110,13 @@ spladder.transform.a5ss <- function(tib) {
 #'
 #' @examples
 #'spladder_output.exonskip
-#'transformed_spladder.exonskip <- spladder.transform.exon_skipping(
+#'transformed_spladder.exonskip <- spladder_transform_exon_skipping(
 #'  spladder_output.exonskip)
 #'transformed_spladder.exonskip
 #'
 #'@import dplyr
 #' @export
-spladder.transform.exon_skipping <- function(tib) {
+spladder_transform_exon_skipping <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon_pre_end, exon_start, strand, sep = "_"),
@@ -147,13 +140,13 @@ spladder.transform.exon_skipping <- function(tib) {
 #'
 #' @examples
 #'spladder_output.intronreten
-#'transformed_spladder.intronreten <- spladder.transform.intron_retention(
+#'transformed_spladder.intronreten <- spladder_transform_intron_retention(
 #'  spladder_output.intronreten)
 #'transformed_spladder.intronreten
 #'
 #'@import dplyr
 #' @export
-spladder.transform.intron_retention <- function(tib) {
+spladder_transform_intron_retention <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon1_end, intron_start, strand, sep = "_"),
@@ -176,13 +169,13 @@ spladder.transform.intron_retention <- function(tib) {
 #'
 #' @examples
 #'spladder_output.mutexon
-#'transformed_spladder.mutexon <- spladder.transform.mutex_exon(
+#'transformed_spladder.mutexon <- spladder_transform_mutex_exon(
 #'  spladder_output.mutexon)
 #'transformed_spladder.mutexon
 #'
 #'@import dplyr
 #' @export
-spladder.transform.mutex_exon <- function(tib) {
+spladder_transform_mutex_exon <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = paste(contig, exon_pre_end, exon1_start, strand, sep = "_"),
@@ -198,36 +191,44 @@ spladder.transform.mutex_exon <- function(tib) {
 }
 
 
-#' Transforms SPLADDER output into standardized junction format
+#' Transforms Spladder output into standardized junction format
 #'
-#' @param l A list with tibbles. Each tibble is a Spladder output for "A5SS",
+#' @param l A list with tibbles that contain the spladder output - each for one type of alternative splicing. These types can be "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 #'
 #' @return A tibble in standardized junction format, combining all alternative
-#'   splicing classes that are covered by Spladder
+#'   splicing classes that are were determined with Spladder
 #'
 #' @examples
 #'spladder_output
-#'transformed_spladder <- spladder.transform.format(
+#'transformed_spladder <- spladder_transform_format(
 #'  spladder_output)
 #'transformed_spladder
 #'
 #'@import dplyr
 #' @export
-spladder.transform.format <- function(l) {
+spladder_transform_format <- function(l) {
 
-  if(!all(c("A5SS","A3SS", "cassette_exon", "intron_retention",
-            "mutex_exons") %in% names(l))){
-    stop("The input list must contain the tibbles: A5SS, A3SS, cassette_exon,
-    intron_retention, mutex_exons")
+  l_new <- l
+
+  if("A5SS" %in% names(l)){
+    l_new$A5SS <- spladder_transform_a5ss(l$A5SS)
+  }
+  if("A3SS" %in% names(l)){
+    l_new$A3SS <- spladder_transform_a3ss(l$A3SS)
+  }
+  if("cassette_exon" %in% names(l)){
+    l_new$cassette_exon <- spladder_transform_exon_skipping(l$cassette_exon)
+  }
+  if("intron_retention" %in% names(l)){
+    l_new$intron_retention <- spladder_transform_intron_retention(l$intron_retention)
+  }
+  if("mutex_exons" %in% names(l)){
+    l_new$mutex_exons <- spladder_transform_mutex_exon(l$mutex_exons)
   }
 
   df <- bind_rows(
-    spladder.transform.a5ss(l$A5SS),
-    spladder.transform.a3ss(l$A3SS),
-    spladder.transform.exon_skipping(l$cassette_exon),
-    spladder.transform.intron_retention(l$intron_retention),
-    spladder.transform.mutex_exon(l$mutex_exons)
+    l_new
   )
   df %>%
     tidyr::separate(
@@ -246,9 +247,9 @@ spladder.transform.format <- function(l) {
 }
 
 
-#' Imports SPLADDER output from a given path
+#' Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.
 #'
-#' @param path The path to a folder with spladder output
+#' @param path The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.
 #'
 #' @return A list with tibbles. Each tibble is a Spladder output for "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
@@ -258,9 +259,24 @@ spladder.transform.format <- function(l) {
 #' @export
 import_spladder <- function(path){
   files <- list.files(path, "confirmed.txt.gz")
+  as_types <- gsub("_C3.confirmed.txt.gz", "", files)
+  as_types <- gsub("merge_graphs_", "", as_types)
   path_files <- paste(path, files ,sep = "/" )
-  files <- lapply(path_files, function(x) if(file.exists(x)) {read_delim(x, delim = "\t")})
-  names(files) <- c("A3SS", "A5SS", "cassette_exon", "intron_retention", "mutex_exons")
+
+  files <- lapply(path_files, read_delim, delim = "\t")
+
+  if(length(files) == 0){
+    stop("There are no SPLADDER confirmed.txt.gz input files")
+  }
+  names_events <-
+    c(
+      "alt_3prime" = "A3SS",
+      "alt_5prime" = "A5SS",
+      "exon_skip" = "cassette_exon",
+      "intron_retention" = "intron_retention",
+      "mutex_exons" = "mutex_exons"
+    )
+  names(files) <- names_events[as_types]
   return(files)
 }
 
@@ -278,13 +294,13 @@ import_spladder <- function(path){
 #' @export
 spladder_transform <- function(path){
   dat <- import_spladder(path)
-  juncs <- spladder.transform.format(dat)
+  juncs <- spladder_transform_format(dat)
   return(juncs)
 }
 
 # LEAFCUTTER FUNCTIONS -----------------------------------------------------
 
-#' Imports "_perind.counts.gz" from Leafcutter outpu.
+#' Imports "_perind.counts.gz" from Leafcutter output.
 #'
 #' @param file.name The path to the file
 #'
@@ -293,7 +309,7 @@ spladder_transform <- function(path){
 #'
 #' @import readr
 #' @export
-import_leafcutter.counts <- function(file.name) {
+import_leafcutter_counts <- function(file.name) {
   if(!file.exists(file.name)){
     stop("Aligned.out.bam.junc file is missing")
   }
@@ -307,7 +323,7 @@ import_leafcutter.counts <- function(file.name) {
 }
 
 
-#' Transforms Leafcutter counts file
+#' Transforms Leafcutter counts file into standardized junction format.
 #'
 #' @param tib Leafcutter counts file as tibble
 #'
@@ -317,7 +333,7 @@ import_leafcutter.counts <- function(file.name) {
 #'
 #' @import dplyr
 #' @export
-transform_leafcutter.counts <- function(tib) {
+transform_leafcutter_counts <- function(tib) {
   tib %>%
     separate(
       intron_cluster,
@@ -342,7 +358,7 @@ transform_leafcutter.counts <- function(tib) {
 #'
 #' @import readr
 #' @export
-import_leafcutter.bam <- function(file.name) {
+import_leafcutter_bam <- function(file.name) {
   if(!file.exists(file.name)){
     stop("Aligned.out.bam.junc file is missing")
   }
@@ -367,7 +383,7 @@ import_leafcutter.bam <- function(file.name) {
 #'
 #' @import dplyr
 #' @export
-transform_leafcutter.bam <- function(tib) {
+transform_leafcutter_bam <- function(tib) {
   tib %>%
     mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
                            sep = "_")) %>%
@@ -384,7 +400,7 @@ transform_leafcutter.bam <- function(tib) {
 #'
 #' @import dplyr
 #' @export
-leafcutter.generate.output <- function(tib) {
+leafcutter_transform_format <- function(tib) {
   tib <- tib %>%
     mutate(
       Gene = NA,
@@ -406,8 +422,8 @@ leafcutter.generate.output <- function(tib) {
   return(tib)
 }
 
-#' Imports "_perind.counts.gz" from Leafcutter output and tranforms it
-#' into standardized output format
+#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output
+#' into standardized junction output format
 #'
 #' @param path The path to leafcutter output
 #'
@@ -420,15 +436,15 @@ leafcutter_transform <- function(path) {
   file.counts <- list.files(path, pattern = "_perind.counts.gz")
   file.counts <- paste0(path, "/", file.counts)
   counts <- file.counts %>%
-    import_leafcutter.counts() %>%
-    transform_leafcutter.counts()
+    import_leafcutter_counts() %>%
+    transform_leafcutter_counts()
   file.bam <- list.files(path, pattern = "_Aligned.out.bam.junc")
   file.bam <- paste0(path, "/", file.bam)
   juncs <- file.bam %>%
-    import_leafcutter.bam() %>%
-    transform_leafcutter.bam()
+    import_leafcutter_bam() %>%
+    transform_leafcutter_bam()
   dat <- left_join(counts, juncs, by = "junc_id")
-  dat_out <- leafcutter.generate.output(dat)
+  dat_out <- leafcutter_transform_format(dat)
   return(dat_out)
 }
 
@@ -437,7 +453,7 @@ leafcutter_transform <- function(path) {
 # COMBINED DATASET --------------------------------------------------------
 
 
-#' Combines tibbles with junctions from Spladder and Leafcutter
+#' Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions
 #'
 #' @param leafcutter_juncs A tibble the junctions identified by Leafcutter in
 #'   standardized format
@@ -468,7 +484,7 @@ generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs){
 
 }
 
-#' This is wrapper function to map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
 #'
 #' @param path_to_spladder The path to the results from RNA-seq analysis with spladder
 #' @param path_to_leafcutter The path to the results from RNA-seq analysis with leafcutter

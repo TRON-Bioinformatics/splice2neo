@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{generate_combined_dataset}
 \alias{generate_combined_dataset}
-\title{Combines tibbles with junctions from Spladder and Leafcutter}
+\title{Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions}
 \usage{
 generate_combined_dataset(spladder_juncs, leafcutter_juncs)
 }
@@ -18,7 +18,7 @@ A combined table with unique junctions. The columns RNA_tool
 contains information which tools identified the given junction
 }
 \description{
-Combines tibbles with junctions from Spladder and Leafcutter
+Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions
 }
 \examples{
 dat.combined <- generate_combined_dataset(spladder_juncs,

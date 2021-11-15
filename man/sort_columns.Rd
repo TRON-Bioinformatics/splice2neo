@@ -19,10 +19,3 @@ Sorts columns of junction output file in the following order:
 "junction_start", "junction_end", "strand", "chromosome", "Gene",
 "class", "AS_event_ID", "junction_id"
 }
-\examples{
-
-unsorted_junc_df
-sorted_junc_df <- sort_columns(unsorted_junc_df)
-sorted_junc_df
-
-}
