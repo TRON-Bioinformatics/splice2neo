@@ -2,12 +2,12 @@
 % Please edit documentation in R/easyquant.R
 \name{read_requant}
 \alias{read_requant}
-\title{Imports re-quantification from analysis with easyquant}
+\title{Imports the re-quantification results from analysis with easyquant.}
 \usage{
 read_requant(path_folder)
 }
 \arguments{
-\item{path_folder}{The path to easyquant folder}
+\item{path_folder}{The path to the easyquant folder}
 }
 \value{
 A tibble with with the requantification results. This tibble has the columns
@@ -22,7 +22,7 @@ A tibble with with the requantification results. This tibble has the columns
 }
 }
 \description{
-Imports re-quantification from analysis with easyquant
+Imports the re-quantification results from analysis with easyquant.
 }
 \examples{
 

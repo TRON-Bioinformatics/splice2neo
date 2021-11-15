@@ -2,17 +2,17 @@
 % Please edit documentation in R/easyquant.R
 \name{map_requant}
 \alias{map_requant}
-\title{Map the re-quantification result on the junction-transcript centric data by hash id.}
+\title{Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.}
 \usage{
 map_requant(path_to_easyquant_folder, junc_tib)
 }
 \arguments{
 \item{path_to_easyquant_folder}{The path to easyquant folder}
 
-\item{junc_tib}{The junction-transcript centric data predicted from WES data. A unique context sequence needs to be described by a hash id in a column \code{hash_id}}
+\item{junc_tib}{The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column \code{hash_id} with hash ids that relate to the column \code{name} in the Easyquant output.}
 }
 \value{
-Extended junction tibble with re-quantification results.  The ollowing columns are added:
+Extended junction-transcript tibble with re-quantification results.  The following columns are added:
 \itemize{
 \item \code{pos}: position of interest relative to input sequence
 \item \code{junc}: reads overlapping the position of interest
@@ -23,7 +23,7 @@ Extended junction tibble with re-quantification results.  The ollowing columns a
 }
 }
 \description{
-Map the re-quantification result on the junction-transcript centric data by hash id.
+Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.
 }
 \examples{
 
