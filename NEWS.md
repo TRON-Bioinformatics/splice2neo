@@ -1,3 +1,5 @@
+# splice2neo 0.1.1
+
 # splice2neo 0.1.0
 
 * New implementation of transcript modifications by junction
