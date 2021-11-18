@@ -4,6 +4,8 @@
 # splice2neo
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative or
@@ -53,7 +55,7 @@ junc_df <- tibble::tibble(
 )
 
 junc_df
-#> # A tibble: 3 x 1
+#> # A tibble: 3 × 1
 #>   junc_id                   
 #>   <chr>                     
 #> 1 chr2_152389996_152392205_-
@@ -68,7 +70,7 @@ junc_df <- junc_df %>%
   add_tx(toy_transcripts)
 
 junc_df
-#> # A tibble: 21 x 3
+#> # A tibble: 21 × 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
 #>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
@@ -92,19 +94,19 @@ junc_df <- junc_df %>%
 
 junc_df %>% 
   dplyr::select(junc_id, tx_id, junc_pos_tx, cts_seq, cts_junc_pos, cts_id)
-#> # A tibble: 21 x 6
-#>    junc_id     tx_id   junc_pos_tx cts_seq               cts_junc_pos cts_id    
-#>    <chr>       <chr>         <int> <chr>                        <dbl> <chr>     
-#>  1 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
-#>  2 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
-#>  3 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…
-#>  4 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
-#>  5 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…
-#>  6 chr2_15238… ENST00…        5502 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
-#>  7 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 729100c15…
-#>  8 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 ef6060403…
-#>  9 chr2_15238… ENST00…         576 AAGAAGACTTGACTTGGCTT…          199 8c2b828f5…
-#> 10 chr2_17941… ENST00…       83789 TGGATTCCATGTTGAAAAGA…          199 744c11d66…
+#> # A tibble: 21 × 6
+#>    junc_id                    tx_id  junc_pos_tx cts_seq    cts_junc_pos cts_id 
+#>    <chr>                      <chr>        <int> <chr>             <dbl> <chr>  
+#>  1 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…
+#>  2 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…
+#>  3 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…
+#>  4 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 ef6060…
+#>  5 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…
+#>  6 chr2_152389996_152392205_- ENST0…        5502 AAGAAGACT…          199 ef6060…
+#>  7 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 729100…
+#>  8 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 ef6060…
+#>  9 chr2_152389996_152392205_- ENST0…         576 AAGAAGACT…          199 8c2b82…
+#> 10 chr2_179415981_179416357_- ENST0…       83789 TGGATTCCA…          199 744c11…
 #> # … with 11 more rows
 ```
 
@@ -117,18 +119,18 @@ junc_df <- junc_df %>%
 
 junc_df %>% 
   dplyr::select(junc_id, tx_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 21 x 5
-#>    junc_id        tx_id     junc_in_orf peptide_context       peptide_context_j…
-#>    <chr>          <chr>     <lgl>       <chr>                              <dbl>
-#>  1 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  2 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  3 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  4 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  5 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  6 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  7 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  8 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#>  9 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14
-#> 10 chr2_17941598… ENST0000… TRUE        PSDPSKFTLAVSPVAGTPDY…                 14
+#> # A tibble: 21 × 5
+#>    junc_id                    tx_id junc_in_orf peptide_context peptide_context…
+#>    <chr>                      <chr> <lgl>       <chr>                      <dbl>
+#>  1 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  2 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  3 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  4 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  5 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  6 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  7 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  8 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#>  9 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
+#> 10 chr2_179415981_179416357_- ENST… TRUE        PSDPSKFTLAVSPV…               14
 #> # … with 11 more rows
 ```
