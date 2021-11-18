@@ -6,6 +6,6 @@ test_that("generate_combined_dataset works", {
 
 
 test_that("spladder.transform.format works", {
-  dat.combined <- spladder.transform.format(spladder_output)
+  dat.combined <- spladder_transform_format(spladder_output)
   expect_true(ncol(dat.combined) == 8)
 })
