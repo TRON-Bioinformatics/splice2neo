@@ -26,7 +26,7 @@ This package provides functions for the analysis of alternative or
  format based on genomic coordinates. Splice junctions can be annotated with 
  affected transcript sequences, CDS, and resulting peptide sequences. Resulting peptide sequences may form neoantigens.    
 
-Website: https://tron.pages.gitlab.rlp.net/splice2neo
+Website: https://tron-bioinformatics.github.io/splice2neo/
  
 ## Installation
 
