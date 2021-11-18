@@ -46,7 +46,7 @@ devtools::install_github("TRON-Bioinformatics/splice2neo")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows how to use some of the functions.
 
 ```{r}
 library(splice2neo)
