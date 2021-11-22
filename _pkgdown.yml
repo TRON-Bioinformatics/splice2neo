@@ -1,2 +1,84 @@
 url: https://tron-bioinformatics.github.io/splice2neo/
 
+reference:
+- title: "Parse SpliceAI"
+  desc: "Functions to parse SpliceAI output into standard splice junction format"
+- contents:
+  - parse_spliceai
+  - format_spliceai
+  - annotate_spliceai_junction
+- title: "Parse MMsplice"
+  desc: "Functions to parse MMsplice output into standard splice junction format"
+- contents:
+  - parse_mmsplice
+  - annotate_mmsplice
+  - get_exon_inclusion_junction
+  - get_exon_skipping_junction
+- title: "Parse LeafCutter"
+  desc: "Functions to parse LeafCutter output into standard splice junction format"
+- contents:
+  - import_leafcutter_bam
+  - import_leafcutter_counts
+  - leafcutter_transform
+  - leafcutter_transform_format
+  - transform_leafcutter_bam
+  - transform_leafcutter_counts
+- title: "Parse SplAdder"
+  desc: "Functions to parse SplAdder output into standard splice junction format"
+- contents:
+  - import_spladder
+  - spladder_transform
+  - spladder_transform_format
+  - spladder_transform_a3ss
+  - spladder_transform_a5ss
+  - spladder_transform_intron_retention
+  - spladder_transform_mutex_exon
+  - spladder_transform_exon_skipping
+- title: "Annotate"
+  desc: "Functions to annotate splice junctions"
+- contents:
+  - add_tx
+  - add_context_seq
+  - modify_tx
+  - get_junc_pos
+  - add_peptide
+  - seq_truncate_nonstop
+- title: "Requantification"
+  desc: "Functions for read support re-quantification with easyquant"
+- contents:
+  - ends_with("_requant")
+- title: "Canonical"
+  desc: "Functions annotate and filter for cnaonical splicing"
+- contents:
+  - is_canonical
+- title: "Merge and filter"
+  desc: "Functions annotate and filter for cnaonical splicing"
+- contents:
+  - is_in_rnaseq
+  - combine_mut_junc
+  - add_identified_in_RNA
+  - generate_combined_dataset
+- title: "Others"
+  desc: "Other functions"
+- contents:
+  - junc_to_gr
+  - change_to_junction_rules
+  - next_junctions
+  - sort_columns
+  - unsorted_junc_df
+  - transform_leafcutter_bam
+  - transform_leafcutter_counts
+- title: "Data"
+  desc: "Toy example datasets"
+- contents:
+  - starts_with("toy_")
+  - unsorted_junc_df
+  - spladder_output.a3ss
+  - spladder_output.a5ss
+  - spladder_output.exonskip
+  - spladder_output.intronreten
+  - spladder_output.mutexon
+  - spladder_output
+  - leafcutter_juncs
+  - spladder_juncs
+  - canonical_juncs
