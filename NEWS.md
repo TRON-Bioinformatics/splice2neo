@@ -1,3 +1,11 @@
+# splice2neo 0.1.2
+
+* CI config for github action
+  * R CMD check
+  * testcoverage with codecov
+  * pkgdown website on github.io
+* update README
+
 # splice2neo 0.1.1
 
 * clean up code and doc

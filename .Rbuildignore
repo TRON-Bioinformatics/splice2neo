@@ -7,3 +7,5 @@
 ^\.gitlab-ci\.yml$
 ^docs$
 ^pkgdown$
+^\.github$
+^codecov\.yml$

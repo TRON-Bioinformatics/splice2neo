@@ -1,6 +1,6 @@
 Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(
     person(given = "Jonas",
@@ -27,7 +27,8 @@ RoxygenNote: 7.1.2
 Suggests: 
     spelling,
     knitr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    covr
 Config/testthat/edition: 3
 Language: en-US
 Imports: 
@@ -50,7 +51,7 @@ Imports:
     XVector,
     rlang,
     BSgenome.Hsapiens.UCSC.hg19
-URL: https://tron.pages.gitlab.rlp.net/splice2neo, https://gitlab.rlp.net/tron/splice2neo
+URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)
 biocViews: AlternativeSplicing
