@@ -124,8 +124,8 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-parse-spliceai" class="hasAnchor"><a href="#section-parse-spliceai" class="anchor"></a>Parse SpliceAI</h2>
+          <p class="section-desc"><p>Functions to parse SpliceAI output into standard splice junction format</p></p>
         </th>
       </tr>
       
@@ -136,58 +136,9 @@
       <tr>
         
         <td>
-          <p><code><a href="add_context_seq.html">add_context_seq()</a></code> </p>
+          <p><code><a href="parse_spliceai.html">parse_spliceai()</a></code> </p>
         </td>
-        <td><p>Annotate splice junctions with resulting transcript sequence</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="add_identified_in_RNA.html">add_identified_in_RNA()</a></code> </p>
-        </td>
-        <td><p>This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="add_peptide.html">add_peptide()</a></code> </p>
-        </td>
-        <td><p>Annotate splice junctions with resulting CDS and peptide sequence</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="add_tx.html">add_tx()</a></code> </p>
-        </td>
-        <td><p>Annotate splice junctions with affected transcript IDs</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="annotate_mmsplice.html">annotate_mmsplice()</a></code> </p>
-        </td>
-        <td><p>Annotates the mmsplice output with additional columns including the junction as junc_id.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="annotate_spliceai_junction.html">annotate_spliceai_junction()</a></code> </p>
-        </td>
-        <td><p>Annotate splice variants with resulting junctions</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="canonical_juncs.html">canonical_juncs</a></code> </p>
-        </td>
-        <td><p>A tibble with canonical junctions and their source (comma, separated).
-example data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="change_to_junction_rules.html">change_to_junction_rules</a></code> </p>
-        </td>
-        <td><p>Rules on how a splicing affecting variant creates a junction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="combine_mut_junc.html">combine_mut_junc()</a></code> </p>
-        </td>
-        <td><p>Combines tibbles with junctions from SpliceAI and MMsplice</p></td>
+        <td><p>Parse VCF output file from spliceAI as table</p></td>
       </tr><tr>
         
         <td>
@@ -197,9 +148,34 @@ example data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="generate_combined_dataset.html">generate_combined_dataset()</a></code> </p>
+          <p><code><a href="annotate_spliceai_junction.html">annotate_spliceai_junction()</a></code> </p>
         </td>
-        <td><p>Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions</p></td>
+        <td><p>Annotate splice variants with resulting junctions</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-parse-mmsplice" class="hasAnchor"><a href="#section-parse-mmsplice" class="anchor"></a>Parse MMsplice</h2>
+          <p class="section-desc"><p>Functions to parse MMsplice output into standard splice junction format</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="parse_mmsplice.html">parse_mmsplice()</a></code> </p>
+        </td>
+        <td><p>Parse .csv file from MMsplice output as data.frame</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="annotate_mmsplice.html">annotate_mmsplice()</a></code> </p>
+        </td>
+        <td><p>Annotates the mmsplice output with additional columns including the junction as junc_id.</p></td>
       </tr><tr>
         
         <td>
@@ -214,13 +190,20 @@ and transcript.</p></td>
         </td>
         <td><p>Compute the resulting junction (junc_id) for exon skipping of given exon
 and transcript.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_junc_pos.html">get_junc_pos()</a></code> </p>
-        </td>
-        <td><p>Get the position of input junction in the transcript sequences</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-parse-leafcutter" class="hasAnchor"><a href="#section-parse-leafcutter" class="anchor"></a>Parse LeafCutter</h2>
+          <p class="section-desc"><p>Functions to parse LeafCutter output into standard splice junction format</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="import_leafcutter_bam.html">import_leafcutter_bam()</a></code> </p>
@@ -232,36 +215,6 @@ and transcript.</p></td>
           <p><code><a href="import_leafcutter_counts.html">import_leafcutter_counts()</a></code> </p>
         </td>
         <td><p>Imports "_perind.counts.gz" from Leafcutter output.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="import_spladder.html">import_spladder()</a></code> </p>
-        </td>
-        <td><p>Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_canonical.html">is_canonical()</a></code> </p>
-        </td>
-        <td><p>test if junction is canonical junction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="is_in_rnaseq.html">is_in_rnaseq()</a></code> </p>
-        </td>
-        <td><p>test if junction was found in corresponding RNA-seq data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="junc_to_gr.html">junc_to_gr()</a></code> </p>
-        </td>
-        <td><p>Convert a splice junction ID into a GRanges object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="leafcutter_juncs.html">leafcutter_juncs</a></code> </p>
-        </td>
-        <td><p>A tibble with junction in standardized format. example data</p></td>
       </tr><tr>
         
         <td>
@@ -278,101 +231,34 @@ into standardized junction output format</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="map_requant.html">map_requant()</a></code> </p>
+          <p><code><a href="transform_leafcutter_bam.html">transform_leafcutter_bam()</a></code> </p>
         </td>
-        <td><p>Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.</p></td>
+        <td><p>Transforms Leafcutter bam junc file</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="modify_tx.html">modify_tx()</a></code> </p>
+          <p><code><a href="transform_leafcutter_counts.html">transform_leafcutter_counts()</a></code> </p>
         </td>
-        <td><p>modifies transcripts by applying splice-junctions</p></td>
-      </tr><tr>
+        <td><p>Transforms Leafcutter counts file into standardized junction format.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-parse-spladder" class="hasAnchor"><a href="#section-parse-spladder" class="anchor"></a>Parse SplAdder</h2>
+          <p class="section-desc"><p>Functions to parse SplAdder output into standard splice junction format</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
-          <p><code><a href="next_junctions.html">next_junctions()</a></code> </p>
+          <p><code><a href="import_spladder.html">import_spladder()</a></code> </p>
         </td>
-        <td><p>Get genomic coordinates of possible next donor and acceptor sides.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parse_mmsplice.html">parse_mmsplice()</a></code> </p>
-        </td>
-        <td><p>Parse .csv file from MMsplice output as data.frame</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="parse_spliceai.html">parse_spliceai()</a></code> </p>
-        </td>
-        <td><p>Parse VCF output file from spliceAI as table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_requant.html">read_requant()</a></code> </p>
-        </td>
-        <td><p>Imports the re-quantification results from analysis with easyquant.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="seq_truncate_nonstop.html">seq_truncate_nonstop()</a></code> </p>
-        </td>
-        <td><p>Truncate input sequence after input position before next stop codons (<code>*</code>).</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sort_columns.html">sort_columns()</a></code> </p>
-        </td>
-        <td><p>Sorts columns of junction output file in the following order:
-"junction_start", "junction_end", "strand", "chromosome", "Gene",
-"class", "AS_event_ID", "junction_id"</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_juncs.html">spladder_juncs</a></code> </p>
-        </td>
-        <td><p>A tibble with junction in standardized format.  example data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.html">spladder_output</a></code> </p>
-        </td>
-        <td><p>A list of tibbles with each list containing events from a different
-splicing class identified by Spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.a3ss.html">spladder_output.a3ss</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from alternative 3' splice sites identified by
-Spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.a5ss.html">spladder_output.a5ss</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from alternative 5' splice sites identified by
-Spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.exonskip.html">spladder_output.exonskip</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from exon skipping identified by
-Spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.intronreten.html">spladder_output.intronreten</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from intron retention identified by
-Spladder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_output.mutexon.html">spladder_output.mutexon</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from mutually exclusive exons identified by
-Spladder</p></td>
+        <td><p>Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.</p></td>
       </tr><tr>
         
         <td>
@@ -380,6 +266,12 @@ Spladder</p></td>
         </td>
         <td><p>Imports SPLADDER output from a given path and transforms it into standardized
 junction format</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_transform_format.html">spladder_transform_format()</a></code> </p>
+        </td>
+        <td><p>Transforms Spladder output into standardized junction format</p></td>
       </tr><tr>
         
         <td>
@@ -397,19 +289,6 @@ format into standardized junction format</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="spladder_transform_exon_skipping.html">spladder_transform_exon_skipping()</a></code> </p>
-        </td>
-        <td><p>Transforms events resulting from exon skipping from SPLADDER output
-format into standardized junction format</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="spladder_transform_format.html">spladder_transform_format()</a></code> </p>
-        </td>
-        <td><p>Transforms Spladder output into standardized junction format</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="spladder_transform_intron_retention.html">spladder_transform_intron_retention()</a></code> </p>
         </td>
         <td><p>Transforms events resulting from intron retention from SPLADDER output
@@ -422,6 +301,219 @@ format into standardized junction format</p></td>
         <td><p>Transforms events resulting from mutually exclusive exons from SPLADDER output
 format into standardized junction format</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_transform_exon_skipping.html">spladder_transform_exon_skipping()</a></code> </p>
+        </td>
+        <td><p>Transforms events resulting from exon skipping from SPLADDER output
+format into standardized junction format</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-annotate" class="hasAnchor"><a href="#section-annotate" class="anchor"></a>Annotate</h2>
+          <p class="section-desc"><p>Functions to annotate splice junctions</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="add_tx.html">add_tx()</a></code> </p>
+        </td>
+        <td><p>Annotate splice junctions with affected transcript IDs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="add_context_seq.html">add_context_seq()</a></code> </p>
+        </td>
+        <td><p>Annotate splice junctions with resulting transcript sequence</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="modify_tx.html">modify_tx()</a></code> </p>
+        </td>
+        <td><p>modifies transcripts by applying splice-junctions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_junc_pos.html">get_junc_pos()</a></code> </p>
+        </td>
+        <td><p>Get the position of input junction in the transcript sequences</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="add_peptide.html">add_peptide()</a></code> </p>
+        </td>
+        <td><p>Annotate splice junctions with resulting CDS and peptide sequence</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="seq_truncate_nonstop.html">seq_truncate_nonstop()</a></code> </p>
+        </td>
+        <td><p>Truncate input sequence after input position before next stop codons (<code>*</code>).</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-requantification" class="hasAnchor"><a href="#section-requantification" class="anchor"></a>Requantification</h2>
+          <p class="section-desc"><p>Functions for read support re-quantification with easyquant</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="map_requant.html">map_requant()</a></code> </p>
+        </td>
+        <td><p>Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_requant.html">read_requant()</a></code> </p>
+        </td>
+        <td><p>Imports the re-quantification results from analysis with easyquant.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transform_for_requant.html">transform_for_requant()</a></code> </p>
+        </td>
+        <td><p>Creates a table with context sequences for re-quantification analysis with Easyquant.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-canonical" class="hasAnchor"><a href="#section-canonical" class="anchor"></a>Canonical</h2>
+          <p class="section-desc"><p>Functions annotate and filter for cnaonical splicing</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="is_canonical.html">is_canonical()</a></code> </p>
+        </td>
+        <td><p>test if junction is canonical junction</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-merge-and-filter" class="hasAnchor"><a href="#section-merge-and-filter" class="anchor"></a>Merge and filter</h2>
+          <p class="section-desc"><p>Functions annotate and filter for cnaonical splicing</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="is_in_rnaseq.html">is_in_rnaseq()</a></code> </p>
+        </td>
+        <td><p>test if junction was found in corresponding RNA-seq data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="combine_mut_junc.html">combine_mut_junc()</a></code> </p>
+        </td>
+        <td><p>Combines tibbles with junctions from SpliceAI and MMsplice</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="add_identified_in_RNA.html">add_identified_in_RNA()</a></code> </p>
+        </td>
+        <td><p>This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate_combined_dataset.html">generate_combined_dataset()</a></code> </p>
+        </td>
+        <td><p>Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-others" class="hasAnchor"><a href="#section-others" class="anchor"></a>Others</h2>
+          <p class="section-desc"><p>Other functions</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="junc_to_gr.html">junc_to_gr()</a></code> </p>
+        </td>
+        <td><p>Convert a splice junction ID into a GRanges object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="change_to_junction_rules.html">change_to_junction_rules</a></code> </p>
+        </td>
+        <td><p>Rules on how a splicing affecting variant creates a junction</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="next_junctions.html">next_junctions()</a></code> </p>
+        </td>
+        <td><p>Get genomic coordinates of possible next donor and acceptor sides.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sort_columns.html">sort_columns()</a></code> </p>
+        </td>
+        <td><p>Sorts columns of junction output file in the following order:
+"junction_start", "junction_end", "strand", "chromosome", "Gene",
+"class", "AS_event_ID", "junction_id"</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="unsorted_junc_df.html">unsorted_junc_df</a></code> </p>
+        </td>
+        <td><p>A tibble in junction format but unsorted columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transform_leafcutter_bam.html">transform_leafcutter_bam()</a></code> </p>
+        </td>
+        <td><p>Transforms Leafcutter bam junc file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transform_leafcutter_counts.html">transform_leafcutter_counts()</a></code> </p>
+        </td>
+        <td><p>Transforms Leafcutter counts file into standardized junction format.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
+          <p class="section-desc"><p>Toy example datasets</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
         
         <td>
           <p><code><a href="toy_cds.html">toy_cds</a></code> </p>
@@ -462,27 +554,70 @@ format into standardized junction format</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="transform_for_requant.html">transform_for_requant()</a></code> </p>
-        </td>
-        <td><p>Creates a table with context sequences for re-quantification analysis with Easyquant.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_leafcutter_bam.html">transform_leafcutter_bam()</a></code> </p>
-        </td>
-        <td><p>Transforms Leafcutter bam junc file</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_leafcutter_counts.html">transform_leafcutter_counts()</a></code> </p>
-        </td>
-        <td><p>Transforms Leafcutter counts file into standardized junction format.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="unsorted_junc_df.html">unsorted_junc_df</a></code> </p>
         </td>
         <td><p>A tibble in junction format but unsorted columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.a3ss.html">spladder_output.a3ss</a></code> </p>
+        </td>
+        <td><p>A tibble containing events from alternative 3' splice sites identified by
+Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.a5ss.html">spladder_output.a5ss</a></code> </p>
+        </td>
+        <td><p>A tibble containing events from alternative 5' splice sites identified by
+Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.exonskip.html">spladder_output.exonskip</a></code> </p>
+        </td>
+        <td><p>A tibble containing events from exon skipping identified by
+Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.intronreten.html">spladder_output.intronreten</a></code> </p>
+        </td>
+        <td><p>A tibble containing events from intron retention identified by
+Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.mutexon.html">spladder_output.mutexon</a></code> </p>
+        </td>
+        <td><p>A tibble containing events from mutually exclusive exons identified by
+Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_output.html">spladder_output</a></code> </p>
+        </td>
+        <td><p>A list of tibbles with each list containing events from a different
+splicing class identified by Spladder</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="leafcutter_juncs.html">leafcutter_juncs</a></code> </p>
+        </td>
+        <td><p>A tibble with junction in standardized format. example data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spladder_juncs.html">spladder_juncs</a></code> </p>
+        </td>
+        <td><p>A tibble with junction in standardized format.  example data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="canonical_juncs.html">canonical_juncs</a></code> </p>
+        </td>
+        <td><p>A tibble with canonical junctions and their source (comma, separated).
+example data</p></td>
       </tr>
     </tbody>
     </table>
