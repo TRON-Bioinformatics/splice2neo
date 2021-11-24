@@ -58,16 +58,28 @@ modify_tx <- function(tx, jx){
 
   # Get indexes of affected exons ==============================================
   # get exon index in transcripts that are affected by the first position of the junction
-  exon_idx1 = furrr::future_map2_int(tx_lst, j1_lst, ~GenomicRanges::findOverlaps(.y, .x, select = "first"))
+  exon_idx1 = furrr::future_map2_int(
+    tx_lst,
+    j1_lst,
+    ~suppressWarnings(GenomicRanges::findOverlaps(.y, .x, select = "first")))
 
   # get index of next exon left of first junction position
-  left_exon_idx = furrr::future_map2_int(tx_lst, j1_lst, ~GenomicRanges::follow(.y, .x, ignore.strand = TRUE))
+  left_exon_idx = furrr::future_map2_int(
+    tx_lst,
+    j1_lst,
+    ~suppressWarnings(GenomicRanges::follow(.y, .x, ignore.strand = TRUE)))
 
   # get exon index in transcripts that are affected by the second position of the junction
-  exon_idx2 = furrr::future_map2_int(tx_lst, j2_lst, ~GenomicRanges::findOverlaps(.y, .x, select = "first"))
+  exon_idx2 = furrr::future_map2_int(
+    tx_lst,
+    j2_lst,
+    ~suppressWarnings(GenomicRanges::findOverlaps(.y, .x, select = "first")))
 
   # get index of next exon right of second junction position
-  right_exon_idx = furrr::future_map2_int(tx_lst, j2_lst, ~GenomicRanges::precede(.y, .x, ignore.strand = TRUE))
+  right_exon_idx = furrr::future_map2_int(
+    tx_lst,
+    j2_lst,
+    ~suppressWarnings(GenomicRanges::precede(.y, .x, ignore.strand = TRUE)))
 
   # get the indexes of exons that needs to be modified.
   # If position is not on an exon, the index is NA and the left (for junction
@@ -79,7 +91,7 @@ modify_tx <- function(tx, jx){
 
   # If both junction coordinates are on the same exon, we need to duplicate the
   # exon in the transcript and modify the start of the first and end of the second
-  exitron_junc <- used_exon_idx1 == used_exon_idx2
+  exitron_junc <- !is.na(used_exon_idx1) & !is.na(used_exon_idx2) & used_exon_idx1 == used_exon_idx2
 
   # duplicate
   tx_lst[exitron_junc] = furrr::future_map2(tx_lst[exitron_junc], used_exon_idx1[exitron_junc],
@@ -101,7 +113,7 @@ modify_tx <- function(tx, jx){
          at = used_exon_idx1,
          pos = BiocGenerics::start(jx)),
     .f = function(gr, at, pos){
-      BiocGenerics::end(gr[at]) <- pos
+      BiocGenerics::end(gr[!is.na(at)][at[!is.na(at)]]) <- pos[!is.na(at)]
       return(gr)
     }
   )
@@ -112,7 +124,7 @@ modify_tx <- function(tx, jx){
          at = used_exon_idx2,
          pos = BiocGenerics::end(jx)),
     .f = function(gr, at, pos){
-      BiocGenerics::start(gr[at]) <- pos
+      BiocGenerics::start(gr[!is.na(at)][at[!is.na(at)]]) <- pos[!is.na(at)]
       return(gr)
     }
   )
@@ -127,7 +139,11 @@ modify_tx <- function(tx, jx){
     S4Vectors::split(1:length(.)) %>% as.list()
 
   # iterate over transcripts and keep only exons that do not be contained in the junction range
-  tx_lst <- furrr::future_map2(tx_lst, jx_space_lst, ~.x[!IRanges::overlapsAny(.x, .y, type="within")])
+  tx_lst <- furrr::future_map2(
+    tx_lst,
+    jx_space_lst,
+    ~suppressWarnings(.x[!IRanges::overlapsAny(.x, .y, type="within")])
+    )
 
 
   # delete exon_rank column ====================================================
