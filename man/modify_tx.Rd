@@ -2,7 +2,7 @@
 % Please edit documentation in R/modify_tx.R
 \name{modify_tx}
 \alias{modify_tx}
-\title{modifies transcripts by applying splice-junctions}
+\title{Modify transcript by introducing splice junctions}
 \usage{
 modify_tx(tx, jx)
 }
@@ -14,31 +14,9 @@ transcripts defined as GRanges of exons.}
 }
 \value{
 a \code{\link[GenomicRanges]{GRangesList}} with altered transcripts.
-
-The algorithm works in the following steps.
-\itemize{
-\item Get transcripts for which the whole transcript range contains \code{pos1} and
-\code{pos2} as GRangesList of GRanges of exons
-\item For each tx in transcripts do
-\itemize{
-\item if \code{pos1} amd \code{pos2} are on the same exon, duplicate exon and consider
-the first for \code{pos1} and the second for \code{pos2}.
-\item if \code{pos1} overlaps an exon \code{e}:
-shorten \code{e} to end at \code{pos1}
-else:
-get next exon \code{e} left of \code{pos}:
-extend \code{e} to end in \code{pos1}
-\item if \code{pos2} overlaps an exon \code{e}:
-shorten \code{e} to start at \code{pos2}
-else:
-get next exon \code{e} right of \code{pos2}:
-extend \code{e} to start in \code{pos2}
-\item remove all exons completeley contained in the interval [\code{pos1}, \code{pos2}].
-}
-}
 }
 \description{
-modifies transcripts by applying splice-junctions
+Modify transcript by introducing splice junctions
 }
 \examples{
 tx <- GenomicRanges::GRangesList(
