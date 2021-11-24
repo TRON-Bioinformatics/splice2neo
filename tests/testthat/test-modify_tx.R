@@ -131,25 +131,3 @@ test_that("modify_tx works with provided toy example data", {
 })
 
 
-test_that("faster version of modify_tx works", {
-
-  skip("Not implemented yet")
-
-  require(GenomicRanges)
-
-  gr1 <- GRanges("chr1:2-5")
-  gr2 <- GRanges("chr1:4-9")
-
-  setdiff(gr1, gr2)
-
-
-  tx_gr <- GRanges(c("chr1:2-3", "chr1:5-6", "chr1:10-15"))
-  tx <- GRangesList(tx_gr)
-  jx <- GRanges("chr1:3-10")
-
-  setdiff(tx_gr, jx)
-  psetdiff(tx, GRangesList(jx))
-
-
-})
-

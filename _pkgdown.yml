@@ -50,6 +50,8 @@ reference:
 - title: "Canonical"
   desc: "Functions annotate and filter for cnaonical splicing"
 - contents:
+  - parse_gtf
+  - canonical_junctions
   - is_canonical
 - title: "Merge and filter"
   desc: "Functions annotate and filter for cnaonical splicing"

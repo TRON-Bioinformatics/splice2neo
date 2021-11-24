@@ -18,13 +18,3 @@ parse_gtf <- function(file){
 
   return(transcripts)
 }
-
-#' Build canonical junctions from transcripts
-#'
-#' @param tx a \code{\link[GenomicRanges]{GRangesList}} of reference transcripts
-#'
-#' @return a character vector of canonical splice junction ids
-#'
-canonical_junctions <- function(tx){
-
-}
