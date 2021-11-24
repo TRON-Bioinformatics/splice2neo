@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -120,24 +120,18 @@
     <p>Creates a table with context sequences for re-quantification analysis with Easyquant.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_for_requant</span><span class='op'>(</span><span class='va'>cts_id</span>, <span class='va'>cts_seq</span>, <span class='va'>junc_position</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_for_requant</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>cts_id</th>
-      <td><p>An id for the cts sequence to be re-quantified. If the
-context sequence was determined with the function <code>junct_to_cts</code> the associated hash id <code>cts_id</code> can be used.</p></td>
-    </tr>
-    <tr>
-      <th>cts_seq</th>
-      <td><p>The context sequence.</p></td>
-    </tr>
-    <tr>
-      <th>junc_position</th>
-      <td><p>The position of the junction within the context sequence.  If the
-context sequence was determined with <code>junct_to_cts</code> the associated hash id <code>cts_junc_pos</code> can be used.</p></td>
+      <th>df</th>
+      <td><p>A data.frame with splice junctions in rows and at least the colums:</p><ul>
+<li><p><code>cts_id</code> hash id for a context sequence</p></li>
+<li><p><code>cts_seq</code> The transcript context sequence.</p></li>
+<li><p><code>cts_junc_pos</code> The position of the junction within the context sequence</p></li>
+</ul></td>
     </tr>
     </table>
 

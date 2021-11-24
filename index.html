@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -102,10 +102,10 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: tidyverse</span>
 <span class="co">#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</span>
-<span class="co">#&gt; ✓ ggplot2 3.3.3     ✓ purrr   0.3.4</span>
-<span class="co">#&gt; ✓ tibble  3.1.2     ✓ dplyr   1.0.6</span>
-<span class="co">#&gt; ✓ tidyr   1.1.3     ✓ stringr 1.4.0</span>
-<span class="co">#&gt; ✓ readr   1.4.0     ✓ forcats 0.5.1</span>
+<span class="co">#&gt; ✓ ggplot2 3.3.5     ✓ purrr   0.3.4</span>
+<span class="co">#&gt; ✓ tibble  3.1.6     ✓ dplyr   1.0.7</span>
+<span class="co">#&gt; ✓ tidyr   1.1.4     ✓ stringr 1.4.0</span>
+<span class="co">#&gt; ✓ readr   2.1.0     ✓ forcats 0.5.1</span>
 <span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span>
 <span class="co">#&gt; x dplyr::filter() masks stats::filter()</span>
 <span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span></code></pre></div>
@@ -119,7 +119,7 @@
 <span class="op">)</span>
 
 <span class="va">junc_df</span>
-<span class="co">#&gt; # A tibble: 3 x 1</span>
+<span class="co">#&gt; # A tibble: 3 × 1</span>
 <span class="co">#&gt;   junc_id                   </span>
 <span class="co">#&gt;   &lt;chr&gt;                     </span>
 <span class="co">#&gt; 1 chr2_152389996_152392205_-</span>
@@ -135,7 +135,7 @@
   <span class="fu"><a href="reference/add_tx.html">add_tx</a></span><span class="op">(</span><span class="va">toy_transcripts</span><span class="op">)</span>
 
 <span class="va">junc_df</span>
-<span class="co">#&gt; # A tibble: 21 x 3</span>
+<span class="co">#&gt; # A tibble: 21 × 3</span>
 <span class="co">#&gt;    junc_id                    tx_id           tx_lst      </span>
 <span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt;</span>
 <span class="co">#&gt;  1 chr2_152389996_152392205_- ENST00000409198 &lt;GRanges&gt;   </span>
@@ -160,19 +160,19 @@
 
 <span class="va">junc_df</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu">select</span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">tx_id</span>, <span class="va">junc_pos_tx</span>, <span class="va">cts_seq</span>, <span class="va">cts_junc_pos</span>, <span class="va">cts_id</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 21 x 6</span>
-<span class="co">#&gt;    junc_id     tx_id   junc_pos_tx cts_seq               cts_junc_pos cts_id    </span>
-<span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;                        &lt;dbl&gt; &lt;chr&gt;     </span>
-<span class="co">#&gt;  1 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…</span>
-<span class="co">#&gt;  2 chr2_15238… ENST00…       16412 AAGAAGACTTGACTTGGCTT…          199 ef6060403…</span>
-<span class="co">#&gt;  3 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…</span>
-<span class="co">#&gt;  4 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 ef6060403…</span>
-<span class="co">#&gt;  5 chr2_15238… ENST00…       21515 AAGAAGACTTGACTTGGCTT…          199 729100c15…</span>
-<span class="co">#&gt;  6 chr2_15238… ENST00…        5502 AAGAAGACTTGACTTGGCTT…          199 ef6060403…</span>
-<span class="co">#&gt;  7 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 729100c15…</span>
-<span class="co">#&gt;  8 chr2_15238… ENST00…       21312 AAGAAGACTTGACTTGGCTT…          199 ef6060403…</span>
-<span class="co">#&gt;  9 chr2_15238… ENST00…         576 AAGAAGACTTGACTTGGCTT…          199 8c2b828f5…</span>
-<span class="co">#&gt; 10 chr2_17941… ENST00…       83789 TGGATTCCATGTTGAAAAGA…          199 744c11d66…</span>
+<span class="co">#&gt; # A tibble: 21 × 6</span>
+<span class="co">#&gt;    junc_id                    tx_id  junc_pos_tx cts_seq    cts_junc_pos cts_id </span>
+<span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;  </span>
+<span class="co">#&gt;  1 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…</span>
+<span class="co">#&gt;  2 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…</span>
+<span class="co">#&gt;  3 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…</span>
+<span class="co">#&gt;  4 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 ef6060…</span>
+<span class="co">#&gt;  5 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…</span>
+<span class="co">#&gt;  6 chr2_152389996_152392205_- ENST0…        5502 AAGAAGACT…          199 ef6060…</span>
+<span class="co">#&gt;  7 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 729100…</span>
+<span class="co">#&gt;  8 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 ef6060…</span>
+<span class="co">#&gt;  9 chr2_152389996_152392205_- ENST0…         576 AAGAAGACT…          199 8c2b82…</span>
+<span class="co">#&gt; 10 chr2_179415981_179416357_- ENST0…       83789 TGGATTCCA…          199 744c11…</span>
 <span class="co">#&gt; # … with 11 more rows</span></code></pre></div>
 </div>
 <div id="annotate-peptide-sequence" class="section level3">
@@ -186,21 +186,129 @@
 
 <span class="va">junc_df</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span> 
   <span class="fu">select</span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">tx_id</span>, <span class="va">junc_in_orf</span>, <span class="va">peptide_context</span>, <span class="va">peptide_context_junc_pos</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 21 x 5</span>
-<span class="co">#&gt;    junc_id        tx_id     junc_in_orf peptide_context       peptide_context_j…</span>
-<span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;     &lt;lgl&gt;       &lt;chr&gt;                              &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  2 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  3 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  4 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  5 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  6 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  7 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  8 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt;  9 chr2_15238999… ENST0000… TRUE        PINRHFKYATQLMNEIC                     14</span>
-<span class="co">#&gt; 10 chr2_17941598… ENST0000… TRUE        PSDPSKFTLAVSPVAGTPDY…                 14</span>
+<span class="co">#&gt; # A tibble: 21 × 5</span>
+<span class="co">#&gt;    junc_id                    tx_id junc_in_orf peptide_context peptide_context…</span>
+<span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt; &lt;lgl&gt;       &lt;chr&gt;                      &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  2 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  3 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  4 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  5 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  6 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  7 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  8 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt;  9 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14</span>
+<span class="co">#&gt; 10 chr2_179415981_179416357_- ENST… TRUE        PSDPSKFTLAVSPV…               14</span>
 <span class="co">#&gt; # … with 11 more rows</span></code></pre></div>
 </div>
+</div>
+<div id="dummy-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#dummy-example" class="anchor"></a>Dummy example</h2>
+<p>In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. A test case will be added later</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo">splice2neo</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="co"># load genome of choice</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/AnnotationDbi">AnnotationDbi</a></span><span class="op">)</span>
+<span class="co"># this is an customized example of a transcript database</span>
+<span class="co"># the user can choose the best suited database for their use case</span>
+<span class="co"># please find below instruction how to create the database from a gtf file</span>
+<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html">loadDb</a></span><span class="op">(</span><span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span>
+<span class="va">transcripts</span> <span class="op">&lt;-</span>
+  <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcriptsBy.html">exonsBy</a></span><span class="op">(</span><span class="va">txdb</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"tx"</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">transcripts_gr</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcripts.html">transcripts</a></span><span class="op">(</span><span class="va">txdb</span><span class="op">)</span>
+<span class="co"># Build a GRangesList with cds composed of individual exon ranges</span>
+<span class="va">cds</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcriptsBy.html">cdsBy</a></span><span class="op">(</span><span class="va">txdb</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"tx"</span><span class="op">)</span>, use.name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co"># canonical junctions</span>
+<span class="co"># the user can choose the best suited datasets for canoical junctions</span>
+<span class="co"># the object `canonical junction` should be a vector of canonical junctions in the junction format</span>
+<span class="va">canonical_juncs</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr1_33361245_33361511_-"</span>,
+    <span class="st">"chr1_32849649_32852380_-"</span>,
+    <span class="st">"chrom_start_end_strand"</span><span class="op">)</span>
+
+
+<span class="co"># import RNA data</span>
+<span class="va">dat_leafcutter</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/leafcutter_transform.html">leafcutter_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/your/path/to/leafcutter/results"</span><span class="op">)</span>
+<span class="va">dat_spladder</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/spladder_transform.html">spladder_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/your/path/to/spladder/results"</span><span class="op">)</span>
+<span class="va">dat_rna</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/generate_combined_dataset.html">generate_combined_dataset</a></span><span class="op">(</span>spladder_juncs <span class="op">=</span> <span class="va">dat_spladder</span>, leafcutter_juncs <span class="op">=</span> <span class="va">dat_spladder</span><span class="op">)</span>
+
+<span class="co"># import &amp; transform SpliceAi results</span>
+<span class="va">dat_spliceai</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>vcf_file <span class="op">=</span> <span class="st">"path/to/spliceai/file.vcf"</span><span class="op">)</span>
+<span class="va">dat_splicai_formatted</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">dat_spliceai</span><span class="op">)</span>
+<span class="va">dat_spliceai_annotated</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/annotate_spliceai_junction.html">annotate_spliceai_junction</a></span><span class="op">(</span>var_df <span class="op">=</span> <span class="va">dat_splicai_formatted</span>,
+                             transcripts <span class="op">=</span> <span class="va">transcripts</span>,
+                             transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span><span class="op">)</span>
+
+<span class="co"># import &amp; transform MMSplice results</span>
+<span class="va">dat_mmsplice</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>infile <span class="op">=</span> <span class="st">"path/to/mmsplice/file.csv"</span><span class="op">)</span>
+<span class="va">dat_mmsplice_annotated</span>  <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/annotate_mmsplice.html">annotate_mmsplice</a></span><span class="op">(</span>mmsplice_df <span class="op">=</span> <span class="va">dat_mmsplice</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span>
+
+<span class="co"># mutation-based junctions</span>
+<span class="va">dat_mut</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/combine_mut_junc.html">combine_mut_junc</a></span><span class="op">(</span>spliceai_juncs <span class="op">=</span> <span class="va">dat_spliceai_annotated</span>, mmsplice_juncs <span class="op">=</span> <span class="va">dat_mmsplice_annotated</span><span class="op">)</span>
+
+<span class="co"># add information if junction is canonical and if found to be expressed by Spladder or Leafcutter</span>
+<span class="va">dat_mut</span> <span class="op">&lt;-</span> <span class="va">dat_mut</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">mutate</span><span class="op">(</span>is_canonical <span class="op">=</span> <span class="fu"><a href="reference/is_canonical.html">is_canonical</a></span><span class="op">(</span><span class="va">junc_id</span>, ref_junc <span class="op">=</span> <span class="va">canonical_juncs</span>, exons_gr <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">mutate</span><span class="op">(</span>is_in_rnaseq <span class="op">=</span> <span class="fu"><a href="reference/is_in_rnaseq.html">is_in_rnaseq</a></span><span class="op">(</span><span class="va">junc_id</span>, rna_juncs <span class="op">=</span> <span class="va">dat_rna</span><span class="op">$</span><span class="va">junc_id</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># remove canonical junctions for further downstream analysis</span>
+<span class="va">dat_for_requantification</span> <span class="op">&lt;-</span> <span class="va">dat_mut</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_canonical</span><span class="op">)</span>
+
+<span class="co"># add context sequences</span>
+<span class="co"># a list of GRanges with the transcript needs to be added at the moment</span>
+<span class="co"># this will be done within add_context_seq in a future version</span>
+<span class="va">dat_for_requantification_cts</span> <span class="op">&lt;-</span> <span class="va">dat_for_requantification</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">mutate</span><span class="op">(</span>tx_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/BimapFormatting.html">as.list</a></span><span class="op">(</span><span class="va">transcripts</span><span class="op">[</span><span class="va">tx_id</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span>
+
+
+<span class="co"># transform to easyquant-format</span>
+<span class="va">dat_easyquant</span> <span class="op">&lt;-</span> <span class="va">dat_for_requantification_cts</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/transform_for_requant.html">transform_for_requant</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu">write_delim</span><span class="op">(</span><span class="va">dat_easyquant</span>, <span class="st">"path/to/easyquant/input/file.txt"</span>, delim <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
+<span class="co"># DO RE-QUANTIFICATION WITH EASYQUANT</span>
+
+
+<span class="co"># add peptide sequence</span>
+<span class="co"># a list of GRanges with the CDS needs to be added at the moment</span>
+<span class="co"># this will be done within add_peptide in a future version</span>
+<span class="va">dat_for_requantification_cts_peptide</span> <span class="op">&lt;-</span>
+  <span class="va">dat_for_requantification_cts</span>  <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu">mutate</span><span class="op">(</span>cds_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/BimapFormatting.html">as.list</a></span><span class="op">(</span><span class="va">cds</span><span class="op">[</span><span class="va">tx_id</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">30</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span>
+
+<span class="co"># merge easyquant results with data</span>
+<span class="va">dat_cts_peptide_requantification</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/map_requant.html">map_requant</a></span><span class="op">(</span>path_to_easyquant_folder <span class="op">=</span> <span class="st">"/path/to/easyuant/output_folder"</span>,
+              junc_tib <span class="op">=</span> <span class="va">dat_for_requantification_cts_peptide</span><span class="op">)</span>
+
+
+<span class="co"># easyquant results can be imported without direct merging with data</span>
+<span class="va">dat_requant</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="reference/read_requant.html">read_requant</a></span><span class="op">(</span>path_folder <span class="op">=</span> <span class="st">"/path/to/easyuant/output_folder"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="transcript-database" class="section level2">
+<h2 class="hasAnchor">
+<a href="#transcript-database" class="anchor"></a>Transcript database</h2>
+<p>To transform mutations into junction format, a database of transcripts is required. This databasee can be created as described below:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># use gtf file of choice and transform into transcript database</span>
+<span class="va">gtf_file</span> <span class="op">=</span> <span class="st">"/path/to/human/gencode/gencode.annotation.gtf"</span>
+<span class="co"># parse GTF file as txdb object</span>
+<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html">saveDb</a></span><span class="op">(</span><span class="va">txdb</span>, file <span class="op">=</span> <span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
