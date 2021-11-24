@@ -123,27 +123,54 @@ A test case will be added later
 
 ```{r}
 library(splice2neo)
+library(tidyverse)
 # load genome of choice
 library(BSgenome.Hsapiens.UCSC.hg19)
-# add example for transcripts
+library(AnnotationDbi)
+# this is an customized example of a transcript database
+# the user can choose the best suited database for their use case
+# please find below instruction how to create the database from a gtf file
+txdb <- loadDb("/path/to/transripts/txdb.sqlite")
+transcripts <-
+  GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
+transcripts_gr <- GenomicFeatures::transcripts(txdb)
+# Build a GRangesList with cds composed of individual exon ranges
+cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
+
+# canonical junctions
+# the user can choose the best suited datasets for canoical junctions
+# the object `canonical junction` should be a vector of canonical junctions in the junction format
+canonical_juncs <-
+  c("chr1_33361245_33361511_-",
+    "chr1_32849649_32852380_-",
+    "chrom_start_end_strand")
+
 
 # import RNA data
-dat_leafcutter <- leafcutter_transform(path = "/your/path/to/leafcutter/results")
-dat_spladder <- spladder_transform(path = "/your/path/to/spladder/results")
-dat_rna <- generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_spladder)
+dat_leafcutter <-
+  leafcutter_transform(path = "/your/path/to/leafcutter/results")
+dat_spladder <-
+  spladder_transform(path = "/your/path/to/spladder/results")
+dat_rna <-
+  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_spladder)
 
 # import & transform SpliceAi results
-dat_spliceai <- parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
+dat_spliceai <-
+  parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
-dat_spliceai_annotated <- annotate_spliceai_junction(var_df = dat_splicai_formatted, transcripts = transcripts,
-        transcripts_gr = transcripts_gr)
+dat_spliceai_annotated <-
+  annotate_spliceai_junction(var_df = dat_splicai_formatted,
+                             transcripts = transcripts,
+                             transcripts_gr = transcripts_gr)
 
 # import & transform MMSplice results
 dat_mmsplice <- parse_spliceai(infile = "path/to/mmsplice/file.csv")
-dat_mmsplice_annotated  <- annotate_mmsplice(mmsplice_df =dat_mmsplice, transcripts = transcripts)
+dat_mmsplice_annotated  <-
+  annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
 # mutation-based junctions
-dat_mut <- combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
+dat_mut <-
+  combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
 
 # add information if junction is canonical and if found to be expressed by Spladder or Leafcutter
 dat_mut <- dat_mut %>%
@@ -152,10 +179,10 @@ dat_mut <- dat_mut %>%
 
 # remove canonical junctions for further downstream analysis
 dat_for_requantification <- dat_mut %>%
-      filter(!is_canonical)
+  filter(!is_canonical)
 
 # add context sequences
-# a list of GRanges with the transcript needs to be added at the moment 
+# a list of GRanges with the transcript needs to be added at the moment
 # this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
   mutate(tx_lst = as.list(transcripts[tx_id])) %>%
@@ -166,22 +193,41 @@ dat_for_requantification_cts <- dat_for_requantification %>%
 dat_easyquant <- dat_for_requantification_cts %>%
   transform_for_requant()
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
-# DO RE-QUANTIFICATION WITH EASYQUANT 
+# DO RE-QUANTIFICATION WITH EASYQUANT
 
 
 # add peptide sequence
 # a list of GRanges with the CDS needs to be added at the moment
 # this will be done within add_peptide in a future version
 dat_for_requantification_cts_peptide <-
-  dat_for_requantification_cts  %>% 
-  mutate(cds_lst = as.list(cds[tx_id])) %>% 
+  dat_for_requantification_cts  %>%
+  mutate(cds_lst = as.list(cds[tx_id])) %>%
   add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19)
 
 # merge easyquant results with data
-dat_cts_peptide_requantification <- map_requant(path_to_easyquant_folder = "/path/to/easyuant/output_folder",
-                junc_tib = dat_for_requantification_cts_peptide)
+dat_cts_peptide_requantification <-
+  map_requant(path_to_easyquant_folder = "/path/to/easyuant/output_folder",
+              junc_tib = dat_for_requantification_cts_peptide)
 
 
 # easyquant results can be imported without direct merging with data
-dat_requant <- read_requant(path_folder = "/path/to/easyuant/output_folder")
+dat_requant <-
+  read_requant(path_folder = "/path/to/easyuant/output_folder")
 ```
+
+
+
+## Transcript database
+
+To transform mutations into junction format, a database of transcripts is required. This databasee can be created as described below:  
+
+```{r}
+# use gtf file of choice and transform into transcript database
+gtf_file = "/path/to/human/gencode/gencode.annotation.gtf"
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file)
+saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
+
+
+```
+
