@@ -7,13 +7,12 @@
 transform_for_requant(df)
 }
 \arguments{
-\item{cts_id}{An id for the cts sequence to be re-quantified. If the
-context sequence was determined with the function \code{junct_to_cts} the associated hash id \code{cts_id} can be used.}
-
-\item{cts_seq}{The context sequence.}
-
-\item{junc_position}{The position of the junction within the context sequence.  If the
-context sequence was determined with \code{junct_to_cts} the associated hash id \code{cts_junc_pos} can be used.}
+\item{df}{A data.frame with splice junctions in rows and at least the colums:
+\itemize{
+\item \code{cts_id} hash id for a context sequence
+\item \code{cts_seq} The transcript context sequence.
+\item \code{cts_junc_pos} The position of the junction within the context sequence
+}}
 }
 \value{
 A tibble that can be used for requantification with easyquant. This tibble has the columns

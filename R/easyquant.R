@@ -1,10 +1,11 @@
 #' Creates a table with context sequences for re-quantification analysis with Easyquant.
 #'
-#' @param cts_id An id for the cts sequence to be re-quantified. If the
-#' context sequence was determined with the function `junct_to_cts` the associated hash id `cts_id` can be used.
-#' @param cts_seq The context sequence.
-#' @param junc_position The position of the junction within the context sequence.  If the
-#' context sequence was determined with `junct_to_cts` the associated hash id `cts_junc_pos` can be used.
+#' @param df  A data.frame with splice junctions in rows and at least the colums:
+#'
+#'   -  `cts_id` hash id for a context sequence
+#'   -  `cts_seq` The transcript context sequence.
+#'   -  `cts_junc_pos` The position of the junction within the context sequence
+#'
 #'
 #' @return A tibble that can be used for requantification with easyquant. This tibble has the columns
 #' - `name`: Name of the input sequence.
