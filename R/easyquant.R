@@ -1,10 +1,11 @@
 #' Creates a table with context sequences for re-quantification analysis with Easyquant.
 #'
-#' @param cts_id An id for the cts sequence to be re-quantified. If the
-#' context sequence was determined with the function `junct_to_cts` the associated hash id `cts_id` can be used.
-#' @param cts_seq The context sequence.
-#' @param junc_position The position of the junction within the context sequence.  If the
-#' context sequence was determined with `junct_to_cts` the associated hash id `cts_junc_pos` can be used.
+#' @param df  A data.frame with splice junctions in rows and at least the colums:
+#'
+#'   -  `cts_id` hash id for a context sequence
+#'   -  `cts_seq` The transcript context sequence.
+#'   -  `cts_junc_pos` The position of the junction within the context sequence
+#'
 #'
 #' @return A tibble that can be used for requantification with easyquant. This tibble has the columns
 #' - `name`: Name of the input sequence.
@@ -17,12 +18,12 @@
 #'@import dplyr
 #'
 #'@export
-transform_for_requant <- function(cts_id, cts_seq, junc_position){
-  dat <- tibble(
-    name = cts_id,
-    sequence = cts_seq,
-    position = junc_position
-  )
+transform_for_requant <- function(df){
+  dat <- df %>%
+    dplyr::select(cts_id, cts_seq, cts_junc_pos) %>%
+    dplyr::rename(name = cts_id,
+                  sequence = cts_seq,
+                  position = cts_junc_pos)
   dat <- dat %>%
     distinct()%>%
     filter(!is.na(sequence))
@@ -63,7 +64,7 @@ read_requant <- function(path_folder){
 #' Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.
 #'
 #' @param path_to_easyquant_folder The path to easyquant folder
-#' @param junc_tib The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column `hash_id` with hash ids that relate to the column `name` in the Easyquant output.   
+#' @param junc_tib The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column `hash_id` with hash ids that relate to the column `name` in the Easyquant output.
 #'
 #' @return Extended junction-transcript tibble with re-quantification results.  The following columns are added:
 #' -  `pos`: position of interest relative to input sequence
