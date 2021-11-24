@@ -4,7 +4,7 @@
 \alias{transform_for_requant}
 \title{Creates a table with context sequences for re-quantification analysis with Easyquant.}
 \usage{
-transform_for_requant(cts_id, cts_seq, junc_position)
+transform_for_requant(df)
 }
 \arguments{
 \item{cts_id}{An id for the cts sequence to be re-quantified. If the
