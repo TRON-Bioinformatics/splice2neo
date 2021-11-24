@@ -14,15 +14,21 @@ transcripts defined as GRanges of exons.}
 }
 \value{
 a \code{\link[GenomicRanges]{GRangesList}} with altered transcripts.
-
-TODO:
-\itemize{
-\item \link{x} resize jx to intron (+/-1)
-\item [ ] test for intron retention
-}
-
-[ ]: R:\%20
 }
 \description{
 Modify transcript by introducing splice junctions
+}
+\examples{
+tx <- GenomicRanges::GRangesList(
+  list(GenomicRanges::GRanges(c(
+     "1:2-3:+",
+     "1:5-6:+",
+     "1:10-15:+"
+  )))
+)
+
+jx <- GenomicRanges::GRanges(c("1:3-10:+"))
+
+modify_tx(tx, jx)
+
 }

@@ -1,4 +1,4 @@
-test_that("modify_tx works with toy example data", {
+test_that("modify_tx_fast works with toy example data", {
 
   # example data
   transcripts <- GenomicRanges::GRangesList(list(
@@ -50,7 +50,7 @@ test_that("modify_tx works with toy example data", {
                                IRanges::IRanges(junc_df$pos1, junc_df$pos2),
                                 strand = junc_df$strand)[c(2, 2)]
 
-  tx_alt <- modify_tx(tx, jx)
+  tx_alt <- modify_tx_fast(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
   expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
@@ -63,23 +63,23 @@ test_that("modify_tx works with toy example data", {
   jx <- junc_to_gr(junc_tx_df$junc_id)
   tx <- junc_tx_df$tx_lst
 
-  tx_alt <- modify_tx(tx, jx)
+  tx_alt <- modify_tx_fast(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
   # expect_equal(S4Vectors::end(tx_alt[[1]])[1], 7)
 
 })
 
-test_that("modify_tx works with negativ strand", {
+test_that("modify_tx_fast works with negativ strand", {
   jx <- GenomicRanges::GRanges("1:8-15:-")
   tx <- GenomicRanges::GRangesList(
     GenomicRanges::GRanges(c("1:5-8:-", "1:18-21:-"))
   )
-  tx_alt <- modify_tx(tx, jx)
+  tx_alt <- modify_tx_fast(tx, jx)
   expect_equal(length(tx_alt), length(tx))
 })
 
-test_that("modify_tx work for exon exclusion junctions on toy data", {
+test_that("modify_tx_fast work for exon exclusion junctions on toy data", {
 
   tx <- GenomicRanges::GRangesList(list(
     GenomicRanges::GRanges(c("1:2-3:+",
@@ -89,7 +89,7 @@ test_that("modify_tx work for exon exclusion junctions on toy data", {
 
   jx <- GenomicRanges::GRanges(c("1:3-10:+"))
 
-  tx_alt <- modify_tx(tx, jx)
+  tx_alt <- modify_tx_fast(tx, jx)
 
   expect_equal(length(tx_alt), length(tx))
   expect_equal(tx_alt[[1]], tx[[1]][c(1, 3)])
@@ -97,7 +97,7 @@ test_that("modify_tx work for exon exclusion junctions on toy data", {
 })
 
 
-test_that("modify_tx work for exitorn junction on toy data", {
+test_that("modify_tx_fast work for exitorn junction on toy data", {
 
   tx <- GenomicRanges::GRangesList(list(
     GenomicRanges::GRanges(c("1:2-3:+",
@@ -111,7 +111,7 @@ test_that("modify_tx work for exitorn junction on toy data", {
     "1:30-40:+"  # canonical
   ))
 
-  tx_alt <- modify_tx(tx, jx)
+  tx_alt <- modify_tx_fast(tx, jx)
 
   expect_equal(length(tx_alt[[2]]), length(tx[[2]]) + 1)
   expect_equal(tx_alt[[1]], tx[[1]])
@@ -120,12 +120,12 @@ test_that("modify_tx work for exitorn junction on toy data", {
 
 })
 
-test_that("modify_tx works with provided toy example data", {
+test_that("modify_tx_fast works with provided toy example data", {
 
   jx <- junc_to_gr(toy_junc_id)
   tx <- toy_transcripts[toy_junc_id_enst]
 
-  alt_tx <- modify_tx(tx, jx)
+  alt_tx <- modify_tx_fast(tx, jx)
 
   expect_equal(length(alt_tx), length(tx))
 })
@@ -139,7 +139,7 @@ test_that("modify_tx_fast gives equal results as modify_tx", {
   alt_tx_fast <- modify_tx_fast(tx, jx)
 
   expect_equal(length(alt_tx), length(tx))
-  expect_equal(alt_tx_fast, alt_tx)
+  expect_equal(alt_tx_fast, GenomicRanges::reduce(alt_tx))
 })
 
 
@@ -162,14 +162,16 @@ test_that("modify_tx_fast works on custom develop data", {
     "c:2-3")
     )
 
-  #    0        1         2
-  #    123456789012345678901234567890
-  #tx1 ==  ======    ======
-  #tx2 ==  ======
-  #jx1            |--|
-  #jx2  ||
-  #n1  ==  ========  ======
-  #n1  ==========
+  ##############################################################################
+  #      0        1         2
+  #      123456789012345678901234567890
+  #tx1   ==  ======    ======
+  #tx2   ==  ======
+  #jx1              |--|
+  #jx2    ||
+  #n1    ==  ========  ======
+  #n1    ==========
+  ##############################################################################
 
   tx_alt <- modify_tx_fast(tx, jx)
 
@@ -185,7 +187,10 @@ test_that("modify_tx_fast works on custom develop data", {
     ))
   ))
 
+  tx_old_exp <- modify_tx(tx, jx)
+
   expect_equal(tx_alt, tx_exp)
+  expect_equal(tx_alt, GenomicRanges::reduce(tx_old_exp))
 
 })
 

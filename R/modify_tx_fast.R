@@ -8,30 +8,43 @@
 #'
 #' @return a \code{\link[GenomicRanges]{GRangesList}} with altered transcripts.
 #'
+#' @examples
+#' tx <- GenomicRanges::GRangesList(
+#'   list(GenomicRanges::GRanges(c(
+#'      "1:2-3:+",
+#'      "1:5-6:+",
+#'      "1:10-15:+"
+#'   )))
+#' )
 #'
-#' TODO:
-#' - [x] resize jx to intron (+/-1)
-#' - [ ] test for intron retention
+#' jx <- GenomicRanges::GRanges(c("1:3-10:+"))
 #'
+#' modify_tx(tx, jx)
+#'
+#' @export
 modify_tx_fast <- function(tx, jx){
+
+  ## assume same length of tx and jx
+  stopifnot(length(tx) == length(jx))
+
+  # convert to GRangesList
+  tx <- GenomicRanges::GRangesList(tx)
 
   # convert GRangesLists as natural list objects
   tx_lst <- as.list(tx)
   jx_grl <- S4Vectors::split(jx, 1:length(jx))
   jx_lst <- jx_grl %>% as.list()
 
-  # https://github.com/Bioconductor/GenomicRanges/issues/17
-
   # get full range of each transcript as GRanges object
   tx_range <- unlist(range(tx), use.names=FALSE)
 
   # get the introns of transcripts as GRangesList
+  # this is suggested here:  https://github.com/Bioconductor/GenomicRanges/issues/17
   int <- GenomicRanges::psetdiff(tx_range, tx)
   int_lst <- as.list(int)
 
-
   # get introns that overlap with jx
-  old_int <- purrr::map2(int_lst, jx_lst, IRanges::subsetByOverlaps) %>%
+  old_int <- furrr::future_map2(int_lst, jx_lst, IRanges::subsetByOverlaps) %>%
     GenomicRanges::GRangesList()
 
   # remove overlapping introns
@@ -47,9 +60,5 @@ modify_tx_fast <- function(tx, jx){
   # convert back to exons
   exons <- GenomicRanges::psetdiff(tx_range, int)
 
+  return(exons)
 }
-
-# mod_tx(tx, jx)
-# introns <- psetdiff(unlist(range(grl),use.names=FALSE),grl)
-# #
-# mergen overlapping introns for all tx
