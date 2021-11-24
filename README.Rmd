@@ -121,7 +121,7 @@ In the following a dummy example workflow how to integrate predict splicing effe
 expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. 
 A test case will be added later
 
-```{r}
+```{r, eval=F, echo=T}
 library(splice2neo)
 library(tidyverse)
 # load genome of choice
@@ -221,7 +221,7 @@ dat_requant <-
 
 To transform mutations into junction format, a database of transcripts is required. This databasee can be created as described below:  
 
-```{r}
+```{r, eval=F, echo=T}
 # use gtf file of choice and transform into transcript database
 gtf_file = "/path/to/human/gencode/gencode.annotation.gtf"
 # parse GTF file as txdb object
