@@ -53,7 +53,7 @@ add_peptide <- function(df, size = 30, bsg = NULL){
   # get junctions as GRanges object
   jx <- junc_to_gr(df$junc_id)
 
-  # modify transcripts by appliing the splice junctions
+  # modify transcripts by applying the splice junctions
   cds_alt <- modify_tx(df$cds_lst, jx)
 
   # build new id

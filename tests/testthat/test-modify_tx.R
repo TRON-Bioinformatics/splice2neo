@@ -131,3 +131,51 @@ test_that("modify_tx works with provided toy example data", {
 })
 
 
+test_that("modify_tx works on custom develop data", {
+
+  tx <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-10",
+      "c:15-20"
+    )),
+    tx2 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-10"
+    ))
+  ))
+
+  jx <- GenomicRanges::GRanges(c(
+    "c:12-15",
+    "c:2-3")
+    )
+
+  ##############################################################################
+  #      0        1         2
+  #      123456789012345678901234567890
+  #tx1   ==  ======    ======
+  #tx2   ==  ======
+  #jx1              |--|
+  #jx2    ||
+  #n1    ==  ========  ======
+  #n1    ==========
+  ##############################################################################
+
+  tx_alt <- modify_tx(tx, jx)
+
+  # build expected transcripts
+  tx_exp <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-12",
+      "c:15-20"
+    )),
+    tx2 = GenomicRanges::GRanges(c(
+      "c:1-10"
+    ))
+  ))
+
+  expect_equal(tx_alt, tx_exp)
+
+})
+
