@@ -131,25 +131,51 @@ test_that("modify_tx works with provided toy example data", {
 })
 
 
-test_that("faster version of modify_tx works", {
+test_that("modify_tx works on custom develop data", {
 
-  skip("Not implemented yet")
+  tx <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-10",
+      "c:15-20"
+    )),
+    tx2 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-10"
+    ))
+  ))
 
-  require(GenomicRanges)
+  jx <- GenomicRanges::GRanges(c(
+    "c:12-15",
+    "c:2-3")
+    )
 
-  gr1 <- GRanges("chr1:2-5")
-  gr2 <- GRanges("chr1:4-9")
+  ##############################################################################
+  #      0        1         2
+  #      123456789012345678901234567890
+  #tx1   ==  ======    ======
+  #tx2   ==  ======
+  #jx1              |--|
+  #jx2    ||
+  #n1    ==  ========  ======
+  #n1    ==========
+  ##############################################################################
 
-  setdiff(gr1, gr2)
+  tx_alt <- modify_tx(tx, jx)
 
+  # build expected transcripts
+  tx_exp <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(c(
+      "c:1-2",
+      "c:5-12",
+      "c:15-20"
+    )),
+    tx2 = GenomicRanges::GRanges(c(
+      "c:1-10"
+    ))
+  ))
 
-  tx_gr <- GRanges(c("chr1:2-3", "chr1:5-6", "chr1:10-15"))
-  tx <- GRangesList(tx_gr)
-  jx <- GRanges("chr1:3-10")
-
-  setdiff(tx_gr, jx)
-  psetdiff(tx, GRangesList(jx))
-
+  expect_equal(tx_alt, tx_exp)
 
 })
 
