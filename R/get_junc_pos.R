@@ -22,8 +22,14 @@ get_junc_pos <- function(tx, jx){
   j_start <- GenomicRanges::resize(jx, width = 1, fix="start")
 
   # map junction positions on transcript sequence position
-  pos_tx <- GenomicFeatures::pmapToTranscripts(j_start, tx) %>%
-    BiocGenerics::start()
+  suppressWarnings(
+    pos_tx <- GenomicFeatures::pmapToTranscripts(j_start, tx) %>%
+      BiocGenerics::start()
+  )
+  # if j_start does not map to the transcript 0 is returned (see ?GenomicFeatures::pmapToTranscripts)
+  # This needs to be replaced by NA
+  pos_tx <- pos_tx %>%
+    dplyr::na_if(0)
 
   return(pos_tx)
 }

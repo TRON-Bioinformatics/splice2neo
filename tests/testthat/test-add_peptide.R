@@ -19,6 +19,35 @@ test_that("add_peptide works on toy example data", {
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
 })
 
+test_that("add_peptide not fails for junctions outside CDS", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+
+  # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
+  junc_df <- dplyr::tibble(
+    junc_id = c(
+      "chr5_10_20_+",
+      "chr5_50_70_-"
+    ),
+    tx_id = names(toy_cds)[1:2]
+  ) %>%
+    dplyr::mutate(
+      cds_lst = as.list(toy_cds[tx_id])
+    )
+
+  pep_df <- add_peptide(junc_df, size = 30, bsg = bsg)
+
+  expect_true(nrow(pep_df) == nrow(junc_df))
+  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
+  expect_true(all(new_col_names %in% names(pep_df)))
+
+  # expect peptide_context to be NA
+  expect_true(all(is.na(pep_df$peptide_context)))
+
+})
+
 
 test_that("seq_truncate_nonstop works on example data", {
 
