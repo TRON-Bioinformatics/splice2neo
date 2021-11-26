@@ -2,7 +2,7 @@
 
 #' Parse a GFF/GTF file as \code{\link[GenomicRanges]{GRangesList}} of exons
 #'
-#' @param file path to a GFF or GTF file (See \code{\link[makeTxDbFromGFF]{GenomicFeatures}}))
+#' @param file path to a GFF or GTF file (See \code{\link[GenomicFeatures]{makeTxDbFromGFF}}))
 #' @return A \code{\link[GenomicRanges]{GRangesList}} of exons grouped by transcripts
 #'
 #' @examples
