@@ -3,7 +3,7 @@
 \docType{data}
 \name{toy_junc_id}
 \alias{toy_junc_id}
-\title{An example dataset of 18 splice junctions in \code{junc_id} fomrat from human
+\title{An example dataset of 18 splice junctions in \code{junc_id} format from human
 (hg19) genome as character vector}
 \format{
 A character vector with \code{junc_id}s in the format:
@@ -16,7 +16,7 @@ They were created from the spliceAI example file
 toy_junc_id
 }
 \description{
-An example dataset of 18 splice junctions in \code{junc_id} fomrat from human
+An example dataset of 18 splice junctions in \code{junc_id} format from human
 (hg19) genome as character vector
 }
 \keyword{datasets}

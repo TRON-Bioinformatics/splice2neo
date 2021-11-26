@@ -2,12 +2,12 @@
 % Please edit documentation in R/easyquant.R
 \name{map_requant}
 \alias{map_requant}
-\title{Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.}
+\title{Maps the re-quantification result from EasyQuant. on the junction-transcript centric tibble by hash id.}
 \usage{
 map_requant(path_to_easyquant_folder, junc_tib)
 }
 \arguments{
-\item{path_to_easyquant_folder}{The path to easyquant folder}
+\item{path_to_easyquant_folder}{The path to EasyQuant folder}
 
 \item{junc_tib}{The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column \code{hash_id} with hash ids that relate to the column \code{name} in the Easyquant output.}
 }
@@ -17,13 +17,13 @@ Extended junction-transcript tibble with re-quantification results.  The followi
 \item \code{pos}: position of interest relative to input sequence
 \item \code{junc}: reads overlapping the position of interest
 \item \code{span}: read pairs spanning the position of interest
-\item \code{anch}: maximal number of bases next to position of interest that are overlaped by a single read
+\item \code{anch}: maximal number of bases next to position of interest that are overlapped by a single read
 \item \code{a}: reads mapping to sequence left of the position of interest
 \item \code{b}: reads mapping to sequence right of the position of interest
 }
 }
 \description{
-Maps the re-quantification result from Easyquant on the junction-transcript centric tibble by hash id.
+Maps the re-quantification result from EasyQuant. on the junction-transcript centric tibble by hash id.
 }
 \examples{
 

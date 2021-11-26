@@ -37,7 +37,7 @@
 #' @source \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz}
 "toy_cds"
 
-#' An example dataset of 18 splice junctions in `junc_id` fomrat from human
+#' An example dataset of 18 splice junctions in `junc_id` format from human
 #' (hg19) genome as character vector
 #'
 #' @format A character vector with `junc_id`s in the format:
@@ -74,7 +74,7 @@
 "unsorted_junc_df"
 
 #' A tibble containing events from alternative 3' splice sites identified by
-#' Spladder
+#' SplAdder
 #'
 #' @format A tibble frame with 1 and 15 variables:
 #'
@@ -82,7 +82,7 @@
 "spladder_output.a3ss"
 
 #' A tibble containing events from alternative 5' splice sites identified by
-#' Spladder
+#' SplAdder
 #'
 #' @format A tibble frame with 1 and 15 variables:
 #'
@@ -90,7 +90,7 @@
 "spladder_output.a5ss"
 
 #' A tibble containing events from exon skipping identified by
-#' Spladder
+#' SplAdder
 #'
 #' @format A tibble frame with 1 and 15 variables:
 #'
@@ -99,7 +99,7 @@
 
 
 #' A tibble containing events from intron retention identified by
-#' Spladder
+#' SplAdder
 #'
 #' @format A tibble frame with 1 and 15 variables:
 #'
@@ -107,7 +107,7 @@
 "spladder_output.intronreten"
 
 #' A tibble containing events from mutually exclusive exons identified by
-#' Spladder
+#' SplAdder
 #'
 #' @format A tibble frame with 1 row and 17 variables:
 #'
@@ -115,9 +115,9 @@
 "spladder_output.mutexon"
 
 #' A list of tibbles with each list containing events from a different
-#' splicing class identified by Spladder
+#' splicing class identified by SplAdder
 #'
-#' @format A list frame with tibbles called: A3SS, A5SS, casette_exon,
+#' @format A list frame with tibbles called: A3SS, A5SS, cassette_exon,
 #' intron_retention and mutex_exons
 #'
 #' @source random

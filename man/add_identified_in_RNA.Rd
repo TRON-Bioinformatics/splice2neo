@@ -2,23 +2,23 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{add_identified_in_RNA}
 \alias{add_identified_in_RNA}
-\title{This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder}
+\title{This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by LeafCutter or SplAdder}
 \usage{
 add_identified_in_RNA(mutation_juncs, path_to_spladder, path_to_leafcutter)
 }
 \arguments{
 \item{mutation_juncs}{The junction-transcript centric data predicted from WES data.}
 
-\item{path_to_spladder}{The path to the results from RNA-seq analysis with spladder}
+\item{path_to_spladder}{The path to the results from RNA-seq analysis with SplAdder}
 
-\item{path_to_leafcutter}{The path to the results from RNA-seq analysis with leafcutter}
+\item{path_to_leafcutter}{The path to the results from RNA-seq analysis with LeafCutter}
 }
 \value{
-The junction-transcript centric data predicted from WES data is extedended by the information if a respective aberrant junctions was
-identified by spladder or leafcutter. (\code{identified_by_leafcutter}, \code{identified_by_spladder})
+The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
+identified by spladder or LeafCutter (\code{identified_by_leafcutter}, \code{identified_by_spladder})
 }
 \description{
-This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by LeafCutter or SplAdder
 }
 \examples{
 

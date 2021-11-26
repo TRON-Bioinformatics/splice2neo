@@ -2,20 +2,20 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{spladder_transform_format}
 \alias{spladder_transform_format}
-\title{Transforms Spladder output into standardized junction format}
+\title{Transforms SplAdder output into standardized junction format}
 \usage{
 spladder_transform_format(l)
 }
 \arguments{
-\item{l}{A list with tibbles that contain the spladder output - each for one type of alternative splicing. These types can be "A5SS",
+\item{l}{A list with tibbles that contain the SplAdder output - each for one type of alternative splicing. These types can be "A5SS",
 "A3SS", "cassette_exon", "intron_retention", "mutex_exons".}
 }
 \value{
 A tibble in standardized junction format, combining all alternative
-splicing classes that are were determined with Spladder
+splicing classes that are were determined with SplAdder
 }
 \description{
-Transforms Spladder output into standardized junction format
+Transforms SplAdder output into standardized junction format
 }
 \examples{
 spladder_output

@@ -2,19 +2,19 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{spladder_transform}
 \alias{spladder_transform}
-\title{Imports SPLADDER output from a given path and transforms it into standardized
+\title{Imports SplAdder output from a given path and transforms it into standardized
 junction format}
 \usage{
 spladder_transform(path)
 }
 \arguments{
-\item{path}{The path to a folder with spladder output}
+\item{path}{The path to a folder with SplAdder output}
 }
 \value{
 A tibble in standardized junction format, combining all alternative
-splicing classes that are covered by Spladder
+splicing classes that are covered by SplAdder
 }
 \description{
-Imports SPLADDER output from a given path and transforms it into standardized
+Imports SplAdder output from a given path and transforms it into standardized
 junction format
 }

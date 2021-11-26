@@ -2,17 +2,17 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{transform_leafcutter_counts}
 \alias{transform_leafcutter_counts}
-\title{Transforms Leafcutter counts file into standardized junction format.}
+\title{Transforms LeafCutter counts file into standardized junction format.}
 \usage{
 transform_leafcutter_counts(tib)
 }
 \arguments{
-\item{tib}{Leafcutter counts file as tibble}
+\item{tib}{LeafCutter counts file as tibble}
 }
 \value{
 A tibble with columns "chromosome", "junction_start", "junction_end",
 "cluster"
 }
 \description{
-Transforms Leafcutter counts file into standardized junction format.
+Transforms LeafCutter counts file into standardized junction format.
 }

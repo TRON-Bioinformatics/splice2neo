@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{import_leafcutter_bam}
 \alias{import_leafcutter_bam}
-\title{Imports "_Aligned.out.bam.junc" file from Leafcutter output}
+\title{Imports "_Aligned.out.bam.junc" file from LeafCutter output}
 \usage{
 import_leafcutter_bam(file.name)
 }
@@ -14,5 +14,5 @@ A tibble with columns "chromosome", "junction_start", "junction_end",
 "dot", "count", "strand"
 }
 \description{
-Imports "_Aligned.out.bam.junc" file from Leafcutter output
+Imports "_Aligned.out.bam.junc" file from LeafCutter output
 }

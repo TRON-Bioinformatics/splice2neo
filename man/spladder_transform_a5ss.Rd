@@ -2,19 +2,19 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{spladder_transform_a5ss}
 \alias{spladder_transform_a5ss}
-\title{Transforms events from alternative 5' splice sites from SPLADDER output
+\title{Transforms events from alternative 5' splice sites from SplAdder output
 format into standardized junction format}
 \usage{
 spladder_transform_a5ss(tib)
 }
 \arguments{
-\item{tib}{A tibble in SPLADDER output format}
+\item{tib}{A tibble in SplAdder output format}
 }
 \value{
 A tibble in standardized junction format
 }
 \description{
-Transforms events from alternative 5' splice sites from SPLADDER output
+Transforms events from alternative 5' splice sites from SplAdder output
 format into standardized junction format
 }
 \examples{

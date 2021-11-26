@@ -2,19 +2,19 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{spladder_transform_intron_retention}
 \alias{spladder_transform_intron_retention}
-\title{Transforms events resulting from intron retention from SPLADDER output
+\title{Transforms events resulting from intron retention from SplAdder output
 format into standardized junction format}
 \usage{
 spladder_transform_intron_retention(tib)
 }
 \arguments{
-\item{tib}{A tibble in SPLADDER output format}
+\item{tib}{A tibble in SplAdder output format}
 }
 \value{
 A tibble in standardized junction format
 }
 \description{
-Transforms events resulting from intron retention from SPLADDER output
+Transforms events resulting from intron retention from SplAdder output
 format into standardized junction format
 }
 \examples{

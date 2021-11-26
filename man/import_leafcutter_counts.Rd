@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{import_leafcutter_counts}
 \alias{import_leafcutter_counts}
-\title{Imports "_perind.counts.gz" from Leafcutter output.}
+\title{Imports "_perind.counts.gz" from LeafCutter output.}
 \usage{
 import_leafcutter_counts(file.name)
 }
@@ -13,5 +13,5 @@ import_leafcutter_counts(file.name)
 A tibble with columns "intron_cluster" and "counts
 }
 \description{
-Imports "_perind.counts.gz" from Leafcutter output.
+Imports "_perind.counts.gz" from LeafCutter output.
 }

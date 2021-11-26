@@ -49,7 +49,7 @@ require(tidyverse)
 #> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
 #> ✓ tibble  3.1.6     ✓ dplyr   1.0.7
 #> ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-#> ✓ readr   2.1.0     ✓ forcats 0.5.1
+#> ✓ readr   2.0.1     ✓ forcats 0.5.1
 #> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
@@ -217,7 +217,7 @@ dat_mmsplice_annotated  <-
 dat_mut <-
   combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
 
-# add information if junction is canonical and if found to be expressed by Spladder or Leafcutter
+# add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter
 dat_mut <- dat_mut %>%
   mutate(is_canonical = is_canonical(junc_id, ref_junc = canonical_juncs, exons_gr = transcripts)) %>%
   mutate(is_in_rnaseq = is_in_rnaseq(junc_id, rna_juncs = dat_rna$junc_id))
@@ -249,13 +249,13 @@ dat_for_requantification_cts_peptide <-
   mutate(cds_lst = as.list(cds[tx_id])) %>%
   add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19)
 
-# merge easyquant results with data
+# merge EasyQuant results with data
 dat_cts_peptide_requantification <-
   map_requant(path_to_easyquant_folder = "/path/to/easyuant/output_folder",
               junc_tib = dat_for_requantification_cts_peptide)
 
 
-# easyquant results can be imported without direct merging with data
+# EasyQuant results can be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyuant/output_folder")
 ```
@@ -263,7 +263,7 @@ dat_requant <-
 ## Transcript database
 
 To transform mutations into junction format, a database of transcripts
-is required. This databasee can be created as described below:
+is required. This database can be created as described below:
 
 ``` r
 # use gtf file of choice and transform into transcript database
