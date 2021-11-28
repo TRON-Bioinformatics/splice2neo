@@ -1,6 +1,6 @@
 
 
-# SPLADDER FUNCTION -------------------------------------------------------
+# SplAdder FUNCTION -------------------------------------------------------
 
 
 #' Sorts columns of junction output file in the following order:
@@ -30,10 +30,10 @@ sort_columns <- function(tib) {
 }
 
 
-#' Transforms events from alternative 3' splice sites from SPLADDER output
+#' Transforms events from alternative 3' splice sites from SplAdder output
 #' format into standardized junction format
 #'
-#' @param tib A tibble in SPLADDER output format
+#' @param tib A tibble in SplAdder output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -66,10 +66,10 @@ spladder_transform_a3ss <- function(tib) {
 }
 
 
-#' Transforms events from alternative 5' splice sites from SPLADDER output
+#' Transforms events from alternative 5' splice sites from SplAdder output
 #' format into standardized junction format
 #'
-#' @param tib A tibble in SPLADDER output format
+#' @param tib A tibble in SplAdder output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -101,10 +101,10 @@ spladder_transform_a5ss <- function(tib) {
     dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
-#' Transforms events resulting from exon skipping from SPLADDER output
+#' Transforms events resulting from exon skipping from SplAdder output
 #' format into standardized junction format
 #'
-#' @param tib A tibble in SPLADDER output format
+#' @param tib A tibble in SplAdder output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -131,10 +131,10 @@ spladder_transform_exon_skipping <- function(tib) {
 }
 
 
-#' Transforms events resulting from intron retention from SPLADDER output
+#' Transforms events resulting from intron retention from SplAdder output
 #' format into standardized junction format
 #'
-#' @param tib A tibble in SPLADDER output format
+#' @param tib A tibble in SplAdder output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -160,10 +160,10 @@ spladder_transform_intron_retention <- function(tib) {
 }
 
 
-#' Transforms events resulting from mutually exclusive exons from SPLADDER output
+#' Transforms events resulting from mutually exclusive exons from SplAdder output
 #' format into standardized junction format
 #'
-#' @param tib A tibble in SPLADDER output format
+#' @param tib A tibble in SplAdder output format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -191,13 +191,13 @@ spladder_transform_mutex_exon <- function(tib) {
 }
 
 
-#' Transforms Spladder output into standardized junction format
+#' Transforms SplAdder output into standardized junction format
 #'
-#' @param l A list with tibbles that contain the spladder output - each for one type of alternative splicing. These types can be "A5SS",
+#' @param l A list with tibbles that contain the SplAdder output - each for one type of alternative splicing. These types can be "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 #'
 #' @return A tibble in standardized junction format, combining all alternative
-#'   splicing classes that are were determined with Spladder
+#'   splicing classes that are were determined with SplAdder
 #'
 #' @examples
 #'spladder_output
@@ -247,11 +247,11 @@ spladder_transform_format <- function(l) {
 }
 
 
-#' Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.
+#' Imports SplAdder output from a given path with ".confirmed.txt.gz" files.
 #'
-#' @param path The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.
+#' @param path The path to a folder with SplAdder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.
 #'
-#' @return A list with tibbles. Each tibble is a Spladder output for "A5SS",
+#' @return A list with tibbles. Each tibble is a SplAdder output for "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 #'
 #'
@@ -266,7 +266,7 @@ import_spladder <- function(path){
   files <- lapply(path_files, read_delim, delim = "\t")
 
   if(length(files) == 0){
-    stop("There are no SPLADDER confirmed.txt.gz input files")
+    stop("There are no SplAdder confirmed.txt.gz input files")
   }
   names_events <-
     c(
@@ -281,13 +281,13 @@ import_spladder <- function(path){
 }
 
 
-#' Imports SPLADDER output from a given path and transforms it into standardized
+#' Imports SplAdder output from a given path and transforms it into standardized
 #' junction format
 #'
-#' @param path The path to a folder with spladder output
+#' @param path The path to a folder with SplAdder output
 #'
 #' @return A tibble in standardized junction format, combining all alternative
-#'   splicing classes that are covered by Spladder
+#'   splicing classes that are covered by SplAdder
 #'
 #'
 #' @import readr
@@ -300,7 +300,7 @@ spladder_transform <- function(path){
 
 # LEAFCUTTER FUNCTIONS -----------------------------------------------------
 
-#' Imports "_perind.counts.gz" from Leafcutter output.
+#' Imports "_perind.counts.gz" from LeafCutter output.
 #'
 #' @param file.name The path to the file
 #'
@@ -323,9 +323,9 @@ import_leafcutter_counts <- function(file.name) {
 }
 
 
-#' Transforms Leafcutter counts file into standardized junction format.
+#' Transforms LeafCutter counts file into standardized junction format.
 #'
-#' @param tib Leafcutter counts file as tibble
+#' @param tib LeafCutter counts file as tibble
 #'
 #' @return A tibble with columns "chromosome", "junction_start", "junction_end",
 #'  "cluster"
@@ -348,7 +348,7 @@ transform_leafcutter_counts <- function(tib) {
 }
 
 
-#' Imports "_Aligned.out.bam.junc" file from Leafcutter output
+#' Imports "_Aligned.out.bam.junc" file from LeafCutter output
 #'
 #' @param file.name The path to the file
 #'
@@ -374,9 +374,9 @@ import_leafcutter_bam <- function(file.name) {
   return(bam.file)
 }
 
-#' Transforms Leafcutter bam junc file
+#' Transforms LeafCutter bam junc file
 #'
-#' @param tib Leafcutter bam junc file as tibble
+#' @param tib LeafCutter bam junc file as tibble
 #'
 #' @return A tibble including a column with the junction id
 #'
@@ -391,9 +391,9 @@ transform_leafcutter_bam <- function(tib) {
 }
 
 
-#' Transforms Leafcutter intermediate files into standardized format
+#' Transforms LeafCutter intermediate files into standardized format
 #'
-#' @param tib a tibble from leafcutter intermediate format
+#' @param tib a tibble from LeafCutter intermediate format
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -422,7 +422,7 @@ leafcutter_transform_format <- function(tib) {
   return(tib)
 }
 
-#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from Leafcutter output and transforms the raw output
+#' Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from LeafCutter output and transforms the raw output
 #' into standardized junction output format
 #'
 #' @param path The path to leafcutter output
@@ -453,11 +453,11 @@ leafcutter_transform <- function(path) {
 # COMBINED DATASET --------------------------------------------------------
 
 
-#' Combines tibbles with junctions from Spladder and Leafcutter into a combined dataset of expressed splice junctions
+#' Combines tibbles with junctions from SplAdder and LeafCutter into a combined dataset of expressed splice junctions
 #'
-#' @param leafcutter_juncs A tibble the junctions identified by Leafcutter in
+#' @param leafcutter_juncs A tibble the junctions identified by LeafCutter in
 #'   standardized format
-#' @param spladder_juncs A tibble the junctions identified by Spladder in
+#' @param spladder_juncs A tibble the junctions identified by SplAdder in
 #'   standardized format
 #'
 #' @return A combined table with unique junctions. The columns RNA_tool
@@ -484,14 +484,14 @@ generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs){
 
 }
 
-#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by leafcutter or spladder
+#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by LeafCutter or SplAdder
 #'
-#' @param path_to_spladder The path to the results from RNA-seq analysis with spladder
-#' @param path_to_leafcutter The path to the results from RNA-seq analysis with leafcutter
+#' @param path_to_spladder The path to the results from RNA-seq analysis with SplAdder
+#' @param path_to_leafcutter The path to the results from RNA-seq analysis with LeafCutter
 #' @param mutation_juncs The junction-transcript centric data predicted from WES data.
 #'
-#' @return The junction-transcript centric data predicted from WES data is extedended by the information if a respective aberrant junctions was
-#' identified by spladder or leafcutter. (`identified_by_leafcutter`, `identified_by_spladder`)
+#' @return The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
+#' identified by spladder or LeafCutter (`identified_by_leafcutter`, `identified_by_spladder`)
 #'
 #' @examples
 #'

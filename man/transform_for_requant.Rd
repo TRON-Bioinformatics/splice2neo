@@ -2,12 +2,12 @@
 % Please edit documentation in R/easyquant.R
 \name{transform_for_requant}
 \alias{transform_for_requant}
-\title{Creates a table with context sequences for re-quantification analysis with Easyquant.}
+\title{Creates a table with context sequences for re-quantification analysis with EasyQuant.}
 \usage{
 transform_for_requant(df)
 }
 \arguments{
-\item{df}{A data.frame with splice junctions in rows and at least the colums:
+\item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{cts_id} hash id for a context sequence
 \item \code{cts_seq} The transcript context sequence.
@@ -15,7 +15,7 @@ transform_for_requant(df)
 }}
 }
 \value{
-A tibble that can be used for requantification with easyquant. This tibble has the columns
+A tibble that can be used for re-quantification with EasyQuant This tibble has the columns
 \itemize{
 \item \code{name}: Name of the input sequence.
 \item \code{sequence}: The context sequence that will be requantified.
@@ -23,7 +23,7 @@ A tibble that can be used for requantification with easyquant. This tibble has t
 }
 }
 \description{
-Creates a table with context sequences for re-quantification analysis with Easyquant.
+Creates a table with context sequences for re-quantification analysis with EasyQuant.
 }
 \examples{
 

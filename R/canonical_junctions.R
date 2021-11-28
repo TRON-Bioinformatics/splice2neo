@@ -13,8 +13,8 @@
 #' - strand = -: \eqn{e_{i+1}}, \eqn{s_{i}}
 #'
 #' We also include canonical intron-retention junctions. These are 5' donor or
-#' 3' acceptor sites of canoncial exon-exon junctions that are not used in all
-#' isofroms of the gene. They are located within an exon of other transcripts.
+#' 3' acceptor sites of canonical exon-exon junctions that are not used in all
+#' isoforms of the gene. They are located within an exon of other transcripts.
 #' Canonical intron-retention junctions are defined by the coordinate of the
 #' last exon base and the next base.
 #' Therefore, we just need to check whether both bases are included in a single exon.

@@ -7,7 +7,7 @@
 add_context_seq(df, size = 400, bsg = NULL)
 }
 \arguments{
-\item{df}{A data.frame with splice junctions in rows and at least the colums:
+\item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{junc_id} junction id consisting of genomic coordinates
 \item \code{tx_id} the ID of the affected transcript (see \code{\link{add_tx}})

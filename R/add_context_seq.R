@@ -1,7 +1,7 @@
 
 #' Annotate splice junctions with resulting transcript sequence
 #'
-#' @param df A data.frame with splice junctions in rows and at least the colums:
+#' @param df A data.frame with splice junctions in rows and at least the columns:
 #'
 #'   -  `junc_id` junction id consisting of genomic coordinates
 #'   -  `tx_id` the ID of the affected transcript (see \code{\link{add_tx}})
@@ -71,8 +71,15 @@ add_context_seq <- function(df, size = 400, bsg = NULL){
   cts_start <- pmax(junc_pos_tx - (size/2) + 1, 1)
   cts_end <- pmin(junc_pos_tx + (size/2), tx_len)
 
+  # if subset positions are NA, set the enrie sequence to NA to force NA
+  # in the ouptut of the folllwoing call to XVector::subseq
+  tx_seq[is.na(cts_start) | is.na(cts_end)] <- as("", "DNAStringSet")
+
   # extract context sequence from full transcript
-  cts_seq <- XVector::subseq(tx_seq, start = cts_start, end = cts_end)
+  cts_seq <- XVector::subseq(tx_seq, start = cts_start, end = cts_end) %>%
+    as.character() %>%
+    dplyr::na_if("") %>%
+    as.character()
 
   # calculate junction position relative to context sequence
   cts_junc_pos <- junc_pos_tx - cts_start
@@ -85,7 +92,7 @@ add_context_seq <- function(df, size = 400, bsg = NULL){
       junc_pos_tx = junc_pos_tx,
       cts_seq = as.character(cts_seq),
       cts_junc_pos = cts_junc_pos,
-      cts_size = BiocGenerics::width(cts_seq),
+      cts_size = stringr::str_length(cts_seq),
       cts_id = furrr::future_map_chr(cts_seq, rlang::hash)
     )
 

@@ -7,7 +7,7 @@
 add_tx(df, transcripts)
 }
 \arguments{
-\item{df}{A data.frame with splice junctions in rows and at least the colums:
+\item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{junc_id} junction id consisting of genomic coordinates
 }}

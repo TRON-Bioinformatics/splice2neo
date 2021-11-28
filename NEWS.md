@@ -2,7 +2,7 @@
 
 * CI config for github action
   * R CMD check
-  * testcoverage with codecov
+  * test coverage with Codecov
   * pkgdown website on github.io
 * update README
 

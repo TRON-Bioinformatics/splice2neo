@@ -7,7 +7,7 @@
 add_peptide(df, size = 30, bsg = NULL)
 }
 \arguments{
-\item{df}{A data.frame with splice junctions in rows and at least the colums:
+\item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{junc_id} junction id consisting of genomic coordinates
 \item \code{tx_id} the ID of the affected transcript (see \code{\link{add_tx}})
@@ -28,9 +28,9 @@ modified CDS ranges.
 \item \code{cds_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_cds} the junction position in the modified CDS sequence
 \item \code{protein} the full protein sequence of the translated modified CDS.
-\item \code{protein_junc_pos} The position of the junctino in the \code{protein} sequence
-\item \code{junc_in_orf} Indicator whehter the junction is located in an open reading frame.
-\item \code{peptide_context_seq_raw} the peptide sequence around the junction includig stop codons.
+\item \code{protein_junc_pos} The position of the junction in the \code{protein} sequence
+\item \code{junc_in_orf} Indicator whether the junction is located in an open reading frame.
+\item \code{peptide_context_seq_raw} the peptide sequence around the junction including stop codons.
 \item \code{peptide_context} the peptide sequence around the junction truncated after stop codons.
 \item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
 }

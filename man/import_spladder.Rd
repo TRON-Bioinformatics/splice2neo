@@ -2,17 +2,17 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{import_spladder}
 \alias{import_spladder}
-\title{Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.}
+\title{Imports SplAdder output from a given path with ".confirmed.txt.gz" files.}
 \usage{
 import_spladder(path)
 }
 \arguments{
-\item{path}{The path to a folder with spladder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.}
+\item{path}{The path to a folder with SplAdder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.}
 }
 \value{
-A list with tibbles. Each tibble is a Spladder output for "A5SS",
+A list with tibbles. Each tibble is a SplAdder output for "A5SS",
 "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 }
 \description{
-Imports SPLADDER output from a given path with ".confirmed.txt.gz" files.
+Imports SplAdder output from a given path with ".confirmed.txt.gz" files.
 }

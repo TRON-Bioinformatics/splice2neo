@@ -7,7 +7,7 @@
 parse_gtf(file)
 }
 \arguments{
-\item{file}{path to a GFF or GTF file (See \code{\link[makeTxDbFromGFF]{GenomicFeatures}}))}
+\item{file}{path to a GFF or GTF file (See \code{\link[GenomicFeatures]{makeTxDbFromGFF}}))}
 }
 \value{
 A \code{\link[GenomicRanges]{GRangesList}} of exons grouped by transcripts

@@ -37,3 +37,28 @@ test_that("get_junc_pos works with negativ strand", {
   pos <- get_junc_pos(tx_alt, jx)
   expect_equal(pos, 7)
 })
+
+
+test_that("get_junc_pos works on toy example when junc is not on transcipt", {
+  jx <- GenomicRanges::GRanges(rep("chr1:15", 3))
+  tx <- GenomicRanges::GRangesList(
+    tx1 = GenomicRanges::GRanges(c(
+      "chr1:10-20",
+      "chr1:50-60",
+      "chr1:80-100")),
+    tx2 = GenomicRanges::GRanges(c(
+      "chr1:10-20",
+      "chr1:50-60",
+      "chr1:80-120")),
+    tx3 = GenomicRanges::GRanges(c(
+      "chr1:50-60",
+      "chr1:80-100"))
+  )
+
+  pos <- get_junc_pos(tx, jx)
+
+  expect_true(!is.na(pos[1]))
+  expect_true(!is.na(pos[2]))
+  expect_true(is.na(pos[3]))
+
+})

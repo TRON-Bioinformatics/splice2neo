@@ -1,7 +1,7 @@
 
 #' Annotate splice junctions with affected transcript IDs
 #'
-#' @param df A data.frame with splice junctions in rows and at least the colums:
+#' @param df A data.frame with splice junctions in rows and at least the columns:
 #'
 #'   -  `junc_id` junction id consisting of genomic coordinates
 #'

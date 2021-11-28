@@ -21,15 +21,22 @@ get_junc_pos <- function(tx, jx){
   # get individual GRanges objects for start and end position of junction
   j_start <- GenomicRanges::resize(jx, width = 1, fix="start")
 
+  # check if junction overlap the whole range of the transcript
+  on_tx <- IRanges::poverlaps(j_start, unlist(base::range(tx))) %>%
+    as.logical()
+
+  # initialize with NA
+  pos_tx <- rep(NA, length(tx))
+
   # map junction positions on transcript sequence position
   suppressWarnings(
-    pos_tx <- GenomicFeatures::pmapToTranscripts(j_start, tx) %>%
+    pos_tx[on_tx] <- GenomicFeatures::pmapToTranscripts(j_start[on_tx], tx[on_tx]) %>%
       BiocGenerics::start()
   )
-  # if j_start does not map to the transcript 0 is returned (see ?GenomicFeatures::pmapToTranscripts)
-  # This needs to be replaced by NA
-  pos_tx <- pos_tx %>%
-    dplyr::na_if(0)
+  # # if j_start does not map to the transcript 0 is returned (see ?GenomicFeatures::pmapToTranscripts)
+  # # This needs to be replaced by NA
+  # pos_tx <- pos_tx %>%
+  #   dplyr::na_if(0)
 
   return(pos_tx)
 }

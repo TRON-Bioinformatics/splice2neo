@@ -2,27 +2,27 @@
 % Please edit documentation in R/easyquant.R
 \name{read_requant}
 \alias{read_requant}
-\title{Imports the re-quantification results from analysis with easyquant.}
+\title{Imports the re-quantification results from analysis with EasyQuant}
 \usage{
 read_requant(path_folder)
 }
 \arguments{
-\item{path_folder}{The path to the easyquant folder}
+\item{path_folder}{The path to the EasyQuant folder}
 }
 \value{
-A tibble with with the requantification results. This tibble has the columns
+A tibble with with the re-quantification results. This tibble has the columns
 \itemize{
 \item \code{name}: name of the input sequence. this will be a hash id.
 \item \code{pos}: position of interest relative to input sequence
 \item \code{junc}: reads overlapping the position of interest
 \item \code{span}: read pairs spanning the position of interest
-\item \code{anch}: maximal number of bases next to position of interest that are overlaped by a single read
+\item \code{anch}: maximal number of bases next to position of interest that are overlapped by a single read
 \item \code{a}: reads mapping to sequence left of the position of interest
 \item \code{b}: reads mapping to sequence right of the position of interest
 }
 }
 \description{
-Imports the re-quantification results from analysis with easyquant.
+Imports the re-quantification results from analysis with EasyQuant
 }
 \examples{
 

@@ -1,7 +1,7 @@
 
 #' Annotate splice junctions with resulting CDS and peptide sequence
 #'
-#' @param df A data.frame with splice junctions in rows and at least the colums:
+#' @param df A data.frame with splice junctions in rows and at least the columns:
 #'
 #'   -  `junc_id` junction id consisting of genomic coordinates
 #'   -  `tx_id` the ID of the affected transcript (see \code{\link{add_tx}})
@@ -19,9 +19,9 @@
 #'  - `cds_id_alt` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_cds` the junction position in the modified CDS sequence
 #'  - `protein` the full protein sequence of the translated modified CDS.
-#'  - `protein_junc_pos` The position of the junctino in the `protein` sequence
-#'  - `junc_in_orf` Indicator whehter the junction is located in an open reading frame.
-#'  - `peptide_context_seq_raw` the peptide sequence around the junction includig stop codons.
+#'  - `protein_junc_pos` The position of the junction in the `protein` sequence
+#'  - `junc_in_orf` Indicator whether the junction is located in an open reading frame.
+#'  - `peptide_context_seq_raw` the peptide sequence around the junction including stop codons.
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
 #'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
 #'
@@ -116,8 +116,8 @@ add_peptide <- function(df, size = 30, bsg = NULL){
 #' @param pos position relative to sequence
 #' @return a character
 #'
-#' This can be used to remove peptide sequence parts in a conetext sequence (in
-#' a fixed-sized window arround a position of interest) after a stop codon `*`
+#' This can be used to remove peptide sequence parts in a context sequence (in
+#' a fixed-sized window around a position of interest) after a stop codon `*`
 #' occurs.
 #'
 #' @examples

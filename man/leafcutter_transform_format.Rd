@@ -2,16 +2,16 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{leafcutter_transform_format}
 \alias{leafcutter_transform_format}
-\title{Transforms Leafcutter intermediate files into standardized format}
+\title{Transforms LeafCutter intermediate files into standardized format}
 \usage{
 leafcutter_transform_format(tib)
 }
 \arguments{
-\item{tib}{a tibble from leafcutter intermediate format}
+\item{tib}{a tibble from LeafCutter intermediate format}
 }
 \value{
 A tibble in standardized junction format
 }
 \description{
-Transforms Leafcutter intermediate files into standardized format
+Transforms LeafCutter intermediate files into standardized format
 }
