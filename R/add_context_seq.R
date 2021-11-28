@@ -73,7 +73,7 @@ add_context_seq <- function(df, size = 400, bsg = NULL){
 
   # if subset positions are NA, set the enrie sequence to NA to force NA
   # in the ouptut of the folllwoing call to XVector::subseq
-  tx_seq[is.na(cts_start) | is.na(cts_end)] <- as("", "DNAString")
+  tx_seq[is.na(cts_start) | is.na(cts_end)] <- as("", "DNAStringSet")
 
   # extract context sequence from full transcript
   cts_seq <- XVector::subseq(tx_seq, start = cts_start, end = cts_end) %>%
