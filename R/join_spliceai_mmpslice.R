@@ -40,8 +40,7 @@ combine_mut_junc <- function(spliceai_juncs, mmsplice_juncs){
     dplyr::select(junc_tx_id, mut_id, tx_id, junc_id, junc_tx_id,
            identified_by_spliceai, identified_by_mmsplice,
            prob_spliceai, class_spliceai, delta_logit_psi_mmsplice,
-           pathogenicity_mmsplice, efficiency_mmsplice,  class_mmsplice) %>%
-    filter(!is.na(junc_id))
+           pathogenicity_mmsplice, efficiency_mmsplice,  class_mmsplice)
   return(juncs)
 
 }
