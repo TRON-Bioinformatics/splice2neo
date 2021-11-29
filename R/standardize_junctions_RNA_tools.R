@@ -259,7 +259,7 @@ spladder_transform_format <- function(l) {
 #' @export
 import_spladder <- function(path){
   files <- list.files(path, "confirmed.txt.gz")
-  as_types <- gsub("_C3.confirmed.txt.gz", "", files)
+  as_types <- gsub("_C[0-3].confirmed.txt.gz", "", files)
   as_types <- gsub("merge_graphs_", "", as_types)
   path_files <- paste(path, files ,sep = "/" )
 
