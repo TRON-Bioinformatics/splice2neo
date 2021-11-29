@@ -22,7 +22,9 @@ get_junc_pos <- function(tx, jx){
   j_start <- GenomicRanges::resize(jx, width = 1, fix="start")
 
   # check if junction overlap the whole range of the transcript
-  on_tx <- IRanges::poverlaps(j_start, unlist(base::range(tx))) %>%
+  range_tx <- unlist(base::range(tx))
+  GenomeInfoDb::seqlevels(j_start) <- GenomeInfoDb::seqlevels(range_tx)
+  on_tx <- IRanges::poverlaps(j_start,range_tx ) %>%
     as.logical()
 
   # initialize with NA
