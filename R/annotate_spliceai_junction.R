@@ -67,7 +67,8 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
       junc_id = str_c(CHROM, left, right, tx_strand, sep = "_"),
       tx_junc_id = str_c(tx_id, CHROM, left, right, tx_strand, sep = "_"),
     ) %>%
-    ungroup()
+    ungroup() %>%
+    filter(!is.na(junc_id))
 
   message("INFO: Evaluation of rules done.")
   return(junc_df)

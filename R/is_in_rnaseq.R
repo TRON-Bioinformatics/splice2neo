@@ -6,6 +6,7 @@
 #' @return logical vector of same length as `junc_id` indicating
 #' if the input `junc_id` was found in RNA-seq data of the same sample
 #'
+#' @export
 is_in_rnaseq <- function(junc_id, rna_juncs){
 
   in_rna_junc <- junc_id %in% rna_juncs
