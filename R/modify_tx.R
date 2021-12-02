@@ -60,5 +60,8 @@ modify_tx <- function(tx, jx){
   # convert back to exons
   exons <- GenomicRanges::psetdiff(tx_range, int)
 
+  # reorder exon ranks for transcripts on negative strand
+  exons <- S4Vectors::revElements(exons, any(BiocGenerics::strand(exons) == "-"))
+
   return(exons)
 }
