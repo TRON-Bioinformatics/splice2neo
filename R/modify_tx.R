@@ -30,6 +30,11 @@ modify_tx <- function(tx, jx){
   # convert to GRangesList
   tx <- GenomicRanges::GRangesList(tx)
 
+  # bring transcripts and junction to common seqlevels
+  seq_levels <- union(GenomeInfoDb::seqlevels(tx), GenomeInfoDb::seqlevels(jx))
+  GenomeInfoDb::seqlevels(jx) <- seq_levels
+  GenomeInfoDb::seqlevels(tx) <- seq_levels
+
   # convert GRangesLists as natural list objects
   tx_lst <- as.list(tx)
   jx_grl <- S4Vectors::split(jx, 1:length(jx))
