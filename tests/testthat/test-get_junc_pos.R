@@ -45,8 +45,8 @@ test_that("get_junc_pos works with negativ strand", {
   expect_equal(pos, 7)
 
   # convert strand to +
-  strand(tx_alt) <- "+"
-  strand(jx) <- "+"
+  BiocGenerics::strand(tx_alt) <- "+"
+  BiocGenerics::strand(jx) <- "+"
   pos <- get_junc_pos(tx_alt, jx)
   expect_equal(pos, 4)
 

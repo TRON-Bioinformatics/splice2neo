@@ -82,7 +82,7 @@ add_context_seq <- function(df, size = 400, bsg = NULL){
     as.character()
 
   # calculate junction position relative to context sequence
-  cts_junc_pos <- junc_pos_tx - cts_start
+  cts_junc_pos <- junc_pos_tx - cts_start + 1
 
   # Annotate table
   df %>%
