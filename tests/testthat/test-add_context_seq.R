@@ -89,9 +89,9 @@ test_that("add_context_seq workds for example with neg issue 46", {
   skip("only TRON local")
 
   # library(splice2neo)
-  library(GenomicFeatures)
-  library(AnnotationDbi)
-  library(Biostrings)
+  # library(GenomicFeatures)
+  # library(AnnotationDbi)
+  # library(Biostrings)
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
