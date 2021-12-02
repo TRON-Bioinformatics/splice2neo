@@ -5,6 +5,7 @@
 utils::globalVariables(
   c(
     ".",
+    "as",
     "ALT",
     "AS_event_ID",
     "CHROM",
