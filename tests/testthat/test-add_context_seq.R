@@ -32,8 +32,11 @@ test_that("add_context_seq is independed of junction combinations", {
   # transcript database
   # see: https://gitlab.rlp.net/tron/splice2neo/-/issues/38#note_235974
   # txdb_file <- "/path/to/file.txdb.sqlite"
+  # txdb <- loadDb(txdb_file)
 
-  txdb <- loadDb(txdb_file)
+  gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+  txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+
   transcripts <- GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 
   # Build a GRangesList with cds composed of individual exon ranges
