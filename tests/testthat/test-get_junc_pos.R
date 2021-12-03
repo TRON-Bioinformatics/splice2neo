@@ -29,13 +29,27 @@ test_that("get_junc_pos works on toy data", {
 
 
 test_that("get_junc_pos works with negativ strand", {
+
   jx <- GenomicRanges::GRanges("1:8-15:-")
   tx <- GenomicRanges::GRangesList(
     GenomicRanges::GRanges(c("1:5-8:-", "1:18-21:-"))
   )
+  #     0        1         2
+  #     123456789012345678901234567890
+  #alt      ====      =======
+  #pos +    1234
+  #pos -              7654321
+
   tx_alt <- modify_tx(tx, jx)
   pos <- get_junc_pos(tx_alt, jx)
   expect_equal(pos, 7)
+
+  # convert strand to +
+  BiocGenerics::strand(tx_alt) <- "+"
+  BiocGenerics::strand(jx) <- "+"
+  pos <- get_junc_pos(tx_alt, jx)
+  expect_equal(pos, 4)
+
 })
 
 
