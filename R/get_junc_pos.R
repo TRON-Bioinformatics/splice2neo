@@ -21,10 +21,34 @@ get_junc_pos <- function(tx, jx){
   # get individual GRanges objects for start and end position of junction
   j_start <- GenomicRanges::resize(jx, width = 1, fix="start")
 
-  # check if junction overlap the whole range of the transcript
-  range_tx <- unlist(base::range(tx))
-  GenomeInfoDb::seqlevels(j_start) <- GenomeInfoDb::seqlevels(range_tx)
-  on_tx <- IRanges::poverlaps(j_start,range_tx ) %>%
+  # build common seqlevels
+  common_seqlevels <- unique(c(
+    GenomeInfoDb::seqlevels(j_start),
+    GenomeInfoDb::seqlevels(tx),
+    "Z" # add custom seqlevel for zero-size GRangs later
+  ))
+
+  GenomeInfoDb::seqlevels(j_start) <- common_seqlevels
+  GenomeInfoDb::seqlevels(tx) <- common_seqlevels
+
+  # check if junction overlap the whole range of the transcript ---------------
+
+  # buid full range of transcript
+  range_tx <- base::range(tx)
+
+  # check which transcripts have zero length, i.e. consists only of empty ranges
+  # these empty ranges get lost when converting to GRanges obejects and therefore
+  # will be replaced by an zeor-size toy range object
+  empty_ranges <- range_tx %>% GenomicRanges::width() %>% as.integer() %>% is.na()
+  if (any(empty_ranges)){
+    range_tx[which(empty_ranges)] <-  GenomicRanges::GRangesList(
+      GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
+    )
+  }
+
+  range_tx <-  unlist(range_tx)
+
+  on_tx <- IRanges::poverlaps(j_start, range_tx) %>%
     as.logical()
 
   # initialize with NA
@@ -35,10 +59,6 @@ get_junc_pos <- function(tx, jx){
     pos_tx[on_tx] <- GenomicFeatures::pmapToTranscripts(j_start[on_tx], tx[on_tx]) %>%
       BiocGenerics::start()
   )
-  # # if j_start does not map to the transcript 0 is returned (see ?GenomicFeatures::pmapToTranscripts)
-  # # This needs to be replaced by NA
-  # pos_tx <- pos_tx %>%
-  #   dplyr::na_if(0)
 
   return(pos_tx)
 }
