@@ -76,3 +76,51 @@ test_that("get_junc_pos works on toy example when junc is not on transcipt", {
   expect_true(is.na(pos[3]))
 
 })
+
+
+test_that("get_junc_pos works when an empty range is in tx", {
+
+  tx <- GenomicRanges::GRangesList(
+      list(
+        GenomicRanges::GRanges(), # empty range
+        GenomicRanges::GRanges(c(
+          "1:2-3:+",
+          "1:5-8:+",
+          "1:10-12:+"))
+    )
+  )
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:3-10:+",  # any
+    "1:3-11:+"  # any
+  ))
+
+  pos <- get_junc_pos(tx, jx)
+
+  expect_true(is.na(pos[1]))
+  expect_equal(length(tx), length(pos))
+
+  # Multiple empty ranges ------------------------------------------------------
+  tx <- GenomicRanges::GRangesList(
+    list(
+      GenomicRanges::GRanges(), # empty range
+      GenomicRanges::GRanges(), # empty range
+      GenomicRanges::GRanges(c(
+        "1:2-3:+",
+        "1:5-8:+",
+        "1:10-12:+"))
+    )
+  )
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:3-9:+",  # any
+    "1:3-10:+",  # any
+    "1:3-11:+"  # any
+  ))
+
+  pos <- get_junc_pos(tx, jx)
+
+  expect_true(is.na(pos[1]))
+  expect_equal(length(tx), length(pos))
+})
+

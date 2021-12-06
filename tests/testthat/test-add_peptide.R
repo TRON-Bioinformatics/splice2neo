@@ -110,6 +110,50 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
 })
 
 
+test_that("add_peptide works in strange combination(issue #47)", {
+
+  # on CI avoid download of annotation data
+  skip_on_ci()
+
+  # reference data -------------------------------------------------------------
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+  txdb <- suppressWarnings(GenomicFeatures::makeTxDbFromGFF(gtf_url))
+  cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
+  # ----------------------------------------------------------------------------
+
+  # use custom junctions from issue #47 See: https://gitlab.rlp.net/tron/splice2neo/-/issues/47
+  # As the CDS of the first junction results in an empty range the peptide shoul be NA
+  junc_enst_id <- c(
+    "chr2_80526815_80531277_-|ENST00000433224.1_2", "chr2_220501172_220501412_+|ENST00000273063.10_3",
+    "chr2_220501172_220501412_+|ENST00000425141.5_1", "chr2_220501172_220501412_+|ENST00000358055.8_4",
+    "chr2_220501172_220501412_+|ENST00000317151.7_3"
+  )
+  # chr2_220501172_220501412_+_ENST00000425141.5_1
+
+  # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
+  junc_df <- dplyr::tibble(
+      junc_enst_id = junc_enst_id
+    ) %>%
+    tidyr::separate(junc_enst_id, into = c("junc_id", "tx_id"), sep = "\\|") %>%
+    dplyr::mutate(
+      cds_lst = as.list(cds[tx_id])
+    )
+
+  pep_df <- add_peptide(junc_df, size = 30, bsg = bsg)
+
+  # As the CDS of the first junction results in an empty range the peptide shoul be NA
+  # expect at least one but not all peptide annotations to be NA
+  expect_true(any(is.na(pep_df$peptide_context)))
+  expect_true(!all(is.na(pep_df$peptide_context)))
+  expect_true(any(is.na(pep_df$peptide_context_junc_pos)))
+  expect_true(!all(is.na(pep_df$peptide_context_junc_pos)))
+
+})
+
+
 test_that("seq_truncate_nonstop works on example data", {
 
 
