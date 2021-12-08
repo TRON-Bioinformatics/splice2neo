@@ -51,7 +51,6 @@ add_context_seq <- function(df,
   stopifnot(is.data.frame(df))
   stopifnot("junc_id" %in% names(df))
   stopifnot("tx_id" %in% names(df))
-  # stopifnot("tx_lst" %in% names(df))
   stopifnot(class(transcripts) %in% c("GRangesList", "CompressedGRangesList"))
   stopifnot(is.logical(keep_ranges) & length(keep_ranges) == 1)
 
