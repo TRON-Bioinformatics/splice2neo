@@ -29,7 +29,7 @@
 #'
 #'  - `tx_lst` a list of \code{\link[GenomicRanges]{GRanges}} with
 #'        the original transcript as provided in `tx_id` column and `transcripts` object..
-#'  - `tx_alt_lst` a list of \code{\link[GenomicRanges]{GRanges}} with
+#'  - `tx_mod_lst` a list of \code{\link[GenomicRanges]{GRanges}} with
 #'        the modified transcript (see \code{\link{modify_tx}})
 #'
 #' @examples
@@ -70,16 +70,16 @@ add_context_seq <- function(df,
   jx <- junc_to_gr(df$junc_id)
 
   # modify transcripts by appliing the splice junctions
-  tx_alt <- modify_tx(tx_lst, jx)
+  tx_mod <- modify_tx(tx_lst, jx)
 
   # build new id
   tx_id_alt = str_c(df$tx_id, "|", df$junc_id)
 
   # get junction position in altered transcript
-  junc_pos_tx = get_junc_pos(tx_alt, jx)
+  junc_pos_tx = get_junc_pos(tx_mod, jx)
 
   # get transcript sequence and junction position in sequence
-  tx_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, tx_alt)
+  tx_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, tx_mod)
 
   # Get context-sequence around junction
   tx_len <- BiocGenerics::width(tx_seq)
@@ -115,7 +115,7 @@ add_context_seq <- function(df,
     df <- df %>%
       dplyr::mutate(
         tx_lst = as.list(tx_lst),
-        tx_alt_lst = as.list(tx_alt),
+        tx_mod_lst = as.list(tx_mod),
       )
   }
 

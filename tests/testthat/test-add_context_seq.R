@@ -20,9 +20,9 @@ test_that("add_context_seq works on toy example data with keep_ranges", {
 
   expect_true(nrow(cts_df) == nrow(toy_junc_df))
   expect_true(all(c("cts_seq", "cts_junc_pos", "cts_id") %in% names(cts_df)))
-  expect_true(all(c("tx_lst", "tx_alt_lst") %in% names(cts_df)))
+  expect_true(all(c("tx_lst", "tx_mod_lst") %in% names(cts_df)))
   expect_true(class(cts_df$tx_lst[[1]]) == "GRanges")
-  expect_true(class(cts_df$tx_alt_lst[[1]]) == "GRanges")
+  expect_true(class(cts_df$tx_mod_lst[[1]]) == "GRanges")
 
 })
 
@@ -120,7 +120,7 @@ test_that("add_context_seq workds for example with neg issue 46", {
     add_context_seq(transcripts, size = 400, bsg = bsg, keep_ranges = TRUE)
 
   df$tx_lst[[1]]
-  df$tx_alt_lst[[1]]
+  df$tx_mod_lst[[1]]
   df$cts_seq
   # "AAGAAAGCCGAGTGATGGAATCACCGCGGCGGCCGTCGGAAGGACCCGCCCGGAAACGCCGACCAAGAGGGCCCCATGTCAGTTATGCGCGGGAGTGACGTCTCCTAACGCCAGCGCCCGCGCCCGCGCCCCAGGAAGTAGGGTTTGCCTTAGATATTTGAATGGTGGTACTTCCATAAGCATGGCACATCTTTTATTGAGCAAGTATCTGTAAGCCATTTGCAACCACTGATGGGAGGAACAGAGAGCAGCATTTCAGAACCAGGTTCTCCTTCGAGGAACAGAGAAAATGAAACCAGCAGACAGAATTTGTCAGGTGACTACTTTTCTAATGTGTTTTCAGAGCTGTGTAT"
   df$cts_junc_pos
