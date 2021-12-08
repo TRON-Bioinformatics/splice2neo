@@ -4,27 +4,28 @@
 \alias{add_peptide}
 \title{Annotate splice junctions with resulting CDS and peptide sequence}
 \usage{
-add_peptide(df, size = 30, bsg = NULL)
+add_peptide(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE)
 }
 \arguments{
 \item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{junc_id} junction id consisting of genomic coordinates
-\item \code{tx_id} the ID of the affected transcript (see \code{\link{add_tx}})
-\item \code{cds_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the
-CDS (see \code{\link{add_tx}})
+\item \code{tx_id} the ID of the affected transcript/CDS (see \code{\link{add_tx}})
 }}
+
+\item{cds}{as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges}
 
 \item{size}{the total size of the output sequence (might be shorter if peptide is shorter)}
 
 \item{bsg}{\code{\link[BSgenome]{BSgenome}} object such as
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}
+
+\item{keep_ranges}{Should GRanges of CDS and modified CDS be
+kept? If TRUE, the list columns \code{cds_lst} and \code{cds_mod_lst} are added to the output.}
 }
 \value{
 A data.frame as the input with the additional column(s):
 \itemize{
-\item \code{cds_alt_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the
-modified CDS ranges.
 \item \code{cds_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_cds} the junction position in the modified CDS sequence
 \item \code{protein} the full protein sequence of the translated modified CDS.
@@ -34,6 +35,15 @@ modified CDS ranges.
 \item \code{peptide_context} the peptide sequence around the junction truncated after stop codons.
 \item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
 }
+
+If the \code{keep_ranges} is TRUE, the following additional columns are added to
+the output data.frame:
+\itemize{
+\item \code{cds_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
+the original CDS as provided in \code{tx_id} column and \code{cds} object..
+\item \code{cds_mod_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the
+modified CDS ranges.
+}
 }
 \description{
 Annotate splice junctions with resulting CDS and peptide sequence
@@ -42,11 +52,6 @@ Annotate splice junctions with resulting CDS and peptide sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-junc_df <- toy_junc_df \%>\%
-  dplyr::mutate(
-    cds_lst = as.list(toy_cds[tx_id])
-  )
-
-add_peptide(junc_df, size = 30, bsg = bsg)
+add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
 
 }
