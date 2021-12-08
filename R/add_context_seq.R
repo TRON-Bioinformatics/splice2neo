@@ -57,7 +57,7 @@ add_context_seq <- function(df,
   # check if all input transcript IDs are in contained in the transcripts object
   stopifnot(all(df$tx_id %in% names(transcripts)))
 
-  # get GRanges as of transcripts as List column to the data.frame df
+  # get GRanges as of transcripts
   tx_lst <- transcripts[df$tx_id]
 
   if(is.null(bsg)){

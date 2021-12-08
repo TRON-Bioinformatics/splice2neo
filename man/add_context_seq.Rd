@@ -41,7 +41,7 @@ the output data.frame:
 \itemize{
 \item \code{tx_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
 the original transcript as provided in \code{tx_id} column and \code{transcripts} object..
-\item \code{tx_alt_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
+\item \code{tx_mod_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
 the modified transcript (see \code{\link{modify_tx}})
 }
 }
