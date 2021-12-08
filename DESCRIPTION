@@ -50,6 +50,7 @@ Imports:
     Biostrings,
     XVector,
     rlang,
+    rtracklayer,
     BSgenome.Hsapiens.UCSC.hg19
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
