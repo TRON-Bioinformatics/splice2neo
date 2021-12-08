@@ -10,7 +10,7 @@
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
 [![](https://img.shields.io/badge/devel%20version-0.1.3-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
+[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/master)
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative splicing
@@ -46,16 +46,6 @@ library(splice2neo)
 # load human genome reference sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
-require(tidyverse)
-#> Loading required package: tidyverse
-#> ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-#> ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-#> ✓ tibble  3.1.6     ✓ dplyr   1.0.7
-#> ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-#> ✓ readr   2.0.1     ✓ forcats 0.5.1
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> x dplyr::filter() masks stats::filter()
-#> x dplyr::lag()    masks stats::lag()
 ```
 
 ### Example data
@@ -63,12 +53,12 @@ require(tidyverse)
 We start with some example splice junctions provided with the package.
 
 ``` r
-junc_df <- tibble(
+junc_df <- dplyr::tibble(
   junc_id = toy_junc_id[c(1, 6, 10)]
 )
 
 junc_df
-#> # A tibble: 3 × 1
+#> # A tibble: 3 x 1
 #>   junc_id                   
 #>   <chr>                     
 #> 1 chr2_152389996_152392205_-
@@ -86,7 +76,7 @@ junc_df <- junc_df %>%
   add_tx(toy_transcripts)
 
 junc_df
-#> # A tibble: 21 × 3
+#> # A tibble: 21 x 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
 #>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
@@ -109,25 +99,47 @@ Then we add the transcript sequence in a fixed-sized window around the
 junction positions, the context sequence.
 
 ``` r
-junc_df <- junc_df %>% 
-  add_context_seq(size = 400, bsg = bsg)
+toy_junc_df
+#> # A tibble: 14 x 2
+#>    junc_id                    tx_id          
+#>    <chr>                      <chr>          
+#>  1 chr2_152389996_152392205_- ENST00000409198
+#>  2 chr2_152389996_152390729_- ENST00000409198
+#>  3 chr2_152389955_152389956_- ENST00000409198
+#>  4 chr2_152388410_152392205_- ENST00000409198
+#>  5 chr2_152388410_152390729_- ENST00000409198
+#>  6 chr2_179415981_179416357_- ENST00000342992
+#>  7 chr2_179415987_179415988_- ENST00000342992
+#>  8 chr2_179415000_179416357_- ENST00000342992
+#>  9 chr2_179445336_179446207_- ENST00000342992
+#> 10 chr2_179446225_179446226_- ENST00000342992
+#> 11 chr2_179445336_179446633_- ENST00000342992
+#> 12 chr2_179642044_179642187_- ENST00000342992
+#> 13 chr2_179642146_179642147_- ENST00000342992
+#> 14 chr2_179642044_179642431_- ENST00000342992
 
-junc_df %>% 
-  select(junc_id, tx_id, junc_pos_tx, cts_seq, cts_junc_pos, cts_id)
-#> # A tibble: 21 × 6
-#>    junc_id                    tx_id  junc_pos_tx cts_seq    cts_junc_pos cts_id 
-#>    <chr>                      <chr>        <int> <chr>             <dbl> <chr>  
-#>  1 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…
-#>  2 chr2_152389996_152392205_- ENST0…       16412 AAGAAGACT…          199 ef6060…
-#>  3 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…
-#>  4 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 ef6060…
-#>  5 chr2_152389996_152392205_- ENST0…       21515 AAGAAGACT…          199 729100…
-#>  6 chr2_152389996_152392205_- ENST0…        5502 AAGAAGACT…          199 ef6060…
-#>  7 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 729100…
-#>  8 chr2_152389996_152392205_- ENST0…       21312 AAGAAGACT…          199 ef6060…
-#>  9 chr2_152389996_152392205_- ENST0…         576 AAGAAGACT…          199 8c2b82…
-#> 10 chr2_179415981_179416357_- ENST0…       83789 TGGATTCCA…          199 744c11…
-#> # … with 11 more rows
+
+junc_df <- toy_junc_df %>% 
+  add_context_seq(toy_transcripts, size = 400, bsg = bsg)
+
+junc_df 
+#> # A tibble: 14 x 8
+#>    junc_id  tx_id  tx_id_alt  junc_pos_tx cts_seq   cts_junc_pos cts_size cts_id
+#>    <chr>    <chr>  <chr>            <int> <chr>            <dbl>    <int> <chr> 
+#>  1 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 ef606…
+#>  2 chr2_15… ENST0… ENST00000…       16517 AAGAAGTA…          200      400 6c189…
+#>  3 chr2_15… ENST0… ENST00000…       17290 ACATCTCT…          200      400 c8bd5…
+#>  4 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 d41d2…
+#>  5 chr2_15… ENST0… ENST00000…       16517 AAGAAGTA…          200      400 db9b3…
+#>  6 chr2_17… ENST0… ENST00000…       83789 TGGATTCC…          200      400 744c1…
+#>  7 chr2_17… ENST0… ENST00000…       84158 ATTTGAAG…          200      400 5315f…
+#>  8 chr2_17… ENST0… ENST00000…       83789 TGGATTCC…          200      400 8eec0…
+#>  9 chr2_17… ENST0… ENST00000…       59307 CGGGCTGA…          200      400 5ab65…
+#> 10 chr2_17… ENST0… ENST00000…       59288 TTATCTCG…          200      400 c233b…
+#> 11 chr2_17… ENST0… ENST00000…       58982 TGGCTATT…          200      400 fddf5…
+#> 12 chr2_17… ENST0… ENST00000…        4828 TAGAAGGG…          200      400 ce662…
+#> 13 chr2_17… ENST0… ENST00000…        4868 TAGACCTA…          200      400 86af1…
+#> 14 chr2_17… ENST0… ENST00000…        4703 GTCTCCTG…          200      400 ec963…
 ```
 
 ### Annotate peptide sequence
@@ -141,25 +153,27 @@ peptide, and the location of the junction in an open reading frame
 
 ``` r
 junc_df <- junc_df %>% 
-  mutate(cds_lst = as.list(toy_cds[tx_id])) %>% 
-  add_peptide(size = 30, bsg = bsg)
+  add_peptide(toy_cds, size = 30, bsg = bsg)
 
 junc_df %>% 
-  select(junc_id, tx_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 21 × 5
-#>    junc_id                    tx_id junc_in_orf peptide_context peptide_context…
-#>    <chr>                      <chr> <lgl>       <chr>                      <dbl>
-#>  1 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  2 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  3 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  4 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  5 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  6 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  7 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  8 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#>  9 chr2_152389996_152392205_- ENST… TRUE        PINRHFKYATQLMN…               14
-#> 10 chr2_179415981_179416357_- ENST… TRUE        PSDPSKFTLAVSPV…               14
-#> # … with 11 more rows
+  dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
+#> # A tibble: 14 x 4
+#>    junc_id             junc_in_orf peptide_context          peptide_context_jun…
+#>    <chr>               <lgl>       <chr>                                   <dbl>
+#>  1 chr2_152389996_152… TRUE        PINRHFKYATQLMNEIC                          14
+#>  2 chr2_152389996_152… TRUE        PRHLLAKTAGDQISQIC                          14
+#>  3 chr2_152389955_152… FALSE       <NA>                                       NA
+#>  4 chr2_152388410_152… TRUE        PINRHFKYATQLMNEIKYRKNYE…                   14
+#>  5 chr2_152388410_152… TRUE        PRHLLAKTAGDQISQIKYRKNYE…                   14
+#>  6 chr2_179415981_179… TRUE        PSDPSKFTLAVSPVAGTPDYIDV…                   14
+#>  7 chr2_179415987_179… FALSE       <NA>                                       NA
+#>  8 chr2_179415000_179… TRUE        PSDPSKFTLAVSPVVPPIVEFGP…                   14
+#>  9 chr2_179445336_179… TRUE        KHYPKDILSKYYQGDST                          14
+#> 10 chr2_179446225_179… TRUE        PSDVPDKHYPKDILSKYYQGEYI…                   14
+#> 11 chr2_179445336_179… TRUE        PSDASKAAYARDPQFPPEGELDA…                   14
+#> 12 chr2_179642044_179… TRUE        TPSDSGEWTVVAQNRLWNIR                       14
+#> 13 chr2_179642146_179… TRUE        RAGRSSISVILTVEGKMR                         14
+#> 14 chr2_179642044_179… TRUE        VVGRPMPETFWFHDAVEHQVKPM…                   14
 ```
 
 ## Dummy example
@@ -175,10 +189,14 @@ library(tidyverse)
 # load genome of choice
 library(BSgenome.Hsapiens.UCSC.hg19)
 library(AnnotationDbi)
+
 # this is an customized example of a transcript database
 # the user can choose the best suited database for their use case
 # please find below instruction how to create the database from a gtf file
-txdb <- loadDb("/path/to/transripts/txdb.sqlite")
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+
 transcripts <-
   GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 transcripts_gr <- GenomicFeatures::transcripts(txdb)
@@ -270,8 +288,9 @@ is required. This database can be created as described below:
 
 ``` r
 # use gtf file of choice and transform into transcript database
-gtf_file = "/path/to/human/gencode/gencode.annotation.gtf"
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
 # parse GTF file as txdb object
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file)
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
 saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
 ```

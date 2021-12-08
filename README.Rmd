@@ -55,7 +55,6 @@ library(splice2neo)
 # load human genome reference sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
-require(tidyverse)
 
 ```
 
@@ -64,7 +63,7 @@ require(tidyverse)
 We start with some example splice junctions provided with the package.
  
 ```{r}
-junc_df <- tibble(
+junc_df <- dplyr::tibble(
   junc_id = toy_junc_id[c(1, 6, 10)]
 )
 
@@ -90,11 +89,14 @@ positions, the context sequence.
 
 
 ```{r}
-junc_df <- junc_df %>% 
-  add_context_seq(size = 400, bsg = bsg)
+toy_junc_df
 
-junc_df %>% 
-  select(junc_id, tx_id, junc_pos_tx, cts_seq, cts_junc_pos, cts_id)
+
+junc_df <- toy_junc_df %>% 
+  add_context_seq(toy_transcripts, size = 400, bsg = bsg)
+
+junc_df 
+
 
 ```
 
@@ -109,11 +111,10 @@ junction in an open reading frame (ORF).
 ```{r}
 
 junc_df <- junc_df %>% 
-  mutate(cds_lst = as.list(toy_cds[tx_id])) %>% 
-  add_peptide(size = 30, bsg = bsg)
+  add_peptide(toy_cds, size = 30, bsg = bsg)
 
 junc_df %>% 
-  select(junc_id, tx_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
+  dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
 
 ```
 
@@ -124,7 +125,7 @@ In the following a dummy example workflow how to integrate predict splicing effe
 expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. 
 A test case will be added later
 
-```{r, eval=F, echo=T}
+```{r, eval = FALSE, echo = TRUE}
 library(splice2neo)
 library(tidyverse)
 # load genome of choice
