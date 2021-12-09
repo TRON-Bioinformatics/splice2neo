@@ -207,24 +207,23 @@ dat_easyquant <- dat_for_requantification_cts %>%
   transform_for_requant()
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
+# https://github.com/TRON-Bioinformatics/easyquant
 
 
 # add peptide sequence
-# a list of GRanges with the CDS needs to be added at the moment
-# this will be done within add_peptide in a future version
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19)
+  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
 
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
-  map_requant(path_to_easyquant_folder = "/path/to/easyuant/output_folder",
+  map_requant(path_to_easyquant_folder = "/path/to/easyquant/output_folder",
               junc_tib = dat_for_requantification_cts_peptide)
 
 
 # EasyQuant results can be imported without direct merging with data
 dat_requant <-
-  read_requant(path_folder = "/path/to/easyuant/output_folder")
+  read_requant(path_folder = "/path/to/easyquant/output_folder")
 ```
 
 
@@ -241,6 +240,8 @@ gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/G
 txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
 saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
 
+# load 
+txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
 
