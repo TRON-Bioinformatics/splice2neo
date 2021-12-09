@@ -16,7 +16,7 @@
 #' @return A data.frame with the same rows as the input `df` but with the
 #'  following additional column(s):
 #'
-#'  - `tx_id_alt` an identifier made from `tx_id` and `junc_id`
+#'  - `tx_mod_id` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_tx` the junction position in the modified transcript sequence
 #'  - `cts_seq` the context sequence
 #'  - `cts_junc_pos` the junction position in the context sequence
@@ -54,14 +54,14 @@ add_context_seq <- function(df,
   stopifnot(class(transcripts) %in% c("GRangesList", "CompressedGRangesList"))
   stopifnot(is.logical(keep_ranges) & length(keep_ranges) == 1)
 
-  # take only the columns jucn_id and tx_id and build unique combinations
-  df_tmp <- df %>%
+  # take only the columns junc_id and tx_id and build unique combinations
+  df_sub <- df %>%
     dplyr::distinct(junc_id, tx_id) %>%
     # filter for subset with matching tx_id in input transcripts
     dplyr::filter(tx_id %in% names(transcripts))
 
   # get GRanges as subset of transcripts
-  tx_lst <- transcripts[df_tmp$tx_id]
+  tx_lst <- transcripts[df_sub$tx_id]
 
   if(is.null(bsg)){
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
@@ -69,7 +69,7 @@ add_context_seq <- function(df,
   }
 
   # get junctions as GRanges object
-  jx <- junc_to_gr(df_tmp$junc_id)
+  jx <- junc_to_gr(df_sub$junc_id)
 
   # modify transcripts by appliing the splice junctions
   tx_mod <- modify_tx(tx_lst, jx)
@@ -99,9 +99,9 @@ add_context_seq <- function(df,
   cts_junc_pos <- junc_pos_tx - cts_start + 1
 
   # Annotate table
-  df_tmp <- df_tmp %>%
+  df_sub <- df_sub %>%
     dplyr::mutate(
-      tx_id_alt = stringr::str_c(tx_id, "|", junc_id),
+      tx_mod_id = stringr::str_c(tx_id, "|", junc_id),
       junc_pos_tx = junc_pos_tx,
       cts_seq = as.character(cts_seq),
       cts_junc_pos = cts_junc_pos,
@@ -111,7 +111,7 @@ add_context_seq <- function(df,
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
   if(keep_ranges){
-    df_tmp <- df_tmp %>%
+    df_sub <- df_sub %>%
       dplyr::mutate(
         tx_lst = as.list(tx_lst),
         tx_mod_lst = as.list(tx_mod),
@@ -120,7 +120,7 @@ add_context_seq <- function(df,
 
   # add annotations to input data.frame
   df <- df %>%
-    dplyr::left_join(df_tmp, by = c("junc_id", "tx_id"))
+    dplyr::left_join(df_sub, by = c("junc_id", "tx_id"))
 
   return(df)
 

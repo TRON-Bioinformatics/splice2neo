@@ -27,7 +27,7 @@ kept? If TRUE, the list columns \code{tx_lst} and \code{tx_mod_lst} are added to
 A data.frame with the same rows as the input \code{df} but with the
 following additional column(s):
 \itemize{
-\item \code{tx_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
+\item \code{tx_mod_id} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_tx} the junction position in the modified transcript sequence
 \item \code{cts_seq} the context sequence
 \item \code{cts_junc_pos} the junction position in the context sequence
