@@ -34,6 +34,10 @@ reference:
   - spladder_transform_intron_retention
   - spladder_transform_mutex_exon
   - spladder_transform_exon_skipping
+- title: "Parse other formats"
+  desc: "Functions to parse otherformats into standard splice junction format"
+- contents:
+  - bed_to_junc
 - title: "Annotate"
   desc: "Functions to annotate splice junctions"
 - contents:
