@@ -36,6 +36,36 @@ test_that("add_peptide works on toy example data with keep_ranges", {
 
 })
 
+test_that("add_peptide works when tx_id is not contained in transcripts", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  junc_df <- toy_junc_df
+  # remove one transcript ID from transcripts object
+  cds <- toy_cds[-which(names(toy_cds) == "ENST00000342992")]
+
+  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+
+
+  expect_true(nrow(pep_df) == nrow(toy_junc_df))
+  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
+  expect_true(all(new_col_names %in% names(pep_df)))
+  expect_true(all(is.na(pep_df[pep_df$tx_id == "ENST00000342992", "peptide_context"])))
+
+  # remove another transcript ==================================================
+  cds <- toy_cds[-which(names(toy_cds) == "ENST00000409198")]
+
+  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+
+
+  expect_true(nrow(pep_df) == nrow(toy_junc_df))
+  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
+  expect_true(all(new_col_names %in% names(pep_df)))
+  expect_true(all(is.na(pep_df[pep_df$tx_id == "ENST00000409198", "peptide_context"])))
+
+})
+
 test_that("add_peptide not fails for junctions outside CDS", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)

@@ -15,7 +15,7 @@
 #'
 #' @return A data.frame as the input with the additional column(s):
 #'
-#'  - `cds_id_alt` an identifier made from `tx_id` and `junc_id`
+#'  - `cds_mod_id` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_cds` the junction position in the modified CDS sequence
 #'  - `protein` the full protein sequence of the translated modified CDS.
 #'  - `protein_junc_pos` The position of the junction in the `protein` sequence
@@ -49,10 +49,17 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
   stopifnot(is.logical(keep_ranges) & length(keep_ranges) == 1)
 
   # check if all input transcript IDs are in contained in the CDS object
-  stopifnot(all(df$tx_id %in% names(cds)))
+  # stopifnot(all(df$tx_id %in% names(cds)))
+
+  # take only the columns junc_id and tx_id and build unique combinations
+  df_sub <- df %>%
+    dplyr::distinct(junc_id, tx_id) %>%
+    # filter for subset with matching tx_id in input cds
+    dplyr::filter(tx_id %in% names(cds))
+
 
   # get GRanges as of cds
-  cds_lst <- cds[df$tx_id]
+  cds_lst <- cds[df_sub$tx_id]
 
   if(is.null(bsg)){
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
@@ -60,13 +67,10 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
   }
 
   # get junctions as GRanges object
-  jx <- junc_to_gr(df$junc_id)
+  jx <- junc_to_gr(df_sub$junc_id)
 
   # modify transcripts by applying the splice junctions
   cds_mod <- modify_tx(cds_lst, jx)
-
-  # build new id
-  cds_id_alt = str_c(df$tx_id, "|", df$junc_id)
 
   # get junction position in altered CDS
   junc_pos_cds = get_junc_pos(cds_mod, jx)
@@ -102,9 +106,9 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
 
 
   # Annotate table
-  df <- df %>%
+  df_sub <- df_sub %>%
     dplyr::mutate(
-      cds_id_alt = cds_id_alt,
+      cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
       junc_pos_cds = junc_pos_cds,
       protein = as.character(protein),
       protein_junc_pos = protein_junc_pos,
@@ -118,15 +122,18 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
   if(keep_ranges){
-    df <- df %>%
+    df_sub <- df_sub %>%
       dplyr::mutate(
         cds_lst = as.list(cds_lst),
         cds_mod_lst = as.list(cds_mod),
       )
   }
 
-  return(df)
+  # add annotations to input data.frame
+  df <- df %>%
+    dplyr::left_join(df_sub, by = c("junc_id", "tx_id"))
 
+  return(df)
 
 }
 

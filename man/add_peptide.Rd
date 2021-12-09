@@ -26,7 +26,7 @@ kept? If TRUE, the list columns \code{cds_lst} and \code{cds_mod_lst} are added 
 \value{
 A data.frame as the input with the additional column(s):
 \itemize{
-\item \code{cds_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
+\item \code{cds_mod_id} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_cds} the junction position in the modified CDS sequence
 \item \code{protein} the full protein sequence of the translated modified CDS.
 \item \code{protein_junc_pos} The position of the junction in the \code{protein} sequence
