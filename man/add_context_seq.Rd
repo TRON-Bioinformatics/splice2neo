@@ -4,34 +4,45 @@
 \alias{add_context_seq}
 \title{Annotate splice junctions with resulting transcript sequence}
 \usage{
-add_context_seq(df, size = 400, bsg = NULL)
+add_context_seq(df, transcripts, size = 400, bsg = NULL, keep_ranges = FALSE)
 }
 \arguments{
 \item{df}{A data.frame with splice junctions in rows and at least the columns:
 \itemize{
 \item \code{junc_id} junction id consisting of genomic coordinates
 \item \code{tx_id} the ID of the affected transcript (see \code{\link{add_tx}})
-\item \code{tx_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the
-transcript (see \code{\link{add_tx}})
 }}
+
+\item{transcripts}{as a named \code{\link[GenomicRanges]{GRangesList}} of transcripts}
 
 \item{size}{the size of the output sequence around the junction position (might be shorter if transcripts is shorter)}
 
 \item{bsg}{\code{\link[BSgenome]{BSgenome}} object such as
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}
+
+\item{keep_ranges}{Should GRanges of transcripts and modified transcript be
+kept? If TRUE, the list columns \code{tx_lst} and \code{tx_mod_lst} are added to the output.}
 }
 \value{
-A data.frame as the input with the additional column(s):
+A data.frame with the same rows as the input \code{df} but with the
+following additional column(s):
 \itemize{
-\item \code{tx_alt_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
-the modified transcript (see \code{\link{modify_tx}})
-\item \code{tx_id_alt} an identifier made from \code{tx_id} and \code{junc_id}
+\item \code{tx_mod_id} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_tx} the junction position in the modified transcript sequence
 \item \code{cts_seq} the context sequence
 \item \code{cts_junc_pos} the junction position in the context sequence
 \item \code{cts_size} the size of the context sequence
 \item \code{cts_id} a unique id for the context sequence as hash value using the
 XXH128 hash algorithm
+}
+
+If the \code{keep_ranges} is TRUE, the following additional columns are added to
+the output data.frame:
+\itemize{
+\item \code{tx_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
+the original transcript as provided in \code{tx_id} column and \code{transcripts} object..
+\item \code{tx_mod_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
+the modified transcript (see \code{\link{modify_tx}})
 }
 }
 \description{
@@ -42,11 +53,6 @@ Annotate splice junctions with resulting transcript sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-junc_df <- toy_junc_df \%>\%
-  dplyr::mutate(
-    tx_lst = as.list(toy_transcripts[tx_id])
-  )
-
-add_context_seq(junc_df, size = 30, bsg = bsg)
+add_context_seq(toy_junc_df, toy_transcripts, size = 20, bsg = bsg)
 
 }

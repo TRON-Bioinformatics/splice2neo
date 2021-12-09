@@ -4,19 +4,18 @@
 #' @param df A data.frame with splice junctions in rows and at least the columns:
 #'
 #'   -  `junc_id` junction id consisting of genomic coordinates
-#'   -  `tx_id` the ID of the affected transcript (see \code{\link{add_tx}})
-#'   -  `cds_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the
-#'         CDS (see \code{\link{add_tx}})
+#'   -  `tx_id` the ID of the affected transcript/CDS (see \code{\link{add_tx}})
 #'
+#' @param cds  as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges
 #' @param size the total size of the output sequence (might be shorter if peptide is shorter)
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
+#' @param keep_ranges Should GRanges of CDS and modified CDS be
+#' kept? If TRUE, the list columns `cds_lst` and `cds_mod_lst` are added to the output.
 #'
 #' @return A data.frame as the input with the additional column(s):
 #'
-#'  - `cds_alt_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the
-#'         modified CDS ranges.
-#'  - `cds_id_alt` an identifier made from `tx_id` and `junc_id`
+#'  - `cds_mod_id` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_cds` the junction position in the modified CDS sequence
 #'  - `protein` the full protein sequence of the translated modified CDS.
 #'  - `protein_junc_pos` The position of the junction in the `protein` sequence
@@ -25,25 +24,42 @@
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
 #'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
 #'
+#'   If the `keep_ranges` is TRUE, the following additional columns are added to
+#'   the output data.frame:
+#'
+#'  - `cds_lst` a list of \code{\link[GenomicRanges]{GRanges}} with
+#'        the original CDS as provided in `tx_id` column and `cds` object..
+#'  - `cds_mod_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the
+#'         modified CDS ranges.
+#'
 #' @examples
 #' requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 #' bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #'
-#' junc_df <- toy_junc_df %>%
-#'   dplyr::mutate(
-#'     cds_lst = as.list(toy_cds[tx_id])
-#'   )
-#'
-#' add_peptide(junc_df, size = 30, bsg = bsg)
+#' add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
 #'
 #' @export
-add_peptide <- function(df, size = 30, bsg = NULL){
+add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
 
 
   stopifnot(is.data.frame(df))
   stopifnot("junc_id" %in% names(df))
   stopifnot("tx_id" %in% names(df))
-  stopifnot("cds_lst" %in% names(df))
+  stopifnot(class(cds) %in% c("GRangesList", "CompressedGRangesList"))
+  stopifnot(is.logical(keep_ranges) & length(keep_ranges) == 1)
+
+  # check if all input transcript IDs are in contained in the CDS object
+  # stopifnot(all(df$tx_id %in% names(cds)))
+
+  # take only the columns junc_id and tx_id and build unique combinations
+  df_sub <- df %>%
+    dplyr::distinct(junc_id, tx_id) %>%
+    # filter for subset with matching tx_id in input cds
+    dplyr::filter(tx_id %in% names(cds))
+
+
+  # get GRanges as of cds
+  cds_lst <- cds[df_sub$tx_id]
 
   if(is.null(bsg)){
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
@@ -51,19 +67,16 @@ add_peptide <- function(df, size = 30, bsg = NULL){
   }
 
   # get junctions as GRanges object
-  jx <- junc_to_gr(df$junc_id)
+  jx <- junc_to_gr(df_sub$junc_id)
 
   # modify transcripts by applying the splice junctions
-  cds_alt <- modify_tx(df$cds_lst, jx)
-
-  # build new id
-  cds_id_alt = str_c(df$tx_id, "|", df$junc_id)
+  cds_mod <- modify_tx(cds_lst, jx)
 
   # get junction position in altered CDS
-  junc_pos_cds = get_junc_pos(cds_alt, jx)
+  junc_pos_cds = get_junc_pos(cds_mod, jx)
 
   # get CDS sequence
-  cds_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, cds_alt)
+  cds_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, cds_mod)
 
   # translate to protein seq
   suppressWarnings(
@@ -93,10 +106,9 @@ add_peptide <- function(df, size = 30, bsg = NULL){
 
 
   # Annotate table
-  df %>%
+  df_sub <- df_sub %>%
     dplyr::mutate(
-      cds_alt_lst = as.list(cds_alt),
-      cds_id_alt = cds_id_alt,
+      cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
       junc_pos_cds = junc_pos_cds,
       protein = as.character(protein),
       protein_junc_pos = protein_junc_pos,
@@ -107,6 +119,21 @@ add_peptide <- function(df, size = 30, bsg = NULL){
       peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
       peptide_context_junc_pos = ifelse(junc_in_orf, peptide_context_junc_pos, NA),
     )
+
+  # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
+  if(keep_ranges){
+    df_sub <- df_sub %>%
+      dplyr::mutate(
+        cds_lst = as.list(cds_lst),
+        cds_mod_lst = as.list(cds_mod),
+      )
+  }
+
+  # add annotations to input data.frame
+  df <- df %>%
+    dplyr::left_join(df_sub, by = c("junc_id", "tx_id"))
+
+  return(df)
 
 }
 
