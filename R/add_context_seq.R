@@ -54,11 +54,14 @@ add_context_seq <- function(df,
   stopifnot(class(transcripts) %in% c("GRangesList", "CompressedGRangesList"))
   stopifnot(is.logical(keep_ranges) & length(keep_ranges) == 1)
 
-  # check if all input transcript IDs are in contained in the transcripts object
-  stopifnot(all(df$tx_id %in% names(transcripts)))
+  # take only the columns jucn_id and tx_id and build unique combinations
+  df_tmp <- df %>%
+    dplyr::distinct(junc_id, tx_id) %>%
+    # filter for subset with matching tx_id in input transcripts
+    dplyr::filter(tx_id %in% names(transcripts))
 
-  # get GRanges as of transcripts
-  tx_lst <- transcripts[df$tx_id]
+  # get GRanges as subset of transcripts
+  tx_lst <- transcripts[df_tmp$tx_id]
 
   if(is.null(bsg)){
     message("INFO: Use default genome sequence from BSgenome.Hsapiens.UCSC.hg19")
@@ -66,13 +69,10 @@ add_context_seq <- function(df,
   }
 
   # get junctions as GRanges object
-  jx <- junc_to_gr(df$junc_id)
+  jx <- junc_to_gr(df_tmp$junc_id)
 
   # modify transcripts by appliing the splice junctions
   tx_mod <- modify_tx(tx_lst, jx)
-
-  # build new id
-  tx_id_alt = str_c(df$tx_id, "|", df$junc_id)
 
   # get junction position in altered transcript
   junc_pos_tx = get_junc_pos(tx_mod, jx)
@@ -99,9 +99,9 @@ add_context_seq <- function(df,
   cts_junc_pos <- junc_pos_tx - cts_start + 1
 
   # Annotate table
-  df <- df %>%
+  df_tmp <- df_tmp %>%
     dplyr::mutate(
-      tx_id_alt = tx_id_alt,
+      tx_id_alt = stringr::str_c(tx_id, "|", junc_id),
       junc_pos_tx = junc_pos_tx,
       cts_seq = as.character(cts_seq),
       cts_junc_pos = cts_junc_pos,
@@ -111,16 +111,17 @@ add_context_seq <- function(df,
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
   if(keep_ranges){
-    df <- df %>%
+    df_tmp <- df_tmp %>%
       dplyr::mutate(
         tx_lst = as.list(tx_lst),
         tx_mod_lst = as.list(tx_mod),
       )
   }
 
+  # add annotations to input data.frame
+  df <- df %>%
+    dplyr::left_join(df_tmp, by = c("junc_id", "tx_id"))
+
   return(df)
 
 }
-
-
-

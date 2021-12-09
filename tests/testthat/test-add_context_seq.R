@@ -26,6 +26,22 @@ test_that("add_context_seq works on toy example data with keep_ranges", {
 
 })
 
+test_that("add_context_seq works on when tx_id is not contained in transcripts", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  junc_df <- toy_junc_df
+  # remove one transcript ID from transcripts object
+  transcripts <- toy_transcripts[-which(names(toy_transcripts) == "ENST00000342992")]
+
+  cts_df <- add_context_seq(junc_df, transcripts, size = 400, bsg = bsg)
+
+  expect_true(nrow(cts_df) == nrow(toy_junc_df))
+  expect_true(all(c("cts_seq", "cts_junc_pos", "cts_id") %in% names(cts_df)))
+  expect_true(all(is.na(cts_df[cts_df$tx_id == "ENST00000342992", "cts_seq"])))
+
+})
 
 test_that("add_context_seq is independed of junction combinations", {
 
