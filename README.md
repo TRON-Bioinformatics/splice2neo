@@ -10,7 +10,7 @@
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
 [![](https://img.shields.io/badge/devel%20version-0.1.3-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/master)
+[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative splicing
@@ -58,7 +58,7 @@ junc_df <- dplyr::tibble(
 )
 
 junc_df
-#> # A tibble: 3 x 1
+#> # A tibble: 3 × 1
 #>   junc_id                   
 #>   <chr>                     
 #> 1 chr2_152389996_152392205_-
@@ -76,7 +76,7 @@ junc_df <- junc_df %>%
   add_tx(toy_transcripts)
 
 junc_df
-#> # A tibble: 21 x 3
+#> # A tibble: 21 × 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
 #>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
@@ -100,7 +100,7 @@ junction positions, the context sequence.
 
 ``` r
 toy_junc_df
-#> # A tibble: 14 x 2
+#> # A tibble: 14 × 2
 #>    junc_id                    tx_id          
 #>    <chr>                      <chr>          
 #>  1 chr2_152389996_152392205_- ENST00000409198
@@ -120,10 +120,11 @@ toy_junc_df
 
 
 junc_df <- toy_junc_df %>% 
-  add_context_seq(toy_transcripts, size = 400, bsg = bsg)
+  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg)
 
-junc_df 
-#> # A tibble: 14 x 8
+
+junc_df
+#> # A tibble: 14 × 8
 #>    junc_id  tx_id  tx_id_alt  junc_pos_tx cts_seq   cts_junc_pos cts_size cts_id
 #>    <chr>    <chr>  <chr>            <int> <chr>            <dbl>    <int> <chr> 
 #>  1 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 ef606…
@@ -153,27 +154,27 @@ peptide, and the location of the junction in an open reading frame
 
 ``` r
 junc_df <- junc_df %>% 
-  add_peptide(toy_cds, size = 30, bsg = bsg)
+  add_peptide(cds=toy_cds, size = 30, bsg = bsg)
 
 junc_df %>% 
   dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 14 x 4
-#>    junc_id             junc_in_orf peptide_context          peptide_context_jun…
-#>    <chr>               <lgl>       <chr>                                   <dbl>
-#>  1 chr2_152389996_152… TRUE        PINRHFKYATQLMNEIC                          14
-#>  2 chr2_152389996_152… TRUE        PRHLLAKTAGDQISQIC                          14
-#>  3 chr2_152389955_152… FALSE       <NA>                                       NA
-#>  4 chr2_152388410_152… TRUE        PINRHFKYATQLMNEIKYRKNYE…                   14
-#>  5 chr2_152388410_152… TRUE        PRHLLAKTAGDQISQIKYRKNYE…                   14
-#>  6 chr2_179415981_179… TRUE        PSDPSKFTLAVSPVAGTPDYIDV…                   14
-#>  7 chr2_179415987_179… FALSE       <NA>                                       NA
-#>  8 chr2_179415000_179… TRUE        PSDPSKFTLAVSPVVPPIVEFGP…                   14
-#>  9 chr2_179445336_179… TRUE        KHYPKDILSKYYQGDST                          14
-#> 10 chr2_179446225_179… TRUE        PSDVPDKHYPKDILSKYYQGEYI…                   14
-#> 11 chr2_179445336_179… TRUE        PSDASKAAYARDPQFPPEGELDA…                   14
-#> 12 chr2_179642044_179… TRUE        TPSDSGEWTVVAQNRLWNIR                       14
-#> 13 chr2_179642146_179… TRUE        RAGRSSISVILTVEGKMR                         14
-#> 14 chr2_179642044_179… TRUE        VVGRPMPETFWFHDAVEHQVKPM…                   14
+#> # A tibble: 14 × 4
+#>    junc_id                    junc_in_orf peptide_context     peptide_context_j…
+#>    <chr>                      <lgl>       <chr>                            <dbl>
+#>  1 chr2_152389996_152392205_- TRUE        PINRHFKYATQLMNEIC                   14
+#>  2 chr2_152389996_152390729_- TRUE        PRHLLAKTAGDQISQIC                   14
+#>  3 chr2_152389955_152389956_- FALSE       <NA>                                NA
+#>  4 chr2_152388410_152392205_- TRUE        PINRHFKYATQLMNEIKY…                 14
+#>  5 chr2_152388410_152390729_- TRUE        PRHLLAKTAGDQISQIKY…                 14
+#>  6 chr2_179415981_179416357_- TRUE        PSDPSKFTLAVSPVAGTP…                 14
+#>  7 chr2_179415987_179415988_- FALSE       <NA>                                NA
+#>  8 chr2_179415000_179416357_- TRUE        PSDPSKFTLAVSPVVPPI…                 14
+#>  9 chr2_179445336_179446207_- TRUE        KHYPKDILSKYYQGDST                   14
+#> 10 chr2_179446225_179446226_- TRUE        PSDVPDKHYPKDILSKYY…                 14
+#> 11 chr2_179445336_179446633_- TRUE        PSDASKAAYARDPQFPPE…                 14
+#> 12 chr2_179642044_179642187_- TRUE        TPSDSGEWTVVAQNRLWN…                 14
+#> 13 chr2_179642146_179642147_- TRUE        RAGRSSISVILTVEGKMR                  14
+#> 14 chr2_179642044_179642431_- TRUE        VVGRPMPETFWFHDAVEH…                 14
 ```
 
 ## Dummy example
@@ -204,17 +205,23 @@ transcripts_gr <- GenomicFeatures::transcripts(txdb)
 cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 
 # canonical junctions
-# the user can choose the best suited datasets for canoical junctions
+# the user can choose the best suited data sets for canonical junctions
 # the object `canonical junction` should be a vector of canonical junctions in the junction format
 canonical_juncs <-
   c("chr1_33361245_33361511_-",
     "chr1_32849649_32852380_-",
     "chrom_start_end_strand")
+# OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:
+# for bed files defined by exon-exon boundaries:
+canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "exon-exon")
+# for bed files defined by introns:
+canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "intron")
 
 
 # import RNA data
 dat_leafcutter <-
   leafcutter_transform(path = "/your/path/to/leafcutter/results")
+# supported events: exon_skip, intron_retention, alt_3prime, alt_5prime, mutex_exons
 dat_spladder <-
   spladder_transform(path = "/your/path/to/spladder/results")
 dat_rna <-
@@ -251,8 +258,7 @@ dat_for_requantification <- dat_mut %>%
 # a list of GRanges with the transcript needs to be added at the moment
 # this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
-  mutate(tx_lst = as.list(transcripts[tx_id])) %>%
-  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19)
+  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = tanscripts)
 
 
 # transform to easyquant-format
@@ -267,7 +273,6 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # this will be done within add_peptide in a future version
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  mutate(cds_lst = as.list(cds[tx_id])) %>%
   add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19)
 
 # merge EasyQuant results with data
