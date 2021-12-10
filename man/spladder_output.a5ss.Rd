@@ -4,7 +4,7 @@
 \name{spladder_output.a5ss}
 \alias{spladder_output.a5ss}
 \title{A tibble containing events from alternative 5' splice sites identified by
-Spladder}
+SplAdder}
 \format{
 A tibble frame with 1 and 15 variables:
 }
@@ -16,6 +16,6 @@ spladder_output.a5ss
 }
 \description{
 A tibble containing events from alternative 5' splice sites identified by
-Spladder
+SplAdder
 }
 \keyword{datasets}

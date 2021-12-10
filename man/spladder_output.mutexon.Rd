@@ -4,7 +4,7 @@
 \name{spladder_output.mutexon}
 \alias{spladder_output.mutexon}
 \title{A tibble containing events from mutually exclusive exons identified by
-Spladder}
+SplAdder}
 \format{
 A tibble frame with 1 row and 17 variables:
 }
@@ -16,6 +16,6 @@ spladder_output.mutexon
 }
 \description{
 A tibble containing events from mutually exclusive exons identified by
-Spladder
+SplAdder
 }
 \keyword{datasets}

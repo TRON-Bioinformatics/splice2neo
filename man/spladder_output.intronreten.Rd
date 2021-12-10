@@ -4,7 +4,7 @@
 \name{spladder_output.intronreten}
 \alias{spladder_output.intronreten}
 \title{A tibble containing events from intron retention identified by
-Spladder}
+SplAdder}
 \format{
 A tibble frame with 1 and 15 variables:
 }
@@ -16,6 +16,6 @@ spladder_output.intronreten
 }
 \description{
 A tibble containing events from intron retention identified by
-Spladder
+SplAdder
 }
 \keyword{datasets}

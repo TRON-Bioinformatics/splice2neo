@@ -4,7 +4,7 @@
 \name{spladder_output.exonskip}
 \alias{spladder_output.exonskip}
 \title{A tibble containing events from exon skipping identified by
-Spladder}
+SplAdder}
 \format{
 A tibble frame with 1 and 15 variables:
 }
@@ -16,6 +16,6 @@ spladder_output.exonskip
 }
 \description{
 A tibble containing events from exon skipping identified by
-Spladder
+SplAdder
 }
 \keyword{datasets}

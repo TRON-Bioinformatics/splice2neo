@@ -14,8 +14,8 @@ seq_truncate_nonstop(seq, pos)
 \value{
 a character
 
-This can be used to remove peptide sequence parts in a conetext sequence (in
-a fixed-sized window arround a position of interest) after a stop codon \code{*}
+This can be used to remove peptide sequence parts in a context sequence (in
+a fixed-sized window around a position of interest) after a stop codon \code{*}
 occurs.
 }
 \description{

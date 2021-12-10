@@ -4,9 +4,9 @@
 \name{spladder_output}
 \alias{spladder_output}
 \title{A list of tibbles with each list containing events from a different
-splicing class identified by Spladder}
+splicing class identified by SplAdder}
 \format{
-A list frame with tibbles called: A3SS, A5SS, casette_exon,
+A list frame with tibbles called: A3SS, A5SS, cassette_exon,
 intron_retention and mutex_exons
 }
 \source{
@@ -17,6 +17,6 @@ spladder_output
 }
 \description{
 A list of tibbles with each list containing events from a different
-splicing class identified by Spladder
+splicing class identified by SplAdder
 }
 \keyword{datasets}

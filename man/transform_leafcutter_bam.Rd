@@ -2,16 +2,16 @@
 % Please edit documentation in R/standardize_junctions_RNA_tools.R
 \name{transform_leafcutter_bam}
 \alias{transform_leafcutter_bam}
-\title{Transforms Leafcutter bam junc file}
+\title{Transforms LeafCutter bam junc file}
 \usage{
 transform_leafcutter_bam(tib)
 }
 \arguments{
-\item{tib}{Leafcutter bam junc file as tibble}
+\item{tib}{LeafCutter bam junc file as tibble}
 }
 \value{
 A tibble including a column with the junction id
 }
 \description{
-Transforms Leafcutter bam junc file
+Transforms LeafCutter bam junc file
 }

@@ -9,6 +9,7 @@
 #' consists of two directly adjacent positions (intron retention) and
 #' overlaps (completely within) a canonical exon from `exons_gr`.
 #'
+#' @export
 is_canonical <- function(junc_id, ref_junc, exons_gr){
 
   in_ref_junc <- junc_id %in% ref_junc

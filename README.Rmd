@@ -18,6 +18,9 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
+`r badger::badge_devel("TRON-Bioinformatics/splice2neo", "blue")`
+`r badger::badge_lifecycle("experimental", "blue")`
+`r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative splicing
@@ -52,7 +55,6 @@ library(splice2neo)
 # load human genome reference sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
-require(tidyverse)
 
 ```
 
@@ -61,7 +63,7 @@ require(tidyverse)
 We start with some example splice junctions provided with the package.
  
 ```{r}
-junc_df <- tibble(
+junc_df <- dplyr::tibble(
   junc_id = toy_junc_id[c(1, 6, 10)]
 )
 
@@ -87,11 +89,14 @@ positions, the context sequence.
 
 
 ```{r}
-junc_df <- junc_df %>% 
-  add_context_seq(size = 400, bsg = bsg)
+toy_junc_df
 
-junc_df %>% 
-  select(junc_id, tx_id, junc_pos_tx, cts_seq, cts_junc_pos, cts_id)
+
+junc_df <- toy_junc_df %>% 
+  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg)
+
+
+junc_df
 
 ```
 
@@ -106,11 +111,10 @@ junction in an open reading frame (ORF).
 ```{r}
 
 junc_df <- junc_df %>% 
-  mutate(cds_lst = as.list(toy_cds[tx_id])) %>% 
-  add_peptide(size = 30, bsg = bsg)
+  add_peptide(cds=toy_cds, size = 30, bsg = bsg)
 
 junc_df %>% 
-  select(junc_id, tx_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
+  dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
 
 ```
 
@@ -121,16 +125,20 @@ In the following a dummy example workflow how to integrate predict splicing effe
 expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. 
 A test case will be added later
 
-```{r, eval=F, echo=T}
+```{r, eval = FALSE, echo = TRUE}
 library(splice2neo)
 library(tidyverse)
 # load genome of choice
 library(BSgenome.Hsapiens.UCSC.hg19)
 library(AnnotationDbi)
+
 # this is an customized example of a transcript database
 # the user can choose the best suited database for their use case
 # please find below instruction how to create the database from a gtf file
-txdb <- loadDb("/path/to/transripts/txdb.sqlite")
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+
 transcripts <-
   GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 transcripts_gr <- GenomicFeatures::transcripts(txdb)
@@ -138,17 +146,23 @@ transcripts_gr <- GenomicFeatures::transcripts(txdb)
 cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 
 # canonical junctions
-# the user can choose the best suited datasets for canoical junctions
+# the user can choose the best suited data sets for canonical junctions
 # the object `canonical junction` should be a vector of canonical junctions in the junction format
 canonical_juncs <-
   c("chr1_33361245_33361511_-",
     "chr1_32849649_32852380_-",
     "chrom_start_end_strand")
+# OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:
+# for bed files defined by exon-exon boundaries:
+canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "exon-exon")
+# for bed files defined by introns:
+canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "intron")
 
 
 # import RNA data
 dat_leafcutter <-
   leafcutter_transform(path = "/your/path/to/leafcutter/results")
+# supported events: exon_skip, intron_retention, alt_3prime, alt_5prime, mutex_exons
 dat_spladder <-
   spladder_transform(path = "/your/path/to/spladder/results")
 dat_rna <-
@@ -172,7 +186,7 @@ dat_mmsplice_annotated  <-
 dat_mut <-
   combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
 
-# add information if junction is canonical and if found to be expressed by Spladder or Leafcutter
+# add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter
 dat_mut <- dat_mut %>%
   mutate(is_canonical = is_canonical(junc_id, ref_junc = canonical_juncs, exons_gr = transcripts)) %>%
   mutate(is_in_rnaseq = is_in_rnaseq(junc_id, rna_juncs = dat_rna$junc_id))
@@ -185,8 +199,7 @@ dat_for_requantification <- dat_mut %>%
 # a list of GRanges with the transcript needs to be added at the moment
 # this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
-  mutate(tx_lst = as.list(transcripts[tx_id])) %>%
-  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19)
+  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = tanscripts)
 
 
 # transform to easyquant-format
@@ -194,40 +207,41 @@ dat_easyquant <- dat_for_requantification_cts %>%
   transform_for_requant()
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
+# https://github.com/TRON-Bioinformatics/easyquant
 
 
 # add peptide sequence
-# a list of GRanges with the CDS needs to be added at the moment
-# this will be done within add_peptide in a future version
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  mutate(cds_lst = as.list(cds[tx_id])) %>%
-  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19)
+  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
 
-# merge easyquant results with data
+# merge EasyQuant results with data
 dat_cts_peptide_requantification <-
-  map_requant(path_to_easyquant_folder = "/path/to/easyuant/output_folder",
+  map_requant(path_to_easyquant_folder = "/path/to/easyquant/output_folder",
               junc_tib = dat_for_requantification_cts_peptide)
 
 
-# easyquant results can be imported without direct merging with data
+# EasyQuant results can be imported without direct merging with data
 dat_requant <-
-  read_requant(path_folder = "/path/to/easyuant/output_folder")
+  read_requant(path_folder = "/path/to/easyquant/output_folder")
 ```
 
 
 
 ## Transcript database
 
-To transform mutations into junction format, a database of transcripts is required. This databasee can be created as described below:  
+To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:  
 
 ```{r, eval=F, echo=T}
 # use gtf file of choice and transform into transcript database
-gtf_file = "/path/to/human/gencode/gencode.annotation.gtf"
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
 # parse GTF file as txdb object
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file)
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
 saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
 
+# load 
+txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
 
