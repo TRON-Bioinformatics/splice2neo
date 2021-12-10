@@ -1,3 +1,19 @@
+# splice2neo 0.2.0
+
+* new function:
+  * `bed_to_junc()`
+  * `is_canonical()`
+  * `is_in_rnaseq()`
+  * `parse_gtf()`
+* updated functions:
+  * `add_context_seq()`
+  * `add_peptide()`
+  * `add_peptide()`
+  * `get_junc_pos()`
+* faster implementation of `modify_tx()`
+* update documentation and README
+* update and add unit tests
+
 # splice2neo 0.1.2
 
 * CI config for github action
