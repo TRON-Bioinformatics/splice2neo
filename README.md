@@ -8,9 +8,9 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.1.3-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.2.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
+[![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/master)
 <!-- badges: end -->
 
 This package provides functions for the analysis of alternative splicing
@@ -58,7 +58,7 @@ junc_df <- dplyr::tibble(
 )
 
 junc_df
-#> # A tibble: 3 × 1
+#> # A tibble: 3 x 1
 #>   junc_id                   
 #>   <chr>                     
 #> 1 chr2_152389996_152392205_-
@@ -76,7 +76,7 @@ junc_df <- junc_df %>%
   add_tx(toy_transcripts)
 
 junc_df
-#> # A tibble: 21 × 3
+#> # A tibble: 21 x 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
 #>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
@@ -100,7 +100,7 @@ junction positions, the context sequence.
 
 ``` r
 toy_junc_df
-#> # A tibble: 14 × 2
+#> # A tibble: 14 x 2
 #>    junc_id                    tx_id          
 #>    <chr>                      <chr>          
 #>  1 chr2_152389996_152392205_- ENST00000409198
@@ -124,8 +124,8 @@ junc_df <- toy_junc_df %>%
 
 
 junc_df
-#> # A tibble: 14 × 8
-#>    junc_id  tx_id  tx_id_alt  junc_pos_tx cts_seq   cts_junc_pos cts_size cts_id
+#> # A tibble: 14 x 8
+#>    junc_id  tx_id  tx_mod_id  junc_pos_tx cts_seq   cts_junc_pos cts_size cts_id
 #>    <chr>    <chr>  <chr>            <int> <chr>            <dbl>    <int> <chr> 
 #>  1 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 ef606…
 #>  2 chr2_15… ENST0… ENST00000…       16517 AAGAAGTA…          200      400 6c189…
@@ -158,23 +158,23 @@ junc_df <- junc_df %>%
 
 junc_df %>% 
   dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 14 × 4
-#>    junc_id                    junc_in_orf peptide_context     peptide_context_j…
-#>    <chr>                      <lgl>       <chr>                            <dbl>
-#>  1 chr2_152389996_152392205_- TRUE        PINRHFKYATQLMNEIC                   14
-#>  2 chr2_152389996_152390729_- TRUE        PRHLLAKTAGDQISQIC                   14
-#>  3 chr2_152389955_152389956_- FALSE       <NA>                                NA
-#>  4 chr2_152388410_152392205_- TRUE        PINRHFKYATQLMNEIKY…                 14
-#>  5 chr2_152388410_152390729_- TRUE        PRHLLAKTAGDQISQIKY…                 14
-#>  6 chr2_179415981_179416357_- TRUE        PSDPSKFTLAVSPVAGTP…                 14
-#>  7 chr2_179415987_179415988_- FALSE       <NA>                                NA
-#>  8 chr2_179415000_179416357_- TRUE        PSDPSKFTLAVSPVVPPI…                 14
-#>  9 chr2_179445336_179446207_- TRUE        KHYPKDILSKYYQGDST                   14
-#> 10 chr2_179446225_179446226_- TRUE        PSDVPDKHYPKDILSKYY…                 14
-#> 11 chr2_179445336_179446633_- TRUE        PSDASKAAYARDPQFPPE…                 14
-#> 12 chr2_179642044_179642187_- TRUE        TPSDSGEWTVVAQNRLWN…                 14
-#> 13 chr2_179642146_179642147_- TRUE        RAGRSSISVILTVEGKMR                  14
-#> 14 chr2_179642044_179642431_- TRUE        VVGRPMPETFWFHDAVEH…                 14
+#> # A tibble: 14 x 4
+#>    junc_id             junc_in_orf peptide_context          peptide_context_jun…
+#>    <chr>               <lgl>       <chr>                                   <dbl>
+#>  1 chr2_152389996_152… TRUE        PINRHFKYATQLMNEIC                          14
+#>  2 chr2_152389996_152… TRUE        PRHLLAKTAGDQISQIC                          14
+#>  3 chr2_152389955_152… FALSE       <NA>                                       NA
+#>  4 chr2_152388410_152… TRUE        PINRHFKYATQLMNEIKYRKNYE…                   14
+#>  5 chr2_152388410_152… TRUE        PRHLLAKTAGDQISQIKYRKNYE…                   14
+#>  6 chr2_179415981_179… TRUE        PSDPSKFTLAVSPVAGTPDYIDV…                   14
+#>  7 chr2_179415987_179… FALSE       <NA>                                       NA
+#>  8 chr2_179415000_179… TRUE        PSDPSKFTLAVSPVVPPIVEFGP…                   14
+#>  9 chr2_179445336_179… TRUE        KHYPKDILSKYYQGDST                          14
+#> 10 chr2_179446225_179… TRUE        PSDVPDKHYPKDILSKYYQGEYI…                   14
+#> 11 chr2_179445336_179… TRUE        PSDASKAAYARDPQFPPEGELDA…                   14
+#> 12 chr2_179642044_179… TRUE        TPSDSGEWTVVAQNRLWNIR                       14
+#> 13 chr2_179642146_179… TRUE        RAGRSSISVILTVEGKMR                         14
+#> 14 chr2_179642044_179… TRUE        VVGRPMPETFWFHDAVEHQVKPM…                   14
 ```
 
 ## Dummy example
