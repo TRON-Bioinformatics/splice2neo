@@ -1,174 +1,201 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//index.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/404.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/add_context_seq.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/add_identified_in_RNA.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/add_peptide.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/authors.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/add_tx.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/index.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/annotate_mmsplice.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/news/index.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/annotate_spliceai_junction.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_context_seq.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/canonical_juncs.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_identified_in_RNA.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/change_to_junction_rules.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_peptide.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/combine_mut_junc.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_tx.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/format_spliceai.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_mmsplice.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/generate_combined_dataset.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_spliceai_junction.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/get_exon_inclusion_junction.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/bed_to_junc.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/get_exon_skipping_junction.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/canonical_juncs.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/get_junc_pos.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/canonical_junctions.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/import_leafcutter_bam.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/change_to_junction_rules.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/import_leafcutter_counts.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/combine_mut_junc.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/import_spladder.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_spliceai.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/is_canonical.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/generate_combined_dataset.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/is_in_rnaseq.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_exon_inclusion_junction.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/junc_to_gr.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_exon_skipping_junction.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/leafcutter_juncs.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_junc_pos.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/leafcutter_transform.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_bam.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/leafcutter_transform_format.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_counts.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/map_requant.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_spladder.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/modify_tx.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/next_junctions.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_canonical.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/parse_mmsplice.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_in_rnaseq.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/parse_spliceai.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/junc_to_gr.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/pipe.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_juncs.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/read_requant.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_transform.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/seq_truncate_nonstop.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_transform_format.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/sort_columns.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/map_requant.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_juncs.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/modify_tx.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/next_junctions.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.a3ss.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_gtf.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.a5ss.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_mmsplice.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.exonskip.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_spliceai.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.intronreten.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_output.mutexon.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/read_requant.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/seq_truncate_nonstop.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_a3ss.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/sort_columns.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_a5ss.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_juncs.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_exon_skipping.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.a3ss.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_format.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.a5ss.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_intron_retention.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.exonskip.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/spladder_transform_mutex_exon.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_cds.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.intronreten.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_junc_df.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.mutexon.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_junc_id.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_junc_id_enst.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_a3ss.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_transcripts.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_a5ss.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/toy_transcripts_gr.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_exon_skipping.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/transform_for_requant.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_format.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/transform_leafcutter_bam.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_intron_retention.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/transform_leafcutter_counts.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_mutex_exon.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo//reference/unsorted_junc_df.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_cds.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_junc_df.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_junc_id.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_junc_id_enst.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_transcripts.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_transcripts_gr.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_for_requant.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_bam.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_counts.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/unsorted_junc_df.html</loc>
   </url>
 </urlset>
