@@ -433,12 +433,14 @@ leafcutter_transform_format <- function(tib) {
 #' @import readr
 #' @export
 leafcutter_transform <- function(path) {
-  file.counts <- list.files(path, pattern = "_perind.counts.gz")
+  file.counts <- list.files(path, pattern = "perind.counts.gz")
+  if(length(file.counts) == 0 ){stop("perind.counts.gz file is missing")}
   file.counts <- paste0(path, "/", file.counts)
   counts <- file.counts %>%
     import_leafcutter_counts() %>%
     transform_leafcutter_counts()
-  file.bam <- list.files(path, pattern = "_Aligned.out.bam.junc")
+  file.bam <- list.files(path, pattern = "Aligned.out.bam.junc")
+  if(length(file.bam) == 0 ){stop("Aligned.out.bam.junc file is missing")}
   file.bam <- paste0(path, "/", file.bam)
   juncs <- file.bam %>%
     import_leafcutter_bam() %>%
