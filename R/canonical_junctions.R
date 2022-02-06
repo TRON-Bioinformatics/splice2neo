@@ -51,7 +51,7 @@ canonical_junctions <- function(tx){
     dplyr::ungroup() %>%
     # - junc_id: `<chr>_<pos1>_<pos2>_<strand>`
     dplyr::mutate(
-      junc_id = stringr::str_c(chr, left, right, strand, sep = "_")
+      junc_id = stringr::str_c(chr, as.integer(left), as.integer(right), strand, sep = "_")
     )
 
   # build intron-retention junctions ===========================================

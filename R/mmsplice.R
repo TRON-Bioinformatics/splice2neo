@@ -169,7 +169,7 @@ get_exon_skipping_junction <- function(exon_id, transcript_id, transcripts){
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))
   exon_chr = purrr::map2_chr(as.list(GenomeInfoDb::seqnames(tx_sub)), exon_idx, ~ifelse(is.na(.y), NA, as.character(.x[.y])))
 
-  junc_id <- str_c(exon_chr, left_end, right_start, exon_strand, sep = "_")
+  junc_id <- str_c(exon_chr, as.integer(left_end), as.integer(right_start), exon_strand, sep = "_")
 
   # remove NA's
   # junc_id <- junc_id[!is.na(junc_id)]
@@ -237,8 +237,8 @@ get_exon_inclusion_junction <- function(exon_id, transcript_id, transcripts){
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))
   exon_chr = purrr::map2_chr(as.list(GenomeInfoDb::seqnames(tx_sub)), exon_idx, ~ifelse(is.na(.y), NA, as.character(.x[.y])))
 
-  junc_left <- str_c(exon_chr, left_end, exon_start, exon_strand, sep = "_")
-  junc_right <- str_c(exon_chr, exon_end, right_start, exon_strand, sep = "_")
+  junc_left <- str_c(exon_chr, as.integer(left_end), as.integer(exon_start), exon_strand, sep = "_")
+  junc_right <- str_c(exon_chr, as.integer(exon_end), as.integer(right_start), exon_strand, sep = "_")
 
   junc_id_lst <- purrr::map2(junc_left, junc_right, c)
   return(junc_id_lst)
