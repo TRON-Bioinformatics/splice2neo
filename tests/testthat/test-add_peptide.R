@@ -203,3 +203,18 @@ test_that("seq_truncate_nonstop works on example data", {
   expect_equal(s3, "QIP*LGSNSLLFPYQLMAGSTRP")
 
 })
+
+
+test_that("add_peptide is able to return full sequences", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+
+  pep_df <- add_peptide(toy_junc_df, toy_cds, size = "full", bsg = bsg)
+
+  expect_true(nrow(pep_df) == nrow(toy_junc_df))
+  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
+  expect_true(nchar(pep_df$peptide_context[4]) > 30)
+
+})

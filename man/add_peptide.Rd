@@ -15,7 +15,8 @@ add_peptide(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE)
 
 \item{cds}{as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges}
 
-\item{size}{the total size of the output sequence (might be shorter if peptide is shorter)}
+\item{size}{the total size of the output sequence (might be shorter if peptide is shorter).
+If \code{size} is "full", the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.}
 
 \item{bsg}{\code{\link[BSgenome]{BSgenome}} object such as
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}

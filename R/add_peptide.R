@@ -7,7 +7,8 @@
 #'   -  `tx_id` the ID of the affected transcript/CDS (see \code{\link{add_tx}})
 #'
 #' @param cds  as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges
-#' @param size the total size of the output sequence (might be shorter if peptide is shorter)
+#' @param size the total size of the output sequence (might be shorter if peptide is shorter).
+#' If `size` is "full", the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
 #' @param keep_ranges Should GRanges of CDS and modified CDS be
@@ -87,8 +88,6 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
   protein_junc_pos <- ceiling(junc_pos_cds / 3)
 
   protein_len <- BiocGenerics::width(protein)
-  pep_start <- pmax(protein_junc_pos - (size/2) + 1, 1)
-  pep_end <- pmin(protein_junc_pos + (size/2), protein_len)
 
 
   # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
@@ -96,7 +95,14 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
     str_detect("\\*", negate = TRUE)
 
   # extract context sequence from full peptide and cut before stop codon (*)
-  peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end)
+  if(size == "full"){
+    pep_start <- pmax(protein_junc_pos - 15 + 1, 1)
+    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start)
+  }else{
+    pep_start <- pmax(protein_junc_pos - (size/2) + 1, 1)
+    pep_end <- pmin(protein_junc_pos + (size/2), protein_len)
+    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end)
+  }
 
   # calculate junction position relative to context sequence
   peptide_context_junc_pos <- protein_junc_pos - pep_start
