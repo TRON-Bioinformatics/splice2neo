@@ -263,7 +263,11 @@ import_spladder <- function(path){
   as_types <- gsub("merge_graphs_", "", as_types)
   path_files <- paste(path, files ,sep = "/" )
 
-  files <- lapply(path_files, read_delim, delim = "\t")
+  files <- lapply(path_files, read_delim,
+                  delim = "\t",
+                  col_types = cols(
+                    contig = col_character()
+                  ))
 
   if(length(files) == 0){
     stop("There are no SplAdder confirmed.txt.gz input files")
