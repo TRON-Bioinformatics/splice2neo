@@ -7,8 +7,9 @@
 #'   -  `tx_id` the ID of the affected transcript/CDS (see \code{\link{add_tx}})
 #'
 #' @param cds  as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges
+#' @param full_pep_seq If `full_pep_seq` is set to TRUE, the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.
 #' @param size the total size of the output sequence (might be shorter if peptide is shorter).
-#' If `size` is "full", the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.
+#' This parameter is only relevant if `full_pep_seq` is set to FALSE.
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
 #' @param keep_ranges Should GRanges of CDS and modified CDS be
@@ -40,7 +41,7 @@
 #' add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
 #'
 #' @export
-add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
+add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, keep_ranges = FALSE){
 
 
   stopifnot(is.data.frame(df))
@@ -95,7 +96,7 @@ add_peptide <- function(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE){
     str_detect("\\*", negate = TRUE)
 
   # extract context sequence from full peptide and cut before stop codon (*)
-  if(size == "full"){
+  if(full_pep_seq){
     pep_start <- pmax(protein_junc_pos - 15 + 1, 1)
     peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start)
   }else{
