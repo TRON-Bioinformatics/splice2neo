@@ -100,12 +100,11 @@ annotate_mmsplice <- function(mmsplice_df, transcripts){
     )
 
   # tictoc::toc()
-  #
 
   mmsplice_junc_df <- mmsplice_annot %>%
     select(-skip_junc, -incl_junc) %>%
-    unnest(junc_id_lst) %>%
-    rename(junc_id = junc_id_lst)%>%
+    unnest(junc_id_lst)%>%
+    dplyr::rename(junc_id = junc_id_lst)%>%
     filter(!is.na(junc_id))
 
   return(mmsplice_junc_df)
