@@ -62,13 +62,15 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
       right = eval(parse(text = rule_right)),
     ) %>%
 
+    # remove predicted effects with missing values
+    filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
+
     # add junction IDs
     mutate(
-      junc_id = str_c(CHROM, as.integer(left), as.integer(right), tx_strand, sep = "_"),
-      tx_junc_id = str_c(tx_id, CHROM, as.integer(left), as.integer(right), tx_strand, sep = "_"),
+      junc_id = generate_junction_id(CHROM, left, right, tx_strand),
+      tx_junc_id = str_c(tx_id, junc_id, sep = "_"),
     ) %>%
-    ungroup() %>%
-    filter(!is.na(junc_id))
+    ungroup()
 
   message("INFO: Evaluation of rules done.")
   return(junc_df)
