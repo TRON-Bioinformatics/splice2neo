@@ -178,7 +178,7 @@ dat_spliceai_annotated <-
                              transcripts_gr = transcripts_gr)
 
 # import & transform MMSplice results
-dat_mmsplice <- parse_spliceai(infile = "path/to/mmsplice/file.csv")
+dat_mmsplice <- parse_mmsplice(infile = "path/to/mmsplice/file.csv")
 dat_mmsplice_annotated  <-
   annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
@@ -199,7 +199,7 @@ dat_for_requantification <- dat_mut %>%
 # a list of GRanges with the transcript needs to be added at the moment
 # this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
-  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = tanscripts)
+  add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = transcripts)
 
 
 # transform to easyquant-format

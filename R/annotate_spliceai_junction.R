@@ -64,8 +64,8 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
     # add junction IDs
     mutate(
-      junc_id = str_c(CHROM, left, right, tx_strand, sep = "_"),
-      tx_junc_id = str_c(tx_id, CHROM, left, right, tx_strand, sep = "_"),
+      junc_id = str_c(CHROM, as.integer(left), as.integer(right), tx_strand, sep = "_"),
+      tx_junc_id = str_c(tx_id, CHROM, as.integer(left), as.integer(right), tx_strand, sep = "_"),
     ) %>%
     ungroup() %>%
     filter(!is.na(junc_id))
