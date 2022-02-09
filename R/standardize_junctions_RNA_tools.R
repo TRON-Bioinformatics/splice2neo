@@ -122,7 +122,7 @@ spladder_transform_exon_skipping <- function(tib) {
       junc_id1 = generate_junction_id(contig, exon_pre_end, exon_start, strand),
       junc_id2 = generate_junction_id(contig, exon_end, exon_aft_start, strand),
       junc_id3 = generate_junction_id(contig, exon_pre_end, exon_aft_start, strand),
-      junc_id = generate_junction_id(junc_id1, junc_id2, junc_id3),
+      junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
       class = "cassette_exon",
       AS_event_ID = event_id
     ) %>%
@@ -182,7 +182,7 @@ spladder_transform_mutex_exon <- function(tib) {
       junc_id2 = generate_junction_id(contig, exon1_end, exon_aft_start, strand),
       junc_id3 = generate_junction_id(contig, exon_pre_end, exon2_start, strand),
       junc_id3 = generate_junction_id(contig, exon2_end, exon_aft_start, strand),
-      junc_id = generate_junction_id(junc_id1, junc_id2, junc_id3),
+      junc_id = paste(junc_id1, junc_id2, junc_id3, sep=";"),
       class = "mutex_exon",
       AS_event_ID = event_id
     ) %>%
@@ -239,10 +239,10 @@ spladder_transform_format <- function(l) {
     ) %>%
     tidyr::separate(
       junction_start_end,
-      into = c("junction_start", "junction_end", "strand"),
+      into = c("junction_start", "junction_end"),
       sep = "-",
       remove = F
-    )
+    ) %>%
     mutate(
       junction_start = as.numeric(junction_start),
       junction_end = as.numeric(junction_end)
