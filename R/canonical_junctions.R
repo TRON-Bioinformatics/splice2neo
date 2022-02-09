@@ -51,7 +51,7 @@ canonical_junctions <- function(tx){
     dplyr::ungroup() %>%
     # - junc_id: `<chr>_<pos1>_<pos2>_<strand>`
     dplyr::mutate(
-      junc_id = stringr::str_c(chr, as.integer(left), as.integer(right), strand, sep = "_")
+      junc_id = generate_junction_id(chr, left, right, strand)
     )
 
   # build intron-retention junctions ===========================================
@@ -60,15 +60,16 @@ canonical_junctions <- function(tx){
     # get left and right junction coordinates as exon boundaries
     dplyr::mutate(
 
-      start_junc_id = stringr::str_c(chr, exon_start - 1, exon_start, strand, sep = "_"),
-      end_junc_id = stringr::str_c(chr, exon_end, exon_end + 1, strand, sep = "_"),
+      start_junc_id = generate_junction_id(chr, exon_start - 1, exon_start, strand),
+      end_junc_id = generate_junction_id(chr, exon_end, exon_end + 1, strand),
 
     ) %>%
     # combine into one column
     tidyr::pivot_longer(cols = c("start_junc_id", "end_junc_id"),
                  names_to = "left_right", values_to = "junc_id") %>%
     # distribute junc_id values in to separate columns
-    tidyr::separate(junc_id, into = c("chr", "start", "end", "strand"), sep = "_", remove = FALSE)
+    tidyr::separate(junc_id, into = c("chr", "start_end", "strand"), sep = ":", remove = FALSE) %>%
+    tidyr::separate(start_end, into = c("start", "end"), sep = "-", remove = FALSE)
 
   # build GRanges object
   junc_ir_gr <- GenomicRanges::GRanges(
