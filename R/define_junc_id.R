@@ -23,3 +23,18 @@ generate_junction_id <- function(chr, start, end, strand){
 
 }
 
+#' Given the chromosome, junction start, junction end and strand,
+#' a junction id is created that follows the format: `<chr>:<start>-<end>:<strand>`
+#'
+#' @param junc_id The junction id in the format `<chr>:<start>-<end>:<strand>`
+#' @return The breakpoint kit id in the format `<chr>:<start>-<chr>:<end>:<strand>`
+#'
+#' @examples
+#'
+#'
+#'
+#'@import dplyr
+#'
+junc2breakpoint <- function(junc_id){
+
+}

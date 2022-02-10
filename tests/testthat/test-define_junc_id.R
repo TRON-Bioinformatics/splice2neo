@@ -18,7 +18,7 @@ test_that("generate_junction_id works on tibbles", {
   df_id <- df %>%
     mutate(junc_id = generate_junction_id(chr, start, end, strand))
 
-  expect_true(ncol(df_id) == 3)
+  expect_true(ncol(df_id) == 4)
   expect_true(nrow(df_id) == 3)
   expect_true(df_id$junc_id[1] == "chr1:50-100:+")
 })

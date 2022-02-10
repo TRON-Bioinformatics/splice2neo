@@ -41,7 +41,7 @@ test_that("modify_tx works with toy example data", {
     "1",  6, 7, "+", "adjacent within exon, no effect!"
   ) %>%
     dplyr::mutate(
-      junc_id = stringr::str_c(chr, pos1, pos2, strand, sep = "_")
+      junc_id = generate_junction_id(chr, pos1, pos2, strand)
     )
 
   # Test with toy data ---------------------------------------------------------
