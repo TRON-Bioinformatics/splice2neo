@@ -73,9 +73,9 @@ test_that("add_context_seq is independed of junction combinations", {
 
   junc_df <- tibble::tibble(
     junc_id = c(
-      "chr10_32832227_32832228_+",
-      "chr10_32832227_32832228_+",
-      "chr10_32832227_32832228_+"
+      "chr10:32832227-32832228:+",
+      "chr10:32832227-32832228:+",
+      "chr10:32832227-32832228:+"
     ),
     tx_id = c(
       "ENST00000639629.1_3",
@@ -130,7 +130,7 @@ test_that("add_context_seq workds for example with neg issue 46", {
   transcripts <- GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 
   df = dplyr::tibble(
-      junc_id = "chr1_113153625_113162266_-",
+      junc_id = "chr1:113153625-113162266:-",
       tx_id = "ENST00000492274.1_2"
     ) %>%
     add_context_seq(transcripts, size = 400, bsg = bsg, keep_ranges = TRUE)
