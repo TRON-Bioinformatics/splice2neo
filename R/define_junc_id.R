@@ -57,7 +57,7 @@ junc2breakpoint <- function(junc_id){
 #' @examples
 #'
 #' breakpoint_id <- "chr1:500000-chr1:1000000"
-#' breakpoint2junc(breakpoint_id)
+#' breakpoint2junc(breakpoint_id = breakpoint_id, strand = "+")
 #'
 #'@import dplyr
 #'@export

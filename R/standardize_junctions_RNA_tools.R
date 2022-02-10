@@ -48,21 +48,21 @@ spladder_transform_a3ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
-        .data$strand == "+",
-        generate_junction_id(.data$contig, .data$exon_const_end, .data$exon_alt1_start, .data$strand,),
-        generate_junction_id(.data$contig, .data$exon_alt1_end, .data$exon_const_start, .data$strand)
+        strand == "+",
+        generate_junction_id(contig, exon_const_end, exon_alt1_start, strand),
+        generate_junction_id(contig, exon_alt1_end, exon_const_start, strand)
       ),
       junc_id2 = ifelse(
-        .data$strand == "+",
-        generate_junction_id(.data$contig, .data$exon_const_end, .data$exon_alt2_start, .data$strand),
-        generate_junction_id(.data$contig, .data$exon_alt2_end, .data$exon_const_start, .data$strand)
+        strand == "+",
+        generate_junction_id(contig, exon_const_end, exon_alt2_start, strand),
+        generate_junction_id(contig, exon_alt2_end, exon_const_start, strand)
       ),
-      junc_id = paste(.data$junc_id1, .data$junc_id2, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = "A3SS",
       AS_event_ID = event_id
     ) %>%
-    tidyr::separate_rows(.data$junc_id, sep = ";") %>%
-    dplyr::select(.data$junc_id, .data$gene_name, .data$class, .data$AS_event_ID)
+    tidyr::separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 

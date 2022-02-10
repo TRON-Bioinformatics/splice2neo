@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.2.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.3.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -61,9 +61,9 @@ junc_df
 #> # A tibble: 3 × 1
 #>   junc_id                   
 #>   <chr>                     
-#> 1 chr2_152389996_152392205_-
-#> 2 chr2_179415981_179416357_-
-#> 3 chr2_179446225_179446226_-
+#> 1 chr2:152389996-152392205:-
+#> 2 chr2:179415981-179416357:-
+#> 3 chr2:179446225-179446226:-
 ```
 
 ### Add transcripts
@@ -79,16 +79,16 @@ junc_df
 #> # A tibble: 21 × 3
 #>    junc_id                    tx_id           tx_lst      
 #>    <chr>                      <chr>           <named list>
-#>  1 chr2_152389996_152392205_- ENST00000409198 <GRanges>   
-#>  2 chr2_152389996_152392205_- ENST00000172853 <GRanges>   
-#>  3 chr2_152389996_152392205_- ENST00000397345 <GRanges>   
-#>  4 chr2_152389996_152392205_- ENST00000427231 <GRanges>   
-#>  5 chr2_152389996_152392205_- ENST00000618972 <GRanges>   
-#>  6 chr2_152389996_152392205_- ENST00000413693 <GRanges>   
-#>  7 chr2_152389996_152392205_- ENST00000603639 <GRanges>   
-#>  8 chr2_152389996_152392205_- ENST00000604864 <GRanges>   
-#>  9 chr2_152389996_152392205_- ENST00000420924 <GRanges>   
-#> 10 chr2_179415981_179416357_- ENST00000342992 <GRanges>   
+#>  1 chr2:152389996-152392205:- ENST00000409198 <GRanges>   
+#>  2 chr2:152389996-152392205:- ENST00000172853 <GRanges>   
+#>  3 chr2:152389996-152392205:- ENST00000397345 <GRanges>   
+#>  4 chr2:152389996-152392205:- ENST00000427231 <GRanges>   
+#>  5 chr2:152389996-152392205:- ENST00000618972 <GRanges>   
+#>  6 chr2:152389996-152392205:- ENST00000413693 <GRanges>   
+#>  7 chr2:152389996-152392205:- ENST00000603639 <GRanges>   
+#>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>   
+#>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>   
+#> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>   
 #> # … with 11 more rows
 ```
 
@@ -103,20 +103,20 @@ toy_junc_df
 #> # A tibble: 14 × 2
 #>    junc_id                    tx_id          
 #>    <chr>                      <chr>          
-#>  1 chr2_152389996_152392205_- ENST00000409198
-#>  2 chr2_152389996_152390729_- ENST00000409198
-#>  3 chr2_152389955_152389956_- ENST00000409198
-#>  4 chr2_152388410_152392205_- ENST00000409198
-#>  5 chr2_152388410_152390729_- ENST00000409198
-#>  6 chr2_179415981_179416357_- ENST00000342992
-#>  7 chr2_179415987_179415988_- ENST00000342992
-#>  8 chr2_179415000_179416357_- ENST00000342992
-#>  9 chr2_179445336_179446207_- ENST00000342992
-#> 10 chr2_179446225_179446226_- ENST00000342992
-#> 11 chr2_179445336_179446633_- ENST00000342992
-#> 12 chr2_179642044_179642187_- ENST00000342992
-#> 13 chr2_179642146_179642147_- ENST00000342992
-#> 14 chr2_179642044_179642431_- ENST00000342992
+#>  1 chr2:152389996-152392205:- ENST00000409198
+#>  2 chr2:152389996-152390729:- ENST00000409198
+#>  3 chr2:152389955-152389956:- ENST00000409198
+#>  4 chr2:152388410-152392205:- ENST00000409198
+#>  5 chr2:152388410-152390729:- ENST00000409198
+#>  6 chr2:179415981-179416357:- ENST00000342992
+#>  7 chr2:179415987-179415988:- ENST00000342992
+#>  8 chr2:179415000-179416357:- ENST00000342992
+#>  9 chr2:179445336-179446207:- ENST00000342992
+#> 10 chr2:179446225-179446226:- ENST00000342992
+#> 11 chr2:179445336-179446633:- ENST00000342992
+#> 12 chr2:179642044-179642187:- ENST00000342992
+#> 13 chr2:179642146-179642147:- ENST00000342992
+#> 14 chr2:179642044-179642431:- ENST00000342992
 
 
 junc_df <- toy_junc_df %>% 
@@ -125,22 +125,22 @@ junc_df <- toy_junc_df %>%
 
 junc_df
 #> # A tibble: 14 × 8
-#>    junc_id      tx_id tx_id_alt junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
+#>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
 #>    <chr>        <chr> <chr>           <int> <chr>          <dbl>    <int> <chr> 
-#>  1 chr2_152389… ENST… ENST0000…       16412 AAGAAG…          200      400 ef606…
-#>  2 chr2_152389… ENST… ENST0000…       16517 AAGAAG…          200      400 6c189…
-#>  3 chr2_152389… ENST… ENST0000…       17290 ACATCT…          200      400 c8bd5…
-#>  4 chr2_152388… ENST… ENST0000…       16412 AAGAAG…          200      400 d41d2…
-#>  5 chr2_152388… ENST… ENST0000…       16517 AAGAAG…          200      400 db9b3…
-#>  6 chr2_179415… ENST… ENST0000…       83789 TGGATT…          200      400 744c1…
-#>  7 chr2_179415… ENST… ENST0000…       84158 ATTTGA…          200      400 5315f…
-#>  8 chr2_179415… ENST… ENST0000…       83789 TGGATT…          200      400 8eec0…
-#>  9 chr2_179445… ENST… ENST0000…       59307 CGGGCT…          200      400 5ab65…
-#> 10 chr2_179446… ENST… ENST0000…       59288 TTATCT…          200      400 c233b…
-#> 11 chr2_179445… ENST… ENST0000…       58982 TGGCTA…          200      400 fddf5…
-#> 12 chr2_179642… ENST… ENST0000…        4828 TAGAAG…          200      400 ce662…
-#> 13 chr2_179642… ENST… ENST0000…        4868 TAGACC…          200      400 86af1…
-#> 14 chr2_179642… ENST… ENST0000…        4703 GTCTCC…          200      400 ec963…
+#>  1 chr2:152389… ENST… ENST0000…       16412 AAGAAG…          200      400 ef606…
+#>  2 chr2:152389… ENST… ENST0000…       16517 AAGAAG…          200      400 6c189…
+#>  3 chr2:152389… ENST… ENST0000…       17290 ACATCT…          200      400 c8bd5…
+#>  4 chr2:152388… ENST… ENST0000…       16412 AAGAAG…          200      400 d41d2…
+#>  5 chr2:152388… ENST… ENST0000…       16517 AAGAAG…          200      400 db9b3…
+#>  6 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 744c1…
+#>  7 chr2:179415… ENST… ENST0000…       84158 ATTTGA…          200      400 5315f…
+#>  8 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 8eec0…
+#>  9 chr2:179445… ENST… ENST0000…       59307 CGGGCT…          200      400 5ab65…
+#> 10 chr2:179446… ENST… ENST0000…       59288 TTATCT…          200      400 c233b…
+#> 11 chr2:179445… ENST… ENST0000…       58982 TGGCTA…          200      400 fddf5…
+#> 12 chr2:179642… ENST… ENST0000…        4828 TAGAAG…          200      400 ce662…
+#> 13 chr2:179642… ENST… ENST0000…        4868 TAGACC…          200      400 86af1…
+#> 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC…          200      400 ec963…
 ```
 
 ### Annotate peptide sequence
@@ -161,20 +161,20 @@ junc_df %>%
 #> # A tibble: 14 × 4
 #>    junc_id                    junc_in_orf peptide_context       peptide_context…
 #>    <chr>                      <lgl>       <chr>                            <dbl>
-#>  1 chr2_152389996_152392205_- TRUE        PINRHFKYATQLMNEIC                   14
-#>  2 chr2_152389996_152390729_- TRUE        PRHLLAKTAGDQISQIC                   14
-#>  3 chr2_152389955_152389956_- FALSE       <NA>                                NA
-#>  4 chr2_152388410_152392205_- TRUE        PINRHFKYATQLMNEIKYRK…               14
-#>  5 chr2_152388410_152390729_- TRUE        PRHLLAKTAGDQISQIKYRK…               14
-#>  6 chr2_179415981_179416357_- TRUE        PSDPSKFTLAVSPVAGTPDY…               14
-#>  7 chr2_179415987_179415988_- FALSE       <NA>                                NA
-#>  8 chr2_179415000_179416357_- TRUE        PSDPSKFTLAVSPVVPPIVE…               14
-#>  9 chr2_179445336_179446207_- TRUE        KHYPKDILSKYYQGDST                   14
-#> 10 chr2_179446225_179446226_- TRUE        PSDVPDKHYPKDILSKYYQG…               14
-#> 11 chr2_179445336_179446633_- TRUE        PSDASKAAYARDPQFPPEGE…               14
-#> 12 chr2_179642044_179642187_- TRUE        TPSDSGEWTVVAQNRLWNIR                14
-#> 13 chr2_179642146_179642147_- TRUE        RAGRSSISVILTVEGKMR                  14
-#> 14 chr2_179642044_179642431_- TRUE        VVGRPMPETFWFHDAVEHQV…               14
+#>  1 chr2:152389996-152392205:- TRUE        PINRHFKYATQLMNEIC                   14
+#>  2 chr2:152389996-152390729:- TRUE        PRHLLAKTAGDQISQIC                   14
+#>  3 chr2:152389955-152389956:- FALSE       <NA>                                NA
+#>  4 chr2:152388410-152392205:- TRUE        PINRHFKYATQLMNEIKYRK…               14
+#>  5 chr2:152388410-152390729:- TRUE        PRHLLAKTAGDQISQIKYRK…               14
+#>  6 chr2:179415981-179416357:- TRUE        PSDPSKFTLAVSPVAGTPDY…               14
+#>  7 chr2:179415987-179415988:- FALSE       <NA>                                NA
+#>  8 chr2:179415000-179416357:- TRUE        PSDPSKFTLAVSPVVPPIVE…               14
+#>  9 chr2:179445336-179446207:- TRUE        KHYPKDILSKYYQGDST                   14
+#> 10 chr2:179446225-179446226:- TRUE        PSDVPDKHYPKDILSKYYQG…               14
+#> 11 chr2:179445336-179446633:- TRUE        PSDASKAAYARDPQFPPEGE…               14
+#> 12 chr2:179642044-179642187:- TRUE        TPSDSGEWTVVAQNRLWNIR                14
+#> 13 chr2:179642146-179642147:- TRUE        RAGRSSISVILTVEGKMR                  14
+#> 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQV…               14
 ```
 
 ## Dummy example
@@ -208,9 +208,9 @@ cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 # the user can choose the best suited data sets for canonical junctions
 # the object `canonical junction` should be a vector of canonical junctions in the junction format
 canonical_juncs <-
-  c("chr1_33361245_33361511_-",
-    "chr1_32849649_32852380_-",
-    "chrom_start_end_strand")
+  c("chr1:33361245-33361511:-",
+    "chr1:32849649-32852380:-",
+    "chrom:start-end:strand")
 # OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:
 # for bed files defined by exon-exon boundaries:
 canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "exon-exon")
