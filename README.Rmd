@@ -149,9 +149,9 @@ cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 # the user can choose the best suited data sets for canonical junctions
 # the object `canonical junction` should be a vector of canonical junctions in the junction format
 canonical_juncs <-
-  c("chr1_33361245_33361511_-",
-    "chr1_32849649_32852380_-",
-    "chrom_start_end_strand")
+  c("chr1:33361245-33361511:-",
+    "chr1:32849649-32852380:-",
+    "chrom:start-end:strand")
 # OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:
 # for bed files defined by exon-exon boundaries:
 canonical_juncs <- bed_to_junc(bed_file = "/path/to/canonical/file.bed", type = "exon-exon")

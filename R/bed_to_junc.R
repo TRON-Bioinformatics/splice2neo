@@ -17,15 +17,21 @@ bed_to_junc <- function(bed_file, type = "exon-exon"){
   stopifnot(is.character(bed_file))
   stopifnot(type %in% c("exon-exon", "intron"))
 
+  gr <- rtracklayer::import.bed(bed_file)
+  chr <- GenomeInfoDb::seqnames(gr)
+  strand <- as.character(BiocGenerics::strand(gr))
+
   if(type == "exon-exon"){
-    gr <- rtracklayer::import.bed(bed_file)
-    junc_id <- paste(GenomeInfoDb::seqnames(gr), BiocGenerics::start(gr), BiocGenerics::end(gr), BiocGenerics::strand(gr), sep = "_")
+
+    start <-BiocGenerics::start(gr)
+    end <- BiocGenerics::end(gr)
 
   } else if(type == "intron"){
-    gr <- rtracklayer::import.bed(bed_file)
-    junc_id <- paste(GenomeInfoDb::seqnames(gr), BiocGenerics::start(gr) - 1, BiocGenerics::end(gr) + 1, BiocGenerics::strand(gr), sep = "_")
-
+    start <-BiocGenerics::start(gr) - 1
+    end <- BiocGenerics::end(gr) + 1
   }
+
+  junc_id <- generate_junction_id(chr,start, end, strand)
 
   return(junc_id)
 }

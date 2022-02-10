@@ -48,21 +48,21 @@ spladder_transform_a3ss <- function(tib) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
-        .data$strand == "+",
-        paste(.data$contig, .data$exon_const_end, .data$exon_alt1_start, .data$strand, sep = "_"),
-        paste(.data$contig, .data$exon_alt1_end, .data$exon_const_start, .data$strand, sep = "_")
+        strand == "+",
+        generate_junction_id(contig, exon_const_end, exon_alt1_start, strand),
+        generate_junction_id(contig, exon_alt1_end, exon_const_start, strand)
       ),
       junc_id2 = ifelse(
-        .data$strand == "+",
-        paste(.data$contig, .data$exon_const_end, .data$exon_alt2_start, .data$strand, sep = "_"),
-        paste(.data$contig, .data$exon_alt2_end, .data$exon_const_start, .data$strand, sep = "_")
+        strand == "+",
+        generate_junction_id(contig, exon_const_end, exon_alt2_start, strand),
+        generate_junction_id(contig, exon_alt2_end, exon_const_start, strand)
       ),
-      junc_id = paste(.data$junc_id1, .data$junc_id2, sep = ";"),
+      junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = "A3SS",
       AS_event_ID = event_id
     ) %>%
-    tidyr::separate_rows(.data$junc_id, sep = ";") %>%
-    dplyr::select(.data$junc_id, .data$gene_name, .data$class, .data$AS_event_ID)
+    tidyr::separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, AS_event_ID)
 }
 
 
@@ -85,13 +85,13 @@ spladder_transform_a5ss <- function(tib) {
     mutate(
       junc_id1 = ifelse(
         strand == "+",
-        paste(contig, exon_alt1_end, exon_const_start, strand, sep = "_"),
-        paste(contig, exon_const_end, exon_alt1_start, strand, sep = "_")
+        generate_junction_id(contig, exon_alt1_end, exon_const_start, strand),
+        generate_junction_id(contig, exon_const_end, exon_alt1_start, strand)
       ),
       junc_id2 = ifelse(
         strand == "+",
-        paste(contig, exon_alt2_end, exon_const_start, strand, sep = "_"),
-        paste(contig, exon_const_end, exon_alt2_start, strand, sep = "_")
+        generate_junction_id(contig, exon_alt2_end, exon_const_start, strand),
+        generate_junction_id(contig, exon_const_end, exon_alt2_start, strand)
       ),
       junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = "A5SS",
@@ -119,9 +119,9 @@ spladder_transform_a5ss <- function(tib) {
 spladder_transform_exon_skipping <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = paste(contig, exon_pre_end, exon_start, strand, sep = "_"),
-      junc_id2 = paste(contig, exon_end, exon_aft_start, strand, sep = "_"),
-      junc_id3 = paste(contig, exon_pre_end, exon_aft_start, strand, sep = "_"),
+      junc_id1 = generate_junction_id(contig, exon_pre_end, exon_start, strand),
+      junc_id2 = generate_junction_id(contig, exon_end, exon_aft_start, strand),
+      junc_id3 = generate_junction_id(contig, exon_pre_end, exon_aft_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
       class = "cassette_exon",
       AS_event_ID = event_id
@@ -149,8 +149,8 @@ spladder_transform_exon_skipping <- function(tib) {
 spladder_transform_intron_retention <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = paste(contig, exon1_end, intron_start, strand, sep = "_"),
-      junc_id2 = paste(contig, intron_end, exon2_start, strand, sep = "_"),
+      junc_id1 = generate_junction_id(contig, exon1_end, intron_start, strand),
+      junc_id2 = generate_junction_id(contig, intron_end, exon2_start, strand),
       class = "intron_retention",
       AS_event_ID = event_id,
       junc_id = paste(junc_id1, junc_id2, sep = ";")
@@ -178,11 +178,11 @@ spladder_transform_intron_retention <- function(tib) {
 spladder_transform_mutex_exon <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = paste(contig, exon_pre_end, exon1_start, strand, sep = "_"),
-      junc_id2 = paste(contig, exon1_end, exon_aft_start, strand, sep = "_"),
-      junc_id3 = paste(contig, exon_pre_end, exon2_start, strand, sep = "_"),
-      junc_id3 = paste(contig, exon2_end, exon_aft_start, strand, sep = "_"),
-      junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
+      junc_id1 = generate_junction_id(contig, exon_pre_end, exon1_start, strand),
+      junc_id2 = generate_junction_id(contig, exon1_end, exon_aft_start, strand),
+      junc_id3 = generate_junction_id(contig, exon_pre_end, exon2_start, strand),
+      junc_id3 = generate_junction_id(contig, exon2_end, exon_aft_start, strand),
+      junc_id = paste(junc_id1, junc_id2, junc_id3, sep=";"),
       class = "mutex_exon",
       AS_event_ID = event_id
     ) %>%
@@ -233,8 +233,14 @@ spladder_transform_format <- function(l) {
   df %>%
     tidyr::separate(
       junc_id,
-      into = c("chromosome", "junction_start", "junction_end", "strand"),
-      sep = "_",
+      into = c("chromosome", "junction_start_end", "strand"),
+      sep = ":",
+      remove = F
+    ) %>%
+    tidyr::separate(
+      junction_start_end,
+      into = c("junction_start", "junction_end"),
+      sep = "-",
       remove = F
     ) %>%
     mutate(
@@ -347,7 +353,7 @@ transform_leafcutter_counts <- function(tib) {
     mutate(
       junction_start = as.numeric(junction_start),
       junction_end = as.numeric(junction_end),
-      junc_id = paste(chromosome, junction_start, junction_end, sep = "_")
+      junc_id = generate_junction_id(chromosome, junction_start, junction_end)
     )
 }
 
@@ -389,8 +395,7 @@ import_leafcutter_bam <- function(file.name) {
 #' @export
 transform_leafcutter_bam <- function(tib) {
   tib %>%
-    mutate(junc_id = paste(chromosome, junction_start, junction_end + 1,
-                           sep = "_")) %>%
+    mutate(junc_id = generate_junction_id(chromosome, junction_start, junction_end + 1)) %>%
     select(junc_id, strand)
 }
 
@@ -410,8 +415,7 @@ leafcutter_transform_format <- function(tib) {
       Gene = NA,
       class = NA,
       AS_event_ID = NA,
-      junc_id = paste(chromosome, junction_start, junction_end, strand,
-                          sep = "_")
+      junc_id = generate_junction_id(chromosome, junction_start, junction_end, strand)
     ) %>%
     dplyr::select(
       junction_start,
@@ -438,13 +442,17 @@ leafcutter_transform_format <- function(tib) {
 #' @export
 leafcutter_transform <- function(path) {
   file.counts <- list.files(path, pattern = "perind.counts.gz")
+
   if(length(file.counts) == 0 ){stop("perind.counts.gz file is missing")}
+
   file.counts <- paste0(path, "/", file.counts)
   counts <- file.counts %>%
     import_leafcutter_counts() %>%
     transform_leafcutter_counts()
   file.bam <- list.files(path, pattern = "Aligned.out.bam.junc")
+
   if(length(file.bam) == 0 ){stop("Aligned.out.bam.junc file is missing")}
+
   file.bam <- paste0(path, "/", file.bam)
   juncs <- file.bam %>%
     import_leafcutter_bam() %>%

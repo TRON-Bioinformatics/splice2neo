@@ -75,8 +75,8 @@ test_that("add_peptide not fails for junctions outside CDS", {
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
     junc_id = c(
-      "chr5_10_20_+",
-      "chr5_50_70_-"
+      "chr5:10-20:+",
+      "chr5:50-70:-"
     ),
     tx_id = names(toy_cds)[1:2]
   )
@@ -111,7 +111,7 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
 
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
-    junc_id = "chr2_220501172_220501412_+",
+    junc_id = "chr2:220501172-220501412:+",
     tx_id = c(
       "ENST00000425141.5_1"
     )
@@ -126,9 +126,9 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
     junc_id = c(
-      "chr2_220501172_220501411_+",
-      "chr2_220501172_220501412_+",
-      "chr2_220501172_220501413_+"
+      "chr2:220501172-220501411:+",
+      "chr2:220501172-220501412:+",
+      "chr2:220501172-220501413:+"
     ),
     tx_id = c(
       "ENST00000358055.8_4",
@@ -165,9 +165,9 @@ test_that("add_peptide works in strange combination(issue #47)", {
   # use custom junctions from issue #47 See: https://gitlab.rlp.net/tron/splice2neo/-/issues/47
   # As the CDS of the first junction results in an empty range the peptide shoul be NA
   junc_enst_id <- c(
-    "chr2_80526815_80531277_-|ENST00000433224.1_2", "chr2_220501172_220501412_+|ENST00000273063.10_3",
-    "chr2_220501172_220501412_+|ENST00000425141.5_1", "chr2_220501172_220501412_+|ENST00000358055.8_4",
-    "chr2_220501172_220501412_+|ENST00000317151.7_3"
+    "chr2:80526815-80531277:-|ENST00000433224.1_2", "chr2:220501172-220501412:+|ENST00000273063.10_3",
+    "chr2:220501172-220501412:+|ENST00000425141.5_1", "chr2:220501172-220501412:+|ENST00000358055.8_4",
+    "chr2:220501172-220501412:+|ENST00000317151.7_3"
   )
   # chr2_220501172_220501412_+_ENST00000425141.5_1
 
