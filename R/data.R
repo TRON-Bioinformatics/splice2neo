@@ -146,3 +146,18 @@
 #'
 #' @source random
 "canonical_juncs"
+
+
+#' A tibble with junction in perind.counts.gz format of leafcutter. example data
+#'
+#' @format A tibble frame with 2 variables
+#'
+#' @source random
+"leafcutter_counts"
+
+#' A tibble with junction in bam.junc format of regtools. example data
+#'
+#' @format A tibble frame with 12 variables
+#'
+#' @source random
+"leafcutter_bam_junc"
