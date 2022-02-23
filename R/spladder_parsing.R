@@ -252,8 +252,11 @@ spladder_transform_format <- function(l) {
 
 
 #' Imports SplAdder output from a given path with ".confirmed.txt.gz" files.
+#' The results for one patient should be stored in the given path. Please note
+#' that multiple (coordinated) exons skips (mult_exon_skip) are currently not supported.
 #'
-#' @param path The path to a folder with SplAdder output. This folder must contain the ".confirmed.txt.gz" files for the alternative splicing type of interest.
+#' @param path The path to a folder with SplAdder output. This folder must contain the ".confirmed.txt.gz"
+#' files for the alternative splicing type of interest.
 #'
 #' @return A list with tibbles. Each tibble is a SplAdder output for "A5SS",
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
@@ -266,16 +269,20 @@ import_spladder <- function(path){
   message("Importing Spladder files ...")
 
   files <- list.files(path, "confirmed.txt.gz")
+  if(any(grepl("mult_exon_skip", files))){
+    files <- files[-which(grepl("mult_exon_skip", files))]
+  }
   as_types <- gsub("_C[0-3].confirmed.txt.gz", "", files)
-  as_types <- gsub("merge_graphs_", "", as_types)
+  str_split(as_types, "_")
+  n_items <- length(str_split(as_types, "_")[[1]])
+  typ1 <- sapply(str_split(as_types, "_"), "[[", n_items-1)
+  typ2 <- sapply(str_split(as_types, "_"), "[[", n_items)
+  as_types <- paste0(typ1, "_", typ2)
   path_files <- paste(path, files ,sep = "/" )
 
   files <- lapply(path_files, read_delim,
                   delim = "\t",
-                  col_types = cols(
-                    contig = col_character()
-                  ),
-                  show_col_types = FALSE)
+                  col_types = cols(.default = "c"))
 
   if(length(files) == 0){
     stop("There are no SplAdder confirmed.txt.gz input files")
