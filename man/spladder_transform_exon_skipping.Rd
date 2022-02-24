@@ -17,10 +17,3 @@ A tibble in standardized junction format
 Transforms events resulting from exon skipping from SplAdder output
 format into standardized junction format
 }
-\examples{
-spladder_output.exonskip
-transformed_spladder.exonskip <- spladder_transform_exon_skipping(
- spladder_output.exonskip)
-transformed_spladder.exonskip
-
-}

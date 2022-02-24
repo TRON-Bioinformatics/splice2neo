@@ -32,16 +32,12 @@ sort_columns <- function(tib) {
 #' format into standardized junction format
 #'
 #' @param tib A tibble in SplAdder output format
+#' @param AS_class The type of alternative splice site. Can be "A3SS" or "A5SS"
 #'
 #' @return A tibble in standardized junction format
 #'
-#' @examples
-#' spladder_output.a3ss
-#' transformed_spladder.a3ss <- spladder_transform_ass(spladder_output.a3ss)
-#' transformed_spladder.a3ss
 #'
 #' @import dplyr
-#' @export
 spladder_transform_ass <- function(tib, AS_class) {
   tib %>%
     mutate(
@@ -72,14 +68,8 @@ spladder_transform_ass <- function(tib, AS_class) {
 #'
 #' @return A tibble in standardized junction format
 #'
-#' @examples
-#'spladder_output.exonskip
-#'transformed_spladder.exonskip <- spladder_transform_exon_skipping(
-#'  spladder_output.exonskip)
-#'transformed_spladder.exonskip
 #'
 #'@import dplyr
-#' @export
 spladder_transform_exon_skipping <- function(tib) {
   tib %>%
     mutate(
@@ -102,14 +92,8 @@ spladder_transform_exon_skipping <- function(tib) {
 #'
 #' @return A tibble in standardized junction format
 #'
-#' @examples
-#'spladder_output.intronreten
-#'transformed_spladder.intronreten <- spladder_transform_intron_retention(
-#'  spladder_output.intronreten)
-#'transformed_spladder.intronreten
 #'
 #'@import dplyr
-#' @export
 spladder_transform_intron_retention <- function(tib) {
   tib %>%
     mutate(
@@ -131,14 +115,8 @@ spladder_transform_intron_retention <- function(tib) {
 #'
 #' @return A tibble in standardized junction format
 #'
-#' @examples
-#'spladder_output.mutexon
-#'transformed_spladder.mutexon <- spladder_transform_mutex_exon(
-#'  spladder_output.mutexon)
-#'transformed_spladder.mutexon
 #'
 #'@import dplyr
-#' @export
 spladder_transform_mutex_exon <- function(tib) {
   tib %>%
     mutate(
@@ -270,13 +248,16 @@ import_spladder <- function(path){
 
 
 #' Imports SplAdder output from a given path and transforms it into standardized
-#' junction format
+#' junction format. Results from one patients should be stored per folder.
 #'
 #' @param path The path to a folder with SplAdder output
 #'
 #' @return A tibble in standardized junction format, combining all alternative
 #'   splicing classes that are covered by SplAdder
-#'
+#' @example
+#' path <-  system.file("extdata", "", package = "splice2neo")
+#' spladder_juncs <- spladder_transform(path)
+#' spladder_juncs
 #'
 #' @import readr
 #' @export

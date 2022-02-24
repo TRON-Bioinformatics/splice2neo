@@ -17,10 +17,3 @@ A tibble in standardized junction format
 Transforms events resulting from mutually exclusive exons from SplAdder output
 format into standardized junction format
 }
-\examples{
-spladder_output.mutexon
-transformed_spladder.mutexon <- spladder_transform_mutex_exon(
- spladder_output.mutexon)
-transformed_spladder.mutexon
-
-}

@@ -7,6 +7,7 @@
 #' @return A tibble with columns "intron_cluster" and "counts
 #'
 #'
+#'
 #' @import readr
 #' @export
 import_leafcutter_counts <- function(file.name) {
@@ -139,7 +140,10 @@ leafcutter_transform_format <- function(tib) {
 #' @param path The path to leafcutter output
 #'
 #' @return A tibble in standardized junction format
-#'
+#' @examples
+#' path <-  system.file("extdata", "", package = "splice2neo")
+#' leafcutter_juncs <- leafcutter_transform(path)
+#' leafcutter_juncs
 #'
 #' @import readr
 #' @export

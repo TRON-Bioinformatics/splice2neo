@@ -3,7 +3,7 @@
 \name{spladder_transform}
 \alias{spladder_transform}
 \title{Imports SplAdder output from a given path and transforms it into standardized
-junction format}
+junction format. Results from one patients should be stored per folder.}
 \usage{
 spladder_transform(path)
 }
@@ -16,5 +16,5 @@ splicing classes that are covered by SplAdder
 }
 \description{
 Imports SplAdder output from a given path and transforms it into standardized
-junction format
+junction format. Results from one patients should be stored per folder.
 }

@@ -17,10 +17,3 @@ A tibble in standardized junction format
 Transforms events resulting from intron retention from SplAdder output
 format into standardized junction format
 }
-\examples{
-spladder_output.intronreten
-transformed_spladder.intronreten <- spladder_transform_intron_retention(
- spladder_output.intronreten)
-transformed_spladder.intronreten
-
-}

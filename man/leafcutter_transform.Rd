@@ -17,3 +17,9 @@ A tibble in standardized junction format
 Imports "*perind.counts.gz" and "*bam.junc" from LeafCutter output and transforms the raw output
 into standardized junction output format. Results of one patient should be stored in the given path.
 }
+\examples{
+path <-  system.file("extdata", "", package = "splice2neo")
+leafcutter_juncs <- leafcutter_transform(path)
+leafcutter_juncs
+
+}
