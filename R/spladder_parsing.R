@@ -28,7 +28,7 @@ sort_columns <- function(tib) {
 }
 
 
-#' Transforms events from alternative 3' splice sites from SplAdder output
+#' Transforms events from alternative 3' or 5' splice sites from SplAdder output
 #' format into standardized junction format
 #'
 #' @param tib A tibble in SplAdder output format
@@ -37,26 +37,26 @@ sort_columns <- function(tib) {
 #'
 #' @examples
 #' spladder_output.a3ss
-#' transformed_spladder.a3ss <- spladder_transform_a3ss(spladder_output.a3ss)
+#' transformed_spladder.a3ss <- spladder_transform_ass(spladder_output.a3ss)
 #' transformed_spladder.a3ss
 #'
 #' @import dplyr
 #' @export
-spladder_transform_a3ss <- function(tib) {
+spladder_transform_ass <- function(tib, AS_class) {
   tib %>%
     mutate(
       junc_id1 = ifelse(
         strand == "+",
-        generate_junction_id(contig, exon_const_end, exon_alt1_start, strand),
-        generate_junction_id(contig, exon_alt1_end, exon_const_start, strand)
+        generate_junction_id(chrm, e1_end, e2_start, strand),
+        generate_junction_id(chrm, e1_end, e3_start, strand)
       ),
       junc_id2 = ifelse(
         strand == "+",
-        generate_junction_id(contig, exon_const_end, exon_alt2_start, strand),
-        generate_junction_id(contig, exon_alt2_end, exon_const_start, strand)
+        generate_junction_id(chrm, e1_end, e3_start, strand),
+        generate_junction_id(chrm, e2_end, e3_start, strand)
       ),
       junc_id = paste(junc_id1, junc_id2, sep = ";"),
-      class = "A3SS",
+      class = AS_class,
       AS_event_ID = event_id
     ) %>%
     tidyr::separate_rows(junc_id, sep = ";") %>%
@@ -64,40 +64,6 @@ spladder_transform_a3ss <- function(tib) {
 }
 
 
-#' Transforms events from alternative 5' splice sites from SplAdder output
-#' format into standardized junction format
-#'
-#' @param tib A tibble in SplAdder output format
-#'
-#' @return A tibble in standardized junction format
-#'
-#' @examples
-#'spladder_output.a5ss
-#'transformed_spladder.a5ss <- spladder_transform_a5ss(spladder_output.a5ss)
-#'transformed_spladder.a5ss
-#'
-#'@import dplyr
-#' @export
-spladder_transform_a5ss <- function(tib) {
-  tib %>%
-    mutate(
-      junc_id1 = ifelse(
-        strand == "+",
-        generate_junction_id(contig, exon_alt1_end, exon_const_start, strand),
-        generate_junction_id(contig, exon_const_end, exon_alt1_start, strand)
-      ),
-      junc_id2 = ifelse(
-        strand == "+",
-        generate_junction_id(contig, exon_alt2_end, exon_const_start, strand),
-        generate_junction_id(contig, exon_const_end, exon_alt2_start, strand)
-      ),
-      junc_id = paste(junc_id1, junc_id2, sep = ";"),
-      class = "A5SS",
-      AS_event_ID = event_id
-    ) %>%
-    tidyr::separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
-}
 
 #' Transforms events resulting from exon skipping from SplAdder output
 #' format into standardized junction format
@@ -117,9 +83,9 @@ spladder_transform_a5ss <- function(tib) {
 spladder_transform_exon_skipping <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = generate_junction_id(contig, exon_pre_end, exon_start, strand),
-      junc_id2 = generate_junction_id(contig, exon_end, exon_aft_start, strand),
-      junc_id3 = generate_junction_id(contig, exon_pre_end, exon_aft_start, strand),
+      junc_id1 = generate_junction_id(chrm, e1_end, e2_start, strand),
+      junc_id2 = generate_junction_id(chrm, e2_end, e3_start, strand),
+      junc_id3 = generate_junction_id(chrm, e1_end, e3_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
       class = "cassette_exon",
       AS_event_ID = event_id
@@ -147,8 +113,8 @@ spladder_transform_exon_skipping <- function(tib) {
 spladder_transform_intron_retention <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = generate_junction_id(contig, exon1_end, intron_start, strand),
-      junc_id2 = generate_junction_id(contig, intron_end, exon2_start, strand),
+      junc_id1 = generate_junction_id(chrm, e1_end, e2_start, strand),
+      junc_id2 = generate_junction_id(chrm, e2_end, e3_start, strand),
       class = "intron_retention",
       AS_event_ID = event_id,
       junc_id = paste(junc_id1, junc_id2, sep = ";")
@@ -176,10 +142,10 @@ spladder_transform_intron_retention <- function(tib) {
 spladder_transform_mutex_exon <- function(tib) {
   tib %>%
     mutate(
-      junc_id1 = generate_junction_id(contig, exon_pre_end, exon1_start, strand),
-      junc_id2 = generate_junction_id(contig, exon1_end, exon_aft_start, strand),
-      junc_id3 = generate_junction_id(contig, exon_pre_end, exon2_start, strand),
-      junc_id3 = generate_junction_id(contig, exon2_end, exon_aft_start, strand),
+      junc_id1 = generate_junction_id(chrm, e1_end, e2_start, strand),
+      junc_id2 = generate_junction_id(chrm, e2_end, e4_start, strand),
+      junc_id3 = generate_junction_id(chrm, e1_end, e3_start, strand),
+      junc_id3 = generate_junction_id(chrm, e3_end, e4_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, sep=";"),
       class = "mutex_exon",
       AS_event_ID = event_id
@@ -210,10 +176,10 @@ spladder_transform_format <- function(l) {
   l_new <- l
 
   if("A5SS" %in% names(l)){
-    l_new$A5SS <- spladder_transform_a5ss(l$A5SS)
+    l_new$A5SS <- spladder_transform_ass(l$A5SS, AS_class = "A5SS")
   }
   if("A3SS" %in% names(l)){
-    l_new$A3SS <- spladder_transform_a3ss(l$A3SS)
+    l_new$A3SS <- spladder_transform_ass(l$A3SS, AS_class = "A3SS")
   }
   if("cassette_exon" %in% names(l)){
     l_new$cassette_exon <- spladder_transform_exon_skipping(l$cassette_exon)
