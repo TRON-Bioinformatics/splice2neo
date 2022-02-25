@@ -10,24 +10,7 @@ unsorted_junc_df = tibble(
 
 
 
-# spladder_output.a3ss <- tibble(
-#   "chrm" = c("chr1", "chr1"),
-#   "strand" = c("+", "-"),
-#   "event_id" = c("alt_3prime.1", "alt_3prime.2178"),
-#   "is_annotated" = c("0", "0"),
-#   "gene_name" = c("ENSG00000171163.16_6", "ENSG00000188976.11_5"),
-#   "e1_start" = c("895964", "889384"),
-#   "e1_end" = c("896180","889462"),
-#   "e2_start" = c("896673","889463"),
-#   "e2_end" = c("897008","889903"),
-#   "e3_start" = c("897009","891303"),
-#   "e3_end" = c("897109","891393"),
-#   "sample_Aligned.out_sorted:exon_diff_cov" = 0,
-#   "sample_Aligned.out_sorted:exon_const_cov" = 0,
-#   "sample_Aligned.out_sorted:intron1_conf" = 0,
-#   "sample_Aligned.out_sorted:intron2_conf" = 0,
-#   "sample_Aligned.out_sorted:psi" = NA
-# )
+
 #
 #
 # spladder_output.a5ss <- tibble(
