@@ -17,10 +17,3 @@ splicing classes that are were determined with SplAdder
 \description{
 Transforms SplAdder output into standardized junction format
 }
-\examples{
-spladder_output
-transformed_spladder <- spladder_transform_format(
- spladder_output)
-transformed_spladder
-
-}

@@ -13,9 +13,10 @@
 #'   contains information which tools identified the given junction
 #'
 #' @examples
-#' dat.combined <- generate_combined_dataset(spladder_juncs,
-#'   leafcutter_juncs)
-#' colnames(dat.combined)
+#' path <-  system.file("extdata", "", package = "splice2neo")
+#' spladder_juncs <- spladder_transform(path)
+#' leafcutter_juncs <- leafcutter_transform(path)
+#' dat.combined <- generate_combined_dataset(spladder_juncs, leafcutter_juncs)
 #'
 #' @import dplyr
 #' @export

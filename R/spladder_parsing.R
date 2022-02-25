@@ -141,12 +141,6 @@ spladder_transform_mutex_exon <- function(tib) {
 #' @return A tibble in standardized junction format, combining all alternative
 #'   splicing classes that are were determined with SplAdder
 #'
-#' @examples
-#'spladder_output
-#'transformed_spladder <- spladder_transform_format(
-#'  spladder_output)
-#'transformed_spladder
-#'
 #'@import dplyr
 #' @export
 spladder_transform_format <- function(l) {
