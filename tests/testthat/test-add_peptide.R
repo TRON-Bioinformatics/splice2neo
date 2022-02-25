@@ -218,3 +218,31 @@ test_that("add_peptide is able to return full sequences", {
   expect_true(nchar(pep_df$peptide_context[4]) > 30)
 
 })
+
+
+test_that("add_peptide does tranlate CDS with removed start codon", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  # tx: ENST00000243347
+  # CDS start:  chr2 152214181
+  # exon1:      chr2 152214106-152214274
+  # exon2:      chr2 152220457-152220594
+  # junction    chr2:152214150-152220457 # removing first exon of CDS
+
+  # exon:   ====================-------------------================
+  # CDS:    ===========#########-------------------################
+  # junc:        |---------------------------------|
+  rmcds_junc_df <- dplyr::tibble(
+    junc_id = "chr2:152214150-152220457:+",
+    tx_id = "ENST00000243347"
+  )
+
+  pep_df <- add_peptide(rmcds_junc_df, toy_cds["ENST00000243347"], full_pep_seq = FALSE, size = 30, bsg = bsg)
+
+  expect_false(pep_df$junc_in_orf)
+  expect_true(is.na(pep_df$peptide_context))
+
+})
+
