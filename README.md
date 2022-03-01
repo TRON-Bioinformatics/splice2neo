@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.3.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.3.1-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->

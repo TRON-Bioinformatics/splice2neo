@@ -34,7 +34,6 @@ can encode neoantigens.
  
 Website: https://tron-bioinformatics.github.io/splice2neo/
 
-
 Splice2neo currently supports events from alternative 3'/5' splice sites, exons skipping, intron retentions, 
 exitrons and mutually exclusive exons. 
 
