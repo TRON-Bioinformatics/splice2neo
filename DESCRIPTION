@@ -1,6 +1,6 @@
 Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     c(
     person(given = "Jonas",
@@ -51,7 +51,8 @@ Imports:
     XVector,
     rlang,
     rtracklayer,
-    BSgenome.Hsapiens.UCSC.hg19
+    BSgenome.Hsapiens.UCSC.hg19,
+    ggbio
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)

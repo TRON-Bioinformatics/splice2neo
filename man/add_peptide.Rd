@@ -4,7 +4,14 @@
 \alias{add_peptide}
 \title{Annotate splice junctions with resulting CDS and peptide sequence}
 \usage{
-add_peptide(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE)
+add_peptide(
+  df,
+  cds,
+  full_pep_seq = TRUE,
+  size = NULL,
+  bsg = NULL,
+  keep_ranges = FALSE
+)
 }
 \arguments{
 \item{df}{A data.frame with splice junctions in rows and at least the columns:
@@ -15,7 +22,10 @@ add_peptide(df, cds, size = 30, bsg = NULL, keep_ranges = FALSE)
 
 \item{cds}{as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges}
 
-\item{size}{the total size of the output sequence (might be shorter if peptide is shorter)}
+\item{full_pep_seq}{If \code{full_pep_seq} is set to TRUE, the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.}
+
+\item{size}{the total size of the output sequence (might be shorter if peptide is shorter).
+This parameter is only relevant if \code{full_pep_seq} is set to FALSE.}
 
 \item{bsg}{\code{\link[BSgenome]{BSgenome}} object such as
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}

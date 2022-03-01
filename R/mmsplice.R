@@ -100,12 +100,11 @@ annotate_mmsplice <- function(mmsplice_df, transcripts){
     )
 
   # tictoc::toc()
-  #
 
   mmsplice_junc_df <- mmsplice_annot %>%
     select(-skip_junc, -incl_junc) %>%
-    unnest(junc_id_lst) %>%
-    rename(junc_id = junc_id_lst)%>%
+    unnest(junc_id_lst)%>%
+    dplyr::rename(junc_id = junc_id_lst)%>%
     filter(!is.na(junc_id))
 
   return(mmsplice_junc_df)
@@ -169,7 +168,7 @@ get_exon_skipping_junction <- function(exon_id, transcript_id, transcripts){
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))
   exon_chr = purrr::map2_chr(as.list(GenomeInfoDb::seqnames(tx_sub)), exon_idx, ~ifelse(is.na(.y), NA, as.character(.x[.y])))
 
-  junc_id <- str_c(exon_chr, left_end, right_start, exon_strand, sep = "_")
+  junc_id <- generate_junction_id(exon_chr, left_end, right_start, exon_strand)
 
   # remove NA's
   # junc_id <- junc_id[!is.na(junc_id)]
@@ -237,8 +236,8 @@ get_exon_inclusion_junction <- function(exon_id, transcript_id, transcripts){
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))
   exon_chr = purrr::map2_chr(as.list(GenomeInfoDb::seqnames(tx_sub)), exon_idx, ~ifelse(is.na(.y), NA, as.character(.x[.y])))
 
-  junc_left <- str_c(exon_chr, left_end, exon_start, exon_strand, sep = "_")
-  junc_right <- str_c(exon_chr, exon_end, right_start, exon_strand, sep = "_")
+  junc_left <- generate_junction_id(exon_chr, left_end, exon_start, exon_strand)
+  junc_right <- generate_junction_id(exon_chr, exon_end, right_start, exon_strand)
 
   junc_id_lst <- purrr::map2(junc_left, junc_right, c)
   return(junc_id_lst)

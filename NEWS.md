@@ -1,3 +1,13 @@
+# splice2neo 0.3.0
+
+* new function:
+  * `generate_junction_id()`
+  * `junc2breakpoint()`
+  * `breakpoint2junc()`
+* implementation of new junction id format
+* update documentation and README
+* update and add unit tests
+
 # splice2neo 0.2.0
 
 * new function:

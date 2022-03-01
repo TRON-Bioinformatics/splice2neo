@@ -16,9 +16,9 @@ A \code{\link[GenomicRanges]{GRanges}} object
 Convert a splice junction ID into a GRanges object
 }
 \examples{
-junc_to_gr("chr1_5_10_+")
+junc_to_gr("chr5:10-50:+")
 
-junc_id <- c("chr1_5_10_+", "chr_special1_5_20_-")
+junc_id <- c("chr5:10-50:+", "chr_special1:5-20:-")
 junc_to_gr(junc_id)
 
 }

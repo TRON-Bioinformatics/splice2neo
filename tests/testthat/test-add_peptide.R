@@ -3,7 +3,7 @@ test_that("add_peptide works on toy example data", {
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-  pep_df <- add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(toy_junc_df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
 
   expect_true(nrow(pep_df) == nrow(toy_junc_df))
   new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
@@ -20,7 +20,7 @@ test_that("add_peptide works on toy example data with keep_ranges", {
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-  pep_df <- add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg,
+  pep_df <- add_peptide(toy_junc_df, toy_cds,  full_pep_seq = FALSE, size = 30, bsg = bsg,
                             keep_ranges = TRUE)
 
 
@@ -45,7 +45,7 @@ test_that("add_peptide works when tx_id is not contained in transcripts", {
   # remove one transcript ID from transcripts object
   cds <- toy_cds[-which(names(toy_cds) == "ENST00000342992")]
 
-  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, cds,  bsg = bsg)
 
 
   expect_true(nrow(pep_df) == nrow(toy_junc_df))
@@ -56,7 +56,7 @@ test_that("add_peptide works when tx_id is not contained in transcripts", {
   # remove another transcript ==================================================
   cds <- toy_cds[-which(names(toy_cds) == "ENST00000409198")]
 
-  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, cds, bsg = bsg)
 
 
   expect_true(nrow(pep_df) == nrow(toy_junc_df))
@@ -75,13 +75,13 @@ test_that("add_peptide not fails for junctions outside CDS", {
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
     junc_id = c(
-      "chr5_10_20_+",
-      "chr5_50_70_-"
+      "chr5:10-20:+",
+      "chr5:50-70:-"
     ),
     tx_id = names(toy_cds)[1:2]
   )
 
-  pep_df <- add_peptide(junc_df, toy_cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, toy_cds, bsg = bsg)
 
   expect_true(nrow(pep_df) == nrow(junc_df))
   new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
@@ -111,13 +111,13 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
 
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
-    junc_id = "chr2_220501172_220501412_+",
+    junc_id = "chr2:220501172-220501412:+",
     tx_id = c(
       "ENST00000425141.5_1"
     )
   )
 
-  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, cds,  bsg = bsg)
 
   expect_true(is.na(pep_df$peptide_context))
   expect_true(is.na(pep_df$peptide_context_junc_pos))
@@ -126,9 +126,9 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
   # build custom junctions on chr5 which DO NOT OVERLAP with the CDS
   junc_df <- dplyr::tibble(
     junc_id = c(
-      "chr2_220501172_220501411_+",
-      "chr2_220501172_220501412_+",
-      "chr2_220501172_220501413_+"
+      "chr2:220501172-220501411:+",
+      "chr2:220501172-220501412:+",
+      "chr2:220501172-220501413:+"
     ),
     tx_id = c(
       "ENST00000358055.8_4",
@@ -137,7 +137,7 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
     )
   )
 
-  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, cds, bsg = bsg)
 
   # expect at least one but not all peptide annotations to be NA
   expect_true(any(is.na(pep_df$peptide_context)))
@@ -165,9 +165,9 @@ test_that("add_peptide works in strange combination(issue #47)", {
   # use custom junctions from issue #47 See: https://gitlab.rlp.net/tron/splice2neo/-/issues/47
   # As the CDS of the first junction results in an empty range the peptide shoul be NA
   junc_enst_id <- c(
-    "chr2_80526815_80531277_-|ENST00000433224.1_2", "chr2_220501172_220501412_+|ENST00000273063.10_3",
-    "chr2_220501172_220501412_+|ENST00000425141.5_1", "chr2_220501172_220501412_+|ENST00000358055.8_4",
-    "chr2_220501172_220501412_+|ENST00000317151.7_3"
+    "chr2:80526815-80531277:-|ENST00000433224.1_2", "chr2:220501172-220501412:+|ENST00000273063.10_3",
+    "chr2:220501172-220501412:+|ENST00000425141.5_1", "chr2:220501172-220501412:+|ENST00000358055.8_4",
+    "chr2:220501172-220501412:+|ENST00000317151.7_3"
   )
   # chr2_220501172_220501412_+_ENST00000425141.5_1
 
@@ -178,7 +178,7 @@ test_that("add_peptide works in strange combination(issue #47)", {
     tidyr::separate(junc_enst_id, into = c("junc_id", "tx_id"), sep = "\\|")
 
 
-  pep_df <- add_peptide(junc_df, cds, size = 30, bsg = bsg)
+  pep_df <- add_peptide(junc_df, cds, bsg = bsg)
 
   # As the CDS of the first junction results in an empty range the peptide shoul be NA
   # expect at least one but not all peptide annotations to be NA
@@ -203,3 +203,46 @@ test_that("seq_truncate_nonstop works on example data", {
   expect_equal(s3, "QIP*LGSNSLLFPYQLMAGSTRP")
 
 })
+
+
+test_that("add_peptide is able to return full sequences", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+
+  pep_df <- add_peptide(toy_junc_df, toy_cds, full_pep_seq = TRUE, bsg = bsg)
+
+  expect_true(nrow(pep_df) == nrow(toy_junc_df))
+  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
+  expect_true(nchar(pep_df$peptide_context[4]) > 30)
+
+})
+
+
+test_that("add_peptide does tranlate CDS with removed start codon", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  # tx: ENST00000243347
+  # CDS start:  chr2 152214181
+  # exon1:      chr2 152214106-152214274
+  # exon2:      chr2 152220457-152220594
+  # junction    chr2:152214150-152220457 # removing first exon of CDS
+
+  # exon:   ====================-------------------================
+  # CDS:    ===========#########-------------------################
+  # junc:        |---------------------------------|
+  rmcds_junc_df <- dplyr::tibble(
+    junc_id = "chr2:152214150-152220457:+",
+    tx_id = "ENST00000243347"
+  )
+
+  pep_df <- add_peptide(rmcds_junc_df, toy_cds["ENST00000243347"], full_pep_seq = FALSE, size = 30, bsg = bsg)
+
+  expect_false(pep_df$junc_in_orf)
+  expect_true(is.na(pep_df$peptide_context))
+
+})
+
