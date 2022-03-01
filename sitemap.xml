@@ -88,9 +88,6 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/junc_to_gr.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_juncs.html</loc>
-  </url>
-  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_transform.html</loc>
   </url>
   <url>
@@ -127,34 +124,7 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/sort_columns.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_juncs.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.a3ss.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.a5ss.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.exonskip.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.intronreten.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_output.mutexon.html</loc>
-  </url>
-  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_a3ss.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_a5ss.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_exon_skipping.html</loc>

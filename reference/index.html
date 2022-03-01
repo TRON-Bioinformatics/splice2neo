@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -99,8 +99,8 @@ and transcript.</p></td>
       </tr><tr><td>
           <p><code><a href="leafcutter_transform.html">leafcutter_transform()</a></code> </p>
         </td>
-        <td><p>Imports "_perind.counts.gz" and "_Aligned.out.bam.junc" from LeafCutter output and transforms the raw output
-into standardized junction output format</p></td>
+        <td><p>Imports "*perind.counts.gz" and "*bam.junc" from LeafCutter output and transforms the raw output
+into standardized junction output format. Results of one patient should be stored in the given path.</p></td>
       </tr><tr><td>
           <p><code><a href="leafcutter_transform_format.html">leafcutter_transform_format()</a></code> </p>
         </td>
@@ -120,26 +120,18 @@ into standardized junction output format</p></td>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="import_spladder.html">import_spladder()</a></code> </p>
         </td>
-        <td><p>Imports SplAdder output from a given path with ".confirmed.txt.gz" files.</p></td>
+        <td><p>Imports SplAdder output from a given path with ".confirmed.txt.gz" files.
+The results for one patient should be stored in the given path. Please note
+that multiple (coordinated) exons skips (mult_exon_skip) are currently not supported.</p></td>
       </tr><tr><td>
           <p><code><a href="spladder_transform.html">spladder_transform()</a></code> </p>
         </td>
         <td><p>Imports SplAdder output from a given path and transforms it into standardized
-junction format</p></td>
+junction format. Results from one patients should be stored per folder.</p></td>
       </tr><tr><td>
           <p><code><a href="spladder_transform_format.html">spladder_transform_format()</a></code> </p>
         </td>
         <td><p>Transforms SplAdder output into standardized junction format</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_transform_a3ss.html">spladder_transform_a3ss()</a></code> </p>
-        </td>
-        <td><p>Transforms events from alternative 3' splice sites from SplAdder output
-format into standardized junction format</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_transform_a5ss.html">spladder_transform_a5ss()</a></code> </p>
-        </td>
-        <td><p>Transforms events from alternative 5' splice sites from SplAdder output
-format into standardized junction format</p></td>
       </tr><tr><td>
           <p><code><a href="spladder_transform_intron_retention.html">spladder_transform_intron_retention()</a></code> </p>
         </td>
@@ -312,44 +304,6 @@ format into standardized junction format</p></td>
         </td>
         <td><p>A tibble in junction format but unsorted columns</p></td>
       </tr><tr><td>
-          <p><code><a href="spladder_output.a3ss.html">spladder_output.a3ss</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from alternative 3' splice sites identified by
-SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_output.a5ss.html">spladder_output.a5ss</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from alternative 5' splice sites identified by
-SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_output.exonskip.html">spladder_output.exonskip</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from exon skipping identified by
-SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_output.intronreten.html">spladder_output.intronreten</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from intron retention identified by
-SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_output.mutexon.html">spladder_output.mutexon</a></code> </p>
-        </td>
-        <td><p>A tibble containing events from mutually exclusive exons identified by
-SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_output.html">spladder_output</a></code> </p>
-        </td>
-        <td><p>A list of tibbles with each list containing events from a different
-splicing class identified by SplAdder</p></td>
-      </tr><tr><td>
-          <p><code><a href="leafcutter_juncs.html">leafcutter_juncs</a></code> </p>
-        </td>
-        <td><p>A tibble with junction in standardized format. example data</p></td>
-      </tr><tr><td>
-          <p><code><a href="spladder_juncs.html">spladder_juncs</a></code> </p>
-        </td>
-        <td><p>A tibble with junction in standardized format.  example data</p></td>
-      </tr><tr><td>
           <p><code><a href="canonical_juncs.html">canonical_juncs</a></code> </p>
         </td>
         <td><p>A tibble with canonical junctions and their source (comma, separated).
@@ -367,7 +321,7 @@ example data</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer></div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -77,6 +77,9 @@
 
 <p>This package provides functions for the analysis of alternative splicing junctions and their association with somatic mutations. It integrates the output of several tools which predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Detected splice junctions can be filtered against canonical ones and annotated with affected transcript sequences, CDS, and resulting peptide sequences. The resulting tumor-specific splice junctions can encode neoantigens.</p>
 <p>Website: <a href="https://tron-bioinformatics.github.io/splice2neo/" class="uri">https://tron-bioinformatics.github.io/splice2neo/</a></p>
+<p>Splice2neo currently supports events from alternative 3’/5’ splice sites, exons skipping, intron retentions, exitrons and mutually exclusive exons.</p>
+<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="55%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="55%"></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -105,12 +108,12 @@
 <span class="op">)</span>
 
 <span class="va">junc_df</span>
-<span class="co">#&gt; # A tibble: 3 x 1</span>
+<span class="co">#&gt; # A tibble: 3 × 1</span>
 <span class="co">#&gt;   junc_id                   </span>
 <span class="co">#&gt;   &lt;chr&gt;                     </span>
-<span class="co">#&gt; 1 chr2_152389996_152392205_-</span>
-<span class="co">#&gt; 2 chr2_179415981_179416357_-</span>
-<span class="co">#&gt; 3 chr2_179446225_179446226_-</span></code></pre></div>
+<span class="co">#&gt; 1 chr2:152389996-152392205:-</span>
+<span class="co">#&gt; 2 chr2:179415981-179416357:-</span>
+<span class="co">#&gt; 3 chr2:179446225-179446226:-</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="add-transcripts">Add transcripts<a class="anchor" aria-label="anchor" href="#add-transcripts"></a>
@@ -121,19 +124,19 @@
   <span class="fu"><a href="reference/add_tx.html">add_tx</a></span><span class="op">(</span><span class="va">toy_transcripts</span><span class="op">)</span>
 
 <span class="va">junc_df</span>
-<span class="co">#&gt; # A tibble: 21 x 3</span>
+<span class="co">#&gt; # A tibble: 21 × 3</span>
 <span class="co">#&gt;    junc_id                    tx_id           tx_lst      </span>
 <span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt;</span>
-<span class="co">#&gt;  1 chr2_152389996_152392205_- ENST00000409198 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  2 chr2_152389996_152392205_- ENST00000172853 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  3 chr2_152389996_152392205_- ENST00000397345 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  4 chr2_152389996_152392205_- ENST00000427231 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  5 chr2_152389996_152392205_- ENST00000618972 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  6 chr2_152389996_152392205_- ENST00000413693 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  7 chr2_152389996_152392205_- ENST00000603639 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  8 chr2_152389996_152392205_- ENST00000604864 &lt;GRanges&gt;   </span>
-<span class="co">#&gt;  9 chr2_152389996_152392205_- ENST00000420924 &lt;GRanges&gt;   </span>
-<span class="co">#&gt; 10 chr2_179415981_179416357_- ENST00000342992 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  2 chr2:152389996-152392205:- ENST00000172853 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  3 chr2:152389996-152392205:- ENST00000397345 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  4 chr2:152389996-152392205:- ENST00000427231 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  5 chr2:152389996-152392205:- ENST00000618972 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  6 chr2:152389996-152392205:- ENST00000413693 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  7 chr2:152389996-152392205:- ENST00000603639 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  8 chr2:152389996-152392205:- ENST00000604864 &lt;GRanges&gt;   </span>
+<span class="co">#&gt;  9 chr2:152389996-152392205:- ENST00000420924 &lt;GRanges&gt;   </span>
+<span class="co">#&gt; 10 chr2:179415981-179416357:- ENST00000342992 &lt;GRanges&gt;   </span>
 <span class="co">#&gt; # … with 11 more rows</span></code></pre></div>
 </div>
 <div class="section level3">
@@ -142,23 +145,23 @@
 <p>We modify the canonical transcripts by introducing the splice junctions. Then we add the transcript sequence in a fixed-sized window around the junction positions, the context sequence.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">toy_junc_df</span>
-<span class="co">#&gt; # A tibble: 14 x 2</span>
+<span class="co">#&gt; # A tibble: 14 × 2</span>
 <span class="co">#&gt;    junc_id                    tx_id          </span>
 <span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;          </span>
-<span class="co">#&gt;  1 chr2_152389996_152392205_- ENST00000409198</span>
-<span class="co">#&gt;  2 chr2_152389996_152390729_- ENST00000409198</span>
-<span class="co">#&gt;  3 chr2_152389955_152389956_- ENST00000409198</span>
-<span class="co">#&gt;  4 chr2_152388410_152392205_- ENST00000409198</span>
-<span class="co">#&gt;  5 chr2_152388410_152390729_- ENST00000409198</span>
-<span class="co">#&gt;  6 chr2_179415981_179416357_- ENST00000342992</span>
-<span class="co">#&gt;  7 chr2_179415987_179415988_- ENST00000342992</span>
-<span class="co">#&gt;  8 chr2_179415000_179416357_- ENST00000342992</span>
-<span class="co">#&gt;  9 chr2_179445336_179446207_- ENST00000342992</span>
-<span class="co">#&gt; 10 chr2_179446225_179446226_- ENST00000342992</span>
-<span class="co">#&gt; 11 chr2_179445336_179446633_- ENST00000342992</span>
-<span class="co">#&gt; 12 chr2_179642044_179642187_- ENST00000342992</span>
-<span class="co">#&gt; 13 chr2_179642146_179642147_- ENST00000342992</span>
-<span class="co">#&gt; 14 chr2_179642044_179642431_- ENST00000342992</span>
+<span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198</span>
+<span class="co">#&gt;  2 chr2:152389996-152390729:- ENST00000409198</span>
+<span class="co">#&gt;  3 chr2:152389955-152389956:- ENST00000409198</span>
+<span class="co">#&gt;  4 chr2:152388410-152392205:- ENST00000409198</span>
+<span class="co">#&gt;  5 chr2:152388410-152390729:- ENST00000409198</span>
+<span class="co">#&gt;  6 chr2:179415981-179416357:- ENST00000342992</span>
+<span class="co">#&gt;  7 chr2:179415987-179415988:- ENST00000342992</span>
+<span class="co">#&gt;  8 chr2:179415000-179416357:- ENST00000342992</span>
+<span class="co">#&gt;  9 chr2:179445336-179446207:- ENST00000342992</span>
+<span class="co">#&gt; 10 chr2:179446225-179446226:- ENST00000342992</span>
+<span class="co">#&gt; 11 chr2:179445336-179446633:- ENST00000342992</span>
+<span class="co">#&gt; 12 chr2:179642044-179642187:- ENST00000342992</span>
+<span class="co">#&gt; 13 chr2:179642146-179642147:- ENST00000342992</span>
+<span class="co">#&gt; 14 chr2:179642044-179642431:- ENST00000342992</span>
 
 
 <span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
@@ -166,23 +169,23 @@
 
 
 <span class="va">junc_df</span>
-<span class="co">#&gt; # A tibble: 14 x 8</span>
-<span class="co">#&gt;    junc_id  tx_id  tx_mod_id  junc_pos_tx cts_seq   cts_junc_pos cts_size cts_id</span>
-<span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;            &lt;dbl&gt;    &lt;int&gt; &lt;chr&gt; </span>
-<span class="co">#&gt;  1 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 ef606…</span>
-<span class="co">#&gt;  2 chr2_15… ENST0… ENST00000…       16517 AAGAAGTA…          200      400 6c189…</span>
-<span class="co">#&gt;  3 chr2_15… ENST0… ENST00000…       17290 ACATCTCT…          200      400 c8bd5…</span>
-<span class="co">#&gt;  4 chr2_15… ENST0… ENST00000…       16412 AAGAAGAC…          200      400 d41d2…</span>
-<span class="co">#&gt;  5 chr2_15… ENST0… ENST00000…       16517 AAGAAGTA…          200      400 db9b3…</span>
-<span class="co">#&gt;  6 chr2_17… ENST0… ENST00000…       83789 TGGATTCC…          200      400 744c1…</span>
-<span class="co">#&gt;  7 chr2_17… ENST0… ENST00000…       84158 ATTTGAAG…          200      400 5315f…</span>
-<span class="co">#&gt;  8 chr2_17… ENST0… ENST00000…       83789 TGGATTCC…          200      400 8eec0…</span>
-<span class="co">#&gt;  9 chr2_17… ENST0… ENST00000…       59307 CGGGCTGA…          200      400 5ab65…</span>
-<span class="co">#&gt; 10 chr2_17… ENST0… ENST00000…       59288 TTATCTCG…          200      400 c233b…</span>
-<span class="co">#&gt; 11 chr2_17… ENST0… ENST00000…       58982 TGGCTATT…          200      400 fddf5…</span>
-<span class="co">#&gt; 12 chr2_17… ENST0… ENST00000…        4828 TAGAAGGG…          200      400 ce662…</span>
-<span class="co">#&gt; 13 chr2_17… ENST0… ENST00000…        4868 TAGACCTA…          200      400 86af1…</span>
-<span class="co">#&gt; 14 chr2_17… ENST0… ENST00000…        4703 GTCTCCTG…          200      400 ec963…</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 14 × 8</span>
+<span class="co">#&gt;    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id</span>
+<span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;int&gt; &lt;chr&gt; </span>
+<span class="co">#&gt;  1 chr2:152389… ENST… ENST0000…       16412 AAGAAG…          200      400 ef606…</span>
+<span class="co">#&gt;  2 chr2:152389… ENST… ENST0000…       16517 AAGAAG…          200      400 6c189…</span>
+<span class="co">#&gt;  3 chr2:152389… ENST… ENST0000…       17290 ACATCT…          200      400 c8bd5…</span>
+<span class="co">#&gt;  4 chr2:152388… ENST… ENST0000…       16412 AAGAAG…          200      400 d41d2…</span>
+<span class="co">#&gt;  5 chr2:152388… ENST… ENST0000…       16517 AAGAAG…          200      400 db9b3…</span>
+<span class="co">#&gt;  6 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 744c1…</span>
+<span class="co">#&gt;  7 chr2:179415… ENST… ENST0000…       84158 ATTTGA…          200      400 5315f…</span>
+<span class="co">#&gt;  8 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 8eec0…</span>
+<span class="co">#&gt;  9 chr2:179445… ENST… ENST0000…       59307 CGGGCT…          200      400 5ab65…</span>
+<span class="co">#&gt; 10 chr2:179446… ENST… ENST0000…       59288 TTATCT…          200      400 c233b…</span>
+<span class="co">#&gt; 11 chr2:179445… ENST… ENST0000…       58982 TGGCTA…          200      400 fddf5…</span>
+<span class="co">#&gt; 12 chr2:179642… ENST… ENST0000…        4828 TAGAAG…          200      400 ce662…</span>
+<span class="co">#&gt; 13 chr2:179642… ENST… ENST0000…        4868 TAGACC…          200      400 86af1…</span>
+<span class="co">#&gt; 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC…          200      400 ec963…</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="annotate-peptide-sequence">Annotate peptide sequence<a class="anchor" aria-label="anchor" href="#annotate-peptide-sequence"></a>
@@ -194,23 +197,23 @@
 
 <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">junc_in_orf</span>, <span class="va">peptide_context</span>, <span class="va">peptide_context_junc_pos</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 14 x 4</span>
-<span class="co">#&gt;    junc_id             junc_in_orf peptide_context          peptide_context_jun…</span>
-<span class="co">#&gt;    &lt;chr&gt;               &lt;lgl&gt;       &lt;chr&gt;                                   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr2_152389996_152… TRUE        PINRHFKYATQLMNEIC                          14</span>
-<span class="co">#&gt;  2 chr2_152389996_152… TRUE        PRHLLAKTAGDQISQIC                          14</span>
-<span class="co">#&gt;  3 chr2_152389955_152… FALSE       &lt;NA&gt;                                       NA</span>
-<span class="co">#&gt;  4 chr2_152388410_152… TRUE        PINRHFKYATQLMNEIKYRKNYE…                   14</span>
-<span class="co">#&gt;  5 chr2_152388410_152… TRUE        PRHLLAKTAGDQISQIKYRKNYE…                   14</span>
-<span class="co">#&gt;  6 chr2_179415981_179… TRUE        PSDPSKFTLAVSPVAGTPDYIDV…                   14</span>
-<span class="co">#&gt;  7 chr2_179415987_179… FALSE       &lt;NA&gt;                                       NA</span>
-<span class="co">#&gt;  8 chr2_179415000_179… TRUE        PSDPSKFTLAVSPVVPPIVEFGP…                   14</span>
-<span class="co">#&gt;  9 chr2_179445336_179… TRUE        KHYPKDILSKYYQGDST                          14</span>
-<span class="co">#&gt; 10 chr2_179446225_179… TRUE        PSDVPDKHYPKDILSKYYQGEYI…                   14</span>
-<span class="co">#&gt; 11 chr2_179445336_179… TRUE        PSDASKAAYARDPQFPPEGELDA…                   14</span>
-<span class="co">#&gt; 12 chr2_179642044_179… TRUE        TPSDSGEWTVVAQNRLWNIR                       14</span>
-<span class="co">#&gt; 13 chr2_179642146_179… TRUE        RAGRSSISVILTVEGKMR                         14</span>
-<span class="co">#&gt; 14 chr2_179642044_179… TRUE        VVGRPMPETFWFHDAVEHQVKPM…                   14</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 14 × 4</span>
+<span class="co">#&gt;    junc_id                    junc_in_orf peptide_context       peptide_context…</span>
+<span class="co">#&gt;    &lt;chr&gt;                      &lt;lgl&gt;       &lt;chr&gt;                            &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 chr2:152389996-152392205:- TRUE        PINRHFKYATQLMNEIC                   14</span>
+<span class="co">#&gt;  2 chr2:152389996-152390729:- TRUE        PRHLLAKTAGDQISQIC                   14</span>
+<span class="co">#&gt;  3 chr2:152389955-152389956:- FALSE       &lt;NA&gt;                                NA</span>
+<span class="co">#&gt;  4 chr2:152388410-152392205:- TRUE        PINRHFKYATQLMNEIKYRK…               14</span>
+<span class="co">#&gt;  5 chr2:152388410-152390729:- TRUE        PRHLLAKTAGDQISQIKYRK…               14</span>
+<span class="co">#&gt;  6 chr2:179415981-179416357:- TRUE        PSDPSKFTLAVSPVAGTPDY…               14</span>
+<span class="co">#&gt;  7 chr2:179415987-179415988:- FALSE       &lt;NA&gt;                                NA</span>
+<span class="co">#&gt;  8 chr2:179415000-179416357:- TRUE        PSDPSKFTLAVSPVVPPIVE…               14</span>
+<span class="co">#&gt;  9 chr2:179445336-179446207:- TRUE        KHYPKDILSKYYQGDST                   14</span>
+<span class="co">#&gt; 10 chr2:179446225-179446226:- TRUE        PSDVPDKHYPKDILSKYYQG…               14</span>
+<span class="co">#&gt; 11 chr2:179445336-179446633:- TRUE        PSDASKAAYARDPQFPPEGE…               14</span>
+<span class="co">#&gt; 12 chr2:179642044-179642187:- TRUE        TPSDSGEWTVVAQNRLWNIR                14</span>
+<span class="co">#&gt; 13 chr2:179642146-179642147:- TRUE        RAGRSSISVILTVEGKMR                  14</span>
+<span class="co">#&gt; 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQV…               14</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -241,9 +244,9 @@
 <span class="co"># the user can choose the best suited data sets for canonical junctions</span>
 <span class="co"># the object `canonical junction` should be a vector of canonical junctions in the junction format</span>
 <span class="va">canonical_juncs</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1_33361245_33361511_-"</span>,
-    <span class="st">"chr1_32849649_32852380_-"</span>,
-    <span class="st">"chrom_start_end_strand"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:33361245-33361511:-"</span>,
+    <span class="st">"chr1:32849649-32852380:-"</span>,
+    <span class="st">"chrom:start-end:strand"</span><span class="op">)</span>
 <span class="co"># OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:</span>
 <span class="co"># for bed files defined by exon-exon boundaries:</span>
 <span class="va">canonical_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bed_to_junc.html">bed_to_junc</a></span><span class="op">(</span>bed_file <span class="op">=</span> <span class="st">"/path/to/canonical/file.bed"</span>, type <span class="op">=</span> <span class="st">"exon-exon"</span><span class="op">)</span>
@@ -270,7 +273,7 @@
                              transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span><span class="op">)</span>
 
 <span class="co"># import &amp; transform MMSplice results</span>
-<span class="va">dat_mmsplice</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>infile <span class="op">=</span> <span class="st">"path/to/mmsplice/file.csv"</span><span class="op">)</span>
+<span class="va">dat_mmsplice</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_mmsplice.html">parse_mmsplice</a></span><span class="op">(</span>infile <span class="op">=</span> <span class="st">"path/to/mmsplice/file.csv"</span><span class="op">)</span>
 <span class="va">dat_mmsplice_annotated</span>  <span class="op">&lt;-</span>
   <span class="fu"><a href="reference/annotate_mmsplice.html">annotate_mmsplice</a></span><span class="op">(</span>mmsplice_df <span class="op">=</span> <span class="va">dat_mmsplice</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span>
 
@@ -291,7 +294,7 @@
 <span class="co"># a list of GRanges with the transcript needs to be added at the moment</span>
 <span class="co"># this will be done within add_context_seq in a future version</span>
 <span class="va">dat_for_requantification_cts</span> <span class="op">&lt;-</span> <span class="va">dat_for_requantification</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span>, transcripts <span class="op">=</span> <span class="va">tanscripts</span><span class="op">)</span>
+  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span>
 
 
 <span class="co"># transform to easyquant-format</span>
@@ -322,6 +325,21 @@
 </h2>
 <p>To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># use gtf file of choice and transform into transcript database</span>
+<span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span>
+
+<span class="co"># parse GTF file as txdb object</span>
+<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_url</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">saveDb</a></span><span class="op">(</span><span class="va">txdb</span>, file <span class="op">=</span> <span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span>
+
+<span class="co"># load </span>
+<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">loadDb</a></span><span class="op">(</span><span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="transcript-database-1">Transcript database<a class="anchor" aria-label="anchor" href="#transcript-database-1"></a>
+</h2>
+<p>To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># use gtf file of choice and transform into transcript database</span>
 <span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span>
 
@@ -372,9 +390,9 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.2.0-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.3.0-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/master" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>
 </div>
 
@@ -389,7 +407,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
