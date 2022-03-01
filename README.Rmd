@@ -33,6 +33,125 @@ and resulting peptide sequences. The resulting tumor-specific splice junctions
 can encode neoantigens.
  
 Website: https://tron-bioinformatics.github.io/splice2neo/
+
+
+Splice2neo currently supports events from alternative 3'/5' splice sites, exons skipping, intron retentions, 
+exitrons and mutually exclusive exons. 
+
+```{r, echo=FALSE, out.width = "55%", message = FALSE, warning = FALSE}
+
+plot_tracks <- function(trck1, trck2, main = NULL){
+  tracks("canonical junction" = trck1, "alternative junctions" = trck2,  
+         heights = c(1, 4),label.text.cex = 0.5, main = main) +
+    theme_bw()+
+    theme( # remove the vertical grid lines
+      panel.grid.major.y = element_blank() ,
+      panel.grid.minor.y = element_blank() ,
+    )
+}
+
+library(tidyverse)
+library(splice2neo)
+# example data
+transcripts <- GenomicRanges::GRangesList(list(
+  tx1 = GenomicRanges::GRanges(
+    c("1", "1", "1"),
+    IRanges::IRanges(
+      c(2, 15, 27),
+      c(8, 23, 35),
+    ),
+    strand = c("+", "+", "+")
+  )
+))
+
+# junction examples
+junc_df = tibble::tribble(
+  ~"chr", ~"pos1", ~"pos2", ~"strand", ~"comment",
+
+  "1",  6, 15, "+", "A5SS (exon)",
+  "1",  10, 15, "+", "A5SS (intron)",
+  "1",  8, 18, "+", "A3SS (exon)",
+  "1",  8, 13, "+", "A3SS (intron)",
+  "1",  8, 27, "+", "exon skipping",
+  "1",  8, 9, "+", "intron retention",
+) %>%
+  mutate(
+    junc_id = generate_junction_id(chr, pos1, pos2, strand)
+  )
+junc_gr <- junc_to_gr(junc_df$junc_id)
+names(junc_gr) <- junc_df$comment
+
+
+
+txs <- rep(transcripts,length(junc_gr))
+names(txs) <- names(junc_gr)
+
+transcripts_mod <- modify_tx(txs, junc_gr)
+
+transcripts_mod <- c(transcripts, transcripts_mod)
+
+require(ggbio)
+
+p1 <- ggplot() +
+   geom_alignment(transcripts_mod$tx1)#+
+  #geom_point(aes(x=18, y=1))
+p2 <- ggplot()+
+   geom_alignment(transcripts_mod[2:7], fill = "brown")
+
+tks <- plot_tracks(p1, p2, main = "")
+
+tks
+```
+
+```{r, echo=FALSE, out.width = "55%"}
+# example data
+  transcripts <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(
+      c("1", "1", "1", "1"),
+      IRanges::IRanges(
+        c(2, 15, 27, 40),
+        c(8, 23, 35, 45),
+      ),
+      strand = c("+", "+", "+", "+")
+    )
+  ))
+
+  # junction examples
+  junc_df = tibble::tribble(
+    ~"chr", ~"pos1", ~"pos2", ~"strand", ~"comment",
+    "1",  8, 27, "+", "MXE1",
+    "1",  23, 40, "+", "MXE2",
+  ) %>%
+    mutate(
+      junc_id = generate_junction_id(chr, pos1, pos2, strand)
+    )
+  junc_gr <- junc_to_gr(junc_df$junc_id)
+  names(junc_gr) <- junc_df$comment
+
+
+
+  txs <- rep(transcripts,length(junc_gr))
+  names(txs) <- names(junc_gr)
+
+  transcripts_mod <- modify_tx(txs, junc_gr)
+
+  transcripts_mod <- c(transcripts, transcripts_mod)
+
+  require(ggbio)
+
+  p1 <- ggplot() +
+    geom_alignment(transcripts_mod$tx1)
+  p2 <- ggplot()+
+    geom_alignment(transcripts_mod[2:3], fill = "brown")
+
+  tks <- plot_tracks(p1, p2, main = "Mutually exclusive exons")
+
+  tks
+
+
+  
+```
+
  
 ## Installation
 
@@ -245,3 +364,20 @@ txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
 
+
+## Transcript database
+
+To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:  
+
+```{r, eval=F, echo=T}
+# use gtf file of choice and transform into transcript database
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
+
+# load 
+txdb <- loadDb("/path/to/transripts/txdb.sqlite")
+
+```
