@@ -25,6 +25,14 @@ neoantigens.
 
 Website: <https://tron-bioinformatics.github.io/splice2neo/>
 
+Splice2neo currently supports events from alternative 3’/5’ splice
+sites, exons skipping, intron retentions, exitrons and mutually
+exclusive exons.
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="55%" />
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="55%" />
+
 ## Installation
 
 This R package is not yet on [CRAN](https://CRAN.R-project.org) or
@@ -283,6 +291,23 @@ dat_cts_peptide_requantification <-
 # EasyQuant results can be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
+```
+
+## Transcript database
+
+To transform mutations into junction format, a database of transcripts
+is required. This database can be created as described below:
+
+``` r
+# use gtf file of choice and transform into transcript database
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
+
+# load 
+txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 ```
 
 ## Transcript database
