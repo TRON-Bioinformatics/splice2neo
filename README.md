@@ -199,9 +199,7 @@ library(tidyverse)
 library(BSgenome.Hsapiens.UCSC.hg19)
 library(AnnotationDbi)
 
-# this is an customized example of a transcript database
-# the user can choose the best suited database for their use case
-# please find below instruction how to create the database from a gtf file
+# this is an example of a transcript database (see below for details)
 gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
 # parse GTF file as txdb object
 txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
@@ -295,25 +293,8 @@ dat_requant <-
 
 ## Transcript database
 
-To transform mutations into junction format, a database of transcripts
-is required. This database can be created as described below:
-
-``` r
-# use gtf file of choice and transform into transcript database
-gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
-
-# parse GTF file as txdb object
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
-saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
-
-# load 
-txdb <- loadDb("/path/to/transripts/txdb.sqlite")
-```
-
-## Transcript database
-
-To transform mutations into junction format, a database of transcripts
-is required. This database can be created as described below:
+A database of transcripts can be build from a GTF file, saved and
+re-loaded as follows:
 
 ``` r
 # use gtf file of choice and transform into transcript database
