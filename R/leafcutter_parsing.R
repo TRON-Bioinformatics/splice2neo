@@ -95,7 +95,8 @@ leafcutter_transform <- function(path) {
   file.counts <- paste0(path, "/", file.counts)
   counts <- file.counts %>%
     import_leafcutter_counts() %>%
-    transform_leafcutter_counts()
+    transform_leafcutter_counts()%>%
+    distinct(junc_id, .keep_all = TRUE)
 
   message("Importing Leafcutter files completed")
 

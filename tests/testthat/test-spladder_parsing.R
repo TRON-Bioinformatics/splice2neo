@@ -4,7 +4,7 @@ test_that("spladder.transform works", {
   path <-  system.file("extdata", "", package = "splice2neo")
   dat.combined <- spladder_transform(path)
   expect_true(ncol(dat.combined) == 8)
-  expect_true(nrow(dat.combined) == 24)
+  expect_true(nrow(dat.combined) == 26)
   expect_true(all(!is.na(dat.combined$junc_id)))
 
 })
@@ -35,9 +35,11 @@ test_that("spladder.transform works correctly", {
       "chr1:17605-17606:-",
       "chr1:2323397-2324671:+",
       "chr1:2324794-2327223:+",
+      "chr1:2323397-2324002:+",
       "chr1:2324670-2327223:+",
       "chr1:59133593-59134304:-",
       "chr1:59134354-59134656:-",
+      "chr1:59133593-59134102:-",
       "chr1:59134238-59134656:-"
     )
 
