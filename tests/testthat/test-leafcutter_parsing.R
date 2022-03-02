@@ -34,7 +34,7 @@ test_that("complete leafcutter import function works correctly", {
   path <-  system.file("extdata", "", package = "splice2neo")
   df <- leafcutter_transform(path)
 
-  expected_junctiosn <- c("chr1:896180-897009:+",
+  expected_junc_ids <- c("chr1:896180-897009:+",
                           "chr1:889462-889844:-",
                           "chr1:889462-891303:-")
 
