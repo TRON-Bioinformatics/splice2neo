@@ -8,7 +8,7 @@ test_that("generate_combined_dataset works", {
   dat.combined <- generate_combined_dataset(spladder_juncs,
                                             leafcutter_juncs)
   expect_true(ncol(dat.combined) == 10)
-  expect_true(nrow(dat.combined) == 25)
+  expect_true(nrow(dat.combined) == 27)
   expect_true(all(!is.na(dat.combined$junc_id)))
 })
 
