@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -89,26 +89,14 @@ and transcript.</p></td>
           <p class="section-desc"></p><p>Functions to parse LeafCutter output into standard splice junction format</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="import_leafcutter_bam.html">import_leafcutter_bam()</a></code> </p>
-        </td>
-        <td><p>Imports "_Aligned.out.bam.junc" file from LeafCutter output</p></td>
-      </tr><tr><td>
           <p><code><a href="import_leafcutter_counts.html">import_leafcutter_counts()</a></code> </p>
         </td>
         <td><p>Imports "_perind.counts.gz" from LeafCutter output.</p></td>
       </tr><tr><td>
           <p><code><a href="leafcutter_transform.html">leafcutter_transform()</a></code> </p>
         </td>
-        <td><p>Imports "*perind.counts.gz" and "*bam.junc" from LeafCutter output and transforms the raw output
+        <td><p>Imports "*perind.counts.gz" from LeafCutter output and transforms the raw output
 into standardized junction output format. Results of one patient should be stored in the given path.</p></td>
-      </tr><tr><td>
-          <p><code><a href="leafcutter_transform_format.html">leafcutter_transform_format()</a></code> </p>
-        </td>
-        <td><p>Transforms LeafCutter intermediate files into standardized format</p></td>
-      </tr><tr><td>
-          <p><code><a href="transform_leafcutter_bam.html">transform_leafcutter_bam()</a></code> </p>
-        </td>
-        <td><p>Transforms LeafCutter bam junc file</p></td>
       </tr><tr><td>
           <p><code><a href="transform_leafcutter_counts.html">transform_leafcutter_counts()</a></code> </p>
         </td>
@@ -132,6 +120,11 @@ junction format. Results from one patients should be stored per folder.</p></td>
           <p><code><a href="spladder_transform_format.html">spladder_transform_format()</a></code> </p>
         </td>
         <td><p>Transforms SplAdder output into standardized junction format</p></td>
+      </tr><tr><td>
+          <p><code><a href="spladder_transform_ass.html">spladder_transform_ass()</a></code> </p>
+        </td>
+        <td><p>Transforms events from alternative 3' or 5' splice sites from SplAdder output
+format into standardized junction format</p></td>
       </tr><tr><td>
           <p><code><a href="spladder_transform_intron_retention.html">spladder_transform_intron_retention()</a></code> </p>
         </td>
@@ -216,8 +209,25 @@ format into standardized junction format</p></td>
         </td>
         <td><p>test if junction is canonical junction</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="id-transformation">ID transformation <a href="#id-transformation" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to generate and transform ids</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="generate_junction_id.html">generate_junction_id()</a></code> </p>
+        </td>
+        <td><p>Given the chromosome, junction start, junction end and strand,
+a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt;-&lt;end&gt;:&lt;strand&gt;</code></p></td>
+      </tr><tr><td>
+          <p><code><a href="breakpoint2junc.html">breakpoint2junc()</a></code> </p>
+        </td>
+        <td><p>Given the strand Transforms the breakpoint id into the junction id of the format <code>&lt;chr&gt;:&lt;start&gt;-:&lt;end&gt;:&lt;strand&gt;</code></p></td>
+      </tr><tr><td>
+          <p><code><a href="junc2breakpoint.html">junc2breakpoint()</a></code> </p>
+        </td>
+        <td><p>Transforms the junction id into the breakpoint id of the format <code>&lt;chr&gt;:&lt;start&gt;-&lt;chr&gt;:&lt;end&gt;</code></p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="merge-and-filter">Merge and filter <a href="#merge-and-filter" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions annotate and filter for cnaonical splicing</p>
+          <p class="section-desc"></p><p>Functions annotate and filter for canonical splicing</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="is_in_rnaseq.html">is_in_rnaseq()</a></code> </p>
@@ -261,14 +271,6 @@ format into standardized junction format</p></td>
           <p><code><a href="unsorted_junc_df.html">unsorted_junc_df</a></code> </p>
         </td>
         <td><p>A tibble in junction format but unsorted columns</p></td>
-      </tr><tr><td>
-          <p><code><a href="transform_leafcutter_bam.html">transform_leafcutter_bam()</a></code> </p>
-        </td>
-        <td><p>Transforms LeafCutter bam junc file</p></td>
-      </tr><tr><td>
-          <p><code><a href="transform_leafcutter_counts.html">transform_leafcutter_counts()</a></code> </p>
-        </td>
-        <td><p>Transforms LeafCutter counts file into standardized junction format.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="data">Data <a href="#data" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Toy example datasets</p>

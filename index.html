@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -227,9 +227,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">AnnotationDbi</a></span><span class="op">)</span>
 
-<span class="co"># this is an customized example of a transcript database</span>
-<span class="co"># the user can choose the best suited database for their use case</span>
-<span class="co"># please find below instruction how to create the database from a gtf file</span>
+<span class="co"># this is an example of a transcript database (see below for details)</span>
 <span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span>
 <span class="co"># parse GTF file as txdb object</span>
 <span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_url</span><span class="op">)</span>
@@ -323,23 +321,8 @@
 <div class="section level2">
 <h2 id="transcript-database">Transcript database<a class="anchor" aria-label="anchor" href="#transcript-database"></a>
 </h2>
-<p>To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:</p>
+<p>A database of transcripts can be build from a GTF file, saved and re-loaded as follows:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># use gtf file of choice and transform into transcript database</span>
-<span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span>
-
-<span class="co"># parse GTF file as txdb object</span>
-<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_url</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">saveDb</a></span><span class="op">(</span><span class="va">txdb</span>, file <span class="op">=</span> <span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span>
-
-<span class="co"># load </span>
-<span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">loadDb</a></span><span class="op">(</span><span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="transcript-database-1">Transcript database<a class="anchor" aria-label="anchor" href="#transcript-database-1"></a>
-</h2>
-<p>To transform mutations into junction format, a database of transcripts is required. This database can be created as described below:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># use gtf file of choice and transform into transcript database</span>
 <span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span>
 
@@ -390,7 +373,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.3.0-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.3.1-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>

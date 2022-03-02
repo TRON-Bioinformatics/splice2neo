@@ -40,6 +40,9 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/bed_to_junc.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/breakpoint2junc.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/canonical_juncs.html</loc>
   </url>
   <url>
@@ -58,6 +61,9 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/generate_combined_dataset.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/generate_junction_id.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_exon_inclusion_junction.html</loc>
   </url>
   <url>
@@ -65,9 +71,6 @@
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_junc_pos.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_bam.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_counts.html</loc>
@@ -85,13 +88,13 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_in_rnaseq.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/junc2breakpoint.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/junc_to_gr.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_transform.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/leafcutter_transform_format.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/map_requant.html</loc>
@@ -127,6 +130,9 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_ass.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_exon_skipping.html</loc>
   </url>
   <url>
@@ -158,9 +164,6 @@
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_for_requant.html</loc>
-  </url>
-  <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_bam.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_counts.html</loc>
