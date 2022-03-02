@@ -17,11 +17,8 @@ reference:
 - title: "Parse LeafCutter"
   desc: "Functions to parse LeafCutter output into standard splice junction format"
 - contents:
-  - import_leafcutter_bam
   - import_leafcutter_counts
   - leafcutter_transform
-  - leafcutter_transform_format
-  - transform_leafcutter_bam
   - transform_leafcutter_counts
 - title: "Parse SplAdder"
   desc: "Functions to parse SplAdder output into standard splice junction format"
@@ -29,8 +26,7 @@ reference:
   - import_spladder
   - spladder_transform
   - spladder_transform_format
-  - spladder_transform_a3ss
-  - spladder_transform_a5ss
+  - spladder_transform_ass
   - spladder_transform_intron_retention
   - spladder_transform_mutex_exon
   - spladder_transform_exon_skipping
@@ -57,8 +53,14 @@ reference:
   - parse_gtf
   - canonical_junctions
   - is_canonical
+- title: "ID transformation"
+  desc: "Functions to generate and transform ids"
+- contents:
+  - generate_junction_id
+  - breakpoint2junc
+  - junc2breakpoint
 - title: "Merge and filter"
-  desc: "Functions annotate and filter for cnaonical splicing"
+  desc: "Functions annotate and filter for canonical splicing"
 - contents:
   - is_in_rnaseq
   - combine_mut_junc
@@ -72,19 +74,9 @@ reference:
   - next_junctions
   - sort_columns
   - unsorted_junc_df
-  - transform_leafcutter_bam
-  - transform_leafcutter_counts
 - title: "Data"
   desc: "Toy example datasets"
 - contents:
   - starts_with("toy_")
   - unsorted_junc_df
-  - spladder_output.a3ss
-  - spladder_output.a5ss
-  - spladder_output.exonskip
-  - spladder_output.intronreten
-  - spladder_output.mutexon
-  - spladder_output
-  - leafcutter_juncs
-  - spladder_juncs
   - canonical_juncs
