@@ -2,7 +2,7 @@
 % Please edit documentation in R/leafcutter_parsing.R
 \name{leafcutter_transform}
 \alias{leafcutter_transform}
-\title{Imports "*perind.counts.gz" and "*bam.junc" from LeafCutter output and transforms the raw output
+\title{Imports "*perind.counts.gz" from LeafCutter output and transforms the raw output
 into standardized junction output format. Results of one patient should be stored in the given path.}
 \usage{
 leafcutter_transform(path)
@@ -14,7 +14,7 @@ leafcutter_transform(path)
 A tibble in standardized junction format
 }
 \description{
-Imports "*perind.counts.gz" and "*bam.junc" from LeafCutter output and transforms the raw output
+Imports "*perind.counts.gz" from LeafCutter output and transforms the raw output
 into standardized junction output format. Results of one patient should be stored in the given path.
 }
 \examples{
