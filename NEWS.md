@@ -1,3 +1,7 @@
+# splice2neo 0.3.1
+
+* minor update of doc and README
+
 # splice2neo 0.3.0
 
 * new function:
