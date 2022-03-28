@@ -15,18 +15,14 @@ test_that("annotate_spliceai_junction works for multiple effects from same mutat
 
   testthat::skip("Not implemented")
 
-  # spliceai_file <- "/projects/SUMMIT/WP1.1/splice/temp/input.vcf.spliceAI.vcf"
   gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
   # parse GTF file as txdb object
   txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
   transcripts <- GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
   transcripts_gr <- GenomicFeatures::transcripts(txdb)
-  #
-  # df_raw <- parse_spliceai(spliceai_file) %>%
-  #   dplyr::filter(POS == 62934431, ALT == "T") %>%
-  #   mutate(CHROM = str_c("chr", CHROM))
-  # df <- format_spliceai(df_raw)
-  #
+
+
   df <- dplyr::tibble(
     CHROM = c("chr2", "chr2"),
     POS = c("62934431", "62934431"),
