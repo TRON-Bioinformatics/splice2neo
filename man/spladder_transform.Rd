@@ -18,3 +18,9 @@ splicing classes that are covered by SplAdder
 Imports SplAdder output from a given path and transforms it into standardized
 junction format. Results from one patients should be stored per folder.
 }
+\examples{
+path <-  system.file("extdata", "", package = "splice2neo")
+spladder_juncs <- spladder_transform(path)
+spladder_juncs
+
+}
