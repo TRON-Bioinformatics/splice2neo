@@ -14,6 +14,7 @@
 #'@export
 generate_junction_id <- function(chr, start, end, strand){
 
+  stopifnot(is.na(start) | is.na(end) | start <= end)
   stopifnot(strand %in% c("+", "-"))
 
   # create junction id
