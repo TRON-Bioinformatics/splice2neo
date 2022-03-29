@@ -96,7 +96,7 @@ test_that("add_peptide not fails for junctions outside CDS", {
 test_that("add_peptide works for junctions outside CDS (issue #40)", {
 
   # on CI avoid download of annotation data
-  skip_on_ci()
+  skip("Long download")
 
   # reference data -------------------------------------------------------------
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
@@ -151,7 +151,7 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
 test_that("add_peptide works in strange combination(issue #47)", {
 
   # on CI avoid download of annotation data
-  skip_on_ci()
+  skip("Long download")
 
   # reference data -------------------------------------------------------------
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)

@@ -13,7 +13,7 @@ test_that("annotate_spliceai_junction works on toy example", {
 
 test_that("annotate_spliceai_junction works for multiple effects from same mutation", {
 
-  testthat::skip("Not implemented")
+  skip("Long download")
 
   gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
 
