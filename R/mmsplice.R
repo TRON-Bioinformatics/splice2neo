@@ -46,6 +46,9 @@ parse_mmsplice <- function(infile){
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
+#'   The exons in individual GRanges are assumed to be sorted according to
+#'   transcription sense, that for transcript with positive strand by position and
+#'   by descending position for transcripts on negative strand.
 #'
 #' @return A data.frame like object like the input but with additional columns:
 #' - junc_id: `<chr>_<pos1>_<pos2>_<strand>`
@@ -161,8 +164,8 @@ get_exon_skipping_junction <- function(exon_id, transcript_id, transcripts){
   exon_starts <- S4Vectors::start(tx_sub) %>% as.list()
 
   # get end of left exon and start of right exon
-  left_end <- purrr::map2_int(exon_ends, exid_left_idx, ~.x[.y])
-  right_start <- purrr::map2_int(exon_starts, exid_right_idx, ~.x[.y])
+  left_end <- purrr::map2_int(exon_ends, exid_left_idx, ~ifelse(!is.na(.y), .x[.y], NA))
+  right_start <- purrr::map2_int(exon_starts, exid_right_idx, ~ifelse(!is.na(.y), .x[.y], NA))
 
   # get strand and chromosome for all exons
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))
@@ -224,11 +227,11 @@ get_exon_inclusion_junction <- function(exon_id, transcript_id, transcripts){
   exon_starts <- S4Vectors::start(tx_sub) %>% as.list()
 
   # get end of left exon and start of right exon
-  left_end <- purrr::map2_int(exon_ends, exid_left_idx, ~.x[.y])
-  exon_start <- purrr::map2_int(exon_starts, exon_idx, ~.x[.y])
+  left_end <- purrr::map2_int(exon_ends, exid_left_idx, ~ifelse(!is.na(.y), .x[.y], NA))
+  exon_start <- purrr::map2_int(exon_starts, exon_idx, ~ifelse(!is.na(.y), .x[.y], NA))
 
-  exon_end <- purrr::map2_int(exon_ends, exon_idx, ~.x[.y])
-  right_start <- purrr::map2_int(exon_starts, exid_right_idx, ~.x[.y])
+  exon_end <- purrr::map2_int(exon_ends, exon_idx, ~ifelse(!is.na(.y), .x[.y], NA))
+  right_start <- purrr::map2_int(exon_starts, exid_right_idx, ~ifelse(!is.na(.y), .x[.y], NA))
 
   # get strand and chromosome for all exons
   # exon_strand = purrr::map2_chr(as.list(strand(tx_sub)), exon_idx, ~as.character(.x[.y]))

@@ -46,7 +46,7 @@ test_that("add_context_seq works on when tx_id is not contained in transcripts",
 test_that("add_context_seq is independed of junction combinations", {
 
   # skip on CI because it requires long download of a full GTF file
-  skip_on_ci()
+  skip("Long download")
 
   # library(EnsDb.Hsapiens.v75)
   # library(tidyverse)
@@ -111,7 +111,8 @@ test_that("add_context_seq is independed of junction combinations", {
 test_that("add_context_seq workds for example with neg issue 46", {
 
   # skip on CI because it requires long download of a full GTF file
-  skip_on_ci()
+  skip("Long download")
+
 
   # library(splice2neo)
   # library(GenomicFeatures)

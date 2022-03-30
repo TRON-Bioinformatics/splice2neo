@@ -55,3 +55,13 @@ test_that("breakpoint2junc works", {
   expect_error(breakpoint2junc("chr2:152389996-chr5:152392205", strand = "+"))
 
 })
+
+test_that("breakpoint2junc works with toy example", {
+
+  breakpoint_id <- "chr1:500000-chr1:1000000"
+  junc_id <- breakpoint2junc(breakpoint_id = breakpoint_id, strand = "+")
+
+  expect_equal(junc_id, "chr1:500000-1000000:+")
+
+})
+
