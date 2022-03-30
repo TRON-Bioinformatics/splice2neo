@@ -14,6 +14,9 @@
 #'@export
 generate_junction_id <- function(chr, start, end, strand){
 
+  start <- as.integer(start)
+  end <- as.integer(end)
+
   stopifnot(is.na(start) | is.na(end) | start <= end)
   stopifnot(strand %in% c("+", "-"))
 
@@ -49,9 +52,9 @@ junc2breakpoint <- function(junc_id){
 
 }
 
-#' Given the strand Transforms the breakpoint id into the junction id of the format `<chr>:<start>-:<end>:<strand>`
+#' Transforms breakpoint IDs (BPID) with given transcription strand into the junction ID of the format `<chr>:<start>-:<end>:<strand>`
 #'
-#' @param breakpoint_id The junction id in the format `<chr>:<start>-<chr>:<end>`
+#' @param breakpoint_id The breakpoint id in the format `<chr>:<start>-<chr>:<end>`
 #' @param strand Strand information. "+" or "-"
 #' @return The junction id in the format `<chr>:<start>-<end>:<strand>`
 #'
@@ -69,9 +72,11 @@ breakpoint2junc <- function(breakpoint_id, strand){
   # split junction id in chr, start, end
   id_split <- str_split_fixed(breakpoint_id, "-", n = 2)
   chr_1 <- str_split_fixed(id_split[,1], ":", n = 2)[,1]
-  start <- str_split_fixed(id_split[,1], ":", n = 2)[,2]
+  start <- str_split_fixed(id_split[,1], ":", n = 2)[,2] %>%
+    as.integer()
   chr_2 <- str_split_fixed(id_split[,2], ":", n = 2)[,1]
-  end <- str_split_fixed(id_split[,2], ":", n = 2)[,2]
+  end <- str_split_fixed(id_split[,2], ":", n = 2)[,2] %>%
+    as.integer()
 
   stopifnot("the breakpoint id can only be converted into a junction id, if start and end are located on the same chromosome"=chr_1 == chr_2)
 
