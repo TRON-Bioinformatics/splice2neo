@@ -21,7 +21,7 @@ generate_junction_id <- function(chr, start, end, strand){
   stopifnot(strand %in% c("+", "-"))
 
   # create junction id
-  junc_id <- str_c(chr, ":", as.integer(start),"-", as.integer(end),":", strand)
+  junc_id <- str_c(chr, ":", start,"-", end,":", strand)
 
   return(junc_id)
 
@@ -72,11 +72,9 @@ breakpoint2junc <- function(breakpoint_id, strand){
   # split junction id in chr, start, end
   id_split <- str_split_fixed(breakpoint_id, "-", n = 2)
   chr_1 <- str_split_fixed(id_split[,1], ":", n = 2)[,1]
-  start <- str_split_fixed(id_split[,1], ":", n = 2)[,2] %>%
-    as.integer()
+  start <- str_split_fixed(id_split[,1], ":", n = 2)[,2]
   chr_2 <- str_split_fixed(id_split[,2], ":", n = 2)[,1]
-  end <- str_split_fixed(id_split[,2], ":", n = 2)[,2] %>%
-    as.integer()
+  end <- str_split_fixed(id_split[,2], ":", n = 2)[,2]
 
   stopifnot("the breakpoint id can only be converted into a junction id, if start and end are located on the same chromosome"=chr_1 == chr_2)
 
