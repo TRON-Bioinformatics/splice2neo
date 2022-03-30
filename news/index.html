@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -47,6 +47,21 @@
       <small>Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.1" id="splice2neo-041">splice2neo 0.4.1<a class="anchor" aria-label="anchor" href="#splice2neo-041"></a></h2>
+<ul><li>Support donor gain and acceptor gain in introns</li>
+<li>export annotate_spliceai_junction and canonical_junctions()</li>
+<li>More stabel checks for correct format in generate_junction_id()</li>
+<li>Additional unit tests</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.0" id="splice2neo-040">splice2neo 0.4.0<a class="anchor" aria-label="anchor" href="#splice2neo-040"></a></h2>
+<ul><li>Leafcutterr: The strand information while leafcutter parsing is now retrieved from the cluster id in the count table.</li>
+<li>Spladder: previous code changes missed to consider the event type in generation of the junc id for alternative splice sites. This is fixed now.</li>
+<li>More tests were added</li>
+<li>An old bug in spladder_transform_mutex_exon was fixed</li>
+<li>Until now a junc_id could appear multiple times if it could be part of multiple events. As we are not interested in re-constructing the events, now unique junc_ids will be returned.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="splice2neo-031">splice2neo 0.3.1<a class="anchor" aria-label="anchor" href="#splice2neo-031"></a></h2>
 <ul><li>minor update of doc and README</li>

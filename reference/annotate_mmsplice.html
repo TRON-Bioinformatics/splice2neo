@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -66,7 +66,10 @@ have the following columns:
 - delta_logit_psi</p></dd>
 <dt>transcripts</dt>
 <dd><p>a GRangesList with transcripts defined as GRanges of exons
-created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.</p></dd>
+created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.
+The exons in individual GRanges are assumed to be sorted according to
+transcription sense, that for transcript with positive strand by position and
+by descending position for transcripts on negative strand.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

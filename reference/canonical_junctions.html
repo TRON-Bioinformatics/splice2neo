@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
       </span>
     </div>
 
@@ -75,6 +75,36 @@ last exon base and the next base.
 Therefore, we just need to check whether both bases are included in a single exon.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">gtf_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"GTF_files"</span>,<span class="st">"Aedes_aegypti.partial.gtf"</span>,</span>
+<span class="r-in">  package<span class="op">=</span><span class="st">"GenomicFeatures"</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">tx</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_gtf.html">parse_gtf</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Import genomic features from the file as a GRanges object ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Prepare the 'metadata' data frame ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Make the TxDb object ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu">canonical_junctions</span><span class="op">(</span><span class="va">tx</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "supercont1.1:35644-35699:+"   "supercont1.1:35901-35993:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "supercont1.1:36098-52193:+"   "supercont1.1:52851-52973:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "supercont1.1:67696-68065:+"   "supercont1.1:68188-68248:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "supercont1.1:68492-78190:+"   "supercont1.1:78879-79230:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "supercont1.1:79304-79389:+"   "supercont1.1:86420-86471:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "supercont1.1:86703-86765:+"   "supercont1.1:87532-96341:+"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "supercont1.1:229407-229997:+" "supercont1.1:322232-322301:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15] "supercont1.1:323178-365519:+" "supercont1.1:366979-377341:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "supercont1.1:378002-378174:+" "supercont1.1:379119-379216:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] "supercont1.1:380180-382693:+" "supercont1.1:384202-389885:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [21] "supercont1.1:453215-453294:+" "supercont1.1:454174-458284:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [23] "supercont1.1:458711-458777:+" "supercont1.1:529329-530742:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] "supercont1.1:560183-560246:+" "supercont1.1:560494-560556:+"</span>
+<span class="r-in"></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
