@@ -26,3 +26,12 @@ created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}
 \description{
 Annotate splice variants with resulting junctions
 }
+\examples{
+spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+df_raw <- parse_spliceai(spliceai_file)
+df <- format_spliceai(df_raw)
+
+annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+
+
+}

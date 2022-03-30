@@ -19,6 +19,14 @@
 #' last exon base and the next base.
 #' Therefore, we just need to check whether both bases are included in a single exon.
 #'
+#' @examples
+#' gtf_file <- system.file("extdata","GTF_files","Aedes_aegypti.partial.gtf",
+#'   package="GenomicFeatures")
+#'
+#' tx <- parse_gtf(gtf_file)
+#'
+#' canonical_junctions(tx[1:10])
+#'
 #' @export
 canonical_junctions <- function(tx){
 
