@@ -15,6 +15,15 @@
 #' @param transcripts_gr a GRanges object with transcript created by
 #'   `GenomicFeatures::transcripts(txdb)`
 #'
+#' @examples
+#' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+#' df_raw <- parse_spliceai(spliceai_file)
+#' df <- format_spliceai(df_raw)
+#'
+#' annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+#'
+#'
+#' @export
 annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
   var_df <- var_df %>%
@@ -50,7 +59,7 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
     ) %>%
     left_join(
       change_to_junction_rules,
-      by = c("change", "tx_strand" = "strand")
+      by = c("change")
     ) %>%
 
     # apply rules
@@ -58,8 +67,11 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
     # evaluate rule to get coordinates of junctions
     mutate(
-      left = eval(parse(text = rule_left)),
-      right = eval(parse(text = rule_right)),
+      strand_offset = ifelse(tx_strand == "-", -1, 1),
+      coord_1 = eval(parse(text = rule_left)),
+      coord_2 = eval(parse(text = rule_right)),
+      left = ifelse(coord_1 <= coord_2, coord_1, coord_2),
+      right = ifelse(coord_1 <= coord_2, coord_2, coord_1),
     ) %>%
 
     # remove predicted effects with missing values
@@ -101,7 +113,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
   message("INFO: get overlapping transcripts..." )
   # get overlapping transcripts
-  hits <- suppressWarnings(GenomicRanges::findOverlaps(var_gr, transcripts))
+  hits <- suppressWarnings(GenomicRanges::findOverlaps(var_gr, transcripts_gr))
 
   message("INFO: Build df ..." )
   var_to_transcript <- hits %>%
@@ -133,43 +145,45 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       # tx annotation
       tx_chr = as.character(GenomeInfoDb::seqnames(transcripts_gr)[tx_nr]),
       tx_strand = as.character(BiocGenerics::strand(transcripts_gr)[tx_nr]),
-      tx_id = as.character(transcripts_gr$tx_name)[tx_nr],
+      # tx_id = as.character(transcripts_gr$tx_name)[tx_nr],
+      tx_id = ifelse(!is.null(names(transcripts_gr)), names(transcripts_gr)[tx_nr],  as.character(transcripts_gr$tx_name)[tx_nr]),
 
-      # get upstream donor and downstream acceptor
-      exon_idx = furrr::future_map2_int(tx_gr, var_gr,
-                                        ~which(suppressWarnings(
-                                          IRanges::overlapsAny(.x, .y)
-                                          ))),
+      # extract position of annotated effect
+      # pos = map_int(var_gr, BiocGenerics::start),
 
-      # get the next upstream exon (if exists) and take the end coordinate
-      upstream_start = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y > 1, IRanges::start(.x)[.y - 1], NA)),
-      upstream_end = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y > 1, IRanges::end(.x)[.y - 1], NA)),
-      downstream_start = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y < length(.x), IRanges::start(.x)[.y + 1], NA)),
-      downstream_end = furrr::future_map2_int(tx_gr, exon_idx, ~ifelse(.y < length(.x), IRanges::end(.x)[.y + 1], NA))
-    )  %>%
+      # extract all exon start and end coordinates of transcripts as GRanges
+      starts_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
+      ends_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
+      # exon_ends = map(tx_gr, BiocGenerics::end),
 
-    dplyr::select(mut_effect_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
+      # get the closest upstream and downstream start and end positions
+      upstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::follow),
+      downstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::precede),
+      upstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::follow),
+      downstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::precede),
+
+      upstream_start = map2_int(starts_gr, upstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_start = map2_int(starts_gr, downstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      upstream_end = map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_end = map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+
+    ) %>%
+
+    dplyr::select(mut_effect_id, var_nr, tx_chr, tx_id, tx_strand, upstream_start,
            upstream_end, downstream_start, downstream_end)
 
 }
 
 #' Rules on how a splicing affecting variant creates a junction
 change_to_junction_rules <- tribble(
-  ~change, ~class,             ~strand, ~rule_left,        ~rule_right,
-  "DL",    "intron retention", "+",     "pos",             "pos + 1",
-  "DL",    "intron retention", "-",     "pos - 1",         "pos",
-  "DL",    "exon skipping",    "+",     "upstream_end",    "downstream_start",
-  "DL",    "exon skipping",    "-",     "downstream_end",  "upstream_start",
+  ~change, ~class,             ~rule_left,        ~rule_right,
+  "DL",    "intron retention", "pos",             "pos + strand_offset",
+  "DL",    "exon skipping",    "upstream_end",    "downstream_start",
 
-  "DG",    "alternative 5prim", "+",    "pos",             "downstream_start",
-  "DG",    "alternative 5prim", "-",    "downstream_end",  "pos",
+  "DG",    "alternative 5prim", "pos",             "downstream_start",
 
-  "AL",    "intron retention", "+",     "pos - 1",         "pos",
-  "AL",    "intron retention", "-",     "pos",             "pos + 1",
-  "AL",    "exon skipping",    "+",     "upstream_end",    "downstream_start",
-  "AL",    "exon skipping",    "-",     "downstream_end",  "upstream_start",
+  "AL",    "intron retention",  "pos - strand_offset",         "pos",
+  "AL",    "exon skipping",     "upstream_end",    "downstream_start",
 
-  "AG",    "alternative 3prim", "+",    "upstream_end",     "pos",
-  "AG",    "alternative 3prim", "-",    "pos",              "upstream_start",
+  "AG",    "alternative 3prim",  "upstream_end",     "pos",
 )
-

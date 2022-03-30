@@ -29,3 +29,12 @@ Therefore, we just need to check whether both bases are included in a single exo
 \description{
 Build canonical junctions from transcripts
 }
+\examples{
+gtf_file <- system.file("extdata","GTF_files","Aedes_aegypti.partial.gtf",
+  package="GenomicFeatures")
+
+tx <- parse_gtf(gtf_file)
+
+canonical_junctions(tx[1:10])
+
+}

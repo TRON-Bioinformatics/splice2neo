@@ -14,7 +14,10 @@ have the following columns:
 - delta_logit_psi}
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
-created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
+created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.
+The exons in individual GRanges are assumed to be sorted according to
+transcription sense, that for transcript with positive strand by position and
+by descending position for transcripts on negative strand.}
 }
 \value{
 A data.frame like object like the input but with additional columns:

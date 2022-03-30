@@ -2,12 +2,12 @@
 % Please edit documentation in R/define_junc_id.R
 \name{breakpoint2junc}
 \alias{breakpoint2junc}
-\title{Given the strand Transforms the breakpoint id into the junction id of the format \verb{<chr>:<start>-:<end>:<strand>}}
+\title{Transforms breakpoint IDs (BPID) with given transcription strand into the junction ID of the format \verb{<chr>:<start>-:<end>:<strand>}}
 \usage{
 breakpoint2junc(breakpoint_id, strand)
 }
 \arguments{
-\item{breakpoint_id}{The junction id in the format \verb{<chr>:<start>-<chr>:<end>}}
+\item{breakpoint_id}{The breakpoint id in the format \verb{<chr>:<start>-<chr>:<end>}}
 
 \item{strand}{Strand information. "+" or "-"}
 }
@@ -15,7 +15,7 @@ breakpoint2junc(breakpoint_id, strand)
 The junction id in the format \verb{<chr>:<start>-<end>:<strand>}
 }
 \description{
-Given the strand Transforms the breakpoint id into the junction id of the format \verb{<chr>:<start>-:<end>:<strand>}
+Transforms breakpoint IDs (BPID) with given transcription strand into the junction ID of the format \verb{<chr>:<start>-:<end>:<strand>}
 }
 \examples{
 

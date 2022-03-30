@@ -245,7 +245,7 @@ import_spladder <- function(path){
 #'
 #' @return A tibble in standardized junction format, combining all alternative
 #'   splicing classes that are covered by SplAdder
-#' @example
+#' @examples
 #' path <-  system.file("extdata", "", package = "splice2neo")
 #' spladder_juncs <- spladder_transform(path)
 #' spladder_juncs

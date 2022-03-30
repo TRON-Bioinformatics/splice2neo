@@ -14,10 +14,14 @@
 #'@export
 generate_junction_id <- function(chr, start, end, strand){
 
+  start <- as.integer(start)
+  end <- as.integer(end)
+
+  stopifnot(is.na(start) | is.na(end) | start <= end)
   stopifnot(strand %in% c("+", "-"))
 
   # create junction id
-  junc_id <- str_c(chr, ":", as.integer(start),"-", as.integer(end),":", strand)
+  junc_id <- str_c(chr, ":", start,"-", end,":", strand)
 
   return(junc_id)
 
@@ -48,9 +52,9 @@ junc2breakpoint <- function(junc_id){
 
 }
 
-#' Given the strand Transforms the breakpoint id into the junction id of the format `<chr>:<start>-:<end>:<strand>`
+#' Transforms breakpoint IDs (BPID) with given transcription strand into the junction ID of the format `<chr>:<start>-:<end>:<strand>`
 #'
-#' @param breakpoint_id The junction id in the format `<chr>:<start>-<chr>:<end>`
+#' @param breakpoint_id The breakpoint id in the format `<chr>:<start>-<chr>:<end>`
 #' @param strand Strand information. "+" or "-"
 #' @return The junction id in the format `<chr>:<start>-<end>:<strand>`
 #'
