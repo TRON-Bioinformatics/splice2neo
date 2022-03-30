@@ -15,6 +15,7 @@
 #' @param transcripts_gr a GRanges object with transcript created by
 #'   `GenomicFeatures::transcripts(txdb)`
 #'
+#' @export
 annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
   var_df <- var_df %>%

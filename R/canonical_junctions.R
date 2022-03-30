@@ -19,7 +19,7 @@
 #' last exon base and the next base.
 #' Therefore, we just need to check whether both bases are included in a single exon.
 #'
-#'
+#' @export
 canonical_junctions <- function(tx){
 
   # full ranges of all transcript as a single GRanges object
