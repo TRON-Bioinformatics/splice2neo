@@ -1,3 +1,18 @@
+# splice2neo 0.4.1
+
+* Support donor gain and acceptor gain in introns
+* export annotate_spliceai_junction and canonical_junctions()
+* More stabel checks for correct format in generate_junction_id()
+* Additional unit tests
+
+# splice2neo 0.4.0
+
+* Leafcutterr: The strand information while leafcutter parsing is now retrieved from the cluster id in the count table.
+* Spladder: previous code changes missed to consider the event type in generation of the junc id for alternative splice sites. This is fixed now.
+* More tests were added
+* An old bug in spladder_transform_mutex_exon was fixed
+* Until now a junc_id could appear multiple times if it could be part of multiple events. As we are not interested in re-constructing the events, now unique junc_ids will be returned.
+
 # splice2neo 0.3.1
 
 * minor update of doc and README
