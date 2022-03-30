@@ -15,6 +15,15 @@
 #' @param transcripts_gr a GRanges object with transcript created by
 #'   `GenomicFeatures::transcripts(txdb)`
 #'
+#' @examples
+#' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+#' df_raw <- parse_spliceai(spliceai_file)
+#' df <- format_spliceai(df_raw)
+#'
+#' annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+#'
+#'
+#' @export
 annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
   var_df <- var_df %>%
