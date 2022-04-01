@@ -62,3 +62,44 @@ get_junc_pos <- function(tx, jx){
 
   return(pos_tx)
 }
+
+
+#' Get the alternative position of input junction from an intron retention event
+#'  in the transcript sequences
+#'
+#' @param tx transcripts a \code{\link[GenomicRanges]{GRangesList}} with
+#' transcripts defined as GRanges of exons.
+#' @param jx splice junctions as GRanges objects
+#'
+#' @return an integer vector with junction positions
+#'
+#' @export
+get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx){
+
+  # get position of the next exon for intron retentions
+  # this is only relevant for intron rententions
+  # we need to identify the other boundary of the intron
+  jx_lst <- split(jx, 1:length(jx))
+  # test if start or and end of junc is on exon
+  jx_end <- mapply(function(j, l) {
+    GenomicRanges::findOverlaps(GenomicRanges::resize(j, width = 1, fix="end"), l, select="first")
+  } , j = jx_lst, l = as.list(tx_lst), SIMPLIFY = TRUE)
+
+  start_on_exon <- ifelse(is.na(jx_end), TRUE, FALSE)
+  # get unknown exon
+  ex_range <- mapply(function(j, l, s) {
+    if (s) {
+      l[GenomicRanges::precede(j, l)]
+    } else {
+      l[GenomicRanges::follow(j, l)]
+    }
+  } , j = jx_lst, l = as.list(tx_lst), s = start_on_exon, SIMPLIFY = TRUE)
+  ex_range <- unlist(as(ex_range, "GRangesList"))
+
+  ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
+  ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
+  # get position of other boundary of intron
+  junc_end_tx = ifelse(strand(ex_start) == "-" & !start_on_exon, get_junc_pos(tx_mod, ex_end) , get_junc_pos(tx_mod, ex_start))
+
+  return(junc_end_tx)
+}

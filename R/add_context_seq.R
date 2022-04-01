@@ -71,19 +71,28 @@ add_context_seq <- function(df,
   # get junctions as GRanges object
   jx <- junc_to_gr(df_sub$junc_id)
 
+  # test if junction is an intron retention event
+  # TODO: are non IR junctions possible that follow the rule chr:pos-pos+1:strand?
+  intron_retention <- ifelse(jx@ranges@width == 2, TRUE, FALSE)
+
   # modify transcripts by appliing the splice junctions
   tx_mod <- modify_tx(tx_lst, jx)
 
   # get junction position in altered transcript
   junc_pos_tx = get_junc_pos(tx_mod, jx)
 
+  # only relevant for intron retention events: get the other position of retained
+  # intervall
+  junc_end_tx <- get_intronretention_alt_pos(tx_lst, tx_mod, jx)
+
   # get transcript sequence and junction position in sequence
   tx_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, tx_mod)
 
   # Get context-sequence around junction
   tx_len <- BiocGenerics::width(tx_seq)
-  cts_start <- pmax(junc_pos_tx - (size/2) + 1, 1)
-  cts_end <- pmin(junc_pos_tx + (size/2), tx_len)
+  cts_start <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,pmax(junc_end_tx - (size/2) + 1, 1), pmax(junc_pos_tx - (size/2) + 1, 1))
+  cts_end <- ifelse(intron_retention & junc_end_tx > junc_pos_tx, pmin((junc_end_tx - 1) + (size/2), tx_len) ,pmin(junc_pos_tx + (size/2), tx_len))
+
 
   # if subset positions are NA, set the enrie sequence to NA to force NA
   # in the ouptut of the folllwoing call to XVector::subseq
@@ -97,6 +106,9 @@ add_context_seq <- function(df,
 
   # calculate junction position relative to context sequence
   cts_junc_pos <- junc_pos_tx - cts_start + 1
+  cts_end_pos <- junc_end_tx - cts_start + 1
+  # DO THIS !! --> COMPLETE VECTORS ARE COLLAPSED
+  cts_intervall <- do.call(paste, list(0, cts_junc_pos, cts_end_pos, nchar(cts_seq), sep = ","))
 
   # Annotate table
   df_sub <- df_sub %>%
@@ -104,7 +116,7 @@ add_context_seq <- function(df,
       tx_mod_id = stringr::str_c(tx_id, "|", junc_id),
       junc_pos_tx = junc_pos_tx,
       cts_seq = as.character(cts_seq),
-      cts_junc_pos = cts_junc_pos,
+      cts_junc_pos = ifelse(intron_retention, cts_intervall, cts_junc_pos),
       cts_size = stringr::str_length(cts_seq),
       cts_id = furrr::future_map_chr(cts_seq, rlang::hash)
     )
