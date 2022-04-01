@@ -115,7 +115,7 @@ add_context_seq <- function(df,
   #cts_junc_pos <- junc_pos_tx - cts_start + 1
   cts_end_pos <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,
          junc_pos_tx - cts_start + 1,
-         junc_end_tx - cts_start + 1)
+         junc_end_tx - cts_start)
 
   # only relevant for IRs: get intervals for intron rententions: start_cts,start_IR,end_IR,end_cts
   cts_intervall <- do.call(paste, list(0, cts_junc_pos, cts_end_pos, nchar(cts_seq), sep = ","))

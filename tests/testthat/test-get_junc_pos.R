@@ -124,3 +124,84 @@ test_that("get_junc_pos works when an empty range is in tx", {
   expect_equal(length(tx), length(pos))
 })
 
+
+test_that("get_intronretention_alt_pos works on positive strand", {
+
+  tx <- GenomicRanges::GRangesList(
+      GenomicRanges::GRanges(c(
+        "1:2-10:+",
+        "1:15-20:+",
+        "1:25-30:+"))
+    ,
+    GenomicRanges::GRanges(c(
+      "1:2-10:+",
+      "1:15-20:+",
+      "1:25-30:+")
+      ),
+    GenomicRanges::GRanges(c(
+      "1:2-10:+",
+      "1:15-20:+",
+      "1:25-30:+")
+    ))
+
+
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:10-14:+",  # any
+    "1:10-11:+" ,
+    "1:14-15:+" # any
+  ))
+
+  tx_mod <- modify_tx(tx, jx)
+
+  pos <- get_junc_pos(tx_mod, jx)
+  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx)
+
+  expect_true(other_pos[2] == 14)
+  expect_true(other_pos[3] == 9)
+  expect_true(other_pos[3] == pos[2])
+  expect_true(other_pos[2]-1 == pos[3])
+
+})
+
+test_that("get_intronretention_alt_pos works on negative strand", {
+
+  tx <- GenomicRanges::GRangesList(
+    GenomicRanges::GRanges(c(
+      "1:2-10:-",
+      "1:15-20:-",
+      "1:25-30:-"))
+    ,
+    GenomicRanges::GRanges(c(
+      "1:2-10:-",
+      "1:15-20:-",
+      "1:25-30:-")
+    ),
+    GenomicRanges::GRanges(c(
+      "1:2-10:-",
+      "1:15-20:-",
+      "1:25-30:-")
+    ))
+
+
+
+  jx <- GenomicRanges::GRanges(c(
+    "1:10-14:-",  # any
+    "1:10-11:-" ,
+    "1:14-15:-" # any
+  ))
+
+  tx_mod <- modify_tx(tx, jx)
+
+  pos <- get_junc_pos(tx_mod, jx)
+  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx)
+
+  expect_true(other_pos[2] == 12)
+  expect_true(other_pos[3] == 17)
+  expect_true(other_pos[2] == pos[3])
+  expect_true(other_pos[3]-1 == pos[2])
+
+})
+
+
+
