@@ -67,14 +67,22 @@ get_junc_pos <- function(tx, jx){
 #' Get the alternative position of input junction from an intron retention event
 #'  in the transcript sequences
 #'
-#' @param tx transcripts a \code{\link[GenomicRanges]{GRangesList}} with
+#' @param tx_lst transcripts a \code{\link[GenomicRanges]{GRangesList}} with
+#' transcripts defined as GRanges of exons.
+#' @param tx_mod modified transcripts a \code{\link[GenomicRanges]{GRangesList}} with
 #' transcripts defined as GRanges of exons.
 #' @param jx splice junctions as GRanges objects
 #'
-#' @return an integer vector with junction positions
+#' @return an integer vector with alternative junction positions of intron
+#' retention event
 #'
 #' @export
 get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx){
+
+  # assume same length of tx_lst, tx_mod and jx
+  stopifnot(length(tx_lst) == length(jx))
+  stopifnot(length(tx_mod) == length(jx))
+  stopifnot(length(tx_mod) == length(tx_lst))
 
   # get position of the next exon for intron retentions
   # this is only relevant for intron rententions
@@ -99,7 +107,7 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx){
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
   # get position of other boundary of intron
-  junc_end_tx = ifelse(strand(ex_start) == "-" & !start_on_exon, get_junc_pos(tx_mod, ex_end) , get_junc_pos(tx_mod, ex_start))
+  junc_end_tx = ifelse( !start_on_exon, get_junc_pos(tx_mod, ex_end) , get_junc_pos(tx_mod, ex_start))
 
   return(junc_end_tx)
 }

@@ -90,8 +90,12 @@ add_context_seq <- function(df,
 
   # Get context-sequence around junction
   tx_len <- BiocGenerics::width(tx_seq)
-  cts_start <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,pmax(junc_end_tx - (size/2) + 1, 1), pmax(junc_pos_tx - (size/2) + 1, 1))
-  cts_end <- ifelse(intron_retention & junc_end_tx > junc_pos_tx, pmin((junc_end_tx - 1) + (size/2), tx_len) ,pmin(junc_pos_tx + (size/2), tx_len))
+  cts_start <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,
+                      pmax(junc_end_tx - (size/2) + 1, 1),
+                      pmax(junc_pos_tx - (size/2) + 1, 1))
+  cts_end <- ifelse(intron_retention & junc_end_tx > junc_pos_tx,
+                    pmin((junc_end_tx - 1) + (size/2), tx_len) ,
+                    pmin(junc_pos_tx + (size/2), tx_len))
 
 
   # if subset positions are NA, set the enrie sequence to NA to force NA
@@ -105,9 +109,15 @@ add_context_seq <- function(df,
     as.character()
 
   # calculate junction position relative to context sequence
-  cts_junc_pos <- junc_pos_tx - cts_start + 1
-  cts_end_pos <- junc_end_tx - cts_start + 1
-  # DO THIS !! --> COMPLETE VECTORS ARE COLLAPSED
+  cts_junc_pos <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,
+                         junc_end_tx - cts_start + 1,
+                         junc_pos_tx - cts_start + 1)
+  #cts_junc_pos <- junc_pos_tx - cts_start + 1
+  cts_end_pos <- ifelse(intron_retention & junc_end_tx < junc_pos_tx,
+         junc_pos_tx - cts_start + 1,
+         junc_end_tx - cts_start + 1)
+
+  # only relevant for IRs: get intervals for intron rententions: start_cts,start_IR,end_IR,end_cts
   cts_intervall <- do.call(paste, list(0, cts_junc_pos, cts_end_pos, nchar(cts_seq), sep = ","))
 
   # Annotate table
