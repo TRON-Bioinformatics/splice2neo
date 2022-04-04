@@ -41,13 +41,13 @@ transform_for_requant <- function(df){
 #' @param path_folder The path to the EasyQuant folder
 #'
 #' @return A tibble with with the re-quantification results. This tibble has the columns
-#' - `name`: name of the input sequence. this will be a hash id.
-#' -  `pos`: position of interest relative to input sequence
-#' - `junc`: reads overlapping the position of interest
-#' - `span`: read pairs spanning the position of interest
-#' - `anch`: maximal number of bases next to position of interest that are overlapped by a single read
-#' - `a`: reads mapping to sequence left of the position of interest
-#' - `b`: reads mapping to sequence right of the position of interest
+#' - `name`: name of the input sequence.
+#' -  `interval_position`: comma-separated start end position of the interval relative to input sequence.
+#' - `overlap_interval_end_reads`: reads overlapping the the interval end.
+#' - `span_interval_end_reads`: read pairs spanning the interval end.
+#' - `within_interval_reads`: number of reads that map into the interval.
+#' - `interval_coverage_perc`: interval coverage defined as the percentage of the given interval that is covered by reads.
+#' - `interval_coverage_mean`: interval coverage defined as the mean number of reads covering a position in the given interval.
 #'
 #' @examples
 #'
@@ -55,7 +55,7 @@ transform_for_requant <- function(df){
 #'@import dplyr
 #'
 #'@export
-read_requant_0. <- function(path_folder){
+read_requant <- function(path_folder){
   path.to.easyquant.file <- paste(path_folder, "quantification.tsv" ,sep = "/" )
   if(!file.exists(path.to.easyquant.file)){
     stop("quantification.tsv file is missing")
@@ -72,12 +72,12 @@ read_requant_0. <- function(path_folder){
 #' @param junc_tib The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column `hash_id` with hash ids that relate to the column `name` in the Easyquant output.
 #'
 #' @return Extended junction-transcript tibble with re-quantification results.  The following columns are added:
-#' -  `pos`: position of interest relative to input sequence
-#' - `junc`: reads overlapping the position of interest
-#' - `span`: read pairs spanning the position of interest
-#' - `anch`: maximal number of bases next to position of interest that are overlapped by a single read
-#' - `a`: reads mapping to sequence left of the position of interest
-#' - `b`: reads mapping to sequence right of the position of interest
+#' -  `interval_position`: comma-separated start end position of the interval relative to input sequence.
+#' - `overlap_interval_end_reads`: reads overlapping the the interval end.
+#' - `span_interval_end_reads`: read pairs spanning the interval end.
+#' - `within_interval_reads`: number of reads that map into the interval.
+#' - `interval_coverage_perc`: interval coverage defined as the percentage of the given interval that is covered by reads.
+#' - `interval_coverage_mean`: interval coverage defined as the mean number of reads covering a position in the given interval.
 #
 #'
 #' @examples
@@ -87,6 +87,9 @@ read_requant_0. <- function(path_folder){
 #'
 #'@export
 map_requant <- function(path_to_easyquant_folder, junc_tib) {
+
+  stopifnot("cts_id" %in% names(junc_tib))
+
   dat_easyqant <- read_requant(path_to_easyquant_folder)
   dat_junc <- junc_tib %>%
     left_join(dat_easyqant, by = c("cts_id" = "name"))
