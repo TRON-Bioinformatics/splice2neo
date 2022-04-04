@@ -20,3 +20,17 @@ test_that("transform_for_requant works", {
 })
 
 
+test_that("transform_for_requant works with IR", {
+
+  toy_junc_df_annot <- toy_junc_df %>%
+    add_context_seq(transcripts = toy_transcripts)
+  df_easy <- toy_junc_df_annot %>%
+    transform_for_requant()
+
+  expect_equal(nrow(df_easy), length(unique(toy_junc_df_annot$cts_id)))
+  expect_equal(ncol(df_easy), 3)
+  expect_true(length(grep(",", df_easy$position)) > 0)
+
+
+
+})

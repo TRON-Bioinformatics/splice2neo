@@ -19,6 +19,11 @@
 #'
 #'@export
 transform_for_requant <- function(df){
+
+  stopifnot("cts_id" %in% names(df))
+  stopifnot("cts_seq" %in% names(df))
+  stopifnot("cts_junc_pos" %in% names(df))
+
   dat <- df %>%
     dplyr::select(cts_id, cts_seq, cts_junc_pos) %>%
     dplyr::rename(name = cts_id,
@@ -50,7 +55,7 @@ transform_for_requant <- function(df){
 #'@import dplyr
 #'
 #'@export
-read_requant <- function(path_folder){
+read_requant_0. <- function(path_folder){
   path.to.easyquant.file <- paste(path_folder, "quantification.tsv" ,sep = "/" )
   if(!file.exists(path.to.easyquant.file)){
     stop("quantification.tsv file is missing")
