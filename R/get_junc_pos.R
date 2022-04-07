@@ -72,6 +72,7 @@ get_junc_pos <- function(tx, jx){
 #' @param tx_mod modified transcripts a \code{\link[GenomicRanges]{GRangesList}} with
 #' transcripts defined as GRanges of exons.
 #' @param jx splice junctions as GRanges objects
+#' @param intron_retention logical vector indicating if junctions belong to an intron retention event
 #'
 #' @return an integer vector with alternative junction positions of intron
 #' retention event
