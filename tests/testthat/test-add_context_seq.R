@@ -47,6 +47,19 @@ test_that("add_context_seq generates expected context sequences", {
 
 })
 
+test_that("add_context_seq generates expected context sequences for intron retentions", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  cts_df <- add_context_seq(toy_junc_df, toy_transcripts, size = 400, bsg = bsg)
+  # chr2:152226533-152226534:+ and chr2:152222731-152222732:+ are juncs of the same IR event
+  # they should result in the same context sequence
+  expect_true(cts_df$cts_seq[which(cts_df$junc_id == "chr2:152226533-152226534:+")]
+              == cts_df$cts_seq[which(cts_df$junc_id == "chr2:152222731-152222732:+")])
+
+})
+
 
 
 test_that("add_context_seq works on when tx_id is not contained in transcripts", {
