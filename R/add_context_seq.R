@@ -83,7 +83,7 @@ add_context_seq <- function(df,
 
   # only relevant for intron retention events: get the other position of retained
   # intervall
-  junc_end_tx <- get_intronretention_alt_pos(tx_lst, tx_mod, jx)
+  junc_end_tx <- get_intronretention_alt_pos(tx_lst, tx_mod, jx, intron_retention)
 
   # get transcript sequence and junction position in sequence
   tx_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, tx_mod)

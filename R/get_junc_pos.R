@@ -77,7 +77,7 @@ get_junc_pos <- function(tx, jx){
 #' retention event
 #'
 #' @export
-get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx){
+get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
 
   # assume same length of tx_lst, tx_mod and jx
   stopifnot(length(tx_lst) == length(jx))
@@ -89,20 +89,27 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx){
   # we need to identify the other boundary of the intron
   jx_lst <- split(jx, 1:length(jx))
   # test if start or and end of junc is on exon
-  jx_end <- mapply(function(j, l) {
+  jx_end <- suppressWarnings(mapply(function(j, l) {
     GenomicRanges::findOverlaps(GenomicRanges::resize(j, width = 1, fix="end"), l, select="first")
-  } , j = jx_lst, l = as.list(tx_lst), SIMPLIFY = TRUE)
+  } , j = jx_lst, l = as.list(tx_lst), SIMPLIFY = TRUE))
+  jx_start <- suppressWarnings(mapply(function(j, l) {
+    GenomicRanges::findOverlaps(GenomicRanges::resize(j, width = 1, fix="start"), l, select="first")
+  } , j = jx_lst, l = as.list(tx_lst), SIMPLIFY = TRUE))
 
-  start_on_exon <- ifelse(is.na(jx_end), TRUE, FALSE)
+  start_on_exon <- ifelse(is.na(jx_end) & !is.na(jx_start) & intron_retention, TRUE,
+                          ifelse(!is.na(jx_end) & is.na(jx_start) & intron_retention, FALSE,
+                                 NA))
   # get unknown exon
   ex_range <- mapply(function(j, l, s) {
-    if (s) {
+    if(is.na(s)){
+        GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
+    } else if(s) {
       l[GenomicRanges::precede(j, l)]
-    } else {
+    } else if(!s){
       l[GenomicRanges::follow(j, l)]
     }
   } , j = jx_lst, l = as.list(tx_lst), s = start_on_exon, SIMPLIFY = TRUE)
-  ex_range <- unlist(as(ex_range, "GRangesList"))
+  ex_range <- suppressWarnings(unlist(as(ex_range, "GRangesList")))
 
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")

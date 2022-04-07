@@ -70,12 +70,18 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
   # get junctions as GRanges object
   jx <- junc_to_gr(df_sub$junc_id)
+  # test if junction is an intron retention event
+  # TODO: are non IR junctions possible that follow the rule chr:pos-pos+1:strand?
+  intron_retention <- ifelse(jx@ranges@width == 2, TRUE, FALSE)
 
   # modify transcripts by applying the splice junctions
   cds_mod <- modify_tx(cds_lst, jx)
 
   # get junction position in altered CDS
   junc_pos_cds = get_junc_pos(cds_mod, jx)
+  # only relevant for intron retention events: get the other position of retained
+  # intervall
+  junc_end_tx <- get_intronretention_alt_pos(cds_lst, cds_mod, jx, intron_retention)
 
   # get CDS sequence
   cds_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, cds_mod)
@@ -87,26 +93,30 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
   # Get context peptides around junction
   protein_junc_pos <- ceiling(junc_pos_cds / 3)
+  protein_end_pos <- ceiling(junc_end_tx / 3)
 
   protein_len <- BiocGenerics::width(protein)
 
 
   # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
-  junc_in_orf <- XVector::subseq(protein, start = 1, end = pmin(protein_junc_pos, protein_len)) %>%
+  junc_in_orf <- XVector::subseq(protein, start = 1, end = ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos, protein_len) ,pmin(protein_junc_pos, protein_len))) %>%
     str_detect("\\*", negate = TRUE)
 
   # extract context sequence from full peptide and cut before stop codon (*)
   if(full_pep_seq){
-    pep_start <- pmax(protein_junc_pos - 15 + 1, 1)
+    pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - 15 + 1, 1) ,pmax(protein_junc_pos - 15 + 1, 1))
     peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start)
   }else{
-    pep_start <- pmax(protein_junc_pos - (size/2) + 1, 1)
-    pep_end <- pmin(protein_junc_pos + (size/2), protein_len)
+    pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - (size/2) + 1, 1) , pmax(protein_junc_pos - (size/2) + 1, 1))
+    #pep_start <- pmax(protein_junc_pos - (size/2) + 1, 1)
+    pep_end <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos + (size/2), protein_len) , pmin(protein_junc_pos + (size/2), protein_len))
+    #pep_end <- pmin(protein_junc_pos + (size/2), protein_len)
     peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end)
   }
 
   # calculate junction position relative to context sequence
-  peptide_context_junc_pos <- protein_junc_pos - pep_start
+  peptide_context_junc_pos <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, protein_end_pos - pep_start, protein_junc_pos - pep_start)
+  #peptide_context_junc_pos <- protein_junc_pos - pep_start
 
   # get sequence of non-stop-codon after junction position
   peptide_context <- seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)

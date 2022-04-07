@@ -153,9 +153,9 @@ test_that("get_intronretention_alt_pos works on positive strand", {
   ))
 
   tx_mod <- modify_tx(tx, jx)
-
+  intron_retention <- ifelse(jx@ranges@width == 2, TRUE, FALSE)
   pos <- get_junc_pos(tx_mod, jx)
-  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx)
+  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx, intron_retention)
 
   expect_true(other_pos[2] == 14)
   expect_true(other_pos[3] == 9)
@@ -192,9 +192,9 @@ test_that("get_intronretention_alt_pos works on negative strand", {
   ))
 
   tx_mod <- modify_tx(tx, jx)
-
+  intron_retention <- ifelse(jx@ranges@width == 2, TRUE, FALSE)
   pos <- get_junc_pos(tx_mod, jx)
-  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx)
+  other_pos <- get_intronretention_alt_pos(tx, tx_mod, jx, intron_retention)
 
   expect_true(other_pos[2] == 12)
   expect_true(other_pos[3] == 17)
