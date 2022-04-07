@@ -1,5 +1,5 @@
 
-#' Annotate splice junctions with affected transcript IDs
+#' Annotate splice junctions with all possible transcript IDs in the given genomic region.
 #'
 #' @param df A data.frame with splice junctions in rows and at least the columns:
 #'

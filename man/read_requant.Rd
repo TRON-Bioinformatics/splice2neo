@@ -12,13 +12,13 @@ read_requant(path_folder)
 \value{
 A tibble with with the re-quantification results. This tibble has the columns
 \itemize{
-\item \code{name}: name of the input sequence. this will be a hash id.
-\item \code{pos}: position of interest relative to input sequence
-\item \code{junc}: reads overlapping the position of interest
-\item \code{span}: read pairs spanning the position of interest
-\item \code{anch}: maximal number of bases next to position of interest that are overlapped by a single read
-\item \code{a}: reads mapping to sequence left of the position of interest
-\item \code{b}: reads mapping to sequence right of the position of interest
+\item \code{name}: name of the input sequence.
+\item \code{interval_position}: comma-separated start end position of the interval relative to input sequence.
+\item \code{overlap_interval_end_reads}: reads overlapping the the interval end.
+\item \code{span_interval_end_reads}: read pairs spanning the interval end.
+\item \code{within_interval_reads}: number of reads that map into the interval.
+\item \code{interval_coverage_perc}: interval coverage defined as the percentage of the given interval that is covered by reads.
+\item \code{interval_coverage_mean}: interval coverage defined as the mean number of reads covering a position in the given interval.
 }
 }
 \description{

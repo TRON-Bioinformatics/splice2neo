@@ -23,6 +23,17 @@ knitr::opts_chunk$set(
 `r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
 <!-- badges: end -->
 
+
+1. [Overview](##1-Overview)
+2. [Installation](##2-Installation)
+3. [Example](##3-Example)
+4. [Dummy workflow](##4-Dummy-workflow)
+5. [Building the transcript database](##5-Building-the-transcript database)
+
+
+
+## 1 Overview
+
 This package provides functions for the analysis of alternative splicing
 junctions and their association with somatic mutations. It integrates the output
 of several tools which predict splicing effects from mutations or which detect
@@ -32,10 +43,14 @@ against canonical ones and annotated with affected transcript sequences, CDS,
 and resulting peptide sequences. The resulting tumor-specific splice junctions
 can encode neoantigens.
  
-Website: https://tron-bioinformatics.github.io/splice2neo/
-
 Splice2neo currently supports events from alternative 3'/5' splice sites, exons skipping, intron retentions, 
 exitrons and mutually exclusive exons. 
+
+In general, a splice junction is defined by the format: `chr:start-end:strand` .  
+Intron retentions are a special case. Here, the junctions is defined by the exon-intron or intron-exon boundary, following the format `chr:pos-(pos+1):strand`.   
+Two junctions relating to the same intron retention event event will generate the same transcript and peptide context sequence. 
+
+Website: https://tron-bioinformatics.github.io/splice2neo/
 
 ```{r, echo=FALSE, out.width = "55%", message = FALSE, warning = FALSE}
 
@@ -152,7 +167,7 @@ tks
 ```
 
  
-## Installation
+## 2 Installation
 
 This R package is not yet on [CRAN](https://CRAN.R-project.org) or
 [Bioconductor](https://www.bioconductor.org/). Therefore, you need to install it
@@ -163,7 +178,7 @@ from this repository.
 remotes::install_github("TRON-Bioinformatics/splice2neo")
 ```
 
-## Example
+## 3 Example
 
 This is a basic example of how to use some functions.
 
@@ -176,7 +191,7 @@ bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
 ```
 
-### Example data
+### 3.1 Example data
 
 We start with some example splice junctions provided with the package.
  
@@ -188,9 +203,9 @@ junc_df <- dplyr::tibble(
 junc_df
 ```
 
-### Add transcripts 
+### 3.2 Add transcripts 
 
-Next, we find the transcripts which are affected by the splice junctions.
+Next, we find the transcripts which are in the same genomic region as the splice junction and that may be affected by the junction.
 
 ```{r}
 junc_df <- junc_df %>% 
@@ -199,7 +214,7 @@ junc_df <- junc_df %>%
 junc_df
 ```
 
-### Modify transcripts with junctions
+### 3.3 Modify transcripts with junctions
 
 We modify the canonical transcripts by introducing the splice junctions. Then we
 add the transcript sequence in a fixed-sized window around the junction
@@ -218,7 +233,7 @@ junc_df
 
 ```
 
-### Annotate peptide sequence
+### 3.4 Annotate peptide sequence
 
 Finally, we use the splice junctions to modify the coding sequences (CDS) of the
 reference transcripts. The resulting CDS sequences are translated into protein
@@ -237,7 +252,7 @@ junc_df %>%
 ```
 
 
-## Dummy example
+## 4 Dummy workflow
 
 In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect
 expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. 
@@ -344,7 +359,7 @@ dat_requant <-
 
 
 
-## Transcript database
+## 5 Building the transcript database
 
 A database of transcripts can be build from a GTF file, saved and re-loaded as follows:  
 
@@ -360,4 +375,5 @@ saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
 txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
+
 

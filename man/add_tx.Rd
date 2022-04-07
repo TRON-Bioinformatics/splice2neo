@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_tx.R
 \name{add_tx}
 \alias{add_tx}
-\title{Annotate splice junctions with affected transcript IDs}
+\title{Annotate splice junctions with all possible transcript IDs in the given genomic region.}
 \usage{
 add_tx(df, transcripts)
 }
@@ -23,7 +23,7 @@ and with the additional column(s):
 }
 }
 \description{
-Annotate splice junctions with affected transcript IDs
+Annotate splice junctions with all possible transcript IDs in the given genomic region.
 }
 \examples{
 

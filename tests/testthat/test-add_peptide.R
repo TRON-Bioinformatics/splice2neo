@@ -15,6 +15,57 @@ test_that("add_peptide works on toy example data", {
 })
 
 
+test_that("add_peptide works for IRs", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  df <- dplyr::tibble(
+    junc_id = c(
+      "chr17:41267742-41267743:-",
+      "chr2:166451723-166451724:+",
+      "chr2:166533118-166533119:+",
+      "chr2:166535210-166535211:+", #this defines same IR as previous junc
+      "chr2:166165175-166165176:+"
+    ),
+    tx_id = c("ENST00000642945", "ENST00000314499", "ENST00000314499", "ENST00000314499", "ENST00000486878")
+  )
+
+
+  pep_df <- add_peptide(df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
+  # "chr2:166535210-166535211:+" and "chr2:166535210-166535211:+" two juncs of same IR --> should be same pep seq
+  expect_true(pep_df$peptide_context[3] == pep_df$peptide_context[4])
+  expect_true(all(!is.na(pep_df$protein)))
+  expect_true(all(!is.na(pep_df$protein)))
+
+})
+
+test_that("add_peptide returns expected results", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  df <- dplyr::tibble(
+    junc_id = c(
+      "chr2:166451723-166514269:+", # AS event
+      "chr2:166451726-166514271:+", # AS event in frame
+      "chr2:166451725-166514271:+", # AS event out frame
+      "chr2:166451723-166532822:+", # exon skipping event
+      "chr2:166533118-166533119:+" # IR event
+    ),
+    tx_id = c( "ENST00000314499", "ENST00000314499", "ENST00000314499", "ENST00000314499", "ENST00000314499")
+  )
+
+
+  pep_df <- add_peptide(df, toy_cds, full_pep_seq = TRUE, bsg = bsg)
+
+  expect_true(pep_df$peptide_context[1] == "SGDSVNPSTSSHFTQLPPFSKGRND")
+  expect_true(pep_df$peptide_context[3] == "SGDSVNPSTSSHFTRLPPFSKGRND")
+  expect_true(nchar(pep_df$peptide_context[2]) > nchar(pep_df$peptide_context[3]))
+  expect_true(pep_df$peptide_context[5] == "DPDTCTCSLAGIKCQVRVGNSGHPKTRHCLPPPKEAVMVPIMKLPTCKRKFFGKARHVIQEERHNSGREKD")
+
+})
+
 test_that("add_peptide works on toy example data with keep_ranges", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)

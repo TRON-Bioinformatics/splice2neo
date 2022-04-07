@@ -8,10 +8,19 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.3.1-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.4.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
+
+1.  [Overview](##1-Overview)
+2.  [Installation](##2-Installation)
+3.  [Example](##3-Example)
+4.  [Dummy workflow](##4-Dummy-workflow)
+5.  [Building the transcript
+    database](##5-Building-the-transcript%20database)
+
+## 1 Overview
 
 This package provides functions for the analysis of alternative splicing
 junctions and their association with somatic mutations. It integrates
@@ -23,17 +32,25 @@ annotated with affected transcript sequences, CDS, and resulting peptide
 sequences. The resulting tumor-specific splice junctions can encode
 neoantigens.
 
-Website: <https://tron-bioinformatics.github.io/splice2neo/>
-
 Splice2neo currently supports events from alternative 3’/5’ splice
 sites, exons skipping, intron retentions, exitrons and mutually
 exclusive exons.
+
+In general, a splice junction is defined by the format:
+`chr:start-end:strand` .  
+Intron retentions are a special case. Here, the junctions is defined by
+the exon-intron or intron-exon boundary, following the format
+`chr:pos-(pos+1):strand`.  
+Two junctions relating to the same intron retention event event will
+generate the same transcript and peptide context sequence.
+
+Website: <https://tron-bioinformatics.github.io/splice2neo/>
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="55%" />
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="55%" />
 
-## Installation
+## 2 Installation
 
 This R package is not yet on [CRAN](https://CRAN.R-project.org) or
 [Bioconductor](https://www.bioconductor.org/). Therefore, you need to
@@ -44,7 +61,7 @@ install it from this repository.
 remotes::install_github("TRON-Bioinformatics/splice2neo")
 ```
 
-## Example
+## 3 Example
 
 This is a basic example of how to use some functions.
 
@@ -56,7 +73,7 @@ requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 ```
 
-### Example data
+### 3.1 Example data
 
 We start with some example splice junctions provided with the package.
 
@@ -74,10 +91,10 @@ junc_df
 #> 3 chr2:179446225-179446226:-
 ```
 
-### Add transcripts
+### 3.2 Add transcripts
 
-Next, we find the transcripts which are affected by the splice
-junctions.
+Next, we find the transcripts which are in the same genomic region as
+the splice junction and that may be affected by the junction.
 
 ``` r
 junc_df <- junc_df %>% 
@@ -100,7 +117,7 @@ junc_df
 #> # … with 11 more rows
 ```
 
-### Modify transcripts with junctions
+### 3.3 Modify transcripts with junctions
 
 We modify the canonical transcripts by introducing the splice junctions.
 Then we add the transcript sequence in a fixed-sized window around the
@@ -151,7 +168,7 @@ junc_df
 #> 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC…          200      400 ec963…
 ```
 
-### Annotate peptide sequence
+### 3.4 Annotate peptide sequence
 
 Finally, we use the splice junctions to modify the coding sequences
 (CDS) of the reference transcripts. The resulting CDS sequences are
@@ -185,7 +202,7 @@ junc_df %>%
 #> 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQV…               14
 ```
 
-## Dummy example
+## 4 Dummy workflow
 
 In the following a dummy example workflow how to integrate predict
 splicing effects from mutations or which detect expressed splice
@@ -291,7 +308,7 @@ dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
 ```
 
-## Transcript database
+## 5 Building the transcript database
 
 A database of transcripts can be build from a GTF file, saved and
 re-loaded as follows:
