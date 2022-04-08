@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -106,16 +106,16 @@ modified CDS ranges.</p></li>
 <span class="r-in"><span class="va">bsg</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">add_peptide</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_cds</span>, size <span class="op">=</span> <span class="fl">30</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id    tx_id cds_mod_id junc_pos_cds protein protein_junc_pos junc_in_orf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">16</span>209 MADDED…             <span style="text-decoration: underline;">5</span>403 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">16</span>314 MADDED…             <span style="text-decoration: underline;">5</span>438 TRUE       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">17</span>087 MADDED…             <span style="text-decoration: underline;">5</span>696 FALSE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">21</span>417 MADDED…             <span style="text-decoration: underline;">7</span>139 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">16</span>209 MADDED…             <span style="text-decoration: underline;">5</span>403 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">16</span>314 MADDED…             <span style="text-decoration: underline;">5</span>438 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">83</span>566 MTTQAP…            <span style="text-decoration: underline;">27</span>856 TRUE       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">83</span>935 MTTQAP…            <span style="text-decoration: underline;">27</span>979 FALSE      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">83</span>935 MTTQAP…            <span style="text-decoration: underline;">27</span>979 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">83</span>566 MTTQAP…            <span style="text-decoration: underline;">27</span>856 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">59</span>084 MTTQAP…            <span style="text-decoration: underline;">19</span>695 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:1794… ENST… ENST00000…        <span style="text-decoration: underline;">59</span>065 MTTQAP…            <span style="text-decoration: underline;">19</span>689 TRUE       </span>
@@ -123,6 +123,9 @@ modified CDS ranges.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:1796… ENST… ENST00000…         <span style="text-decoration: underline;">4</span>605 MTTQAP…             <span style="text-decoration: underline;">1</span>535 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:1796… ENST… ENST00000…         <span style="text-decoration: underline;">4</span>645 MTTQAP…             <span style="text-decoration: underline;">1</span>549 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:1796… ENST… ENST00000…         <span style="text-decoration: underline;">4</span>480 MTTQAP…             <span style="text-decoration: underline;">1</span>494 TRUE       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:1522… ENST… <span style="color: #BB0000;">NA</span>                   <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>                    <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:1522… ENST… <span style="color: #BB0000;">NA</span>                   <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>                    <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:1523… ENST… ENST00000…        <span style="text-decoration: underline;">22</span>962 MADDED…             <span style="text-decoration: underline;">7</span>654 TRUE       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: peptide_context_seq_raw &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   peptide_context &lt;chr&gt;, peptide_context_junc_pos &lt;dbl&gt;</span></span>
 <span class="r-in"></span>
