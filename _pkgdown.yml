@@ -41,6 +41,7 @@ reference:
   - add_context_seq
   - modify_tx
   - get_junc_pos
+  - get_intronretention_alt_pos
   - add_peptide
   - seq_truncate_nonstop
 - title: "Requantification"
