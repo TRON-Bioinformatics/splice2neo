@@ -6,7 +6,7 @@
 \title{An example dataset of 18 splice junctions from human
 (hg19) genome as a data.frame}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 2 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 17 rows and 2 columns.
 }
 \source{
 They were created from the spliceAI example file

@@ -146,7 +146,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       tx_chr = as.character(GenomeInfoDb::seqnames(transcripts_gr)[tx_nr]),
       tx_strand = as.character(BiocGenerics::strand(transcripts_gr)[tx_nr]),
       # tx_id = as.character(transcripts_gr$tx_name)[tx_nr],
-      tx_id = ifelse(!is.null(names(transcripts_gr)), names(transcripts_gr)[tx_nr],  as.character(transcripts_gr$tx_name)[tx_nr]),
+      tx_id = if(!is.null(names(transcripts_gr))){names(transcripts_gr)[tx_nr]} else{as.character(transcripts_gr$tx_name)[tx_nr]},
 
       # extract position of annotated effect
       # pos = map_int(var_gr, BiocGenerics::start),
