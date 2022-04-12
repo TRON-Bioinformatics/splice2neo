@@ -11,6 +11,32 @@ test_that("annotate_spliceai_junction works on toy example", {
 
 })
 
+test_that("annotate_spliceai_junction does not predict events outside of exon range", {
+
+  # event at the end of gene/transcript with only one exon
+  # test that no prediction of an "intron retention"
+  df <- dplyr::tibble(
+    CHROM = c("chr2"),
+    POS = c("152043101"),
+    ID = c(NA_character_),
+    REF = c("G"),
+    ALT = c("T"),
+    QUAL = c(NA_character_),
+    FILTER = c(NA_character_),
+    Key = c(3L),
+    ALLELE = c("T"),
+    change = c("DL"),
+    prob = c(0.32),
+    pos_rel = c(8L)
+  )
+
+  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+
+  expect_true(nrow(annot_df) == 0 )
+
+
+})
+
 
 test_that("annotate_spliceai_junction works for multiple effects from same mutation", {
 

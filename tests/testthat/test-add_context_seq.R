@@ -26,6 +26,25 @@ test_that("add_context_seq works on toy example data with keep_ranges", {
 
 })
 
+test_that("add_context_seq does not fail on predicted intron rententions at the end and beginning of a transcript ", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  df <- tibble(junc_id = c("chr2:152230258-152230259", "chr2:152222655-152222656"),
+               tx_id = c("ENST00000460812","ENST00000460812" ))
+
+  cts_df <- add_context_seq(df, toy_transcripts, size = 400, bsg = bsg,
+                            keep_ranges = TRUE)
+
+  expect_true(nrow(cts_df) == nrow(df))
+  expect_true(all(c("cts_seq", "cts_junc_pos", "cts_id") %in% names(cts_df)))
+  expect_true(all(c("tx_lst", "tx_mod_lst") %in% names(cts_df)))
+  expect_true(class(cts_df$tx_lst[[1]]) == "GRanges")
+  expect_true(class(cts_df$tx_mod_lst[[1]]) == "GRanges")
+
+})
+
 test_that("add_context_seq generates expected context sequences", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
