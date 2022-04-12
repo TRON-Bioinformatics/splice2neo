@@ -38,10 +38,7 @@ test_that("add_context_seq does not fail on predicted intron rententions at the 
                             keep_ranges = TRUE)
 
   expect_true(nrow(cts_df) == nrow(df))
-  expect_true(all(c("cts_seq", "cts_junc_pos", "cts_id") %in% names(cts_df)))
-  expect_true(all(c("tx_lst", "tx_mod_lst") %in% names(cts_df)))
-  expect_true(class(cts_df$tx_lst[[1]]) == "GRanges")
-  expect_true(class(cts_df$tx_mod_lst[[1]]) == "GRanges")
+  expect_true(all(is.na(cts_df$cts_seq)))
 
 })
 

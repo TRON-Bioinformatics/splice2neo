@@ -101,14 +101,12 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
   start_on_exon <- case_when(is.na(jx_end) & !is.na(jx_start) & intron_retention ~ TRUE,
                              !is.na(jx_end) & is.na(jx_start) & intron_retention ~FALSE
                              )
+  empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
   # get unknown exon
   ex_range <- mapply(function(j, l, s) {
-    if(is.na(s)){
-        GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
-    } else if(s) {
-      l[GenomicRanges::precede(j, l)]
-    } else if(!s){
-      l[GenomicRanges::follow(j, l)]
+    if(is.na(s)){ empty_range } else{
+      if(s) {ind <- GenomicRanges::precede(j, l)} else if(!s){ind <- GenomicRanges::follow(j, l)}
+      if(!is.na(ind)){ l[ind] }else{ empty_range }
     }
   } , j = jx_lst, l = as.list(tx_lst), s = start_on_exon, SIMPLIFY = TRUE)
   ex_range <- suppressWarnings(unlist(as(ex_range, "GRangesList")))
