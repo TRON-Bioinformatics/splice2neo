@@ -5,7 +5,7 @@
 #' @param var_df a data.frame wit variants and (at least) the following columns:
 #'   - `CHROM`
 #'   - `POS`
-#'   - `ALT`
+#'   - `REF`
 #'   - `ALT`
 #'   - `change` an change effect class from *SpliceAI*. One of `DL`, `DG`, `AL`, `AG`.
 #'   - `pos_rel` affected position relative to `POS`.
@@ -76,6 +76,8 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
     # remove predicted effects with missing values
     filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
+    # remove predicted effects outside of transcript range
+    filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
 
     # add junction IDs
     mutate(

@@ -14,6 +14,23 @@ test_that("add_peptide works on toy example data", {
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
 })
 
+test_that("add_peptide_seq does not fail on predicted intron rententions at the end and beginning of a transcript ", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  df <- tibble(junc_id = c("chr2:152236047-152236048", "chr2:152214180-152214181"),
+               tx_id = c("ENST00000243347","ENST00000243347" ))
+
+  wt_pep_seq <- "MIILIYLFLLLWEDTQGWGFKDGIFHNSIWLERAAGVYHREARSGKYKLTYAEAKAVCEFEGGHLATYKQLEAARKIGFHVCAAGWMAKGRVGYPIVKPGPNCGFGKTGIIDYGIRLNRSERWDAYCYNPHAKECGGVFTDPKQIFKSPGFPNEYEDNQICYWHIRLKYGQRIHLSFLDFDLEDDPGCLADYVEIYDSYDDVHGFVGRYCGDELPDDIISTGNVMTLKFLSDASVTAGGFQIKYVAMDPVSKSSQGKNTSTTSTGNKNFLAGRFSHL"
+
+  pep_df <- add_peptide(df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
+
+  expect_true(nrow(pep_df) == nrow(df))
+  expect_true(all(is.na(pep_df$peptide_context_seq_raw)))
+  expect_true(gsub("\\*","",pep_df$protein[1]) == wt_pep_seq)
+
+})
 
 test_that("add_peptide works for IRs", {
 
