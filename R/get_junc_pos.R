@@ -51,6 +51,10 @@ get_junc_pos <- function(tx, jx){
   on_tx <- IRanges::poverlaps(j_start, range_tx) %>%
     as.logical()
 
+  # in case of empty ranges, on_tx is given as TRUE but should be FALSE
+  empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
+  on_tx <- ifelse(j_start == empty_range, FALSE, on_tx)
+
   # initialize with NA
   pos_tx <- rep(NA, length(tx))
 
@@ -114,7 +118,9 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
   # get position of other boundary of intron
-  junc_end_tx = if_else( !start_on_exon, get_junc_pos(tx_mod, ex_end) , get_junc_pos(tx_mod, ex_start))
+  junc_end_tx = case_when(
+    !start_on_exon ~ get_junc_pos(tx_mod, ex_end) ,
+    start_on_exon ~ get_junc_pos(tx_mod, ex_start))
 
   return(junc_end_tx)
 }

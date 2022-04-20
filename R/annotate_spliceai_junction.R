@@ -5,7 +5,7 @@
 #' @param var_df a data.frame wit variants and (at least) the following columns:
 #'   - `CHROM`
 #'   - `POS`
-#'   - `ALT`
+#'   - `REF`
 #'   - `ALT`
 #'   - `change` an change effect class from *SpliceAI*. One of `DL`, `DG`, `AL`, `AG`.
 #'   - `pos_rel` affected position relative to `POS`.
