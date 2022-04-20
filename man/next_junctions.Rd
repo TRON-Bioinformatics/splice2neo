@@ -21,7 +21,7 @@ created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}
 A data.frame with possible upstream and downstream exon coordinates for
 all overlapping transcripts. The data frame contains the following columns:
 mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
-upstream_end, downstream_start, downstream_end.
+upstream_end, downstream_start, downstream_end, at_start, at_end.
 }
 \description{
 Get genomic coordinates of possible next donor and acceptor sides.

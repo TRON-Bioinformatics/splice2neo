@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotate_spliceai_junction.R
 \name{annotate_spliceai_junction}
 \alias{annotate_spliceai_junction}
-\title{Annotate splice variants with resulting junctions}
+\title{Annotate splice variants from spliceAI with resulting junctions}
 \usage{
 annotate_spliceai_junction(var_df, transcripts, transcripts_gr)
 }
@@ -11,7 +11,7 @@ annotate_spliceai_junction(var_df, transcripts, transcripts_gr)
 \itemize{
 \item \code{CHROM}
 \item \code{POS}
-\item \code{ALT}
+\item \code{REF}
 \item \code{ALT}
 \item \code{change} an change effect class from \emph{SpliceAI}. One of \code{DL}, \code{DG}, \code{AL}, \code{AG}.
 \item \code{pos_rel} affected position relative to \code{POS}.
@@ -23,8 +23,16 @@ created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}
 \item{transcripts_gr}{a GRanges object with transcript created by
 \code{GenomicFeatures::transcripts(txdb)}}
 }
+\value{
+A data.frame with with additional rows and columns including the
+splice junction in the column \code{junc_id}.
+}
 \description{
-Annotate splice variants with resulting junctions
+The mutation effects donor loss (DL), donor gain (DG), acceptor loss (AL),
+and acceptor gain (AG) are annotated with respect to the provided transcripts
+to build resulting splice junctions.
+Donor loss (DG) and acceptor loss (AD) are only considered when overlapping
+with an exon-intron junction in the provided transcripts.
 }
 \examples{
 spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
