@@ -51,6 +51,10 @@ get_junc_pos <- function(tx, jx){
   on_tx <- IRanges::poverlaps(j_start, range_tx) %>%
     as.logical()
 
+  # in case of empty ranges, on_tx is given as TRUE but should be FALSE
+  empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
+  on_tx <- ifelse(j_start == empty_range, FALSE, on_tx)
+
   # initialize with NA
   pos_tx <- rep(NA, length(tx))
 
@@ -101,14 +105,12 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
   start_on_exon <- case_when(is.na(jx_end) & !is.na(jx_start) & intron_retention ~ TRUE,
                              !is.na(jx_end) & is.na(jx_start) & intron_retention ~FALSE
                              )
+  empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
   # get unknown exon
   ex_range <- mapply(function(j, l, s) {
-    if(is.na(s)){
-        GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
-    } else if(s) {
-      l[GenomicRanges::precede(j, l)]
-    } else if(!s){
-      l[GenomicRanges::follow(j, l)]
+    if(is.na(s)){ empty_range } else{
+      if(s) {ind <- GenomicRanges::precede(j, l)} else if(!s){ind <- GenomicRanges::follow(j, l)}
+      if(!is.na(ind)){ l[ind] }else{ empty_range }
     }
   } , j = jx_lst, l = as.list(tx_lst), s = start_on_exon, SIMPLIFY = TRUE)
   ex_range <- suppressWarnings(unlist(as(ex_range, "GRangesList")))
@@ -116,7 +118,9 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
   # get position of other boundary of intron
-  junc_end_tx = if_else( !start_on_exon, get_junc_pos(tx_mod, ex_end) , get_junc_pos(tx_mod, ex_start))
+  junc_end_tx = case_when(
+    !start_on_exon ~ get_junc_pos(tx_mod, ex_end) ,
+    start_on_exon ~ get_junc_pos(tx_mod, ex_start))
 
   return(junc_end_tx)
 }

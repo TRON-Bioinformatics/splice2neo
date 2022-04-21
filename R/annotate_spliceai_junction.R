@@ -1,11 +1,16 @@
 
-#' Annotate splice variants with resulting junctions
+#' Annotate splice variants from spliceAI with resulting junctions
 #'
+#' The mutation effects donor loss (DL), donor gain (DG), acceptor loss (AL),
+#' and acceptor gain (AG) are annotated with respect to the provided transcripts
+#' to build resulting splice junctions.
+#' Donor loss (DG) and acceptor loss (AD) are only considered when overlapping
+#' with an exon-intron junction in the provided transcripts.
 #'
 #' @param var_df a data.frame wit variants and (at least) the following columns:
 #'   - `CHROM`
 #'   - `POS`
-#'   - `ALT`
+#'   - `REF`
 #'   - `ALT`
 #'   - `change` an change effect class from *SpliceAI*. One of `DL`, `DG`, `AL`, `AG`.
 #'   - `pos_rel` affected position relative to `POS`.
@@ -14,6 +19,9 @@
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #' @param transcripts_gr a GRanges object with transcript created by
 #'   `GenomicFeatures::transcripts(txdb)`
+#'
+#' @return A data.frame with with additional rows and columns including the
+#' splice junction in the column `junc_id`.
 #'
 #' @examples
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
@@ -52,6 +60,12 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
     # add next exon coordinates of next exons
     left_join(next_junc_df, by = "mut_effect_id") %>%
 
+    # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
+    filter(
+      change != "DL" | at_end,
+      change != "AL" | at_start
+    ) %>%
+
     # add rules
     mutate(
       change = as.character(change),
@@ -76,6 +90,8 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
     # remove predicted effects with missing values
     filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
+    # remove predicted effects outside of transcript range
+    filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
 
     # add junction IDs
     mutate(
@@ -85,6 +101,7 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
     ungroup()
 
   message("INFO: Evaluation of rules done.")
+
   return(junc_df)
 }
 
@@ -104,7 +121,7 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 #' @return A data.frame with possible upstream and downstream exon coordinates for
 #' all overlapping transcripts. The data frame contains the following columns:
 #'  mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
-#'  upstream_end, downstream_start, downstream_end.
+#'  upstream_end, downstream_start, downstream_end, at_start, at_end.
 #'
 next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
@@ -145,16 +162,11 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       # tx annotation
       tx_chr = as.character(GenomeInfoDb::seqnames(transcripts_gr)[tx_nr]),
       tx_strand = as.character(BiocGenerics::strand(transcripts_gr)[tx_nr]),
-      # tx_id = as.character(transcripts_gr$tx_name)[tx_nr],
       tx_id = if(!is.null(names(transcripts_gr))){names(transcripts_gr)[tx_nr]} else{as.character(transcripts_gr$tx_name)[tx_nr]},
-
-      # extract position of annotated effect
-      # pos = map_int(var_gr, BiocGenerics::start),
 
       # extract all exon start and end coordinates of transcripts as GRanges
       starts_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
       ends_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
-      # exon_ends = map(tx_gr, BiocGenerics::end),
 
       # get the closest upstream and downstream start and end positions
       upstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::follow),
@@ -167,10 +179,14 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       upstream_end = map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
       downstream_end = map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
 
+      # calculate if effect position overlaps with exon start or exon end
+      at_start = suppressWarnings(map2_lgl(var_gr, starts_gr, IRanges::overlapsAny)),
+      at_end = suppressWarnings(map2_lgl(var_gr, ends_gr, IRanges::overlapsAny)),
+
     ) %>%
 
     dplyr::select(mut_effect_id, var_nr, tx_chr, tx_id, tx_strand, upstream_start,
-           upstream_end, downstream_start, downstream_end)
+           upstream_end, downstream_start, downstream_end, at_start, at_end)
 
 }
 
