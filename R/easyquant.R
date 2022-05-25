@@ -40,14 +40,7 @@ transform_for_requant <- function(df){
 #'
 #' @param path_folder The path to the EasyQuant folder
 #'
-#' @return A tibble with with the re-quantification results. This tibble has the columns
-#' - `name`: name of the input sequence.
-#' -  `interval_position`: comma-separated start end position of the interval relative to input sequence.
-#' - `overlap_interval_end_reads`: reads overlapping the the interval end.
-#' - `span_interval_end_reads`: read pairs spanning the interval end.
-#' - `within_interval_reads`: number of reads that map into the interval.
-#' - `interval_coverage_perc`: interval coverage defined as the percentage of the given interval that is covered by reads.
-#' - `interval_coverage_mean`: interval coverage defined as the mean number of reads covering a position in the given interval.
+#' @return A tibble with with the re-quantification results. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
 #'
 #' @examples
 #'
@@ -61,7 +54,46 @@ read_requant <- function(path_folder){
     stop("quantification.tsv file is missing")
   }
   dat_easyqant <- path.to.easyquant.file %>%
-    readr::read_delim(delim = "\t") %>%
+    readr::read_delim(delim = "\t")
+
+  dat_easyqant <- dat_easyqant %>%
+    group_by(name) %>%
+    filter(if(n() == 2) row_number() == 1 else row_number() != 3)
+
+  # intron retentions
+  # interval-1: end --> exon-intron boundary
+  # interval-2: interval --> intron; end --> exon-intron boundary
+  dat_ir <- dat_easyqant %>%
+    filter(n() > 1) %>%
+    mutate(interv = c(1,2)) %>%
+    pivot_wider(names_from = interv, values_from = c(overlap_stop, span_read, within_interval, coverage_perc, coverage_mean, interval))
+
+  # non- intron retentions
+  # interval-1: end --> exon-intron boundary / junction of interest
+  # within_interval/coverage not relevant for these events --> set to NA
+  dat_no_ir <- dat_easyqant %>%
+    filter(n() == 1) %>%
+    select(-interval) %>%
+    dplyr::rename(junc_interval_start = overlap_stop) %>%
+    dplyr::rename(span_interval_start = span_read) %>%
+    mutate(within_interval = NA) %>%
+    mutate(coverage_perc = NA)%>%
+    mutate(coverage_mean = NA)
+
+
+  dat_ir <- dat_ir %>%
+    dplyr::select(-within_interval_1, -coverage_perc_1,-coverage_mean_1) %>%
+    dplyr::rename("junc_interval_start" = "overlap_stop_1") %>%
+    dplyr::rename("junc_interval_end" = "overlap_stop_2") %>%
+    dplyr::rename("span_interval_start" = "span_read_1") %>%
+    dplyr::rename("span_interval_end" = "span_read_2") %>%
+    dplyr::rename("within_interval" = "within_interval_2") %>%
+    dplyr::rename("coverage_perc" = "coverage_perc_2")%>%
+    dplyr::rename("coverage_mean" = "coverage_mean_2") %>%
+    dplyr::select(-interval_1, - interval_2)
+
+  dat_easyqant <- bind_rows(dat_ir, dat_no_ir)
+
   return(dat_easyqant)
 }
 
@@ -71,15 +103,15 @@ read_requant <- function(path_folder){
 #' @param path_to_easyquant_folder The path to EasyQuant folder
 #' @param junc_tib The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column `hash_id` with hash ids that relate to the column `name` in the Easyquant output.
 #'
-#' @return Extended junction-transcript tibble with re-quantification results.  The following columns are added:
-#' -  `interval_position`: comma-separated start end position of the interval relative to input sequence.
-#' - `overlap_interval_end_reads`: reads overlapping the the interval end.
-#' - `span_interval_end_reads`: read pairs spanning the interval end.
-#' - `within_interval_reads`: number of reads that map into the interval.
-#' - `interval_coverage_perc`: interval coverage defined as the percentage of the given interval that is covered by reads.
-#' - `interval_coverage_mean`: interval coverage defined as the mean number of reads covering a position in the given interval.
-#
-#'
+#' @return Extended junction-transcript tibble with re-quantification results by Easyquant. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
+#' The following columns are added:
+#' - `junc_interval_start`: Junction reads overlapping the junction of interest. In case of intron retentions, junctions reads that overlap the start of the intron retention interval.
+#' - `junc_interval_end`: In case of intron retentions, junctions reads that overlap the end of the intron retention interval. Is NA for non intron retention events.
+#' - `span_interval_start`: Spanning pairs overlapping the junction of interest. In case of intron retentions, spanning pairs that overlap the start of the intron retention interval.
+#' - `span_interval_end`: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval. Is NA for non intron retention events.
+#' - `within_interval`: Number of reads that map into the intron retention interval. Is NA for non intron retention events.
+#' - `coverage_perc`: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads. Is NA for non intron retention events.
+#' - `coverage_mean`: Intron retention interval coverage defined as the mean number of reads covering a position in the given interval. Is NA for non intron retention events.
 #' @examples
 #'
 #'
