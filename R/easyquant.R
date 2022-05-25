@@ -83,13 +83,15 @@ read_requant <- function(path_folder){
 
   dat_ir <- dat_ir %>%
     dplyr::select(-within_interval_1, -coverage_perc_1,-coverage_mean_1) %>%
-    dplyr::rename("junc_interval_start" = "overlap_stop_1") %>%
-    dplyr::rename("junc_interval_end" = "overlap_stop_2") %>%
-    dplyr::rename("span_interval_start" = "span_read_1") %>%
-    dplyr::rename("span_interval_end" = "span_read_2") %>%
-    dplyr::rename("within_interval" = "within_interval_2") %>%
-    dplyr::rename("coverage_perc" = "coverage_perc_2")%>%
-    dplyr::rename("coverage_mean" = "coverage_mean_2") %>%
+    dplyr::rename(
+      junc_interval_start = overlap_stop_1,
+      junc_interval_end = overlap_stop_2,
+      span_interval_start = span_read_1,
+      span_interval_end = span_read_2,
+      within_interval = within_interval_2,
+      coverage_perc = coverage_perc_2,
+      coverage_mean = coverage_mean_2
+    ) %>%
     dplyr::select(-interval_1, - interval_2)
 
   dat_easyqant <- bind_rows(dat_ir, dat_no_ir)
