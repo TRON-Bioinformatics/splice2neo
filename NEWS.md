@@ -1,3 +1,7 @@
+# splice2neo 0.5.2
+
+* support updated version of EasyQuant
+
 # splice2neo 0.4.1
 
 * Support donor gain and acceptor gain in introns
