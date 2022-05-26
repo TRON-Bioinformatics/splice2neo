@@ -1,3 +1,7 @@
+# splice2neo 0.5.2
+
+* support updated version of EasyQuant
+
 # splice2neo 0.5.1
 
 * update annotate_spliceai_junction() to ignore donor loss and acceptor loss when not overlapping with wild-type junctions + IR must be within transcript range
