@@ -74,8 +74,9 @@ read_requant <- function(path_folder){
   dat_no_ir <- dat_easyqant %>%
     filter(n() == 1) %>%
     select(-interval) %>%
-    dplyr::rename(junc_interval_start = overlap_stop) %>%
-    dplyr::rename(span_interval_start = span_read) %>%
+    dplyr::rename(
+      junc_interval_start = overlap_stop,
+      span_interval_start = span_read) %>%
     mutate(within_interval = NA) %>%
     mutate(coverage_perc = NA)%>%
     mutate(coverage_mean = NA)
