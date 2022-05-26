@@ -2,6 +2,18 @@
 
 * support updated version of EasyQuant
 
+# splice2neo 0.5.1
+
+* update annotate_spliceai_junction() to ignore donor loss and acceptor loss when not overlapping with wild-type junctions + IR must be within transcript range
+* fix minor bugs in add_context_seq() and  get_junc_pos()
+
+# splice2neo 0.5.0
+
+* intron rentetion events are now supported by `add_context_seq()`. the resulting context sequence covers the complete intron instead of the exon/intron boundary only. Instead of a the junction position in the cts_seq, the positions are given in form of an interval in the `cts_junc_pos`  column for intron retentions. (0,start_IR, end_IR, end_cts) 
+* `add_peptide()` was adjusted for intron rententions
+* more tests were added for several functions
+* fix small bug in `annotate_spliceai_junction()` that led to annotation with same transcript 
+
 # splice2neo 0.4.1
 
 * Support donor gain and acceptor gain in introns
