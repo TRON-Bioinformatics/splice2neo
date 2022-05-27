@@ -12,14 +12,16 @@ map_requant(path_to_easyquant_folder, junc_tib)
 \item{junc_tib}{The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column \code{hash_id} with hash ids that relate to the column \code{name} in the Easyquant output.}
 }
 \value{
-Extended junction-transcript tibble with re-quantification results.  The following columns are added:
+Extended junction-transcript tibble with re-quantification results by Easyquant. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
+The following columns are added:
 \itemize{
-\item \code{interval_position}: comma-separated start end position of the interval relative to input sequence.
-\item \code{overlap_interval_end_reads}: reads overlapping the the interval end.
-\item \code{span_interval_end_reads}: read pairs spanning the interval end.
-\item \code{within_interval_reads}: number of reads that map into the interval.
-\item \code{interval_coverage_perc}: interval coverage defined as the percentage of the given interval that is covered by reads.
-\item \code{interval_coverage_mean}: interval coverage defined as the mean number of reads covering a position in the given interval.
+\item \code{junc_interval_start}: Junction reads overlapping the junction of interest. In case of intron retentions, junctions reads that overlap the start of the intron retention interval.
+\item \code{junc_interval_end}: In case of intron retentions, junctions reads that overlap the end of the intron retention interval. Is NA for non intron retention events.
+\item \code{span_interval_start}: Spanning pairs overlapping the junction of interest. In case of intron retentions, spanning pairs that overlap the start of the intron retention interval.
+\item \code{span_interval_end}: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval. Is NA for non intron retention events.
+\item \code{within_interval}: Number of reads that map into the intron retention interval. Is NA for non intron retention events.
+\item \code{coverage_perc}: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads. Is NA for non intron retention events.
+\item \code{coverage_mean}: Intron retention interval coverage defined as the mean number of reads covering a position in the given interval. Is NA for non intron retention events.
 }
 }
 \description{
