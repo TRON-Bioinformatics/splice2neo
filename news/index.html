@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
       </span>
     </div>
 
@@ -48,6 +48,22 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2" id="splice2neo-052">splice2neo 0.5.2<a class="anchor" aria-label="anchor" href="#splice2neo-052"></a></h2>
+<ul><li>support updated version of EasyQuant</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.1" id="splice2neo-051">splice2neo 0.5.1<a class="anchor" aria-label="anchor" href="#splice2neo-051"></a></h2>
+<ul><li>update annotate_spliceai_junction() to ignore donor loss and acceptor loss when not overlapping with wild-type junctions + IR must be within transcript range</li>
+<li>fix minor bugs in add_context_seq() and get_junc_pos()</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0" id="splice2neo-050">splice2neo 0.5.0<a class="anchor" aria-label="anchor" href="#splice2neo-050"></a></h2>
+<ul><li>intron rentetion events are now supported by <code><a href="../reference/add_context_seq.html">add_context_seq()</a></code>. the resulting context sequence covers the complete intron instead of the exon/intron boundary only. Instead of a the junction position in the cts_seq, the positions are given in form of an interval in the <code>cts_junc_pos</code> column for intron retentions. (0,start_IR, end_IR, end_cts)</li>
+<li>
+<code><a href="../reference/add_peptide.html">add_peptide()</a></code> was adjusted for intron rententions</li>
+<li>more tests were added for several functions</li>
+<li>fix small bug in <code><a href="../reference/annotate_spliceai_junction.html">annotate_spliceai_junction()</a></code> that led to annotation with same transcript</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="splice2neo-041">splice2neo 0.4.1<a class="anchor" aria-label="anchor" href="#splice2neo-041"></a></h2>
 <ul><li>Support donor gain and acceptor gain in introns</li>
 <li>export annotate_spliceai_junction and canonical_junctions()</li>
@@ -64,29 +80,27 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="splice2neo-031">splice2neo 0.3.1<a class="anchor" aria-label="anchor" href="#splice2neo-031"></a></h2>
-<ul><li>minor update of doc and README</li>
-</ul></div>
+<ul><li>minor update of doc and README</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="splice2neo-030">splice2neo 0.3.0<a class="anchor" aria-label="anchor" href="#splice2neo-030"></a></h2>
-<ul><li>new function:
-<ul><li><code><a href="../reference/generate_junction_id.html">generate_junction_id()</a></code></li>
+<ul><li>update of the junction id format: chr:start-end:strand</li>
+<li>new function:<ul><li><code><a href="../reference/generate_junction_id.html">generate_junction_id()</a></code></li>
 <li><code><a href="../reference/junc2breakpoint.html">junc2breakpoint()</a></code></li>
 <li><code><a href="../reference/breakpoint2junc.html">breakpoint2junc()</a></code></li>
 </ul></li>
-<li>implementation of new junction id format</li>
-<li>update documentation and README</li>
+<li>The recent versions of leafcutter (v0.2.9) and spladder (v3.0.2) will be supported from now on.</li>
 <li>update and add unit tests</li>
+<li>update documentation and README</li>
+<li>visualization of modified junctions added</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="splice2neo-020">splice2neo 0.2.0<a class="anchor" aria-label="anchor" href="#splice2neo-020"></a></h2>
-<ul><li>new function:
-<ul><li><code><a href="../reference/bed_to_junc.html">bed_to_junc()</a></code></li>
+<ul><li>new function:<ul><li><code><a href="../reference/bed_to_junc.html">bed_to_junc()</a></code></li>
 <li><code><a href="../reference/is_canonical.html">is_canonical()</a></code></li>
 <li><code><a href="../reference/is_in_rnaseq.html">is_in_rnaseq()</a></code></li>
 <li><code><a href="../reference/parse_gtf.html">parse_gtf()</a></code></li>
 </ul></li>
-<li>updated functions:
-<ul><li><code><a href="../reference/add_context_seq.html">add_context_seq()</a></code></li>
+<li>updated functions:<ul><li><code><a href="../reference/add_context_seq.html">add_context_seq()</a></code></li>
 <li><code><a href="../reference/add_peptide.html">add_peptide()</a></code></li>
 <li><code><a href="../reference/add_peptide.html">add_peptide()</a></code></li>
 <li><code><a href="../reference/get_junc_pos.html">get_junc_pos()</a></code></li>
@@ -97,9 +111,11 @@
 <li>update and add unit tests</li>
 </ul></div>
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.3" id="splice2neo-013">splice2neo 0.1.3<a class="anchor" aria-label="anchor" href="#splice2neo-013"></a></h2>
+<ul><li>This minor release adds a pseudo example to the README + simplifies the <code>transform_for_requant</code> function</li></ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.2" id="splice2neo-012">splice2neo 0.1.2<a class="anchor" aria-label="anchor" href="#splice2neo-012"></a></h2>
-<ul><li>CI config for github action
-<ul><li>R CMD check</li>
+<ul><li>CI config for github action<ul><li>R CMD check</li>
 <li>test coverage with Codecov</li>
 <li>pkgdown website on github.io</li>
 </ul></li>
@@ -107,13 +123,11 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.1" id="splice2neo-011">splice2neo 0.1.1<a class="anchor" aria-label="anchor" href="#splice2neo-011"></a></h2>
-<ul><li>clean up code and doc</li>
-</ul></div>
+<ul><li>clean up code and doc</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="splice2neo-010">splice2neo 0.1.0<a class="anchor" aria-label="anchor" href="#splice2neo-010"></a></h2>
 <ul><li>New implementation of transcript modifications by junction</li>
-<li>New user interface functions that mainly work with data.frames:
-<ul><li><code><a href="../reference/add_tx.html">add_tx()</a></code></li>
+<li>New user interface functions that mainly work with data.frames:<ul><li><code><a href="../reference/add_tx.html">add_tx()</a></code></li>
 <li><code><a href="../reference/modify_tx.html">modify_tx()</a></code></li>
 <li><code><a href="../reference/add_context_seq.html">add_context_seq()</a></code></li>
 <li><code><a href="../reference/add_peptide.html">add_peptide()</a></code></li>
@@ -123,12 +137,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.2" id="splice2neo-002">splice2neo 0.0.2<a class="anchor" aria-label="anchor" href="#splice2neo-002"></a></h2>
-<ul><li>inclusion of functions from previous repositories</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.0.9000" id="splice2neo-0009000">splice2neo 0.0.0.9000<a class="anchor" aria-label="anchor" href="#splice2neo-0009000"></a></h2>
-<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
-</ul></div>
+<ul><li>inclusion of functions from previous repositories</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.1" id="splice2neo-001">splice2neo 0.0.1<a class="anchor" aria-label="anchor" href="#splice2neo-001"></a></h2>
 <ul><li>Added basic package structure</li>
@@ -150,7 +159,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
