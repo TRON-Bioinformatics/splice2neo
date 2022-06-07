@@ -15,13 +15,30 @@ map_requant(path_to_easyquant_folder, junc_tib)
 Extended junction-transcript tibble with re-quantification results by Easyquant. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
 The following columns are added:
 \itemize{
-\item \code{junc_interval_start}: Junction reads overlapping the junction of interest. In case of intron retentions, junctions reads that overlap the start of the intron retention interval.
-\item \code{junc_interval_end}: In case of intron retentions, junctions reads that overlap the end of the intron retention interval. Is NA for non intron retention events.
+\item \code{junc_interval_start}: Junction reads overlapping the junction of interest.
+In case of intron retentions, junctions reads that overlap the start of the intron retention interval.
+\item \code{junc_interval_end}: In case of intron retentions, junctions reads that overlap the end of the intron retention interval.
+Is NA for non intron retention events.
 \item \code{span_interval_start}: Spanning pairs overlapping the junction of interest. In case of intron retentions, spanning pairs that overlap the start of the intron retention interval.
-\item \code{span_interval_end}: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval. Is NA for non intron retention events.
-\item \code{within_interval}: Number of reads that map into the intron retention interval. Is NA for non intron retention events.
-\item \code{coverage_perc}: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads. Is NA for non intron retention events.
-\item \code{coverage_mean}: Intron retention interval coverage defined as the mean number of reads covering a position in the given interval. Is NA for non intron retention events.
+\item \code{span_interval_end}: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval.
+Is NA for non intron retention events.
+\item \code{within_interval}: Number of reads that map into the intron retention interval.
+Is NA for non intron retention events.
+\item \code{within_interval_left}: Number of reads that map into interval left to the intron retention or splice junction of interest.
+\item \code{within_interval_right}: Number of reads that map into interval right of the intron retention or splice junction of interest.
+\item \code{coverage_perc}: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads.
+Is NA for non intron retention events.
+\item \code{coverage_perc_left}: Interval coverage defined as the percentage of the interval
+left to the intron retention or splice junction of interest that is covered by reads.
+\item \code{coverage_perc_right}: Interval coverage defined as the percentage of the interval
+right to the intron retention or splice junction of interest that is covered by reads.
+\item \code{coverage_mean}: Interval coverage defined as the mean number of reads covering a position in the given interval representing an intron retention.
+Is NA for non intron retention events.
+\item \code{coverage_mean_left}: Interval coverage defined as the mean number of reads covering a position in the interval left to the intron retention or splice junction of interest.
+\item \code{coverage_mean_right}: Interval coverage defined as the mean number of reads covering a position in the interval right to the intron retention or splice junction of interest.
+\item \code{coverage_median}: Interval coverage defined as the median number of reads covering a position in the given interval representing an intron retention. Is NA for non intron retention events.
+\item \code{coverage_median_left}: Interval coverage defined as the median number of reads covering a position in the interval left to the intron retention or splice junction of interest.
+\item \code{coverage_median_right}: Interval interval coverage defined as the median number of reads covering a position in the interval right to the intron retention or splice junction of interest.
 }
 }
 \description{
