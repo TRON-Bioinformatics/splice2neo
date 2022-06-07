@@ -30,7 +30,7 @@ add_gene_name <- function(df, txdb = NULL, annotation_db = NULL){
     annotation_db <- "org.Hs.eg"
   }
 
-  genes = suppressMessages(genes(txdb))
+  genes = suppressMessages(GenomicFeatures::genes(txdb))
   df_gr <- junc_to_gr(unique(df$junc_id))
 
   # get gene id
