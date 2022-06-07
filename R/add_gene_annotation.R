@@ -25,12 +25,11 @@ add_gene_name <- function(df, txdb = NULL, annotation_db = NULL){
   }
 
   if(is.null(annotation_db)){
-    require(org.Hs.eg.db)
+    suppressMessages(require(org.Hs.eg.db))
     message("INFO: Use default annotation from org.Hs.eg")
     annotation_db <- "org.Hs.eg"
   }
 
-  genes = suppressMessages(GenomicFeatures::genes(txdb))
   df_gr <- junc_to_gr(unique(df$junc_id))
 
   # get gene id
@@ -38,7 +37,7 @@ add_gene_name <- function(df, txdb = NULL, annotation_db = NULL){
   # get gene name
   df_id_name <- df_id %>%
     rowwise()%>%
-    mutate(gene_name = ifelse(!is_empty(gene_id) , toString(getSYMBOL(na.omit(gene_id), data=annotation_db)), NA)) %>%
+    mutate(gene_name = ifelse(!purrr::is_empty(gene_id) , toString(annotate::getSYMBOL(na.omit(gene_id), data=annotation_db)), NA)) %>%
     mutate(junc_id = generate_junction_id(seqnames, start, end, strand)) %>%
     dplyr::select(gene_name, junc_id)
 
@@ -68,11 +67,11 @@ annotate_gene_ids <- function(intervals, txdb){
 
     stopifnot(is(intervals, "GRanges"), is(txdb, "TxDb"))
 
-    anno = genes(txdb)
-    olaps = findOverlaps(intervals, anno)
-    mcols(olaps)$gene_id = genes$gene_id[subjectHits(olaps)]
-    intervals_factor = factor(queryHits(olaps), levels = seq_len(queryLength(olaps)))
-    intervals$gene_id = suppressMessages(splitAsList(mcols(olaps)$gene_id, intervals_factor))
+    anno <- suppressMessages(GenomicFeatures::genes(txdb))
+    olaps <- GenomicRanges::findOverlaps(intervals, anno)
+    mcols(olaps)$gene_id <- anno$gene_id[subjectHits(olaps)]
+    intervals_factor <- factor(queryHits(olaps), levels = seq_len(queryLength(olaps)))
+    intervals$gene_id <-suppressMessages(splitAsList(mcols(olaps)$gene_id, intervals_factor))
     intervals <- as_tibble(intervals)
     return(intervals)
 

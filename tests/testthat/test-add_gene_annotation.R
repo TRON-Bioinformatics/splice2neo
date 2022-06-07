@@ -15,8 +15,8 @@ test_that("add_gene_name works for coordinates with multiple genes", {
 
   junc_df_annotated <- add_gene_name(df_test)
 
-  expect_equal(nrow(junc_df_annotated), nrow(toy_junc_df))
-  expect_true(ncol(junc_df_annotated) == ncol(toy_junc_df) + 1)
+  expect_equal(nrow(junc_df_annotated), nrow(df_test))
+  expect_true(ncol(junc_df_annotated) == ncol(df_test) + 1)
   expect_true(str_count(junc_df_annotated$gene_name,",") > 1)
 
 })

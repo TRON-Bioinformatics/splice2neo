@@ -144,7 +144,8 @@ read_requant <- function(path_folder){
            span_interval_start, span_interval_end,
            within_interval, within_interval_left, within_interval_right,
            coverage_perc, coverage_perc_left, coverage_perc_right,
-           coverage_mean, coverage_mean_left, coverage_median_right,
+           coverage_mean, coverage_mean_left, coverage_mean_right,
+           coverage_median, coverage_median_left, coverage_median_right,
            interval, interval_left, interval_right)
 
   return(dat_easyqant)
