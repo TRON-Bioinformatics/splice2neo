@@ -61,83 +61,98 @@ read_requant <- function(path_folder){
   # interval-2: interval --> intron; end --> exon-intron boundary
   dat_ir <- dat_easyqant %>%
     group_by(name) %>%
-    filter(n() == 3) %>%
-    mutate(interv = c(1, 2, 3)) %>%
-    pivot_wider(
-      names_from = interv,
-      values_from = c(
-        overlap_interval_end_reads,
-        span_interval_end_pairs,
-        within_interval,
-        coverage_perc,
-        coverage_mean,
-        coverage_median,
-        interval
+    filter(n() == 3)
+
+  if(nrow(dat_ir) > 0){
+    dat_ir <-  dat_ir %>%
+      mutate(interv = c(1, 2, 3)) %>%
+      pivot_wider(
+        names_from = interv,
+        values_from = c(
+          overlap_interval_end_reads,
+          span_interval_end_pairs,
+          within_interval,
+          coverage_perc,
+          coverage_mean,
+          coverage_median,
+          interval
+        )
       )
-    )
+
+    dat_ir <- dat_ir %>%
+      dplyr::select(-overlap_interval_end_reads_3, -span_interval_end_pairs_3,) %>%
+      dplyr::rename(
+        junc_interval_start = overlap_interval_end_reads_1,
+        junc_interval_end = overlap_interval_end_reads_2,
+        span_interval_start = span_interval_end_pairs_1,
+        span_interval_end = span_interval_end_pairs_2,
+        within_interval = within_interval_2,
+        within_interval_left = within_interval_1,
+        within_interval_right = within_interval_3,
+        coverage_perc = coverage_perc_2,
+        coverage_perc_left = coverage_perc_1,
+        coverage_perc_right = coverage_perc_3,
+        coverage_mean = coverage_mean_2,
+        coverage_mean_left = coverage_mean_1,
+        coverage_mean_right = coverage_mean_3,
+        coverage_median = coverage_median_2,
+        coverage_median_left = coverage_median_1,
+        coverage_median_right = coverage_median_3,
+        interval = interval_2,
+        interval_left = interval_1,
+        interval_right = interval_3
+      )
+  } else {
+    dat_ir <- dat_ir %>%
+      mutate(junc_interval_end = NA,
+             span_interval_end = NA,
+             within_interval = NA,
+             coverage_median = NA,
+             interval = NA)
+  }
+
 
   # non- intron retentions
   # interval-1: end --> exon-intron boundary / junction of interest
   # add interval info at interval_left / interval_right
   dat_no_ir <- dat_easyqant %>%
     group_by(name) %>%
-    filter(n() == 2) %>%
-    mutate(interv = c(1, 2))%>%
-    pivot_wider(
-      names_from = interv,
-      values_from = c(
-        overlap_interval_end_reads,
-        span_interval_end_pairs,
-        within_interval,
-        coverage_perc,
-        coverage_mean,
-        coverage_median,
-        interval
+    filter(n() == 2)
+
+  if(nrow(dat_no_ir) > 0){
+    dat_no_ir <- dat_no_ir%>%
+      mutate(interv = c(1, 2))%>%
+      pivot_wider(
+        names_from = interv,
+        values_from = c(
+          overlap_interval_end_reads,
+          span_interval_end_pairs,
+          within_interval,
+          coverage_perc,
+          coverage_mean,
+          coverage_median,
+          interval
+        )
       )
-    ) %>%
-    dplyr::rename(
-      junc_interval_start = overlap_interval_end_reads_1,
-      span_interval_start = span_interval_end_pairs_1,
-      within_interval_left = within_interval_1,
-      within_interval_right = within_interval_2,
-      coverage_perc_left = coverage_perc_1,
-      coverage_perc_right = coverage_perc_2,
-      coverage_mean_left = coverage_mean_1,
-      coverage_mean_right = coverage_mean_2,
-      coverage_median_left = coverage_median_1,
-      coverage_median_right = coverage_median_2,
-      interval_left = interval_1,
-      interval_right = interval_2
-    ) %>%
-    select(-overlap_interval_end_reads_2, -span_interval_end_pairs_2 )
+    dat_no_ir <- dat_no_ir %>%
+      dplyr::rename(
+        junc_interval_start = overlap_interval_end_reads_1,
+        span_interval_start = span_interval_end_pairs_1,
+        within_interval_left = within_interval_1,
+        within_interval_right = within_interval_2,
+        coverage_perc_left = coverage_perc_1,
+        coverage_perc_right = coverage_perc_2,
+        coverage_mean_left = coverage_mean_1,
+        coverage_mean_right = coverage_mean_2,
+        coverage_median_left = coverage_median_1,
+        coverage_median_right = coverage_median_2,
+        interval_left = interval_1,
+        interval_right = interval_2
+      ) %>%
+      select(-overlap_interval_end_reads_2, -span_interval_end_pairs_2 )
+  }
 
-
-
-  dat_ir_transformed <- dat_ir %>%
-    dplyr::select(-overlap_interval_end_reads_3, -span_interval_end_pairs_3,) %>%
-    dplyr::rename(
-      junc_interval_start = overlap_interval_end_reads_1,
-      junc_interval_end = overlap_interval_end_reads_2,
-      span_interval_start = span_interval_end_pairs_1,
-      span_interval_end = span_interval_end_pairs_2,
-      within_interval = within_interval_2,
-      within_interval_left = within_interval_1,
-      within_interval_right = within_interval_3,
-      coverage_perc = coverage_perc_2,
-      coverage_perc_left = coverage_perc_1,
-      coverage_perc_right = coverage_perc_3,
-      coverage_mean = coverage_mean_2,
-      coverage_mean_left = coverage_mean_1,
-      coverage_mean_right = coverage_mean_3,
-      coverage_median = coverage_median_2,
-      coverage_median_left = coverage_median_1,
-      coverage_median_right = coverage_median_3,
-      interval = interval_2,
-      interval_left = interval_1,
-      interval_right = interval_3
-    )
-
-  dat_easyqant <- bind_rows(dat_ir_transformed, dat_no_ir) %>%
+  dat_easyqant <- bind_rows(dat_ir, dat_no_ir) %>%
     ungroup() %>%
     select(name,
            junc_interval_start, junc_interval_end,
