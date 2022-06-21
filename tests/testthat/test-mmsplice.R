@@ -7,6 +7,21 @@ test_that("parse_mmsplice works with example file", {
 
 })
 
+test_that("annotate_mmsplice works with empty file", {
+
+  mmsplice_file <- system.file("extdata", "mmsplice_pred.csv", package = "splice2neo")
+  df <- parse_mmsplice(mmsplice_file)
+  df_empty <- df %>% filter( ID == "not_existing_ID")
+
+  df_annot <- annotate_mmsplice(df, toy_transcripts)
+  df_empty_annot <- annotate_mmsplice(df_empty, toy_transcripts)
+
+  expect_true(nrow(df_empty_annot) == 0)
+  expect_true(ncol(df_empty_annot) == ncol(df_annot))
+  expect_true(all(names(df_empty_annot) == names(df_empty_annot)))
+
+})
+
 
 test_that("get_exon_skipping_junction() works with toy example data", {
 
