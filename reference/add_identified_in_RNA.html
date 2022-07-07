@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,27 +53,34 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_identified_in_RNA</span><span class="op">(</span><span class="va">mutation_juncs</span>, <span class="va">path_to_spladder</span>, <span class="va">path_to_leafcutter</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_identified_in_RNA</span><span class="op">(</span><span class="va">mutation_juncs</span>, <span class="va">path_to_spladder</span>, <span class="va">path_to_leafcutter</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>mutation_juncs</dt>
 <dd><p>The junction-transcript centric data predicted from WES data.</p></dd>
+
+
 <dt>path_to_spladder</dt>
 <dd><p>The path to the results from RNA-seq analysis with SplAdder</p></dd>
+
+
 <dt>path_to_leafcutter</dt>
 <dd><p>The path to the results from RNA-seq analysis with LeafCutter</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
+    
+
+<p>The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
 identified by spladder or LeafCutter (<code>identified_by_leafcutter</code>, <code>identified_by_spladder</code>)</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -89,7 +96,7 @@ identified by spladder or LeafCutter (<code>identified_by_leafcutter</code>, <co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

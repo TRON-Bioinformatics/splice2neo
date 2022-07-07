@@ -20,7 +20,7 @@ in the transcript sequences"><!-- mathjax --><script src="https://cdnjs.cloudfla
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -58,7 +58,7 @@ in the transcript sequences</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_intronretention_alt_pos</span><span class="op">(</span><span class="va">tx_lst</span>, <span class="va">tx_mod</span>, <span class="va">jx</span>, <span class="va">intron_retention</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_intronretention_alt_pos</span><span class="op">(</span><span class="va">tx_lst</span>, <span class="va">tx_mod</span>, <span class="va">jx</span>, <span class="va">intron_retention</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -66,17 +66,26 @@ in the transcript sequences</p>
     <dl><dt>tx_lst</dt>
 <dd><p>transcripts a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> with
 transcripts defined as GRanges of exons.</p></dd>
+
+
 <dt>tx_mod</dt>
 <dd><p>modified transcripts a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> with
 transcripts defined as GRanges of exons.</p></dd>
+
+
 <dt>jx</dt>
 <dd><p>splice junctions as GRanges objects</p></dd>
+
+
 <dt>intron_retention</dt>
 <dd><p>logical vector indicating if junctions belong to an intron retention event</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>an integer vector with alternative junction positions of intron
+    
+
+<p>an integer vector with alternative junction positions of intron
 retention event</p>
     </div>
 
@@ -92,7 +101,7 @@ retention event</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

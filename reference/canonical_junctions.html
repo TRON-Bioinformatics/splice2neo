@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,18 +53,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">canonical_junctions</span><span class="op">(</span><span class="va">tx</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">canonical_junctions</span><span class="op">(</span><span class="va">tx</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>tx</dt>
 <dd><p>a <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> of reference transcripts</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a character vector of canonical splice junction ids
-We build all canonical splice junctions that are in the annotated input transcripts.
+    
+
+<p>a character vector of canonical splice junction ids</p>
+
+
+<p>We build all canonical splice junctions that are in the annotated input transcripts.
 The following lists implementation rules for adjacent canonical exon-exon junction:</p><ul><li><p>strand = +: \(e_i\), \(s_{i+1}\)</p></li>
 <li><p>strand = -: \(e_{i+1}\), \(s_{i}\)</p></li>
 </ul><p>We also include canonical intron-retention junctions. These are 5' donor or
@@ -77,18 +82,18 @@ Therefore, we just need to check whether both bases are included in a single exo
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">gtf_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"GTF_files"</span>,<span class="st">"Aedes_aegypti.partial.gtf"</span>,</span>
-<span class="r-in">  package<span class="op">=</span><span class="st">"GenomicFeatures"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">tx</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_gtf.html">parse_gtf</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">gtf_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"GTF_files"</span>,<span class="st">"Aedes_aegypti.partial.gtf"</span>,</span></span>
+<span class="r-in"><span>  package<span class="op">=</span><span class="st">"GenomicFeatures"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tx</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_gtf.html">parse_gtf</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Import genomic features from the file as a GRanges object ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Prepare the 'metadata' data frame ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Make the TxDb object ... </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">canonical_junctions</span><span class="op">(</span><span class="va">tx</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">canonical_junctions</span><span class="op">(</span><span class="va">tx</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "supercont1.1:35644-35699:+"   "supercont1.1:35901-35993:+"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "supercont1.1:36098-52193:+"   "supercont1.1:52851-52973:+"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "supercont1.1:67696-68065:+"   "supercont1.1:68188-68248:+"  </span>
@@ -102,7 +107,7 @@ Therefore, we just need to check whether both bases are included in a single exo
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21] "supercont1.1:453215-453294:+" "supercont1.1:454174-458284:+"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [23] "supercont1.1:458711-458777:+" "supercont1.1:529329-530742:+"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [25] "supercont1.1:560183-560246:+" "supercont1.1:560494-560556:+"</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -117,7 +122,7 @@ Therefore, we just need to check whether both bases are included in a single exo
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

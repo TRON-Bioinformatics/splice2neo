@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_context_seq</span><span class="op">(</span><span class="va">df</span>, <span class="va">transcripts</span>, size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="cn">NULL</span>, keep_ranges <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_context_seq</span><span class="op">(</span><span class="va">df</span>, <span class="va">transcripts</span>, size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="cn">NULL</span>, keep_ranges <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -62,20 +62,31 @@
 <dd><p>A data.frame with splice junctions in rows and at least the columns:</p><ul><li><p><code>junc_id</code> junction id consisting of genomic coordinates</p></li>
 <li><p><code>tx_id</code> the ID of the affected transcript (see <code><a href="add_tx.html">add_tx</a></code>)</p></li>
 </ul></dd>
+
+
 <dt>transcripts</dt>
 <dd><p>as a named <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> of transcripts</p></dd>
+
+
 <dt>size</dt>
 <dd><p>the size of the output sequence around the junction position (might be shorter if transcripts is shorter)</p></dd>
+
+
 <dt>bsg</dt>
 <dd><p><code><a href="https://rdrr.io/pkg/BSgenome/man/BSgenome-class.html" class="external-link">BSgenome</a></code> object such as
 <code><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></code></p></dd>
+
+
 <dt>keep_ranges</dt>
 <dd><p>Should GRanges of transcripts and modified transcript be
 kept? If TRUE, the list columns <code>tx_lst</code> and <code>tx_mod_lst</code> are added to the output.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with the same rows as the input <code>df</code> but with the
+    
+
+<p>A data.frame with the same rows as the input <code>df</code> but with the
 following additional column(s):</p><ul><li><p><code>tx_mod_id</code> an identifier made from <code>tx_id</code> and <code>junc_id</code></p></li>
 <li><p><code>junc_pos_tx</code> the junction position in the modified transcript sequence</p></li>
 <li><p><code>cts_seq</code> the context sequence</p></li>
@@ -92,11 +103,11 @@ the modified transcript (see <code><a href="modify_tx.html">modify_tx</a></code>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">bsg</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">add_context_seq</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_transcripts</span>, size <span class="op">=</span> <span class="fl">20</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bsg</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">add_context_seq</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_transcripts</span>, size <span class="op">=</span> <span class="fl">20</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
@@ -117,7 +128,7 @@ the modified transcript (see <code><a href="modify_tx.html">modify_tx</a></code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:152226… ENST… ENST0000…        <span style="text-decoration: underline;">3</span>878 AACCCA… 0,10,3812,3…     <span style="text-decoration: underline;">3</span>822 5abc8…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:152222… ENST… ENST0000…          76 AACCCA… 0,10,3812,3…     <span style="text-decoration: underline;">3</span>822 5abc8…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:152388… ENST… ENST0000…       <span style="text-decoration: underline;">23</span>165 GTGGAG… 0,10,1555,1…     <span style="text-decoration: underline;">1</span>565 73426…</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -132,7 +143,7 @@ the modified transcript (see <code><a href="modify_tx.html">modify_tx</a></code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

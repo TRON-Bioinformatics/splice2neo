@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_tx</span><span class="op">(</span><span class="va">df</span>, <span class="va">transcripts</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_tx</span><span class="op">(</span><span class="va">df</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -61,19 +61,24 @@
     <dl><dt>df</dt>
 <dd><p>A data.frame with splice junctions in rows and at least the columns:</p><ul><li><p><code>junc_id</code> junction id consisting of genomic coordinates</p></li>
 </ul></dd>
+
+
 <dt>transcripts</dt>
 <dd><p><code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> of transcripts</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame as the input but with potentially multiple rows
+    
+
+<p>A data.frame as the input but with potentially multiple rows
 and with the additional column(s):</p><ul><li><p><code>tx_id</code> the ID of the affected transcript</p></li>
 <li><p><code>tx_lst</code> a list of <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> with the transcript</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -89,7 +94,7 @@ and with the additional column(s):</p><ul><li><p><code>tx_id</code> the ID of th
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

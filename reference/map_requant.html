@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,32 +53,54 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">map_requant</span><span class="op">(</span><span class="va">path_to_easyquant_folder</span>, <span class="va">junc_tib</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">map_requant</span><span class="op">(</span><span class="va">path_to_easyquant_folder</span>, <span class="va">junc_tib</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>path_to_easyquant_folder</dt>
 <dd><p>The path to EasyQuant folder</p></dd>
+
+
 <dt>junc_tib</dt>
 <dd><p>The junction-transcript centric tibble, i.e. each row represents an altered transcript. Must contain a column <code>hash_id</code> with hash ids that relate to the column <code>name</code> in the Easyquant output.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Extended junction-transcript tibble with re-quantification results by Easyquant. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
-The following columns are added:</p><ul><li><p><code>junc_interval_start</code>: Junction reads overlapping the junction of interest. In case of intron retentions, junctions reads that overlap the start of the intron retention interval.</p></li>
-<li><p><code>junc_interval_end</code>: In case of intron retentions, junctions reads that overlap the end of the intron retention interval. Is NA for non intron retention events.</p></li>
+    
+
+<p>Extended junction-transcript tibble with re-quantification results by Easyquant. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
+The following columns are added:</p><ul><li><p><code>junc_interval_start</code>: Junction reads overlapping the junction of interest.
+In case of intron retentions, junctions reads that overlap the start of the intron retention interval.</p></li>
+<li><p><code>junc_interval_end</code>: In case of intron retentions, junctions reads that overlap the end of the intron retention interval.
+Is NA for non intron retention events.</p></li>
 <li><p><code>span_interval_start</code>: Spanning pairs overlapping the junction of interest. In case of intron retentions, spanning pairs that overlap the start of the intron retention interval.</p></li>
-<li><p><code>span_interval_end</code>: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval. Is NA for non intron retention events.</p></li>
-<li><p><code>within_interval</code>: Number of reads that map into the intron retention interval. Is NA for non intron retention events.</p></li>
-<li><p><code>coverage_perc</code>: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads. Is NA for non intron retention events.</p></li>
-<li><p><code>coverage_mean</code>: Intron retention interval coverage defined as the mean number of reads covering a position in the given interval. Is NA for non intron retention events.</p></li>
+<li><p><code>span_interval_end</code>: In case of intron retentions, spanning pairs that overlap the end of the intron retention interval.
+Is NA for non intron retention events.</p></li>
+<li><p><code>within_interval</code>: Number of reads that map into the intron retention interval.
+Is NA for non intron retention events.</p></li>
+<li><p><code>within_interval_left</code>: Number of reads that map into interval left to the intron retention or splice junction of interest.</p></li>
+<li><p><code>within_interval_right</code>: Number of reads that map into interval right of the intron retention or splice junction of interest.</p></li>
+<li><p><code>coverage_perc</code>: Intron retention interval coverage defined as the percentage of the given interval that is covered by reads.
+Is NA for non intron retention events.</p></li>
+<li><p><code>coverage_perc_left</code>: Interval coverage defined as the percentage of the interval
+left to the intron retention or splice junction of interest that is covered by reads.</p></li>
+<li><p><code>coverage_perc_right</code>: Interval coverage defined as the percentage of the interval
+right to the intron retention or splice junction of interest that is covered by reads.</p></li>
+<li><p><code>coverage_mean</code>: Interval coverage defined as the mean number of reads covering a position in the given interval representing an intron retention.
+Is NA for non intron retention events.</p></li>
+<li><p><code>coverage_mean_left</code>: Interval coverage defined as the mean number of reads covering a position in the interval left to the intron retention or splice junction of interest.</p></li>
+<li><p><code>coverage_mean_right</code>: Interval coverage defined as the mean number of reads covering a position in the interval right to the intron retention or splice junction of interest.</p></li>
+<li><p><code>coverage_median</code>: Interval coverage defined as the median number of reads covering a position in the given interval representing an intron retention. Is NA for non intron retention events.</p></li>
+<li><p><code>coverage_median_left</code>: Interval coverage defined as the median number of reads covering a position in the interval left to the intron retention or splice junction of interest.</p></li>
+<li><p><code>coverage_median_right</code>: Interval interval coverage defined as the median number of reads covering a position in the interval right to the intron retention or splice junction of interest.</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -94,7 +116,7 @@ The following columns are added:</p><ul><li><p><code>junc_interval_start</code>:
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

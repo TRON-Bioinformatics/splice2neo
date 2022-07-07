@@ -20,7 +20,7 @@ a junction id is created that follows the format: &amp;lt;chr&amp;gt;:&amp;lt;st
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -58,30 +58,41 @@ a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">generate_junction_id</span><span class="op">(</span><span class="va">chr</span>, <span class="va">start</span>, <span class="va">end</span>, <span class="va">strand</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_junction_id</span><span class="op">(</span><span class="va">chr</span>, <span class="va">start</span>, <span class="va">end</span>, <span class="va">strand</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>chr</dt>
 <dd><p>The chromosome</p></dd>
+
+
 <dt>start</dt>
 <dd><p>The start of the junction</p></dd>
+
+
 <dt>end</dt>
 <dd><p>The end of the junction</p></dd>
+
+
 <dt>strand</dt>
 <dd><p>Strand information. "+" or "-"</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The junction id in the format <code>&lt;chr&gt;:&lt;start&gt;-&lt;end&gt;:&lt;strand&gt;</code></p>
+    
+
+<p>The junction id in the format <code>&lt;chr&gt;:&lt;start&gt;-&lt;end&gt;:&lt;strand&gt;</code></p>
+
+
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">generate_junction_id</span><span class="op">(</span>chr <span class="op">=</span> <span class="st">"chr1"</span>, start <span class="op">=</span> <span class="fl">50</span>, end <span class="op">=</span> <span class="fl">100</span>, strand <span class="op">=</span> <span class="st">"+"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">generate_junction_id</span><span class="op">(</span>chr <span class="op">=</span> <span class="st">"chr1"</span>, start <span class="op">=</span> <span class="fl">50</span>, end <span class="op">=</span> <span class="fl">100</span>, strand <span class="op">=</span> <span class="st">"+"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr1:50-100:+"</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -96,7 +107,7 @@ a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

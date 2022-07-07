@@ -19,7 +19,7 @@ data to make non-redundant output."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@ data to make non-redundant output.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">spliceai_variants</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">spliceai_variants</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,10 +65,13 @@ data to make non-redundant output.</p>
     <dl><dt>spliceai_variants</dt>
 <dd><p><a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with parsed
 spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with splicing effects per row</p>
+    
+
+<p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with splicing effects per row</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -77,9 +80,9 @@ spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">spliceai_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span><span class="va">spliceai_file</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">spliceai_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span><span class="va">spliceai_file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 21 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    CHROM POS    ID    REF   ALT   QUAL  FILTER   Key ALLELE change  prob pos_rel</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -94,7 +97,7 @@ spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2  17944… <span style="color: #BB0000;">NA</span>    ATACT A     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>         4 A      DG      0.02     -<span style="color: #BB0000;">11</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2  17944… <span style="color: #BB0000;">NA</span>    ATACT A     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>         4 A      DL      0.91       8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 11 more rows</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -109,7 +112,7 @@ spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

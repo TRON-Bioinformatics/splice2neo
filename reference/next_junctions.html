@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">next_junctions</span><span class="op">(</span><span class="va">var_gr</span>, <span class="va">transcripts</span>, <span class="va">transcripts_gr</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">next_junctions</span><span class="op">(</span><span class="va">var_gr</span>, <span class="va">transcripts</span>, <span class="va">transcripts_gr</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -62,16 +62,23 @@
 <dd><p>a GenomicRanges object with variants (of length one).
 It is assumed that it is named with a unique ID.
 Usually this is <code>&lt;chr&gt;_&lt;pos&gt;_&lt;alt&gt;</code>.</p></dd>
+
+
 <dt>transcripts</dt>
 <dd><p>a GRangesList with transcripts defined as GRanges of exons
 created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.</p></dd>
+
+
 <dt>transcripts_gr</dt>
 <dd><p>a GRanges object with transcript ranges created by
 <code>GenomicFeatures::transcripts(txdb)</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with possible upstream and downstream exon coordinates for
+    
+
+<p>A data.frame with possible upstream and downstream exon coordinates for
 all overlapping transcripts. The data frame contains the following columns:
 mut_id, var_nr, tx_chr, tx_id, exon_idx, tx_strand, upstream_start,
 upstream_end, downstream_start, downstream_end, at_start, at_end.</p>
@@ -89,7 +96,7 @@ upstream_end, downstream_start, downstream_end, at_start, at_end.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

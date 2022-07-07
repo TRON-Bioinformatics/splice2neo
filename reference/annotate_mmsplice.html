@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">annotate_mmsplice</span><span class="op">(</span><span class="va">mmsplice_df</span>, <span class="va">transcripts</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">annotate_mmsplice</span><span class="op">(</span><span class="va">mmsplice_df</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -64,25 +64,34 @@ have the following columns:
 - ID
 - exon_id
 - delta_logit_psi</p></dd>
+
+
 <dt>transcripts</dt>
 <dd><p>a GRangesList with transcripts defined as GRanges of exons
 created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.
 The exons in individual GRanges are assumed to be sorted according to
 transcription sense, that for transcript with positive strand by position and
 by descending position for transcripts on negative strand.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame like object like the input but with additional columns:</p><ul><li><p>junc_id: <code>&lt;chr&gt;_&lt;pos1&gt;_&lt;pos2&gt;_&lt;strand&gt;</code></p></li>
+    
+
+<p>A data.frame like object like the input but with additional columns:</p><ul><li><p>junc_id: <code>&lt;chr&gt;_&lt;pos1&gt;_&lt;pos2&gt;_&lt;strand&gt;</code></p></li>
 <li><p>effect: either <code>exon_skipping</code> or <code>exon_inclusion</code></p></li>
 </ul><p>If the logit delta PSI score is &lt;= 0, the event is treated as exon skipping.
 In this case a junction is build from the end of the exon before, and the
-start of the exon after that.
-If the logit delta PSI score is &gt; 0, the event is treated as cassette exon.
+start of the exon after that.</p>
+
+
+<p>If the logit delta PSI score is &gt; 0, the event is treated as cassette exon.
 In this case a (canonical) junction is build from the end of the upstream
 exon to the start of the affected exon and from the end of the affected exon
-to the start of the next exon.
-MMsplice predicts the change on percent spliced in (PSI) for a given
+to the start of the next exon.</p>
+
+
+<p>MMsplice predicts the change on percent spliced in (PSI) for a given
 annotated exon. Therefore, only exon inclusion and exon skipping needs to be
 converted to junctions.</p><ul><li><p>For <em>exon skipping</em> the end of the previous and start of the next exon
 build the junction</p></li>
@@ -103,7 +112,7 @@ the end of the affected exon  to the start of the next exon.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

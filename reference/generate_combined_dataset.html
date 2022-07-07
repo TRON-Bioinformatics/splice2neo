@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">generate_combined_dataset</span><span class="op">(</span><span class="va">spladder_juncs</span>, <span class="va">leafcutter_juncs</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_combined_dataset</span><span class="op">(</span><span class="va">spladder_juncs</span>, <span class="va">leafcutter_juncs</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -61,27 +61,32 @@
     <dl><dt>spladder_juncs</dt>
 <dd><p>A tibble the junctions identified by SplAdder in
 standardized format</p></dd>
+
+
 <dt>leafcutter_juncs</dt>
 <dd><p>A tibble the junctions identified by LeafCutter in
 standardized format</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A combined table with unique junctions. The columns RNA_tool
+    
+
+<p>A combined table with unique junctions. The columns RNA_tool
 contains information which tools identified the given junction</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">path</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">""</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">spladder_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="spladder_transform.html">spladder_transform</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">""</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">spladder_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="spladder_transform.html">spladder_transform</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing Spladder files ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing Spladder files completed</span>
-<span class="r-in"><span class="va">leafcutter_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="leafcutter_transform.html">leafcutter_transform</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">leafcutter_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="leafcutter_transform.html">leafcutter_transform</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing Leafcutter files...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Importing Leafcutter files completed</span>
-<span class="r-in"><span class="va">dat.combined</span> <span class="op">&lt;-</span> <span class="fu">generate_combined_dataset</span><span class="op">(</span><span class="va">spladder_juncs</span>, <span class="va">leafcutter_juncs</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="va">dat.combined</span> <span class="op">&lt;-</span> <span class="fu">generate_combined_dataset</span><span class="op">(</span><span class="va">spladder_juncs</span>, <span class="va">leafcutter_juncs</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -96,7 +101,7 @@ contains information which tools identified the given junction</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

@@ -21,7 +21,7 @@ with an exon-intron junction in the provided transcripts."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ with an exon-intron junction in the provided transcripts.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">annotate_spliceai_junction</span><span class="op">(</span><span class="va">var_df</span>, <span class="va">transcripts</span>, <span class="va">transcripts_gr</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">annotate_spliceai_junction</span><span class="op">(</span><span class="va">var_df</span>, <span class="va">transcripts</span>, <span class="va">transcripts_gr</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,26 +74,33 @@ with an exon-intron junction in the provided transcripts.</p>
 <li><p><code>change</code> an change effect class from <em>SpliceAI</em>. One of <code>DL</code>, <code>DG</code>, <code>AL</code>, <code>AG</code>.</p></li>
 <li><p><code>pos_rel</code> affected position relative to <code>POS</code>.</p></li>
 </ul></dd>
+
+
 <dt>transcripts</dt>
 <dd><p>a GRangesList with transcripts defined as GRanges of exons
 created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.</p></dd>
+
+
 <dt>transcripts_gr</dt>
 <dd><p>a GRanges object with transcript created by
 <code>GenomicFeatures::transcripts(txdb)</code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame with with additional rows and columns including the
+    
+
+<p>A data.frame with with additional rows and columns including the
 splice junction in the column <code>junc_id</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">spliceai_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span><span class="va">spliceai_file</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">df_raw</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">annotate_spliceai_junction</span><span class="op">(</span><span class="va">df</span>, <span class="va">toy_transcripts</span>, <span class="va">toy_transcripts_gr</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">spliceai_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span><span class="va">spliceai_file</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">df_raw</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">annotate_spliceai_junction</span><span class="op">(</span><span class="va">df</span>, <span class="va">toy_transcripts</span>, <span class="va">toy_transcripts_gr</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> INFO: calculate coordinates of upstream and downstream exons...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> INFO: get overlapping transcripts...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> INFO: Build df ...</span>
@@ -121,8 +128,8 @@ splice junction in the column <code>junc_id</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pos &lt;int&gt;, class &lt;chr&gt;, rule_left &lt;chr&gt;, rule_right &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   strand_offset &lt;dbl&gt;, coord_1 &lt;dbl&gt;, coord_2 &lt;dbl&gt;, left &lt;dbl&gt;, right &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   junc_id &lt;chr&gt;, tx_junc_id &lt;chr&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -137,7 +144,7 @@ splice junction in the column <code>junc_id</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
