@@ -34,73 +34,102 @@
 #' @export
 annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
-  var_df <- var_df %>%
+  var_df <- var_df  %>%
     mutate(
       mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
       mut_effect_id = str_c(mut_id, "_", row_number())
     )
 
-  var_gr <- GenomicRanges::GRanges(str_c(
-    var_df$CHROM,
-    ":",
-    as.integer(var_df$POS) + var_df$pos_rel
+  if(nrow(var_df) != 0){
+    var_gr <- GenomicRanges::GRanges(str_c(
+      var_df$CHROM,
+      ":",
+      as.integer(var_df$POS) + var_df$pos_rel
     ),
     # var_effect_id = var_df$var_effect_id
-  )
-  names(var_gr) <- var_df$mut_effect_id
+    )
+    names(var_gr) <- var_df$mut_effect_id
 
-  message("INFO: calculate coordinates of upstream and downstream exons...")
-  # get all possible junctions of by start and end coordinates of upsteam and downstream exons
-  next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
+    message("INFO: calculate coordinates of upstream and downstream exons...")
+    # get all possible junctions of by start and end coordinates of upsteam and downstream exons
+    next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
 
-  message("INFO: calculate junction coordinates from predicted effect...")
+    message("INFO: calculate junction coordinates from predicted effect...")
 
-  junc_df <- var_df %>%
+    junc_df <- var_df %>%
 
-    # add next exon coordinates of next exons
-    left_join(next_junc_df, by = "mut_effect_id") %>%
+      # add next exon coordinates of next exons
+      left_join(next_junc_df, by = "mut_effect_id") %>%
 
-    # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
-    filter(
-      change != "DL" | at_end,
-      change != "AL" | at_start
-    ) %>%
+      # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
+      filter(
+        change != "DL" | at_end,
+        change != "AL" | at_start
+      ) %>%
 
-    # add rules
-    mutate(
-      change = as.character(change),
-      pos = as.integer(POS) + pos_rel
-    ) %>%
-    left_join(
-      change_to_junction_rules,
-      by = c("change")
-    ) %>%
+      # add rules
+      mutate(
+        change = as.character(change),
+        pos = as.integer(POS) + pos_rel
+      ) %>%
+      left_join(
+        change_to_junction_rules,
+        by = c("change")
+      ) %>%
 
-    # apply rules
-    rowwise() %>%
+      # apply rules
+      rowwise() %>%
 
-    # evaluate rule to get coordinates of junctions
-    mutate(
-      strand_offset = ifelse(tx_strand == "-", -1, 1),
-      coord_1 = eval(parse(text = rule_left)),
-      coord_2 = eval(parse(text = rule_right)),
-      left = ifelse(coord_1 <= coord_2, coord_1, coord_2),
-      right = ifelse(coord_1 <= coord_2, coord_2, coord_1),
-    ) %>%
+      # evaluate rule to get coordinates of junctions
+      mutate(
+        strand_offset = ifelse(tx_strand == "-", -1, 1),
+        coord_1 = eval(parse(text = rule_left)),
+        coord_2 = eval(parse(text = rule_right)),
+        left = ifelse(coord_1 <= coord_2, coord_1, coord_2),
+        right = ifelse(coord_1 <= coord_2, coord_2, coord_1),
+      ) %>%
 
-    # remove predicted effects with missing values
-    filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
-    # remove predicted effects outside of transcript range
-    filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
+      # remove predicted effects with missing values
+      filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
+      # remove predicted effects outside of transcript range
+      filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
 
-    # add junction IDs
-    mutate(
-      junc_id = generate_junction_id(CHROM, left, right, tx_strand),
-      tx_junc_id = str_c(tx_id, junc_id, sep = "_"),
-    ) %>%
-    ungroup()
+      # add junction IDs
+      mutate(
+        junc_id = generate_junction_id(CHROM, left, right, tx_strand),
+        tx_junc_id  = str_c(tx_id, junc_id, sep = "_"),
+      ) %>%
+      ungroup()
 
-  message("INFO: Evaluation of rules done.")
+    message("INFO: Evaluation of rules done.")
+  } else{
+    message("WARNING: There are no mutations with predicted splice effect by SpliceAI")
+    junc_df <- var_df
+    junc_df <- junc_df %>%
+      tibble::add_column(
+        "var_nr" = NA ,
+        "tx_chr"= NA,
+        "tx_id" = NA,
+        "tx_strand" =NA,
+        "upstream_start"= NA,
+        upstream_end = NA,
+        "downstream_start"= NA,
+        "downstream_end"= NA,
+        "at_start"= NA,
+        "at_end"= NA,
+        "pos"= NA,
+        "class"= NA,
+        "rule_left"= NA,
+        "rule_right"= NA,
+        "strand_offset"= NA,
+        "coord_1"= NA ,
+        "coord_2"= NA,
+        "left"= NA,
+        "right" = NA,
+        "junc_id"= NA,
+        "tx_junc_id"= NA
+      )
+  }
 
   return(junc_df)
 }

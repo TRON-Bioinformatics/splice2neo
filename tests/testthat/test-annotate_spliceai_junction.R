@@ -11,6 +11,24 @@ test_that("annotate_spliceai_junction works on toy example", {
 
 })
 
+test_that("annotate_spliceai_junction works on empty tibble", {
+
+  spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+  df_raw <- parse_spliceai(spliceai_file)
+  df_raw_empty <- df_raw %>% filter(!is.na(ID))
+  df_empty <- format_spliceai(df_raw_empty)
+  df_raw <- parse_spliceai(spliceai_file)
+  df <- format_spliceai(df_raw)
+
+  annot_df_empty <- annotate_spliceai_junction(df_empty, toy_transcripts, toy_transcripts_gr)
+  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+
+  expect_true(nrow(annot_df_empty) == 0)
+  expect_true(ncol(annot_df_empty) == ncol(annot_df))
+  expect_true(all(names(annot_df_empty) == names(annot_df)))
+
+})
+
 test_that("annotate_spliceai_junction does not predict events outside of exon range", {
 
   # event at the end of gene/transcript with only one exon
