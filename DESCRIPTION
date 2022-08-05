@@ -1,6 +1,6 @@
 Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
-Version: noants_0.5.3
+Version: 0.5.3-0001
 Authors@R: 
     c(
     person(given = "Jonas",
