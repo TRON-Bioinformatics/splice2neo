@@ -23,14 +23,11 @@ knitr::opts_chunk$set(
 `r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
 <!-- badges: end -->
 
-
 1. [Overview](##1-Overview)
 2. [Installation](##2-Installation)
 3. [Example](##3-Example)
 4. [Dummy workflow](##4-Dummy-workflow)
 5. [Building the transcript database](##5-Building-the-transcript database)
-
-
 
 ## 1 Overview
 
