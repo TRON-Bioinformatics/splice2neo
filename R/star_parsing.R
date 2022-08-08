@@ -9,7 +9,6 @@
 #'  annotation, uniquely_mapping_reads, multi_mapping_reads, alignment_overhang
 #'
 #' @import readr
-#' @export
 import_star_sj <- function(file.name) {
   if(!file.exists(file.name)){
     stop("STAR SJ.out.tab is missing")
@@ -25,9 +24,8 @@ import_star_sj <- function(file.name) {
       'multi_mapping_reads',
       'alignment_overhang'
     )
-  junc.file <- read_delim(
+  junc.file <- read_tsv(
     file.name,
-    delim = '\t',
     col_names = star.cols,
     col_types = readr::cols(
       .default = readr::col_integer(),
@@ -47,7 +45,6 @@ import_star_sj <- function(file.name) {
 #'
 #'
 #' @import dplyr
-#' @export
 transform_star_sj <- function(tib){
   strand_info <-
     c(
@@ -85,7 +82,7 @@ transform_star_sj <- function(tib){
 #' 
 #' @import readr
 #' @export
-star_transform <- function(path) {
+parse_star_sj <- function(path) {
   file.junc <- path
   dat.junc <- file.junc %>%
     import_star_sj() %>%

@@ -1,15 +1,15 @@
-test_that("star.transform works", {
+test_that("parse.star.sj works", {
   path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-  dat.combined <- star_transform(path)
+  dat.combined <- parse_star_sj(path)
   expect_true(ncol(dat.combined) == 8)
   expect_true(nrow(dat.combined) == 7)
   expect_true(all(!is.na(dat.combined$junc_id)))
 
 })
 
-test_that("star.transform works correctly", {
+test_that("parse.star.sj works correctly", {
   path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-  dat.combined <- star_transform(path)
+  dat.combined <- parse_star_sj(path)
   expected_junc_ids <-
     c(
       "chr1:12227-12613:+",
