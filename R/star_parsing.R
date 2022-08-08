@@ -77,7 +77,7 @@ transform_star_sj <- function(tib){
 #' @return A tibble in standardized junction format
 #' @examples
 #' path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-#' star_juncs <- star_transform(path)
+#' star_juncs <- parse_star_sj(path)
 #' star_juncs
 #' 
 #' @import readr
