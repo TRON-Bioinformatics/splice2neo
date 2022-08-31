@@ -25,6 +25,3 @@ and with the additional column(s):
 \description{
 Annotate splice junctions with all possible transcript IDs in the given genomic region.
 }
-\examples{
-
-}

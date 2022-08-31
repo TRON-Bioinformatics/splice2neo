@@ -15,13 +15,6 @@
 #' @export
 exon_in_intron <- function(junc_id, tx_id, transcripts){
 
-
-
-  # df <- tibble(
-  #   junc_id = c("chr11:9450577-9450578:+", "chr11:9450176-9450177:+",  "chr6:32150617-32150618:-", "chr6:32150978-32150979:-"),
-  #   tx_id = c("ENST00000379719.8_2", "ENST00000379719.8_2", "ENST00000375067.7_2", "ENST00000375067.7_2")
-  # )
-
   # get junctions as GRanges object
   jx <- junc_to_gr(junc_id)
   junc_strand <- str_sub(junc_id,-1,-1)
@@ -45,19 +38,33 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   # get interval as id
   intron_ranges <- other_genomic_position %>%
     mutate(junc_tx_id = paste0(junc_id, "_", tx_id)) %>%
-    separate(junc_id, into = c("chrom", "start_end" ,"strand"), sep = ":") %>%
-    separate(start_end, into = c("junc_start", "junc_end"), sep = "-") %>%
+    separate(junc_id,
+             into = c("chrom", "start_end" , "strand"),
+             sep = ":") %>%
+    separate(start_end,
+             into = c("junc_start", "junc_end"),
+             sep = "-") %>%
     mutate(junc_start = as.integer(junc_start)) %>%
     mutate(junc_end = as.integer(junc_end)) %>%
-    mutate(other_position  = as.integer(other_position )) %>%
-    mutate(new_start = case_when(
-      !start_on_exon & strand == "+" | start_on_exon & strand == "-" ~ other_position,
-      start_on_exon & strand == "+"  | !start_on_exon & strand == "-" ~ junc_end
-    )) %>%
-    mutate(new_end = case_when(
-      !start_on_exon & strand == "+" |  start_on_exon & strand == "-" ~ junc_start,
-      start_on_exon & strand == "+" | !start_on_exon & strand == "-" ~ other_position,
-    )) %>%
+    mutate(other_position  = as.integer(other_position)) %>%
+    mutate(
+      new_start = case_when(
+        !start_on_exon &
+          strand == "+" | start_on_exon & strand == "-" ~ other_position,
+        start_on_exon &
+          strand == "+"  | !start_on_exon & strand == "-" ~ junc_end
+      )
+    )
+
+  intron_ranges <- intron_ranges %>%
+    mutate(
+      new_end = case_when(
+        !start_on_exon &
+          strand == "+" |  start_on_exon & strand == "-" ~ junc_start,
+        start_on_exon &
+          strand == "+" | !start_on_exon & strand == "-" ~ other_position,
+      )
+    ) %>%
     mutate(interval_range = generate_junction_id(chrom, new_start, new_end, strand))
 
   # get junctions as GRanges object
@@ -67,7 +74,7 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   jx <- junc_to_gr(jx_df$interval_range)
 
   jx_df <- jx_df %>%
-    mutate(interval_exon_overlap = overlapsAny(jx, transcripts )) %>%
+    mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts )) %>%
     dplyr::select(interval_exon_overlap, junc_tx_id)
 
   intron_ranges <- intron_ranges %>%
@@ -80,6 +87,5 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   )
 
   return(exon_free)
-
 
 }

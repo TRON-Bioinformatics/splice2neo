@@ -19,6 +19,3 @@ contains information which tools identified the given junction
 \description{
 Combines tibbles with junctions from SpliceAI and MMsplice
 }
-\examples{
-
-}
