@@ -3,6 +3,7 @@
 #'
 #' @param junc_id Junction id
 #' @param tx_id Transcript id
+#' @param patient_id Patient id. This is only relevant if a dataset from multiple patients is annotated.
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #'
@@ -37,7 +38,7 @@
 #'  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
 #'
 #' @export
-exon_in_intron <- function(junc_id, tx_id, transcripts){
+exon_in_intron <- function(junc_id, tx_id, transcripts, patient_id = NULL){
 
   # get junctions as GRanges object
   jx <- junc_to_gr(junc_id)
@@ -61,7 +62,7 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
 
   # get interval as id
   intron_ranges <- other_genomic_position %>%
-    mutate(junc_tx_id = paste0(junc_id, "_", tx_id)) %>%
+    mutate(junc_tx_pat_id = paste0(junc_id, "_", tx_id, "_", patient_id)) %>%
     separate(junc_id,
              into = c("chrom", "start_end" , "strand"),
              sep = ":") %>%
@@ -106,11 +107,11 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   jx_df <- suppressWarnings(
     jx_df %>%
       mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts )) %>%
-      dplyr::select(interval_exon_overlap, junc_tx_id)
+      dplyr::select(interval_exon_overlap, junc_tx_pat_id)
   )
 
   intron_ranges <- intron_ranges %>%
-    left_join(jx_df, by = "junc_tx_id")
+    left_join(jx_df, by = "junc_tx_pat_id")
 
   # returns TRUE if no exon of other transcript in the given intron region
   # returns FALSE if there is an exon of another transcript
