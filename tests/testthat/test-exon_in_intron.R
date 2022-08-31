@@ -147,3 +147,52 @@ test_that("exon_in_intron works for non IRs", {
   expect_equal(nrow(df), nrow(df1))
 })
 
+test_that("exon_in_intron does not fail for junctions at the end of a transcript ", {
+
+  toy_tx <- GenomicRanges::GRangesList(list(
+    tx1 = GenomicRanges::GRanges(
+      c("1", "1", "1"),
+      IRanges::IRanges(
+        c(2, 15, 27),
+        c(8, 23, 35),
+      ),
+      strand = c("+", "+", "+")
+    ),
+    tx1a = GenomicRanges::GRanges(
+      c("1" ),
+      IRanges::IRanges(
+        c(3),
+        c(10),
+      ),
+      strand = c("+")
+    ),
+    tx2 = GenomicRanges::GRanges(
+      c("1", "1", "1"),
+      IRanges::IRanges(
+        c(2, 15, 27),
+        c(8, 23, 35),
+      ),
+      strand = c("-", "-", "-")
+    ),
+    tx2a = GenomicRanges::GRanges(
+      c("1"),
+      IRanges::IRanges(
+        c(10),
+        c(13),
+      ),
+      strand = c("-")
+    )
+  ))
+
+  df <- tibble(
+    junc_id = c("1:35-36:+", "1:35-36:-"),
+    tx_id = c("tx1",  "tx2")
+  )
+
+  df1 <- df %>%
+    mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+
+  expect_true(is.na(unique(df1$exon_free)))
+  expect_equal(nrow(df), nrow(df1))
+})
+

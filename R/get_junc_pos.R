@@ -1,4 +1,6 @@
 
+empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
+
 #' Get the position of input junction in the transcript sequences
 #'
 #' @param tx transcripts a \code{\link[GenomicRanges]{GRangesList}} with
@@ -136,11 +138,14 @@ get_intronretention_genomic_alt_pos <- function(tx_lst, tx_mod, jx, intron_reten
   # end pos of other exon
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
   # get genomic position of other boundary of intron
-  other_position = case_when(
+  other_position = suppressWarnings(
+    case_when(
+    ex_range == empty_range ~ as.numeric(NA),
     !start_on_exon & junc_strand == "+" ~ GenomicRanges::start(ex_end) + 1 ,
     start_on_exon  & junc_strand == "+" ~ GenomicRanges::start(ex_start) -1 ,
     start_on_exon  & junc_strand == "-" ~ GenomicRanges::start(ex_start) +1,
     !start_on_exon  & junc_strand == "-" ~ GenomicRanges::start(ex_end) -1)
+  )
 
   res <- tibble(other_position = other_position,
                 start_on_exon = start_on_exon,
@@ -193,8 +198,6 @@ get_unknown_exon_intron_rentention <- function(tx_lst, tx_mod, jx_lst, start_on_
   # this is only relevant for intron rententions
   # we need to identify the other boundary of the intron
 
-
-  empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
   # get unknown exon
   ex_range <- mapply(function(j, l, s) {
     if(is.na(s)){ empty_range } else{

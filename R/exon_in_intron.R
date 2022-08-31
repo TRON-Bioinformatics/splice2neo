@@ -89,21 +89,32 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
           strand == "+" | !start_on_exon & strand == "-" ~ other_position,
       )
     ) %>%
-    mutate(interval_range = generate_junction_id(chrom, new_start, new_end, strand))
+    mutate(interval_range = ifelse(new_end != -1, generate_junction_id(chrom, new_start, new_end, strand), NA))
 
   # get junctions as GRanges object
   jx_df <- intron_ranges %>%
     filter(!is.na(interval_range))
 
-  jx <- junc_to_gr(jx_df$interval_range)
 
-  jx_df <- jx_df %>%
-    mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts )) %>%
-    dplyr::select(interval_exon_overlap, junc_tx_id)
+  if(nrow(jx_df) > 0){
+    jx <- junc_to_gr(jx_df$interval_range)
+  }else{
+    jx <- GenomicRanges::GRanges("chr1", IRanges::IRanges(0, 0), "+")
+  }
+
+
+  jx_df <- suppressWarnings(
+    jx_df %>%
+      mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts )) %>%
+      dplyr::select(interval_exon_overlap, junc_tx_id)
+  )
 
   intron_ranges <- intron_ranges %>%
     left_join(jx_df, by = "junc_tx_id")
 
+  # returns TRUE if no exon of other transcript in the given intron region
+  # returns FALSE if there is an exon of another transcript
+  # returns NA if no intron retention or if the predicted event is at the end or start of a transcript
   exon_free <- case_when(
     abs(intron_ranges$junc_end - intron_ranges$junc_start) != 1 ~ NA,
     intron_ranges$interval_exon_overlap ~ FALSE,
