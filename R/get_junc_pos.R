@@ -112,6 +112,7 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
 #' transcripts defined as GRanges of exons.
 #' @param jx splice junctions as GRanges objects
 #' @param intron_retention logical vector indicating if junctions belong to an intron retention event
+#' @param junc_strand Strand direction. Can be "+" or "-".
 #'
 #' @return an integer vector with alternative junction positions of intron
 #' retention event
@@ -153,7 +154,7 @@ get_intronretention_genomic_alt_pos <- function(tx_lst, tx_mod, jx, intron_reten
 #'
 #' @param tx_lst transcripts a \code{\link[GenomicRanges]{GRangesList}} with
 #' transcripts defined as GRanges of exons.
-#' @param jx splice junctions as GRanges objects
+#' @param jx_lst splice junctions as GRanges objects in list format
 #' @param intron_retention logical vector indicating if junctions belong to an intron retention event
 #'
 #' @return a logical vector indicating if start or and end of junc is on exon.
@@ -182,7 +183,7 @@ is_start_on_exon <- function(tx_lst, jx_lst, intron_retention){
 #' transcripts defined as GRanges of exons.
 #' @param tx_mod modified transcripts a \code{\link[GenomicRanges]{GRangesList}} with
 #' transcripts defined as GRanges of exons.
-#' @param jx splice junctions as GRanges objects
+#' @param jx_lst splice junctions as GRanges objects in list format
 #' @param start_on_exon a logical vector indicating if start or and end of junc is on exon.
 #'
 #' @return a GRange object with the exon range of the unknown exon

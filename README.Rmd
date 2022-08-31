@@ -336,6 +336,7 @@ dat_easyquant <- dat_for_requantification_cts %>%
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
 # https://github.com/TRON-Bioinformatics/easyquant
+# see Section 6 for more information on the requantifcation of splice junctions
 
 
 # add peptide sequence
@@ -373,4 +374,6 @@ txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
 
+## 6 Requantification with Easyquant  
 
+Splice2neo enables the user to transform junctions into a format so that they can be quantified in RNA-seq data (`transform_for_requant`) and to import results from this requantification (`map_requant` or `read_requant`). 

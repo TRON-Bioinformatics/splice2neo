@@ -1,16 +1,40 @@
 
 #' Annotate if there is an exon within an intron
 #'
-#' @param df a data.frame wit variants and (at least) the following columns:
-#'   - `junc_id`
-#'   - `tx_id`
-#'
+#' @param junc_id Junction id
+#' @param tx_id Transcript id
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #'
-#' @return A data.frame with with an additional row `exon_free`
+#' @return Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron rententions.
+#' @examples
 #'
+#' library(dplyr)
 #'
+#' toy_tx <- GenomicRanges::GRangesList(list(
+#'tx1 = GenomicRanges::GRanges(
+#'  c("1", "1", "1"),
+#' IRanges::IRanges(
+#'    c(2, 15, 27),
+#'  c(8, 23, 35),
+#'),
+#'strand = c("+", "+", "+")
+#'),
+#'tx1a = GenomicRanges::GRanges(
+#'  c("1" ),
+#'IRanges::IRanges(
+#'  c(3),
+#'  c(10),
+#'),
+#'strand = c("+")
+#')))
+#'
+#'df <- tibble(
+#'  junc_id = c("1:8-9:+", "1:14-15:+"),
+#'  tx_id = c("tx1", "tx1")
+#')
+#'df1 <- df %>%
+#'  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
 #'
 #' @export
 exon_in_intron <- function(junc_id, tx_id, transcripts){
