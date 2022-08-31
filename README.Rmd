@@ -354,6 +354,13 @@ dat_cts_peptide_requantification <-
 # EasyQuant results can be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
+
+# annotate if there is a exon of another transcript within a predicted intron retention
+dat_cts_peptide_requantification <- 
+  dat_cts_peptide_requantification %>%
+  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
+
+
 ```
 
 
