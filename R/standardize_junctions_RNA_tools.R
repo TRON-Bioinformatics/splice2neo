@@ -43,7 +43,6 @@ generate_combined_dataset <- function(spladder_juncs, leafcutter_juncs){
 #' @return The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
 #' identified by spladder or LeafCutter (`identified_by_leafcutter`, `identified_by_spladder`)
 #'
-#' @examples
 #'
 #' @import dplyr
 #' @export
