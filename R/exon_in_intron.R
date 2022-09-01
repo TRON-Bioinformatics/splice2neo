@@ -106,7 +106,7 @@ exon_in_intron <- function(junc_id, tx_id, transcripts, patient_id = NULL){
 
   jx_df <- suppressWarnings(
     jx_df %>%
-      mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts )) %>%
+      mutate(interval_exon_overlap = IRanges::overlapsAny(jx, transcripts , ignore.strand = TRUE)) %>%
       dplyr::select(interval_exon_overlap, junc_tx_pat_id)
   )
 
