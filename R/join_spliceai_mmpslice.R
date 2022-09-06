@@ -8,7 +8,6 @@
 #' @return A combined table with unique junctions. The columns DNA_tool
 #'   contains information which tools identified the given junction
 #'
-#' @examples
 #'
 #' @import dplyr
 #' @export

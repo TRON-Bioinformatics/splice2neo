@@ -12,7 +12,6 @@
 #' -  `sequence`: The context sequence that will be requantified.
 #' - `position`: The position of the junction within the context sequence.
 #'
-#' @examples
 #'
 #'
 #'@import dplyr
@@ -42,7 +41,6 @@ transform_for_requant <- function(df){
 #'
 #' @return A tibble with with the re-quantification results. More details about Easyquant can be obtained at https://github.com/TRON-Bioinformatics/easyquant
 #'
-#' @examples
 #'
 #'
 #'@import dplyr
@@ -198,7 +196,6 @@ read_requant <- function(path_folder){
 #' - `coverage_median`: Interval coverage defined as the median number of reads covering a position in the given interval representing an intron retention. Is NA for non intron retention events.
 #' - `coverage_median_left`: Interval coverage defined as the median number of reads covering a position in the interval left to the intron retention or splice junction of interest.
 #' - `coverage_median_right`: Interval interval coverage defined as the median number of reads covering a position in the interval right to the intron retention or splice junction of interest.
-#' @examples
 #'
 #'
 #'@import dplyr

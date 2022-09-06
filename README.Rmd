@@ -28,6 +28,7 @@ knitr::opts_chunk$set(
 3. [Example](##3-Example)
 4. [Dummy workflow](##4-Dummy-workflow)
 5. [Building the transcript database](##5-Building-the-transcript database)
+6. [Requantification with Easyquant](##6-Requantification-with-Easyquant)
 
 ## 1 Overview
 
@@ -336,6 +337,7 @@ dat_easyquant <- dat_for_requantification_cts %>%
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
 # https://github.com/TRON-Bioinformatics/easyquant
+# see Section 6 for more information on the requantifcation of splice junctions
 
 
 # add peptide sequence
@@ -352,6 +354,13 @@ dat_cts_peptide_requantification <-
 # EasyQuant results can be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
+
+# annotate if there is a exon of another transcript within a predicted intron retention
+dat_cts_peptide_requantification <- 
+  dat_cts_peptide_requantification %>%
+  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
+
+
 ```
 
 
@@ -373,4 +382,17 @@ txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ```
 
+## 6 Requantification with Easyquant  
 
+Splice2neo enables the user to transform junctions into a format so that they can be quantified in RNA-seq data (`transform_for_requant`) using Easyquant (https://github.com/TRON-Bioinformatics/easyquant, v0.4.0) and to import results from this requantification (`map_requant` or `read_requant`). The user can add columns containing information on the read support for the given splice junction in this manner. The user may be interested in different columns depending on the type of splice event. Here, this are the most relevant columns for the different types of events:   
+
+**Alternative splice sites & exon skipping events**:   
+ - *junc_interval_start*: Junction reads that map on the splice junction of interest  
+ - *span_interval_start*: Spanning reads that frame the splice junction of interest  
+  
+**Intron retention**:   
+ - *within_interval*: Number of reads that map to the intron of interest  
+ - *coverage_perc*: Relative read coverage of the intron of interest  
+ - *coverage_median*: Median read coverage of the intron of interest  
+ - *coverage_mean*: Mean read coverage of the intron of interest. This value can be misleading by skewed read distribution and the user may rather want to use the median coverage 
+  
