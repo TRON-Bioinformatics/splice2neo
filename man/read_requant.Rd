@@ -15,7 +15,3 @@ A tibble with with the re-quantification results. More details about Easyquant c
 \description{
 Imports the re-quantification results from analysis with EasyQuant
 }
-\examples{
-
-
-}

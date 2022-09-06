@@ -25,7 +25,3 @@ A tibble that can be used for re-quantification with EasyQuant This tibble has t
 \description{
 Creates a table with context sequences for re-quantification analysis with EasyQuant.
 }
-\examples{
-
-
-}
