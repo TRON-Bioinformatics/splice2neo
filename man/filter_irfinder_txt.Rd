@@ -9,6 +9,10 @@ filter_irfinder_txt(tib, warnings, ratio_cutoff)
 }
 \arguments{
 \item{tib}{IRFinder intermediate tibble with columns Warnings and IRratio}
+
+\item{warnings}{Filter out IR calls with Warnings}
+
+\item{ratio_cutoff}{Filter out IR calls with IRRatio <= this parameter}
 }
 \value{
 A tibble in standardized junction format

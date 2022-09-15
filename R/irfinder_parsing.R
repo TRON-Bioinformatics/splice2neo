@@ -78,6 +78,8 @@ transform_irfinder_txt <- function(tib){
 #' false postive IR predictions  
 #'
 #' @param tib IRFinder intermediate tibble with columns Warnings and IRratio
+#' @param warnings Filter out IR calls with Warnings
+#' @param ratio_cutoff Filter out IR calls with IRRatio <= this parameter
 #'
 #' @return A tibble in standardized junction format
 #'
