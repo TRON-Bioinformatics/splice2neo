@@ -7,7 +7,7 @@
 import_irfinder_txt(file.name)
 }
 \arguments{
-\item{file.name}{Path to IRFinder-IR-nondir.txt}
+\item{file.name}{Path to "IR-(non)dir-(val).txt"}
 }
 \value{
 A tibble with one retained intron call per row

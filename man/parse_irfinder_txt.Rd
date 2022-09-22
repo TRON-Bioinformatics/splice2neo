@@ -8,7 +8,7 @@ and transforms the raw output into standardized junction output format.}
 parse_irfinder_txt(path, warnings = FALSE, irratio = 0.1, cnn = FALSE)
 }
 \arguments{
-\item{path}{The path to "IRFinder-IR-nondir.txt"}
+\item{path}{The path to "IR-(non)dir-(val).txt"}
 
 \item{warnings}{Filter out IR calls with Warnings}
 
@@ -18,6 +18,10 @@ parse_irfinder_txt(path, warnings = FALSE, irratio = 0.1, cnn = FALSE)
 }
 \value{
 A tibble in standardized junction format
+
+path <-  system.file("extdata", "", package = "splice2neo")
+ir_juncs <- parse_irfinder_txt(path)
+ir_juncs
 }
 \description{
 Imports "IRFinder-IR-nondir.txt" from IRFinder short mode

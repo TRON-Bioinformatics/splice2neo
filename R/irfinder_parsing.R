@@ -2,14 +2,14 @@
 
 #' Imports tabular IRFinder retained introns predictions
 #'
-#' @param file.name Path to IRFinder-IR-nondir.txt
+#' @param file.name Path to "IR-(non)dir-(val).txt"
 #'
 #' @return A tibble with one retained intron call per row
 #'
 #' @import readr
 import_irfinder_txt <- function(file.name) {
   if(!file.exists(file.name)){
-    stop("IRFinder-IR-nondir.txt file is missing")
+    stop("IRFinder-IR-nondir.txt file is missing...")
   }
   intron.file <- read_tsv(
     file.name,
@@ -87,7 +87,7 @@ transform_irfinder_txt <- function(tib){
 #' @import dplyr
 #' @export
 filter_irfinder_txt <- function(tib, warnings, ratio_cutoff){
-  stopifnot("Argzment ratio_cutoff must be a value between 0 and 1!" = ratio_cutoff > 0 & ratio_cutoff < 1)
+  stopifnot("Argument ratio_cutoff must be a value between 0 and 1!" = ratio_cutoff > 0 & ratio_cutoff < 1)
   filtered_introns <- tib %>%
     dplyr::filter(IRratio >= ratio_cutoff)
   
@@ -103,12 +103,16 @@ filter_irfinder_txt <- function(tib, warnings, ratio_cutoff){
 #' Imports "IRFinder-IR-nondir.txt" from IRFinder short mode
 #' and transforms the raw output into standardized junction output format.
 #'
-#' @param path The path to "IRFinder-IR-nondir.txt"
+#' @param path The path to "IR-(non)dir-(val).txt"
 #' @param warnings Filter out IR calls with Warnings
 #' @param irratio  Filter out IR calls with IRRatio <= this parameter
 #' @param cnn Use CNN validated table as input instead of standard output table
 #'
 #' @return A tibble in standardized junction format
+#' 
+#' path <-  system.file("extdata", "", package = "splice2neo")
+#' ir_juncs <- parse_irfinder_txt(path)
+#' ir_juncs
 #' 
 #' @import readr fs
 #' @export
