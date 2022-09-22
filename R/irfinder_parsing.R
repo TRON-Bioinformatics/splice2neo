@@ -86,8 +86,8 @@ transform_irfinder_txt <- function(tib){
 #'
 #' @import dplyr
 #' @export
-filter_irfinder_txt <- function(tib, warnings, ratio_cutoff){
-  stopifnot("Argument ratio_cutoff must be a value between 0 and 1!" = ratio_cutoff > 0 & ratio_cutoff < 1)
+filter_irfinder_txt <- function(tib, warnings=FALSE, ratio_cutoff=0.1){
+  stopifnot("Argument ratio_cutoff must be a value between 0 and 1!" = ratio_cutoff > 0 & ratio_cutoff <= 1)
   filtered_introns <- tib %>%
     dplyr::filter(IRratio >= ratio_cutoff)
   
@@ -110,7 +110,7 @@ filter_irfinder_txt <- function(tib, warnings, ratio_cutoff){
 #'
 #' @return A tibble in standardized junction format
 #' 
-#' path <-  system.file("extdata", "", package = "splice2neo")
+#' path <- system.file("extdata", "", package = "splice2neo")
 #' ir_juncs <- parse_irfinder_txt(path)
 #' ir_juncs
 #' 
