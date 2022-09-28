@@ -19,7 +19,7 @@ into standardized junction output format.
 }
 \examples{
 path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-star_juncs <- star_transform(path)
+star_juncs <- parse_star_sj(path)
 star_juncs
 
 }
