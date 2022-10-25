@@ -11,7 +11,7 @@ annotate_mut_effect(effect_df, transcripts, transcripts_gr)
 should have at least the following columns:
 \itemize{
 \item \code{chr} chromosome
-\item \code{pos} absolut position of the effect
+\item \code{pos} absolute position of the effect
 \item \code{change} an splicing effect class, one of \code{DL}, \code{DG}, \code{AL}, \code{AG}.
 }}
 

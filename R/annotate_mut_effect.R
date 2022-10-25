@@ -10,7 +10,7 @@
 #' @param effect_df a data.frame with variant effects on splicing per row. It
 #' should have at least the following columns:
 #'   - `chr` chromosome
-#'   - `pos` absolut position of the effect
+#'   - `pos` absolute position of the effect
 #'   - `change` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons

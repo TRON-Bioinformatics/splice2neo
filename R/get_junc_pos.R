@@ -93,7 +93,7 @@ get_intronretention_alt_pos <- function(tx_lst, tx_mod, jx, intron_retention){
 
   jx_lst <- split(jx, 1:length(jx))
   start_on_exon <- is_start_on_exon(tx_lst, jx_lst, intron_retention)
-  ex_range <- get_unknown_exon_intron_rentention(tx_lst, tx_mod, jx_lst, start_on_exon)
+  ex_range <- get_unknown_exon_intron_retention(tx_lst, tx_mod, jx_lst, start_on_exon)
 
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
   ex_end <- GenomicRanges::resize(ex_range, width = 1, fix="end")
@@ -131,7 +131,7 @@ get_intronretention_genomic_alt_pos <- function(tx_lst, tx_mod, jx, intron_reten
 
   start_on_exon <- is_start_on_exon(tx_lst, jx_lst, intron_retention)
 
-  ex_range <- get_unknown_exon_intron_rentention(tx_lst, tx_mod, jx_lst, start_on_exon)
+  ex_range <- get_unknown_exon_intron_retention(tx_lst, tx_mod, jx_lst, start_on_exon)
 
   # start pos of other exon
   ex_start <- GenomicRanges::resize(ex_range, width = 1, fix="start")
@@ -193,9 +193,9 @@ is_start_on_exon <- function(tx_lst, jx_lst, intron_retention){
 #'
 #' @return a GRange object with the exon range of the unknown exon
 #'
-get_unknown_exon_intron_rentention <- function(tx_lst, tx_mod, jx_lst, start_on_exon){
+get_unknown_exon_intron_retention <- function(tx_lst, tx_mod, jx_lst, start_on_exon){
   # get position of the next exon for intron retentions
-  # this is only relevant for intron rententions
+  # this is only relevant for intron retentions
   # we need to identify the other boundary of the intron
 
   # get unknown exon

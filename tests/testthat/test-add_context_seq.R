@@ -26,7 +26,7 @@ test_that("add_context_seq works on toy example data with keep_ranges", {
 
 })
 
-test_that("add_context_seq does not fail on predicted intron rententions at the end and beginning of a transcript ", {
+test_that("add_context_seq does not fail on predicted intron retentions at the end and beginning of a transcript ", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
