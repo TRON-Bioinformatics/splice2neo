@@ -25,5 +25,5 @@ format_spliceai(df)
 
 }
 \seealso{
-\code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
+\code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}
 }

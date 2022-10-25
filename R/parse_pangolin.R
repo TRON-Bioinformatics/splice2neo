@@ -16,7 +16,6 @@
 #' @export
 parse_pangolin <- function(vcf_file){
 
-  # Format: ALLELE|SYMBOL|DS_AG|DS_AL|DS_DG|DS_DL|DP_AG|DP_AL|DP_DG|DP_DL
   # Format: Pangolin=ENSG00000237298.10_8|33:0.0|-50:0.0|Wa
   # Format: gene|pos:largest_increase|pos:largest_decrease|
 
@@ -36,30 +35,36 @@ parse_pangolin <- function(vcf_file){
   pangolin_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("Pangolin")) %>%
     mutate(
-      fields = Pangolin %>%
+      annot = Pangolin %>%
+
+        # remove warning massage
         str_replace_all("Warnings:NoAnnotatedSitesToMaskForThisGene", "") %>%
-        stringr::str_split("\\|")
+
+        # extract each annotation per variant
+        str_extract_all("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|")
     ) %>%
     select(-Pangolin) %>%
-    unnest(fields) %>%
-    filter(!is.na(fields) & fields != "") %>%
-    mutate(annot = rep(col_names, nrow(.)/length(col_names))) %>%
-    pivot_wider(names_from = annot, values_from = fields)
-    # TODO
-
-    separate(fields, into = col_names, sep = "\\|") %>%
+    unnest(annot) %>%
+    # pares individual annotation values
     mutate(
-
-      # replace missing data with "." with NA
-      across(starts_with("DS_"), na_if, "."),
-      across(starts_with("DP_"), na_if, "."),
-
-      # convert scores as numeric and positions as integers
-      across(starts_with("DS_"), as.numeric),
-      across(starts_with("DP_"), as.integer)
+      gene_id = annot %>%
+        str_replace("([^|]*)\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|", "\\1"),
+      increase_pos = annot %>%
+        str_replace("[^|]*\\|(-?\\d+):\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|", "\\1") %>%
+        as.integer(),
+      increase_score = annot %>%
+        str_replace("[^|]*\\|-?\\d+:(\\d\\.+\\d+)\\|-?\\d+:\\d\\.+\\d+\\|", "\\1") %>%
+        as.numeric(),
+      decrease_pos = annot %>%
+        str_replace("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|(-?\\d+):\\d\\.+\\d+\\|", "\\1") %>%
+        as.integer(),
+      decrease_score = annot %>%
+        str_replace("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:(\\d\\.+\\d+)\\|", "\\1") %>%
+        as.numeric(),
     )
 
+
   fix_df %>%
-    left_join(splice_df, by = "Key")
+    left_join(pangolin_df, by = "Key")
 
 }

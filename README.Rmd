@@ -302,7 +302,7 @@ dat_spliceai <-
   parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
 dat_spliceai_annotated <-
-  annotate_spliceai_junction(var_df = dat_splicai_formatted,
+  annotate_mut_effect(var_df = dat_splicai_formatted,
                              transcripts = transcripts,
                              transcripts_gr = transcripts_gr)
 

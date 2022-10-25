@@ -3,7 +3,7 @@ test_that("join_spliceai_mmpslice works", {
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
-  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
 
   mmsplice_file <- system.file("extdata", "mmsplice_pred.csv", package = "splice2neo")
   mmsplice_df <- parse_mmsplice(mmsplice_file)

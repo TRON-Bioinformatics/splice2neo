@@ -15,7 +15,7 @@
 #' df <- parse_spliceai(spliceai_file)
 #' format_spliceai(df)
 #'
-#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
+#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}
 #' @export
 format_spliceai <- function(spliceai_variants){
 
@@ -32,7 +32,15 @@ format_spliceai <- function(spliceai_variants){
     # filter effects without probability given
     filter(!is.na(prob) & prob > 0) %>%
 
-    # remove gene symbol and make non-redundant output
-    dplyr::select(-c("SYMBOL")) %>%
+    # add unique IDs for mutation and effects
+    mutate(
+      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
+      # mut_effect_id = str_c(mut_id, "_", row_number()),
+      chr = CHROM,
+      pos = as.integer(POS) + pos_rel
+    ) %>%
+
+    # keep only relevant columns
+    dplyr::select(mut_id, change, prob, chr, pos_rel, pos) %>%
     dplyr::distinct()
 }

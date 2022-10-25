@@ -1,17 +1,17 @@
-test_that("annotate_spliceai_junction works on toy example", {
+test_that("annotate_mut_effect works on toy example", {
 
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
 
-  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
 
   expect_true(nrow(annot_df) >= nrow(df))
   expect_true(length(unique(annot_df$tx_id)) > 1)
 
 })
 
-test_that("annotate_spliceai_junction works on empty tibble", {
+test_that("annotate_mut_effect works on empty tibble", {
 
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
   df_raw <- parse_spliceai(spliceai_file)
@@ -20,8 +20,8 @@ test_that("annotate_spliceai_junction works on empty tibble", {
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
 
-  annot_df_empty <- annotate_spliceai_junction(df_empty, toy_transcripts, toy_transcripts_gr)
-  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+  annot_df_empty <- annotate_mut_effect(df_empty, toy_transcripts, toy_transcripts_gr)
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
 
   expect_true(nrow(annot_df_empty) == 0)
   expect_true(ncol(annot_df_empty) == ncol(annot_df))
@@ -29,26 +29,21 @@ test_that("annotate_spliceai_junction works on empty tibble", {
 
 })
 
-test_that("annotate_spliceai_junction does not predict events outside of exon range", {
+test_that("annotate_mut_effect does not predict events outside of exon range", {
 
   # event at the end of gene/transcript with only one exon
   # test that no prediction of an "intron retention"
   df <- dplyr::tibble(
-    CHROM = c("chr2"),
-    POS = c("152043101"),
-    ID = c(NA_character_),
-    REF = c("G"),
-    ALT = c("T"),
-    QUAL = c(NA_character_),
-    FILTER = c(NA_character_),
-    Key = c(3L),
-    ALLELE = c("T"),
-    change = c("DL"),
-    prob = c(0.32),
-    pos_rel = c(8L)
+    mut_id = "chr2_152043101_G_T",
+    mut_effect_id = str_c(mut_id, "_", 1),
+    change = "DL",
+    prob = 0.32,
+    pos_rel = 8,
+    chr ="chr2",
+    pos = 152043101 + 8
   )
 
-  annot_df <- annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
 
   expect_true(nrow(annot_df) == 0 )
 
@@ -56,7 +51,7 @@ test_that("annotate_spliceai_junction does not predict events outside of exon ra
 })
 
 
-test_that("annotate_spliceai_junction works for multiple effects from same mutation", {
+test_that("annotate_mut_effect works for multiple effects from same mutation", {
 
   skip("Long download")
 
@@ -69,28 +64,25 @@ test_that("annotate_spliceai_junction works for multiple effects from same mutat
 
 
   df <- dplyr::tibble(
-    CHROM = c("chr2", "chr2"),
-    POS = c("62934431", "62934431"),
-    ID = c(NA_character_, NA_character_),
-    REF = c("G", "G"),
-    ALT = c("T", "T"),
-    QUAL = c(NA_character_, NA_character_),
-    FILTER = c(NA_character_, NA_character_),
-    Key = c(3L, 3L),
-    ALLELE = c("T", "T"),
+    mut_id = c(
+      "chr2_62934431_G_T",
+      "chr2_62934431_G_T"
+    ),
+    chr = c("chr2", "chr2"),
+    pos_rel = c(16L, -1L),
+    pos = c(62934431, 62934431) + pos_rel,
     change = structure(3:4, .Label = c("AG","AL", "DG", "DL"), class = "factor"),
-    prob = c(0.32, 0.95),
-    pos_rel = c(16L, -1L)
+    prob = c(0.32, 0.95)
   )
 
-  annot_df <- annotate_spliceai_junction(df, transcripts, transcripts_gr)
+  annot_df <- annotate_mut_effect(df, transcripts, transcripts_gr)
 
   # expect_true(nrow(annot_df) >= nrow(df))
 
 })
 
 
-test_that("annotate_spliceai_junction works for donor gain and aceptor gain in introns", {
+test_that("annotate_mut_effect works for donor gain and aceptor gain in introns", {
 
   #=============================================================================
   #          1         2         3         4
@@ -128,7 +120,7 @@ test_that("annotate_spliceai_junction works for donor gain and aceptor gain in i
   #=============================================================================
 
   toy_df <- dplyr::tribble(
-    ~POS, ~change, ~name,
+    ~pos, ~change, ~name,
     7,    "DG",  "DG exon",
     17,   "AG",  "AG exon",
     10,   "DG",  "DG intron",
@@ -137,7 +129,7 @@ test_that("annotate_spliceai_junction works for donor gain and aceptor gain in i
     15,   "AL",  "AL",
     19,   "DL",  "DL exon"
     ) %>%
-    mutate(CHROM = "1", pos_rel = 0, REF = "G", ALT = "T")
+    mutate(chr = "1", pos_rel = 0, REF = "G", ALT = "T")
 
   toy_tx <- GenomicRanges::GRangesList(list(
     tx1 = GenomicRanges::GRanges(
@@ -163,14 +155,14 @@ test_that("annotate_spliceai_junction works for donor gain and aceptor gain in i
   expected_neg = c("1:17-27:-", "1:8-10:-", "1:12-15:-")
   expected_jx = c(expected_pos, expected_neg)
 
-  annot_df <- annotate_spliceai_junction(toy_df, toy_tx, range(toy_tx))
+  annot_df <- annotate_mut_effect(toy_df, toy_tx, range(toy_tx))
 
   expect_equal(sort(annot_df$junc_id), sort(expected_jx))
 
 })
 
 
-test_that("annotate_spliceai_junction does not annotate intron-retention at positions within introns", {
+test_that("annotate_mut_effect does not annotate intron-retention at positions within introns", {
 
   #=============================================================================
   #          1         2         3         4
@@ -202,7 +194,7 @@ test_that("annotate_spliceai_junction does not annotate intron-retention at posi
   #=============================================================================
 
   toy_df <- dplyr::tribble(
-    ~POS, ~change, ~name,
+    ~pos, ~change, ~name,
     10,   "DL",  "DL intron",
     12,   "AL",  "AL intron",
     10,   "DG",  "DG intron",
@@ -210,7 +202,7 @@ test_that("annotate_spliceai_junction does not annotate intron-retention at posi
     23,   "DL",  "DL",
     15,   "AL",  "AL",
   ) %>%
-    mutate(CHROM = "1", pos_rel = 0, REF = "G", ALT = "T")
+    mutate(chr = "1", pos_rel = 0, REF = "G", ALT = "T")
 
   toy_tx <- GenomicRanges::GRangesList(list(
     tx1 = GenomicRanges::GRanges(
@@ -236,7 +228,7 @@ test_that("annotate_spliceai_junction does not annotate intron-retention at posi
   expected_neg = c("1:8-10:-", "1:12-15:-")
   expected_jx = c(expected_pos, expected_neg)
 
-  annot_df <- annotate_spliceai_junction(toy_df, toy_tx, range(toy_tx))
+  annot_df <- annotate_mut_effect(toy_df, toy_tx, range(toy_tx))
 
   expect_equal(sort(annot_df$junc_id), sort(expected_jx))
 
