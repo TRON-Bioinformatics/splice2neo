@@ -11,7 +11,7 @@
 #' should have at least the following columns:
 #'   - `chr` chromosome
 #'   - `pos` absolute position of the effect
-#'   - `change` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
+#'   - `effect` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
@@ -59,18 +59,18 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
 
       # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
       filter(
-        change != "DL" | at_end,
-        change != "AL" | at_start
+        effect != "DL" | at_end,
+        effect != "AL" | at_start
       ) %>%
 
       # add rules
       mutate(
-        change = as.character(change),
+        effect = as.character(effect),
         # pos = as.integer(POS) + pos_rel
       ) %>%
       left_join(
-        change_to_junction_rules,
-        by = c("change")
+        effect_to_junction_rules,
+        by = c("effect")
       ) %>%
 
       # apply rules
@@ -214,8 +214,8 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 }
 
 #' Rules on how a splicing affecting variant creates a junction
-change_to_junction_rules <- tribble(
-  ~change, ~class,             ~rule_left,        ~rule_right,
+effect_to_junction_rules <- tribble(
+  ~effect, ~class,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
   "DL",    "exon skipping",    "upstream_end",    "downstream_start",
 

@@ -306,6 +306,14 @@ dat_spliceai_annotated <-
                              transcripts = transcripts,
                              transcripts_gr = transcripts_gr)
 
+# get pangolin results and annotate effects as splice junctions
+pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+
+pangolin_annot_df <- parse_pangolin(pangolin_file) %>%
+  format_pangolin() %>%
+  annotate_mut_effect(toy_transcripts, toy_transcripts_gr)
+
+
 # import & transform MMSplice results
 dat_mmsplice <- parse_mmsplice(infile = "path/to/mmsplice/file.csv")
 dat_mmsplice_annotated  <-

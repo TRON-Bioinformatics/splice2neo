@@ -15,8 +15,8 @@ combine_mut_junc <- function(spliceai_juncs, mmsplice_juncs){
 
   spliceai_juncs <- spliceai_juncs %>%
     mutate(junc_tx_id = paste0(junc_id, "_", tx_id))%>%
-    dplyr::rename(prob_spliceai=prob)%>%
-    dplyr::rename(class_spliceai=class)
+    dplyr::rename(score_spliceai = score)%>%
+    dplyr::rename(class_spliceai = class)
 
   mmsplice_juncs <- mmsplice_juncs %>%
     mutate(junc_tx_id = paste0(junc_id, "_", transcript_id),
@@ -38,7 +38,7 @@ combine_mut_junc <- function(spliceai_juncs, mmsplice_juncs){
     mutate(tx_id = ifelse(!is.na(tx_id.x), tx_id.x, tx_id.y))%>%
     dplyr::select(junc_tx_id, mut_id, tx_id, junc_id, junc_tx_id,
            identified_by_spliceai, identified_by_mmsplice,
-           prob_spliceai, class_spliceai, delta_logit_psi_mmsplice,
+           score_spliceai, class_spliceai, delta_logit_psi_mmsplice,
            pathogenicity_mmsplice, efficiency_mmsplice,  class_mmsplice)
   return(juncs)
 

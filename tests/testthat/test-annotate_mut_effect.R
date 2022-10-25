@@ -11,6 +11,21 @@ test_that("annotate_mut_effect works on toy example", {
 
 })
 
+
+test_that("annotate_mut_effect works on toy example with pangolin", {
+
+  pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+
+  effect_df <- parse_pangolin(pangolin_file) %>%
+    format_pangolin()
+
+  annot_df <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr)
+
+  expect_true(nrow(annot_df) >= nrow(effect_df))
+  expect_true(length(unique(annot_df$tx_id)) > 1)
+
+})
+
 test_that("annotate_mut_effect works on empty tibble", {
 
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
@@ -36,7 +51,7 @@ test_that("annotate_mut_effect does not predict events outside of exon range", {
   df <- dplyr::tibble(
     mut_id = "chr2_152043101_G_T",
     mut_effect_id = str_c(mut_id, "_", 1),
-    change = "DL",
+    effect = "DL",
     prob = 0.32,
     pos_rel = 8,
     chr ="chr2",
@@ -71,7 +86,7 @@ test_that("annotate_mut_effect works for multiple effects from same mutation", {
     chr = c("chr2", "chr2"),
     pos_rel = c(16L, -1L),
     pos = c(62934431, 62934431) + pos_rel,
-    change = structure(3:4, .Label = c("AG","AL", "DG", "DL"), class = "factor"),
+    effect = structure(3:4, .Label = c("AG","AL", "DG", "DL"), class = "factor"),
     prob = c(0.32, 0.95)
   )
 
@@ -120,7 +135,7 @@ test_that("annotate_mut_effect works for donor gain and aceptor gain in introns"
   #=============================================================================
 
   toy_df <- dplyr::tribble(
-    ~pos, ~change, ~name,
+    ~pos, ~effect, ~name,
     7,    "DG",  "DG exon",
     17,   "AG",  "AG exon",
     10,   "DG",  "DG intron",
@@ -194,7 +209,7 @@ test_that("annotate_mut_effect does not annotate intron-retention at positions w
   #=============================================================================
 
   toy_df <- dplyr::tribble(
-    ~pos, ~change, ~name,
+    ~pos, ~effect, ~name,
     10,   "DL",  "DL intron",
     12,   "AL",  "AL intron",
     10,   "DG",  "DG intron",

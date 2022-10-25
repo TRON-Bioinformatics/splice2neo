@@ -12,7 +12,7 @@ should have at least the following columns:
 \itemize{
 \item \code{chr} chromosome
 \item \code{pos} absolute position of the effect
-\item \code{change} an splicing effect class, one of \code{DL}, \code{DG}, \code{AL}, \code{AG}.
+\item \code{effect} an splicing effect class, one of \code{DL}, \code{DG}, \code{AL}, \code{AG}.
 }}
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
