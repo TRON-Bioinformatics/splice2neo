@@ -24,7 +24,13 @@ test_that("combine_mut_junc works", {
   mmsplice_annot_df$efficiency <- "xx"
   # junc_annot <- annotate_mmsplice(mmsplice_df, toy_transcripts)
 
-  df_comb <- combine_mut_junc(spliceai_annot_df, mmsplice_annot_df)
+  junc_data_list = list(
+    "spliceai" = spliceai_annot_df,
+    "pangolin" = pangolin_annot_df,
+    "mmsplice" = mmsplice_annot_df
+  )
+
+  df_comb <- combine_mut_junc(junc_data_list)
 
   expect_true(nrow(df_comb) >= 1)
 

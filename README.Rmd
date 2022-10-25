@@ -320,8 +320,11 @@ dat_mmsplice_annotated  <-
   annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
 # mutation-based junctions
-dat_mut <-
-  combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
+dat_mut <- combine_mut_junc(list(
+    "spliceai" = dat_spliceai_annotated, 
+    "mmsplice" = dat_mmsplice_annotated,
+    "pangolin" = pangolin_annot_df
+    ))
 
 # add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter
 dat_mut <- dat_mut %>%
