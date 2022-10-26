@@ -1,3 +1,13 @@
+# splice2neo 0.5.4
+
+* adds a function to annotate if a exon of another transcript is located in an intron 
+* update README  
+
+# splice2neo 0.5.3
+
+* adapts splice2neo to easyquant 0.4.0. (https://github.com/TRON-Bioinformatics/easyquant)
+* prevents annotate_spliceai function from failing in case of empty input adds some more tests
+
 # splice2neo 0.5.2
 
 * support updated version of EasyQuant

@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.4.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.5.4-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -19,6 +19,8 @@ coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/gra
 4.  [Dummy workflow](##4-Dummy-workflow)
 5.  [Building the transcript
     database](##5-Building-the-transcript%20database)
+6.  [Requantification with
+    Easyquant](##6-Requantification-with-Easyquant)
 
 ## 1 Overview
 
@@ -115,6 +117,7 @@ junc_df
 #>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>   
 #> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>   
 #> # … with 11 more rows
+#> # ℹ Use `print(n = ...)` to see more rows
 ```
 
 ### 3.3 Modify transcripts with junctions
@@ -125,12 +128,12 @@ junction positions, the context sequence.
 
 ``` r
 toy_junc_df
-#> # A tibble: 14 × 2
+#> # A tibble: 17 × 2
 #>    junc_id                    tx_id          
 #>    <chr>                      <chr>          
 #>  1 chr2:152389996-152392205:- ENST00000409198
 #>  2 chr2:152389996-152390729:- ENST00000409198
-#>  3 chr2:152389955-152389956:- ENST00000409198
+#>  3 chr2:152389955-152389956:- ENST00000397345
 #>  4 chr2:152388410-152392205:- ENST00000409198
 #>  5 chr2:152388410-152390729:- ENST00000409198
 #>  6 chr2:179415981-179416357:- ENST00000342992
@@ -142,6 +145,9 @@ toy_junc_df
 #> 12 chr2:179642044-179642187:- ENST00000342992
 #> 13 chr2:179642146-179642147:- ENST00000342992
 #> 14 chr2:179642044-179642431:- ENST00000342992
+#> 15 chr2:152226533-152226534:+ ENST00000460812
+#> 16 chr2:152222731-152222732:+ ENST00000460812
+#> 17 chr2:152388410-152388411:- ENST00000397345
 
 
 junc_df <- toy_junc_df %>% 
@@ -149,23 +155,28 @@ junc_df <- toy_junc_df %>%
 
 
 junc_df
-#> # A tibble: 14 × 8
-#>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
-#>    <chr>        <chr> <chr>           <int> <chr>          <dbl>    <int> <chr> 
-#>  1 chr2:152389… ENST… ENST0000…       16412 AAGAAG…          200      400 ef606…
-#>  2 chr2:152389… ENST… ENST0000…       16517 AAGAAG…          200      400 6c189…
-#>  3 chr2:152389… ENST… ENST0000…       17290 ACATCT…          200      400 c8bd5…
-#>  4 chr2:152388… ENST… ENST0000…       16412 AAGAAG…          200      400 d41d2…
-#>  5 chr2:152388… ENST… ENST0000…       16517 AAGAAG…          200      400 db9b3…
-#>  6 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 744c1…
-#>  7 chr2:179415… ENST… ENST0000…       84158 ATTTGA…          200      400 5315f…
-#>  8 chr2:179415… ENST… ENST0000…       83789 TGGATT…          200      400 8eec0…
-#>  9 chr2:179445… ENST… ENST0000…       59307 CGGGCT…          200      400 5ab65…
-#> 10 chr2:179446… ENST… ENST0000…       59288 TTATCT…          200      400 c233b…
-#> 11 chr2:179445… ENST… ENST0000…       58982 TGGCTA…          200      400 fddf5…
-#> 12 chr2:179642… ENST… ENST0000…        4828 TAGAAG…          200      400 ce662…
-#> 13 chr2:179642… ENST… ENST0000…        4868 TAGACC…          200      400 86af1…
-#> 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC…          200      400 ec963…
+#> # A tibble: 17 × 8
+#>    junc_id                  tx_id tx_mo…¹ junc_…² cts_seq cts_j…³ cts_s…⁴ cts_id
+#>    <chr>                    <chr> <chr>     <int> <chr>   <chr>     <int> <chr> 
+#>  1 chr2:152389996-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 90bfc…
+#>  2 chr2:152389996-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 26f77…
+#>  3 chr2:152389955-15238995… ENST… ENST00…   21620 AAGAAG… 0,200,…    1945 f1f2c…
+#>  4 chr2:152388410-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 d4f9e…
+#>  5 chr2:152388410-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 c715a…
+#>  6 chr2:179415981-17941635… ENST… ENST00…   83789 TGGATT… 200         400 0128d…
+#>  7 chr2:179415987-17941598… ENST… ENST00…   84158 TGGATT… 0,200,…     769 50119…
+#>  8 chr2:179415000-17941635… ENST… ENST00…   83789 TGGATT… 200         400 c5083…
+#>  9 chr2:179445336-17944620… ENST… ENST00…   59307 CGGGCT… 200         400 38759…
+#> 10 chr2:179446225-17944622… ENST… ENST00…   59288 TTATCT… 0,200,…    1289 c4f9e…
+#> 11 chr2:179445336-17944663… ENST… ENST00…   58982 TGGCTA… 200         400 4796f…
+#> 12 chr2:179642044-17964218… ENST… ENST00…    4828 TAGAAG… 200         400 a4759…
+#> 13 chr2:179642146-17964214… ENST… ENST00…    4868 TAGACC… 0,200,…     502 46a57…
+#> 14 chr2:179642044-17964243… ENST… ENST00…    4703 GTCTCC… 200         400 77c18…
+#> 15 chr2:152226533-15222653… ENST… ENST00…    3878 AAAACT… 0,76,3…    4078 b8f7a…
+#> 16 chr2:152222731-15222273… ENST… ENST00…      76 AAAACT… 0,76,3…    4078 b8f7a…
+#> 17 chr2:152388410-15238841… ENST… ENST00…   23165 AAGAAG… 0,200,…    1945 f1f2c…
+#> # … with abbreviated variable names ¹​tx_mod_id, ²​junc_pos_tx, ³​cts_junc_pos,
+#> #   ⁴​cts_size
 ```
 
 ### 3.4 Annotate peptide sequence
@@ -183,23 +194,27 @@ junc_df <- junc_df %>%
 
 junc_df %>% 
   dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 14 × 4
-#>    junc_id                    junc_in_orf peptide_context       peptide_context…
+#> # A tibble: 17 × 4
+#>    junc_id                    junc_in_orf peptide_context                pepti…¹
 #>    <chr>                      <lgl>       <chr>                            <dbl>
 #>  1 chr2:152389996-152392205:- TRUE        PINRHFKYATQLMNEIC                   14
 #>  2 chr2:152389996-152390729:- TRUE        PRHLLAKTAGDQISQIC                   14
-#>  3 chr2:152389955-152389956:- FALSE       <NA>                                NA
-#>  4 chr2:152388410-152392205:- TRUE        PINRHFKYATQLMNEIKYRK…               14
-#>  5 chr2:152388410-152390729:- TRUE        PRHLLAKTAGDQISQIKYRK…               14
-#>  6 chr2:179415981-179416357:- TRUE        PSDPSKFTLAVSPVAGTPDY…               14
-#>  7 chr2:179415987-179415988:- FALSE       <NA>                                NA
-#>  8 chr2:179415000-179416357:- TRUE        PSDPSKFTLAVSPVVPPIVE…               14
+#>  3 chr2:152389955-152389956:- TRUE        PDMLTALYNSHMWSQVMSDGM               14
+#>  4 chr2:152388410-152392205:- TRUE        PINRHFKYATQLMNEIKYRKNYEKSKDKF…      14
+#>  5 chr2:152388410-152390729:- TRUE        PRHLLAKTAGDQISQIKYRKNYEKSKDKF…      14
+#>  6 chr2:179415981-179416357:- TRUE        PSDPSKFTLAVSPVAGTPDYIDVTRETIT…      14
+#>  7 chr2:179415987-179415988:- TRUE        PSDPSKFTLAVSPVGK                    14
+#>  8 chr2:179415000-179416357:- TRUE        PSDPSKFTLAVSPVVPPIVEFGPEYFDGL…      14
 #>  9 chr2:179445336-179446207:- TRUE        KHYPKDILSKYYQGDST                   14
-#> 10 chr2:179446225-179446226:- TRUE        PSDVPDKHYPKDILSKYYQG…               14
-#> 11 chr2:179445336-179446633:- TRUE        PSDASKAAYARDPQFPPEGE…               14
+#> 10 chr2:179446225-179446226:- TRUE        PSDVPDKHYPKDILSKYYQGEYIRLFLLI…      14
+#> 11 chr2:179445336-179446633:- TRUE        PSDASKAAYARDPQFPPEGELDADLRKTL…      14
 #> 12 chr2:179642044-179642187:- TRUE        TPSDSGEWTVVAQNRLWNIR                14
 #> 13 chr2:179642146-179642147:- TRUE        RAGRSSISVILTVEGKMR                  14
-#> 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQV…               14
+#> 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQVKPMFVEKLK…      14
+#> 15 chr2:152226533-152226534:+ NA          <NA>                                NA
+#> 16 chr2:152222731-152222732:+ NA          <NA>                                NA
+#> 17 chr2:152388410-152388411:- TRUE        PDMLTALYNSHMWSQVMSDGM               14
+#> # … with abbreviated variable name ¹​peptide_context_junc_pos
 ```
 
 ## 4 Dummy workflow
@@ -290,6 +305,7 @@ dat_easyquant <- dat_for_requantification_cts %>%
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
 # https://github.com/TRON-Bioinformatics/easyquant
+# see Section 6 for more information on the requantifcation of splice junctions
 
 
 # add peptide sequence
@@ -306,6 +322,11 @@ dat_cts_peptide_requantification <-
 # EasyQuant results can be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
+
+# annotate if there is a exon of another transcript within a predicted intron retention
+dat_cts_peptide_requantification <- 
+  dat_cts_peptide_requantification %>%
+  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
 ```
 
 ## 5 Building the transcript database
@@ -324,3 +345,30 @@ saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
 # load 
 txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 ```
+
+## 6 Requantification with Easyquant
+
+Splice2neo enables the user to transform junctions into a format so that
+they can be quantified in RNA-seq data (`transform_for_requant`) using
+Easyquant (<https://github.com/TRON-Bioinformatics/easyquant>, v0.4.0)
+and to import results from this requantification (`map_requant` or
+`read_requant`). The user can add columns containing information on the
+read support for the given splice junction in this manner. The user may
+be interested in different columns depending on the type of splice
+event. Here, this are the most relevant columns for the different types
+of events:
+
+**Alternative splice sites & exon skipping events**:  
+- *junc_interval_start*: Junction reads that map on the splice junction
+of interest  
+- *span_interval_start*: Spanning reads that frame the splice junction
+of interest
+
+**Intron retention**:  
+- *within_interval*: Number of reads that map to the intron of
+interest  
+- *coverage_perc*: Relative read coverage of the intron of interest  
+- *coverage_median*: Median read coverage of the intron of interest  
+- *coverage_mean*: Mean read coverage of the intron of interest. This
+value can be misleading by skewed read distribution and the user may
+rather want to use the median coverage

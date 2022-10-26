@@ -13,7 +13,6 @@
 #'  - `tx_id` the ID of the affected transcript
 #'  - `tx_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the transcript
 #'
-#' @examples
 #'
 #' @import dplyr
 #' @export

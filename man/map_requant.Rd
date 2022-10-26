@@ -44,7 +44,3 @@ Is NA for non intron retention events.
 \description{
 Maps the re-quantification result from EasyQuant. on the junction-transcript centric tibble by hash id.
 }
-\examples{
-
-
-}

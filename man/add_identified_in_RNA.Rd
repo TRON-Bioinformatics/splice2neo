@@ -20,6 +20,3 @@ identified by spladder or LeafCutter (\code{identified_by_leafcutter}, \code{ide
 \description{
 This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by LeafCutter or SplAdder
 }
-\examples{
-
-}
