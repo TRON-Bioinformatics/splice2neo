@@ -2,7 +2,7 @@
 #' Formats spliceAI output and filter for predicted effects
 #'
 #' Reformat the data for each annotated effect per row, filters effects
-#' to have a probability not NA and score > 0, and removes gene symbol from
+#' to have a probability score not NA and score > 0, and removes gene symbol from
 #' data to make non-redundant output.
 #'
 #' @param spliceai_variants [tibble][tibble::tibble-package] with parsed
@@ -15,7 +15,7 @@
 #' df <- parse_spliceai(spliceai_file)
 #' format_spliceai(df)
 #'
-#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
+#' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}
 #' @export
 format_spliceai <- function(spliceai_variants){
 
@@ -23,16 +23,23 @@ format_spliceai <- function(spliceai_variants){
   spliceai_variants %>%
     pivot_longer(
       cols = DS_AG:DP_DL,
-      names_to = c(".value", "change"),
+      names_to = c(".value", "effect"),
       names_pattern = "(DS|DP)_(\\w*)",
     ) %>%
-    dplyr::rename(prob = DS, pos_rel = DP) %>%
-    mutate(change = as.factor(change)) %>%
+    dplyr::rename(score = DS, pos_rel = DP) %>%
+    mutate(effect = as.factor(effect)) %>%
 
-    # filter effects without probability given
-    filter(!is.na(prob) & prob > 0) %>%
+    # filter effects without probability score given
+    filter(!is.na(score) & score > 0) %>%
 
-    # remove gene symbol and make non-redundant output
-    dplyr::select(-c("SYMBOL")) %>%
+    # add unique IDs for mutation
+    mutate(
+      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
+      chr = CHROM,
+      pos = as.integer(POS) + pos_rel
+    ) %>%
+
+    # keep only relevant columns
+    dplyr::select(mut_id, effect, score, chr, pos_rel, pos) %>%
     dplyr::distinct()
 }

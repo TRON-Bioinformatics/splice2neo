@@ -23,5 +23,5 @@ parse_spliceai(spliceai_file)
 
 }
 \seealso{
-\code{\link{format_spliceai}}, \code{\link{annotate_spliceai_junction}}
+\code{\link{format_spliceai}}, \code{\link{annotate_mut_effect}}
 }

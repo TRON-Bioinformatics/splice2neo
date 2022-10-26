@@ -7,7 +7,7 @@
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #'
-#' @return Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron rententions.
+#' @return Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
 #' @examples
 #'
 #' library(dplyr)
