@@ -19,7 +19,7 @@ parse_irfinder_txt(path, warnings = FALSE, irratio = 0.1, cnn = FALSE)
 \value{
 A tibble in standardized junction format
 
-path <-  system.file("extdata", "", package = "splice2neo")
+path <- system.file("extdata", "", package = "splice2neo")
 ir_juncs <- parse_irfinder_txt(path)
 ir_juncs
 }

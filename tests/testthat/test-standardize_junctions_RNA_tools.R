@@ -5,8 +5,8 @@ test_that("generate_combined_dataset works", {
   spladder_juncs <- spladder_transform(path)
   leafcutter_juncs <- leafcutter_transform(path)
 
-  dat.combined <- generate_combined_dataset(spladder_juncs,
-                                            leafcutter_juncs)
+  dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs,
+                                                 "leafcutter" = leafcutter_juncs))
   expect_true(ncol(dat.combined) == 10)
   expect_true(nrow(dat.combined) == 27)
   expect_true(all(!is.na(dat.combined$junc_id)))

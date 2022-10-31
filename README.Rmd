@@ -294,7 +294,7 @@ dat_leafcutter <-
 dat_spladder <-
   spladder_transform(path = "/your/path/to/spladder/results")
 dat_rna <-
-  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_spladder)
+  generate_combined_dataset(list("spladder" = dat_spladder, "leafcutter" = dat_leafcutter))
 
 # import & transform SpliceAi results
 dat_spliceai <-
