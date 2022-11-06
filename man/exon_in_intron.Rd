@@ -17,7 +17,7 @@ created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}
 \item{patient_id}{Patient id. This is only relevant if a dataset from multiple patients is annotated.}
 }
 \value{
-Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron rententions.
+Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
 }
 \description{
 Annotate if there is an exon within an intron

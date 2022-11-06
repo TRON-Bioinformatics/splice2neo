@@ -12,7 +12,7 @@
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
 #' parse_spliceai(spliceai_file)
 #'
-#' @seealso \code{\link{format_spliceai}}, \code{\link{annotate_spliceai_junction}}
+#' @seealso \code{\link{format_spliceai}}, \code{\link{annotate_mut_effect}}
 #' @import dplyr stringr tidyr
 #' @export
 parse_spliceai <- function(vcf_file){

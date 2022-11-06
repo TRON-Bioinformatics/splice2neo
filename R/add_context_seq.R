@@ -117,7 +117,7 @@ add_context_seq <- function(df,
          junc_pos_tx - cts_start + 1,
          junc_end_tx - cts_start)
 
-  # only relevant for IRs: get intervals for intron rententions: start_cts,start_IR,end_IR,end_cts
+  # only relevant for IRs: get intervals for intron retentions: start_cts,start_IR,end_IR,end_cts
   cts_intervall <- do.call(paste, list(0, cts_junc_pos, cts_end_pos, nchar(cts_seq), sep = ","))
 
   # Annotate table
