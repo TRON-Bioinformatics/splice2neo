@@ -1,3 +1,8 @@
+# splice2neo 0.5.5
+
+* integrate splicing mutation tool *Pangolin*
+* generalize mutation effect annotation 
+
 # splice2neo 0.5.4
 
 * adds a function to annotate if a exon of another transcript is located in an intron 
