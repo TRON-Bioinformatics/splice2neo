@@ -14,7 +14,7 @@ test_that("add_peptide works on toy example data", {
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
 })
 
-test_that("add_peptide_seq does not fail on predicted intron rententions at the end and beginning of a transcript ", {
+test_that("add_peptide_seq does not fail on predicted intron retentions at the end and beginning of a transcript ", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19

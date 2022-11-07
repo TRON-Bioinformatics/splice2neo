@@ -1,3 +1,8 @@
+# splice2neo 0.5.5
+
+* integrate splicing mutation tool *Pangolin*
+* generalize mutation effect annotation 
+
 # splice2neo 0.5.4
 
 * adds a function to annotate if a exon of another transcript is located in an intron 
@@ -20,7 +25,7 @@
 # splice2neo 0.5.0
 
 * intron rentetion events are now supported by `add_context_seq()`. the resulting context sequence covers the complete intron instead of the exon/intron boundary only. Instead of a the junction position in the cts_seq, the positions are given in form of an interval in the `cts_junc_pos`  column for intron retentions. (0,start_IR, end_IR, end_cts) 
-* `add_peptide()` was adjusted for intron rententions
+* `add_peptide()` was adjusted for intron retentions
 * more tests were added for several functions
 * fix small bug in `annotate_spliceai_junction()` that led to annotation with same transcript 
 
@@ -29,7 +34,7 @@
 
 * Support donor gain and acceptor gain in introns
 * export annotate_spliceai_junction and canonical_junctions()
-* More stabel checks for correct format in generate_junction_id()
+* More stable checks for correct format in generate_junction_id()
 * Additional unit tests
 
 # splice2neo 0.4.0

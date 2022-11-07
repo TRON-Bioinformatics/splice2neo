@@ -18,7 +18,7 @@ utils::globalVariables(
     "POS",
     "REF",
     "SpliceAI",
-    "change",
+    "effect",
     "chr",
     "chromosome",
     "class_mmsplice",
