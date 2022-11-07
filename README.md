@@ -1,6 +1,3 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -11,7 +8,7 @@ output: github_document
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.5.4--0001-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.5.5--0001-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -271,9 +268,17 @@ dat_spliceai <-
   parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
 dat_spliceai_annotated <-
-  annotate_spliceai_junction(var_df = dat_splicai_formatted,
+  annotate_mut_effect(var_df = dat_splicai_formatted,
                              transcripts = transcripts,
                              transcripts_gr = transcripts_gr)
+
+# get pangolin results and annotate effects as splice junctions
+pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+
+pangolin_annot_df <- parse_pangolin(pangolin_file) %>%
+  format_pangolin() %>%
+  annotate_mut_effect(toy_transcripts, toy_transcripts_gr)
+
 
 # import & transform MMSplice results
 dat_mmsplice <- parse_mmsplice(infile = "path/to/mmsplice/file.csv")
@@ -281,8 +286,11 @@ dat_mmsplice_annotated  <-
   annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
 # mutation-based junctions
-dat_mut <-
-  combine_mut_junc(spliceai_juncs = dat_spliceai_annotated, mmsplice_juncs = dat_mmsplice_annotated)
+dat_mut <- combine_mut_junc(list(
+    "spliceai" = dat_spliceai_annotated, 
+    "mmsplice" = dat_mmsplice_annotated,
+    "pangolin" = pangolin_annot_df
+    ))
 
 # add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter
 dat_mut <- dat_mut %>%

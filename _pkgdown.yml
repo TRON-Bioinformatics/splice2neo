@@ -1,12 +1,14 @@
 url: https://tron-bioinformatics.github.io/splice2neo/
 
 reference:
+
 - title: "Parse SpliceAI"
   desc: "Functions to parse SpliceAI output into standard splice junction format"
 - contents:
   - parse_spliceai
   - format_spliceai
-  - annotate_spliceai_junction
+  - annotate_mut_effect
+
 - title: "Parse MMsplice"
   desc: "Functions to parse MMsplice output into standard splice junction format"
 - contents:
@@ -14,12 +16,21 @@ reference:
   - annotate_mmsplice
   - get_exon_inclusion_junction
   - get_exon_skipping_junction
+
+- title: "Parse Pangolin"
+  desc: "Functions to parse Pangolin output into standard splice junction format"
+- contents:
+  - parse_pangolin
+  - format_pangolin
+  - annotate_mut_effect
+
 - title: "Parse LeafCutter"
   desc: "Functions to parse LeafCutter output into standard splice junction format"
 - contents:
   - import_leafcutter_counts
   - leafcutter_transform
   - transform_leafcutter_counts
+
 - title: "Parse SplAdder"
   desc: "Functions to parse SplAdder output into standard splice junction format"
 - contents:
@@ -30,10 +41,12 @@ reference:
   - spladder_transform_intron_retention
   - spladder_transform_mutex_exon
   - spladder_transform_exon_skipping
+
 - title: "Parse other formats"
   desc: "Functions to parse otherformats into standard splice junction format"
 - contents:
   - bed_to_junc
+
 - title: "Annotate"
   desc: "Functions to annotate splice junctions"
 - contents:
@@ -41,25 +54,32 @@ reference:
   - add_context_seq
   - modify_tx
   - get_junc_pos
-  - get_intronretention_alt_pos
+  - get_intronretention_genomic_alt_pos
+  - get_unknown_exon_intron_retention
   - add_peptide
   - seq_truncate_nonstop
+  - exon_in_intron
+  - is_start_on_exon
+
 - title: "Requantification"
   desc: "Functions for read support re-quantification with easyquant"
 - contents:
   - ends_with("_requant")
+
 - title: "Canonical"
   desc: "Functions annotate and filter for cnaonical splicing"
 - contents:
   - parse_gtf
   - canonical_junctions
   - is_canonical
+
 - title: "ID transformation"
   desc: "Functions to generate and transform ids"
 - contents:
   - generate_junction_id
   - breakpoint2junc
   - junc2breakpoint
+
 - title: "Merge and filter"
   desc: "Functions annotate and filter for canonical splicing"
 - contents:
@@ -67,14 +87,18 @@ reference:
   - combine_mut_junc
   - add_identified_in_RNA
   - generate_combined_dataset
+
 - title: "Others"
   desc: "Other functions"
 - contents:
   - junc_to_gr
-  - change_to_junction_rules
+  - effect_to_junction_rules
+  - get_intronretention_alt_pos
   - next_junctions
   - sort_columns
   - unsorted_junc_df
+  - pangolin_effect_translation
+
 - title: "Data"
   desc: "Toy example datasets"
 - contents:

@@ -15,7 +15,7 @@ A \link[tibble:tibble-package]{tibble} with splicing effects per row
 }
 \description{
 Reformat the data for each annotated effect per row, filters effects
-to have a probability not NA and score > 0, and removes gene symbol from
+to have a probability score not NA and score > 0, and removes gene symbol from
 data to make non-redundant output.
 }
 \examples{
@@ -25,5 +25,5 @@ format_spliceai(df)
 
 }
 \seealso{
-\code{\link{parse_spliceai}}, \code{\link{annotate_spliceai_junction}}
+\code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}
 }

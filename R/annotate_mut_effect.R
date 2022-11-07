@@ -1,5 +1,5 @@
 
-#' Annotate splice variants from spliceAI with resulting junctions
+#' Annotate splice variants effects with resulting junctions
 #'
 #' The mutation effects donor loss (DL), donor gain (DG), acceptor loss (AL),
 #' and acceptor gain (AG) are annotated with respect to the provided transcripts
@@ -7,13 +7,11 @@
 #' Donor loss (DG) and acceptor loss (AD) are only considered when overlapping
 #' with an exon-intron junction in the provided transcripts.
 #'
-#' @param var_df a data.frame wit variants and (at least) the following columns:
-#'   - `CHROM`
-#'   - `POS`
-#'   - `REF`
-#'   - `ALT`
-#'   - `change` an change effect class from *SpliceAI*. One of `DL`, `DG`, `AL`, `AG`.
-#'   - `pos_rel` affected position relative to `POS`.
+#' @param effect_df a data.frame with variant effects on splicing per row. It
+#' should have at least the following columns:
+#'   - `chr` chromosome
+#'   - `pos` absolute position of the effect
+#'   - `effect` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
@@ -26,29 +24,27 @@
 #' @examples
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
 #' df_raw <- parse_spliceai(spliceai_file)
-#' df <- format_spliceai(df_raw)
+#' effect_df <- format_spliceai(df_raw)
 #'
-#' annotate_spliceai_junction(df, toy_transcripts, toy_transcripts_gr)
+#' annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr)
 #'
 #'
 #' @export
-annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
+annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
 
-  var_df <- var_df  %>%
+  effect_df <- effect_df  %>%
     mutate(
-      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
-      mut_effect_id = str_c(mut_id, "_", row_number())
+      effect_index = str_c("EIDX_", row_number())
     )
 
-  if(nrow(var_df) != 0){
-    var_gr <- GenomicRanges::GRanges(str_c(
-      var_df$CHROM,
-      ":",
-      as.integer(var_df$POS) + var_df$pos_rel
-    ),
-    # var_effect_id = var_df$var_effect_id
-    )
-    names(var_gr) <- var_df$mut_effect_id
+  if(nrow(effect_df) != 0){
+    var_gr <- GenomicRanges::GRanges(
+      str_c(
+        effect_df$chr,
+        ":",
+        as.character(effect_df$pos)
+    ))
+    names(var_gr) <-effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
     # get all possible junctions of by start and end coordinates of upsteam and downstream exons
@@ -56,25 +52,25 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
 
     message("INFO: calculate junction coordinates from predicted effect...")
 
-    junc_df <- var_df %>%
+    junc_df <- effect_df %>%
 
       # add next exon coordinates of next exons
-      left_join(next_junc_df, by = "mut_effect_id") %>%
+      left_join(next_junc_df, by = "effect_index") %>%
 
       # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
       filter(
-        change != "DL" | at_end,
-        change != "AL" | at_start
+        effect != "DL" | at_end,
+        effect != "AL" | at_start
       ) %>%
 
       # add rules
       mutate(
-        change = as.character(change),
-        pos = as.integer(POS) + pos_rel
+        effect = as.character(effect),
+        # pos = as.integer(POS) + pos_rel
       ) %>%
       left_join(
-        change_to_junction_rules,
-        by = c("change")
+        effect_to_junction_rules,
+        by = c("effect")
       ) %>%
 
       # apply rules
@@ -90,13 +86,13 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
       ) %>%
 
       # remove predicted effects with missing values
-      filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(CHROM)) %>%
+      filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(chr)) %>%
       # remove predicted effects outside of transcript range
       filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
 
       # add junction IDs
       mutate(
-        junc_id = generate_junction_id(CHROM, left, right, tx_strand),
+        junc_id = generate_junction_id(chr, left, right, tx_strand),
         tx_junc_id  = str_c(tx_id, junc_id, sep = "_"),
       ) %>%
       ungroup()
@@ -104,20 +100,18 @@ annotate_spliceai_junction <- function(var_df, transcripts, transcripts_gr){
     message("INFO: Evaluation of rules done.")
   } else{
     message("WARNING: There are no mutations with predicted splice effect by SpliceAI")
-    junc_df <- var_df
-    junc_df <- junc_df %>%
+    junc_df <- effect_df %>%
       tibble::add_column(
         "var_nr" = NA ,
         "tx_chr"= NA,
         "tx_id" = NA,
         "tx_strand" =NA,
         "upstream_start"= NA,
-        upstream_end = NA,
+        "upstream_end" = NA,
         "downstream_start"= NA,
         "downstream_end"= NA,
         "at_start"= NA,
         "at_end"= NA,
-        "pos"= NA,
         "class"= NA,
         "rule_left"= NA,
         "rule_right"= NA,
@@ -186,7 +180,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
     mutate(
 
       # var annot
-      mut_effect_id = var_names[var_nr],
+      effect_index = var_names[var_nr],
 
       # tx annotation
       tx_chr = as.character(GenomeInfoDb::seqnames(transcripts_gr)[tx_nr]),
@@ -214,14 +208,14 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
     ) %>%
 
-    dplyr::select(mut_effect_id, var_nr, tx_chr, tx_id, tx_strand, upstream_start,
+    dplyr::select(effect_index, var_nr, tx_chr, tx_id, tx_strand, upstream_start,
            upstream_end, downstream_start, downstream_end, at_start, at_end)
 
 }
 
 #' Rules on how a splicing affecting variant creates a junction
-change_to_junction_rules <- tribble(
-  ~change, ~class,             ~rule_left,        ~rule_right,
+effect_to_junction_rules <- tribble(
+  ~effect, ~class,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
   "DL",    "exon skipping",    "upstream_end",    "downstream_start",
 
