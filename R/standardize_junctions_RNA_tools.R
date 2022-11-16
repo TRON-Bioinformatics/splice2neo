@@ -22,8 +22,11 @@ generate_combined_dataset <- function(rna_junc_data_list){
 
   stopifnot(is.list(rna_junc_data_list))
   stopifnot(!is.null(names(rna_junc_data_list)))
-  stopifnot(all(map_lgl(rna_junc_data_list,is.data.frame)))
+  stopifnot(all(map_lgl(rna_junc_data_list, is.data.frame)))
   stopifnot(all(map_lgl(rna_junc_data_list, ~'junc_id' %in% colnames(.x))))
+  stopifnot(all(map_lgl(rna_junc_data_list, ~'junction_start' %in% colnames(.x))))
+  stopifnot(all(map_lgl(rna_junc_data_list, ~'junction_end' %in% colnames(.x))))
+  stopifnot(all(map_lgl(rna_junc_data_list, ~'chromosome' %in% colnames(.x))))
   
   indicator_columns <-
     c("junc_id", "junction_start", "junction_end", "strand", "chromosome")
