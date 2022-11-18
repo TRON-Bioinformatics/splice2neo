@@ -2,19 +2,22 @@
 # COMBINED DATASET --------------------------------------------------------
 
 
-#' Combines tibbles with junctions from any number of RNA-seq tools into a combined dataset of expressed splice junctions
+#' Combines tibbles with junctions from any number of RNA-seq tools into a
+#' combined dataset of expressed splice junctions
 #'
-#' @param rna_junc_data_list A named list with junction tibbles in
-#'   standardized format.
+#' @param rna_junc_data_list A named list with junction tibbles in standardized
+#'   format.
 #'
-#' @return A combined table with unique junctions. The columns identified_by_{name}
-#'   contains information which tools identified the given junction
+#' @return A combined table with unique junctions. The columns
+#'   identified_by_{name} contains information which tools identified the given
+#'   junction
 #'
 #' @examples
 #' path <-  system.file("extdata", "", package = "splice2neo")
 #' spladder_juncs <- spladder_transform(path)
 #' leafcutter_juncs <- leafcutter_transform(path)
-#' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs, "leafcutter" = leafcutter_juncs))
+#' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs,
+#'   "leafcutter" = leafcutter_juncs))
 #'
 #' @import dplyr purrr stringr tidyr
 #' @export
@@ -26,29 +29,30 @@ generate_combined_dataset <- function(rna_junc_data_list){
   stopifnot(all(map_lgl(rna_junc_data_list, ~'junc_id' %in% colnames(.x))))
   stopifnot(all(map_lgl(rna_junc_data_list, ~'junction_start' %in% colnames(.x))))
   stopifnot(all(map_lgl(rna_junc_data_list, ~'junction_end' %in% colnames(.x))))
+  stopifnot(all(map_lgl(rna_junc_data_list, ~'strand' %in% colnames(.x))))
   stopifnot(all(map_lgl(rna_junc_data_list, ~'chromosome' %in% colnames(.x))))
-  
+
   indicator_columns <-
     c("junc_id", "junction_start", "junction_end", "strand", "chromosome")
-  
+
   rna_juncs <- rna_junc_data_list %>%
     dplyr::bind_rows(.id = "tool") %>%
     dplyr::mutate(detected = TRUE) %>%
     dplyr::select(all_of(c(indicator_columns, "tool", "detected"))) %>%
     tidyr::complete(
-      nesting(junc_id, junction_start, junction_end, strand, chromosome), 
+      nesting(junc_id, junction_start, junction_end, strand, chromosome),
         tool, fill = list(detected = FALSE)) %>%
     tidyr::pivot_wider(names_from = "tool", values_from = "detected",
         names_glue = "identified_by_{.name}")
-    
+
   # rename annotation columns
   my_rename <- function(x, prefix_name){
     stringr::str_c(prefix_name, "_", x)
   }
 
-  # for each input data add the  of the tool/source name to all columm names
+  # for each input data add the tool/source name to all columm names
   # except the indicator columns
-  rna_junc_data_list_names <- 
+  rna_junc_data_list_names <-
       purrr::map2(rna_junc_data_list,
                   names(rna_junc_data_list),
                   ~rename_with(
@@ -56,7 +60,7 @@ generate_combined_dataset <- function(rna_junc_data_list){
                       .fn = my_rename,
                       .cols = -all_of(indicator_columns),
                       prefix_name = .y))
-  
+
   # add tool specific columns/annotations
   # by iteratively apply a left_join()
   for (this_df in rna_junc_data_list_names){
@@ -65,10 +69,13 @@ generate_combined_dataset <- function(rna_junc_data_list){
           by = indicator_columns)
   }
   # Rename shared columns that are not indicator columns. For now they are collapsed by comma
-  rna_juncs <- rna_juncs %>% tidyr::unite("Gene", ends_with("_Gene"), sep=",", remove=T, na.rm=T)
-  rna_juncs <- rna_juncs %>% tidyr::unite("class", ends_with("_class"), sep=",", remove=T, na.rm=T)
-  rna_juncs <- rna_juncs %>% tidyr::unite("AS_event_ID", ends_with("_AS_event_ID"), sep=",", remove=T, na.rm=T)
-  
+  rna_juncs <- rna_juncs %>%
+    tidyr::unite("Gene", ends_with("_Gene"), sep = ",", remove = TRUE, na.rm = TRUE)
+  rna_juncs <- rna_juncs %>%
+    tidyr::unite("class", ends_with("_class"), sep=",", remove = TRUE, na.rm = TRUE)
+  rna_juncs <- rna_juncs %>%
+    tidyr::unite("AS_event_ID", ends_with("_AS_event_ID"), sep = ",", remove = TRUE, na.rm = TRUE)
+
   return(rna_juncs)
 }
 
