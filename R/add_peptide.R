@@ -99,8 +99,8 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
 
   # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
-  junc_in_orf <- XVector::subseq(protein, start = 1, end = ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos, protein_len) ,pmin(protein_junc_pos, protein_len))) %>%
-    str_detect("\\*", negate = TRUE)
+  junc_in_orf <- XVector::subseq(protein, start = 1, end = ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos, protein_len) ,pmin(protein_junc_pos, protein_len))) %>% as.data.frame()
+  junc_in_orf <- stringr::str_detect(as.character(junc_in_orf$x), "\\*", negate = TRUE)
 
   # extract context sequence from full peptide and cut before stop codon (*)
   if(full_pep_seq){
@@ -119,6 +119,7 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
   #peptide_context_junc_pos <- protein_junc_pos - pep_start
 
   # get sequence of non-stop-codon after junction position
+  peptide_context_seq_raw <- data.frame(peptide_context_seq_raw)$x
   peptide_context <- seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)
 
 
@@ -176,7 +177,7 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 seq_truncate_nonstop <- function(seq, pos){
 
   prefix <- str_sub(seq, 1, pos)
-  suffix <-  str_sub(seq, start = pos + 1)
+  suffix <- str_sub(seq, start = pos + 1)
 
   suffix_before_stop <- suffix %>%
     str_extract("[^*]+")
