@@ -99,29 +99,33 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
 
   # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
-  junc_in_orf <- XVector::subseq(protein, start = 1, end = ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos, protein_len) ,pmin(protein_junc_pos, protein_len))) %>% as.data.frame()
-  junc_in_orf <- stringr::str_detect(as.character(junc_in_orf$x), "\\*", negate = TRUE)
+  junc_in_orf <- XVector::subseq(
+    protein, start = 1,
+    end = ifelse(
+      intron_retention & protein_end_pos < protein_junc_pos,
+      pmin(protein_end_pos, protein_len),
+      pmin(protein_junc_pos, protein_len)
+      )
+    ) %>%
+    as.character()
+
+  junc_in_orf <- stringr::str_detect(junc_in_orf, "\\*", negate = TRUE)
 
   # extract context sequence from full peptide and cut before stop codon (*)
   if(full_pep_seq){
     pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - 15 + 1, 1) ,pmax(protein_junc_pos - 15 + 1, 1))
-    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start)
+    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start) %>% as.character()
   }else{
     pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - (size/2) + 1, 1) , pmax(protein_junc_pos - (size/2) + 1, 1))
-    #pep_start <- pmax(protein_junc_pos - (size/2) + 1, 1)
     pep_end <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos + (size/2), protein_len) , pmin(protein_junc_pos + (size/2), protein_len))
-    #pep_end <- pmin(protein_junc_pos + (size/2), protein_len)
-    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end)
+    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end) %>% as.character()
   }
 
   # calculate junction position relative to context sequence
   peptide_context_junc_pos <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, protein_end_pos - pep_start, protein_junc_pos - pep_start)
-  #peptide_context_junc_pos <- protein_junc_pos - pep_start
 
   # get sequence of non-stop-codon after junction position
-  peptide_context_seq_raw <- data.frame(peptide_context_seq_raw)$x
   peptide_context <- seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)
-
 
   # Annotate table
   df_sub <- df_sub %>%
@@ -132,7 +136,7 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
       protein_junc_pos = protein_junc_pos,
       junc_in_orf = junc_in_orf,
 
-      # add NA for context sequences if the junction positon is not in an open reading frame
+      # add NA for context sequences if the junction position is not in an open reading frame
       peptide_context_seq_raw = ifelse(junc_in_orf, as.character(peptide_context_seq_raw), NA),
       peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
       peptide_context_junc_pos = ifelse(junc_in_orf, peptide_context_junc_pos, NA),
