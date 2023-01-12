@@ -39,7 +39,7 @@ Imports:
     GenomeInfoDb,
     magrittr,
     tibble,
-    stringr,
+    stringr (>= 1.5.0),
     dplyr,
     readr,
     tidyr,
