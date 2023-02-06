@@ -1,3 +1,7 @@
+# splice2neo 0.5.6
+
+* minor changes to support stringr >= 1.5.0
+
 # splice2neo 0.5.5
 
 * integrate splicing mutation tool *Pangolin*
