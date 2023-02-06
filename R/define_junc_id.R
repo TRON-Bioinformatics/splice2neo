@@ -16,6 +16,7 @@ generate_junction_id <- function(chr, start, end, strand){
 
   start <- as.integer(start)
   end <- as.integer(end)
+  chr <- as.character(chr)
 
   stopifnot(is.na(start) | is.na(end) | start <= end)
   stopifnot(strand %in% c("+", "-"))
