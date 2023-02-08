@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.6</span>
       </span>
     </div>
 
@@ -59,9 +59,9 @@
         </td>
         <td><p>Formats spliceAI output and filter for predicted effects</p></td>
       </tr><tr><td>
-          <p><code><a href="annotate_spliceai_junction.html">annotate_spliceai_junction()</a></code> </p>
+          <p><code><a href="annotate_mut_effect.html">annotate_mut_effect()</a></code> </p>
         </td>
-        <td><p>Annotate splice variants from spliceAI with resulting junctions</p></td>
+        <td><p>Annotate splice variants effects with resulting junctions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="parse-mmsplice">Parse MMsplice <a href="#parse-mmsplice" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to parse MMsplice output into standard splice junction format</p>
@@ -84,6 +84,22 @@ and transcript.</p></td>
         </td>
         <td><p>Compute the resulting junction (junc_id) for exon skipping of given exon
 and transcript.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="parse-pangolin">Parse Pangolin <a href="#parse-pangolin" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to parse Pangolin output into standard splice junction format</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="parse_pangolin.html">parse_pangolin()</a></code> </p>
+        </td>
+        <td><p>Parse VCF output file from pangolin as table</p></td>
+      </tr><tr><td>
+          <p><code><a href="format_pangolin.html">format_pangolin()</a></code> </p>
+        </td>
+        <td><p>Formats pangolin output and filter for predicted effects</p></td>
+      </tr><tr><td>
+          <p><code><a href="annotate_mut_effect.html">annotate_mut_effect()</a></code> </p>
+        </td>
+        <td><p>Annotate splice variants effects with resulting junctions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="parse-leafcutter">Parse LeafCutter <a href="#parse-leafcutter" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to parse LeafCutter output into standard splice junction format</p>
@@ -169,10 +185,14 @@ format into standardized junction format</p></td>
         </td>
         <td><p>Get the position of input junction in the transcript sequences</p></td>
       </tr><tr><td>
-          <p><code><a href="get_intronretention_alt_pos.html">get_intronretention_alt_pos()</a></code> </p>
+          <p><code><a href="get_intronretention_genomic_alt_pos.html">get_intronretention_genomic_alt_pos()</a></code> </p>
         </td>
         <td><p>Get the alternative position of input junction from an intron retention event
-in the transcript sequences</p></td>
+in the genomic sequences</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_unknown_exon_intron_retention.html">get_unknown_exon_intron_retention()</a></code> </p>
+        </td>
+        <td><p>Get the exon range flanking the other side of an intron retention of interest</p></td>
       </tr><tr><td>
           <p><code><a href="add_peptide.html">add_peptide()</a></code> </p>
         </td>
@@ -181,6 +201,14 @@ in the transcript sequences</p></td>
           <p><code><a href="seq_truncate_nonstop.html">seq_truncate_nonstop()</a></code> </p>
         </td>
         <td><p>Truncate input sequence after input position before next stop codons (<code>*</code>).</p></td>
+      </tr><tr><td>
+          <p><code><a href="exon_in_intron.html">exon_in_intron()</a></code> </p>
+        </td>
+        <td><p>Annotate if there is an exon within an intron</p></td>
+      </tr><tr><td>
+          <p><code><a href="is_start_on_exon.html">is_start_on_exon()</a></code> </p>
+        </td>
+        <td><p>Tests if start or and end of junc is on exon.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="requantification">Requantification <a href="#requantification" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for read support re-quantification with easyquant</p>
@@ -241,7 +269,7 @@ a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt
       </tr><tr><td>
           <p><code><a href="combine_mut_junc.html">combine_mut_junc()</a></code> </p>
         </td>
-        <td><p>Combines tibbles with junctions from SpliceAI and MMsplice</p></td>
+        <td><p>Combines data sets with junctions from several different sources</p></td>
       </tr><tr><td>
           <p><code><a href="add_identified_in_RNA.html">add_identified_in_RNA()</a></code> </p>
         </td>
@@ -259,9 +287,14 @@ a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt
         </td>
         <td><p>Convert a splice junction ID into a GRanges object</p></td>
       </tr><tr><td>
-          <p><code><a href="change_to_junction_rules.html">change_to_junction_rules</a></code> </p>
+          <p><code><a href="effect_to_junction_rules.html">effect_to_junction_rules</a></code> </p>
         </td>
         <td><p>Rules on how a splicing affecting variant creates a junction</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_intronretention_alt_pos.html">get_intronretention_alt_pos()</a></code> </p>
+        </td>
+        <td><p>Get the alternative position of input junction from an intron retention event
+in the transcript sequences</p></td>
       </tr><tr><td>
           <p><code><a href="next_junctions.html">next_junctions()</a></code> </p>
         </td>
@@ -276,6 +309,11 @@ a junction id is created that follows the format: <code>&lt;chr&gt;:&lt;start&gt
           <p><code><a href="unsorted_junc_df.html">unsorted_junc_df</a></code> </p>
         </td>
         <td><p>A tibble in junction format but unsorted columns</p></td>
+      </tr><tr><td>
+          <p><code><a href="pangolin_effect_translation.html">pangolin_effect_translation</a></code> </p>
+        </td>
+        <td><p>This dataset translates the increase/decrease splicing score from pangolin
+into a donor gain/loss and acceptor gain/loss effect annotations.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="data">Data <a href="#data" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Toy example datasets</p>
@@ -328,7 +366,7 @@ example data</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

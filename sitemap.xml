@@ -34,7 +34,7 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_mmsplice.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_spliceai_junction.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_mut_effect.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/bed_to_junc.html</loc>
@@ -49,10 +49,16 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/canonical_junctions.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/change_to_junction_rules.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/combine_mut_junc.html</loc>
   </url>
   <url>
-    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/combine_mut_junc.html</loc>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/effect_to_junction_rules.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/exon_in_intron.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_pangolin.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_spliceai.html</loc>
@@ -73,7 +79,13 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_intronretention_alt_pos.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_intronretention_genomic_alt_pos.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_junc_pos.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_unknown_exon_intron_retention.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_counts.html</loc>
@@ -89,6 +101,9 @@
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_in_rnaseq.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_start_on_exon.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/junc2breakpoint.html</loc>
@@ -109,10 +124,16 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/next_junctions.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/pangolin_effect_translation.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_gtf.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_mmsplice.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_pangolin.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_spliceai.html</loc>

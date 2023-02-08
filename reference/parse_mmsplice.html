@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.6</span>
       </span>
     </div>
 
@@ -76,22 +76,23 @@ affected exon.</p>
 <span class="r-in"><span><span class="va">in_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"mmsplice_pred.csv"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">parse_mmsplice</span><span class="op">(</span><span class="va">in_file</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,034 × 18</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ID              exons exon_id gene_id gene_name transcript_id delta_logit_psi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000357…         0.001<span style="text-decoration: underline;">85</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000354…         0.001<span style="text-decoration: underline;">85</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000468…         0.006<span style="text-decoration: underline;">49</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000586…         0.044<span style="text-decoration: underline;">9</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000493…         0.048<span style="text-decoration: underline;">5</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 17:41197805:AC… 17:4… ENSE00… ENSG00… BRCA1     ENST00000461…         0.040<span style="text-decoration: underline;">4</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 17:41197809:CT… 17:4… ENSE00… ENSG00… BRCA1     ENST00000357…        -<span style="color: #BB0000;">0.209</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 17:41197809:CT… 17:4… ENSE00… ENSG00… BRCA1     ENST00000354…        -<span style="color: #BB0000;">0.209</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 17:41197809:CT… 17:4… ENSE00… ENSG00… BRCA1     ENST00000468…        -<span style="color: #BB0000;">0.202</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 17:41197809:CT… 17:4… ENSE00… ENSG00… BRCA1     ENST00000586…        -<span style="color: #BB0000;">0.139</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,024 more rows, and 11 more variables: ref_acceptorIntron &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ref_acceptor &lt;dbl&gt;, ref_exon &lt;dbl&gt;, ref_donor &lt;dbl&gt;, ref_donorIntron &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alt_acceptorIntron &lt;dbl&gt;, alt_acceptor &lt;dbl&gt;, alt_exon &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alt_donor &lt;dbl&gt;, alt_donorIntron &lt;dbl&gt;, mut_id &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ID     exons exon_id gene_id gene_…¹ trans…² delta_…³ ref_a…⁴ ref_a…⁵ ref_e…⁶</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.001<span style="text-decoration: underline;">85</span>   -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">4.19</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.001<span style="text-decoration: underline;">85</span>   -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">4.19</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.006<span style="text-decoration: underline;">49</span>   -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.87</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.044<span style="text-decoration: underline;">9</span>    -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.51</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.048<span style="text-decoration: underline;">5</span>    -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.69</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00…  0.040<span style="text-decoration: underline;">4</span>    -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.96</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00… -<span style="color: #BB0000;">0.209</span>     -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">4.19</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00… -<span style="color: #BB0000;">0.209</span>     -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">4.19</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00… -<span style="color: #BB0000;">0.202</span>     -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.87</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 17:41… 17:4… ENSE00… ENSG00… BRCA1   ENST00… -<span style="color: #BB0000;">0.139</span>     -<span style="color: #BB0000;">2.92</span>    5.07   -<span style="color: #BB0000;">3.51</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,024 more rows, 8 more variables: ref_donor &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ref_donorIntron &lt;dbl&gt;, alt_acceptorIntron &lt;dbl&gt;, alt_acceptor &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alt_exon &lt;dbl&gt;, alt_donor &lt;dbl&gt;, alt_donorIntron &lt;dbl&gt;, mut_id &lt;chr&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​gene_name, ²​transcript_id, ³​delta_logit_psi,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​ref_acceptorIntron, ⁵​ref_acceptor, ⁶​ref_exon</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -107,7 +108,7 @@ affected exon.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
