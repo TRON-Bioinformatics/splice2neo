@@ -4,7 +4,7 @@
 \alias{exon_in_intron}
 \title{Annotate if there is an exon within an intron}
 \usage{
-exon_in_intron(junc_id, tx_id, transcripts, patient_id = NULL)
+exon_in_intron(junc_id, tx_id, transcripts)
 }
 \arguments{
 \item{junc_id}{Junction id}
@@ -13,8 +13,6 @@ exon_in_intron(junc_id, tx_id, transcripts, patient_id = NULL)
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
 created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
-
-\item{patient_id}{Patient id. This is only relevant if a dataset from multiple patients is annotated.}
 }
 \value{
 Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
