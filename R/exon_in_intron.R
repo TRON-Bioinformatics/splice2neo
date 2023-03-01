@@ -94,7 +94,8 @@ exon_in_intron <- function(junc_id, tx_id, transcripts, patient_id = NULL){
 
   # get junctions as GRanges object
   jx_df <- intron_ranges %>%
-    filter(!is.na(interval_range))
+    filter(!is.na(interval_range)) %>%
+    distinct(junc_tx_pat_id, .keep_all = TRUE)
 
 
   if(nrow(jx_df) > 0){
