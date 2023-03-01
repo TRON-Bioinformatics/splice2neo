@@ -5,7 +5,7 @@
 \title{Filter IRFinder intermediate table to remove likely
 false postive IR predictions}
 \usage{
-filter_irfinder_txt(tib, warnings, ratio_cutoff)
+filter_irfinder_txt(tib, warnings = FALSE, ratio_cutoff = 0.1)
 }
 \arguments{
 \item{tib}{IRFinder intermediate tibble with columns Warnings and IRratio}

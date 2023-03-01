@@ -105,12 +105,11 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
       intron_retention & protein_end_pos < protein_junc_pos,
       pmin(protein_end_pos, protein_len),
       pmin(protein_junc_pos, protein_len)
-    )
-  ) %>%
+      )
+    ) %>%
     as.character()
 
   junc_in_orf <- stringr::str_detect(junc_in_orf, "\\*", negate = TRUE)
-
 
   # extract context sequence from full peptide and cut before stop codon (*)
   if(full_pep_seq){
@@ -127,7 +126,6 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
   # get sequence of non-stop-codon after junction position
   peptide_context <- seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)
-
 
   # Annotate table
   df_sub <- df_sub %>%
