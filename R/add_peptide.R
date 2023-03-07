@@ -259,6 +259,7 @@ annotate_junc_in_orf <- function(df){
 #' Annotate the normalized junction position in the protein,
 # i.e. the postion of the last WT amino acid in the mutated protein on the left side
 #'  `frame_shift`
+#'  `intron_retention`
 #'  `protein_length_difference`
 #'  `protein_junc_pos`
 #'  `protein`
@@ -279,13 +280,16 @@ get_normalized_protein_junc_pos <- function(df){
         cds_length_difference > 0  & junc_pos_cds_wt == 0 ~
           junc_pos_cds - cds_length_difference,
         TRUE ~ junc_pos_cds
-      ), normalized_protein_junc_pos = case_when(
+      ),
+      normalized_protein_junc_pos = case_when(
         intron_retention & junc_pos_cds_wt == 0 ~
           ceiling(normalized_cds_junc_pos / 3),
-        !frame_shift & protein_length_difference > 0  & junc_pos_cds_wt == 0 ~
+        !frame_shift &
+          protein_length_difference > 0  & junc_pos_cds_wt == 0 ~
           protein_junc_pos - protein_length_difference,
-        frame_shift & cds_length_difference > 0  & junc_pos_cds_wt == 0 ~
-          protein_junc_pos - ceiling(cds_length_difference/3),
+        frame_shift &
+          cds_length_difference > 0  & junc_pos_cds_wt == 0 ~
+          protein_junc_pos - ceiling(cds_length_difference / 3),
 
         TRUE ~ protein_junc_pos
       ),
