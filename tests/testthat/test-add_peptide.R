@@ -79,7 +79,7 @@ test_that("add_peptide returns expected results", {
   expect_true(pep_df$peptide_context[1] == "SGDSVNPSTSSHFTQLPPFSKGRND")
   expect_true(pep_df$peptide_context[3] == "SGDSVNPSTSSHFTRLPPFSKGRND")
   expect_true(nchar(pep_df$peptide_context[2]) > nchar(pep_df$peptide_context[3]))
-  expect_true(pep_df$peptide_context[5] == "DPDTCTCSLAGIKCQVRVGNSGHPKTRHCLPPPKEAVMVPIMKLPTCKRKFFGKARHVIQEERHNSGREKD")
+  expect_true(pep_df$peptide_context[5] == "PDTCTCSLAGIKCQVRVGNSGHPKTRHCLPPPKEAVMVPIMKLPTCKRKFFGKARHVIQEERHNSGREKD")
 
 })
 
@@ -88,7 +88,7 @@ test_that("add_peptide works on toy example data with keep_ranges", {
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-  pep_df <- add_peptide(toy_junc_df, toy_cds,  full_pep_seq = FALSE, size = 30, bsg = bsg,
+  pep_df <- add_peptide(toy_junc_df, toy_cds, bsg = bsg,
                             keep_ranges = TRUE)
 
 
@@ -98,7 +98,7 @@ test_that("add_peptide works on toy example data with keep_ranges", {
 
   expect_equal(unique(pep_df$junc_id), unique(toy_junc_df$junc_id))
   # check that peptides have expcted size
-  expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
+  expect_true(all(stringr::str_length(pep_df$peptide_context) > 14, na.rm = TRUE))
   expect_true(class(pep_df$cds_lst[[1]]) == "GRanges")
   expect_true(class(pep_df$cds_mod_lst[[1]]) == "GRanges")
 
@@ -273,21 +273,6 @@ test_that("seq_truncate_nonstop works on example data", {
 })
 
 
-test_that("add_peptide is able to return full sequences", {
-
-  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
-  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
-
-
-  pep_df <- add_peptide(toy_junc_df, toy_cds, full_pep_seq = TRUE, bsg = bsg)
-
-  expect_true(nrow(pep_df) == nrow(toy_junc_df))
-  new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
-  expect_true(nchar(pep_df$peptide_context[4]) > 30)
-
-})
-
-
 test_that("add_peptide does tranlate CDS with removed start codon", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
@@ -307,7 +292,7 @@ test_that("add_peptide does tranlate CDS with removed start codon", {
     tx_id = "ENST00000243347"
   )
 
-  pep_df <- add_peptide(rmcds_junc_df, toy_cds["ENST00000243347"], full_pep_seq = FALSE, size = 30, bsg = bsg)
+  pep_df <- add_peptide(rmcds_junc_df, toy_cds["ENST00000243347"], bsg = bsg)
 
   expect_false(pep_df$junc_in_orf)
   expect_true(is.na(pep_df$peptide_context))
