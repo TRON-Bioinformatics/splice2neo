@@ -61,9 +61,27 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
       filter(
         effect != "DL" | at_end,
         effect != "AL" | at_start
-      ) %>%
+      ) 
+    
+    #return empty tibble if non of the junctions fullfill the above filters (might be a problem in low mutation burden cases)
+    if(nrow(junc_df) == 0) { 
+      junc_df <- junc_df %>%
+        tibble::add_column(
+          "class"= NA,
+          "rule_left"= NA,
+          "rule_right"= NA,
+          "strand_offset"= NA,
+          "coord_1"= NA ,
+          "coord_2"= NA,
+          "left"= NA,
+          "right" = NA,
+          "junc_id"= NA,
+          "tx_junc_id"= NA)
+      return(junc_df)
+    }
 
-      # add rules
+    # add rules
+    junc_df <- junc_df %>%
       mutate(
         effect = as.character(effect),
         # pos = as.integer(POS) + pos_rel
