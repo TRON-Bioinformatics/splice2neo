@@ -3,7 +3,7 @@ test_that("add_peptide works on toy example data", {
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-  pep_df <- add_peptide(toy_junc_df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
+  pep_df <- add_peptide(toy_junc_df, toy_cds, bsg = bsg)
 
   expect_true(nrow(pep_df) == nrow(toy_junc_df))
   new_col_names <- c("protein", "protein_junc_pos", "peptide_context", "peptide_context_junc_pos")
@@ -24,7 +24,7 @@ test_that("add_peptide_seq does not fail on predicted intron retentions at the e
 
   wt_pep_seq <- "MIILIYLFLLLWEDTQGWGFKDGIFHNSIWLERAAGVYHREARSGKYKLTYAEAKAVCEFEGGHLATYKQLEAARKIGFHVCAAGWMAKGRVGYPIVKPGPNCGFGKTGIIDYGIRLNRSERWDAYCYNPHAKECGGVFTDPKQIFKSPGFPNEYEDNQICYWHIRLKYGQRIHLSFLDFDLEDDPGCLADYVEIYDSYDDVHGFVGRYCGDELPDDIISTGNVMTLKFLSDASVTAGGFQIKYVAMDPVSKSSQGKNTSTTSTGNKNFLAGRFSHL"
 
-  pep_df <- add_peptide(df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
+  pep_df <- add_peptide(df, toy_cds, bsg = bsg)
 
   expect_true(nrow(pep_df) == nrow(df))
   expect_true(all(is.na(pep_df$peptide_context_seq_raw)))
@@ -49,7 +49,7 @@ test_that("add_peptide works for IRs", {
   )
 
 
-  pep_df <- add_peptide(df, toy_cds, full_pep_seq = FALSE, size = 30, bsg = bsg)
+  pep_df <- add_peptide(df, toy_cds, bsg = bsg)
   # "chr2:166535210-166535211:+" and "chr2:166535210-166535211:+" two juncs of same IR --> should be same pep seq
   expect_true(pep_df$peptide_context[3] == pep_df$peptide_context[4])
   expect_true(all(!is.na(pep_df$protein)))
@@ -74,7 +74,7 @@ test_that("add_peptide returns expected results", {
   )
 
 
-  pep_df <- add_peptide(df, toy_cds, full_pep_seq = TRUE, bsg = bsg)
+  pep_df <- add_peptide(df, toy_cds, bsg = bsg)
 
   expect_true(pep_df$peptide_context[1] == "SGDSVNPSTSSHFTQLPPFSKGRND")
   expect_true(pep_df$peptide_context[3] == "SGDSVNPSTSSHFTRLPPFSKGRND")

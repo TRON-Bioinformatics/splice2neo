@@ -7,9 +7,8 @@
 #'   -  `tx_id` the ID of the affected transcript/CDS (see \code{\link{add_tx}})
 #'
 #' @param cds  as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges
-#' @param full_pep_seq If `full_pep_seq` is set to TRUE, the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.
-#' @param size the total size of the output sequence (might be shorter if peptide is shorter).
-#' This parameter is only relevant if `full_pep_seq` is set to FALSE.
+#' @param flanking_size the number of wild-type amino acids flanking the junction or novel sequence caused by the splice junction to the left and to the right.
+#' Frame shift junctions are flanked by wild-type amino acids to the left and are annotated until the first stop codon.
 #' @param bsg \code{\link[BSgenome]{BSgenome}} object such as
 #'  \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}
 #' @param keep_ranges Should GRanges of CDS and modified CDS be
@@ -19,8 +18,12 @@
 #'
 #'  - `cds_mod_id` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_cds` the junction position in the modified CDS sequence
+#'  - `frame_shift` Indicator whether junction leads to frame shift.
+#'  - `is_first_reading_frame` Indicator whether junction is in 1st reading frame for in-frame junctions.
+#'  - `normalized_cds_junc_pos` The normalized position of the junction in the modified CDS sequence to the left junction side.
 #'  - `protein` the full protein sequence of the translated modified CDS.
-#'  - `protein_junc_pos` The position of the junction in the `protein` sequence
+#'  - `normalized_protein_junc_pos` The normalized position of the junction in the `protein` sequence to the left junction side.
+#'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
 #'  - `junc_in_orf` Indicator whether the junction is located in an open reading frame.
 #'  - `peptide_context_seq_raw` the peptide sequence around the junction including stop codons.
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
@@ -38,10 +41,10 @@
 #' requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 #' bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #'
-#' add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
+#' add_peptide(toy_junc_df, toy_cds, bsg = bsg)
 #'
 #' @export
-add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, keep_ranges = FALSE){
+add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = FALSE){
 
 
   stopifnot(is.data.frame(df))
@@ -72,72 +75,70 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
   jx <- junc_to_gr(df_sub$junc_id)
   # test if junction is an intron retention event
   # TODO: are non IR junctions possible that follow the rule chr:pos-pos+1:strand?
-  intron_retention <- ifelse(jx@ranges@width == 2, TRUE, FALSE)
+  intron_retention <- jx@ranges@width == 2
 
   # modify transcripts by applying the splice junctions
   cds_mod <- modify_tx(cds_lst, jx)
 
   # get junction position in altered CDS
   junc_pos_cds = get_junc_pos(cds_mod, jx)
+  junc_pos_cds_wt = get_junc_pos(cds_lst, jx)
+  junc_in_cds = !is.na(junc_pos_cds)
   # only relevant for intron retention events: get the other position of retained
   # intervall
   junc_end_tx <- get_intronretention_alt_pos(cds_lst, cds_mod, jx, intron_retention)
 
   # get CDS sequence
   cds_seq <- GenomicFeatures::extractTranscriptSeqs(bsg, cds_mod)
+  cds_seq_wt <- GenomicFeatures::extractTranscriptSeqs(bsg, cds_lst)
+
+  # frame shift in modified cds seq?
+  cds_length_difference  <-
+    (BiocGenerics::width(cds_seq) - BiocGenerics::width(cds_seq_wt))
+  frame_shift <- cds_length_difference %% 3 > 0
 
   # translate to protein seq
   suppressWarnings(
     protein <- Biostrings::translate(cds_seq, if.fuzzy.codon = "solve")
   )
-
-  # Get context peptides around junction
-  protein_junc_pos <- ceiling(junc_pos_cds / 3)
-  protein_end_pos <- ceiling(junc_end_tx / 3)
-
-  protein_len <- BiocGenerics::width(protein)
-
-
-  # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
-  junc_in_orf <- XVector::subseq(
-    protein, start = 1,
-    end = ifelse(
-      intron_retention & protein_end_pos < protein_junc_pos,
-      pmin(protein_end_pos, protein_len),
-      pmin(protein_junc_pos, protein_len)
-    )
-  ) %>%
-    as.character()
-
-  junc_in_orf <- stringr::str_detect(junc_in_orf, "\\*", negate = TRUE)
-
+  suppressWarnings(
+    protein_wt <- Biostrings::translate(cds_seq_wt, if.fuzzy.codon = "solve")
+  )
 
   # extract context sequence from full peptide and cut before stop codon (*)
-  if(full_pep_seq){
-    pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - 15 + 1, 1) ,pmax(protein_junc_pos - 15 + 1, 1))
-    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start) %>% as.character()
-  }else{
-    pep_start <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmax(protein_end_pos - (size/2) + 1, 1) , pmax(protein_junc_pos - (size/2) + 1, 1))
-    pep_end <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, pmin(protein_end_pos + (size/2), protein_len) , pmin(protein_junc_pos + (size/2), protein_len))
-    peptide_context_seq_raw <- XVector::subseq(protein, start = pep_start, end = pep_end) %>% as.character()
-  }
+  df_positions <- df_sub %>%
+    dplyr::mutate(
+    intron_retention = intron_retention,
+    strand = str_sub(df_sub$junc_id, -1),
+    protein = protein %>% as.character(),
+    protein_wt = protein_wt %>% as.character(),
+    frame_shift = frame_shift,
+    junc_in_cds = junc_in_cds,
+    cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
+    cds_length_difference = cds_length_difference,
+    junc_pos_cds = junc_pos_cds,
+    junc_pos_cds_wt = junc_pos_cds_wt,
+    # Get context peptides around junction
+    protein_junc_pos = ceiling(junc_pos_cds / 3),
+    protein_junc_pos_not = junc_pos_cds / 3,
+    # end for IRs
+    protein_end_pos = ceiling(junc_end_tx / 3),
+    protein_length_difference = ifelse(!frame_shift &
+                                         !intron_retention, cds_length_difference / 3, NA),
+    protein_len = as.numeric(BiocGenerics::width(protein)),
+  )
 
-  # calculate junction position relative to context sequence
-  peptide_context_junc_pos <- ifelse(intron_retention & protein_end_pos < protein_junc_pos, protein_end_pos - pep_start, protein_junc_pos - pep_start)
+  df_positions <- df_positions %>%
+    is_first_reading_frame() %>%
+    annotate_junc_in_orf() %>%
+    get_normalized_protein_junc_pos()
 
-  # get sequence of non-stop-codon after junction position
-  peptide_context <- seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)
-
+  df_annotated_peptide <- df_positions %>%
+    get_peptide_context(flanking_size = flanking_size)
 
   # Annotate table
-  df_sub <- df_sub %>%
+  df_annotated_peptide <- df_annotated_peptide %>%
     dplyr::mutate(
-      cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
-      junc_pos_cds = junc_pos_cds,
-      protein = as.character(protein),
-      protein_junc_pos = protein_junc_pos,
-      junc_in_orf = junc_in_orf,
-
       # add NA for context sequences if the junction position is not in an open reading frame
       peptide_context_seq_raw = ifelse(junc_in_orf, as.character(peptide_context_seq_raw), NA),
       peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
@@ -146,16 +147,37 @@ add_peptide <- function(df, cds, full_pep_seq = TRUE, size = NULL, bsg = NULL, k
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
   if(keep_ranges){
-    df_sub <- df_sub %>%
+    df_annotated_peptide <- df_annotated_peptide %>%
       dplyr::mutate(
         cds_lst = as.list(cds_lst),
         cds_mod_lst = as.list(cds_mod),
       )
   }
 
+  # df_annotated_peptide <- df_annotated_peptide %>%
+  #   dplyr::select(
+  #     -intron_retention,
+  #     -strand,
+  #     #-protein_wt,
+  #     -junc_in_cds,
+  #     -protein_end_pos,
+  #     -protein_len,
+  #     -pep_start,
+  #     -pep_end,
+  #     -exon1_end_AA,
+  #     -exon1_end_AA_WT,
+  #     -exon2_start_AA_WT,
+  #     -cds_length_difference,
+  #     -WT_protein_length_difference,
+  #     -addtional_AA,
+  #     -protein_length_difference,
+  #     -junc_pos_cds_wt,
+  #     -protein_junc_pos_not
+  #   )
+
   # add annotations to input data.frame
   df <- df %>%
-    dplyr::left_join(df_sub, by = c("junc_id", "tx_id"))
+    dplyr::left_join(df_annotated_peptide, by = c("junc_id", "tx_id"))
 
   return(df)
 
@@ -190,6 +212,211 @@ seq_truncate_nonstop <- function(seq, pos){
 
   str_c(prefix, suffix_before_stop)
 
+}
+
+
+#' Determine if transcript is in first reading frame, given a tibble with:
+#' `junc_pos_cds`
+#'
+#' @param df Sequence
+#'
+#' Returns `TRUE` if transcript is in first reading frame and `FALSE` if transcript follows second or third reading frame.
+#' occurs.
+#'
+is_first_reading_frame <- function(df){
+
+  df_mod <- df %>%
+   dplyr::mutate(
+     is_first_reading_frame = case_when(
+       round((junc_pos_cds/3) %% 1, 2) == 0 ~ TRUE,
+       round((junc_pos_cds/3) %% 1, 2) != 0 ~ FALSE,
+     )
+   )
+
+}
+
+
+#' Tests if junction position is in ORF
+# i.e. no stop codon `*` in whole seq before junction given a tibble with:
+#'  `intron_retention`
+#'  `protein_end_pos`
+#'  `protein_junc_pos`
+#'  `protein_len`
+#'
+#' @param df tibble
+#'
+#'
+annotate_junc_in_orf <- function(df){
+
+  df_mod <- df %>%
+    dplyr::mutate(protein_until_junction = stringr::str_sub(
+      protein,
+      start = 1,
+      end = ifelse(
+        intron_retention & df$protein_end_pos < protein_junc_pos,
+        pmin(protein_end_pos, protein_len),
+        pmin(protein_junc_pos, protein_len)
+      )
+    )) %>%
+    dplyr::mutate(junc_in_orf = stringr::str_detect(protein_until_junction, "\\*", negate = TRUE))%>%
+    dplyr::select(-protein_until_junction)
+
+  return(df_mod)
+}
+
+
+#' Annotate the normalized junction position in the protein,
+# i.e. the postion of the last WT amino acid in the mutated protein on the left side
+#'  `frame_shift`
+#'  `protein_length_difference`
+#'  `protein_junc_pos`
+#'  `protein`
+#'  `protein_wt`
+#'  `junc_pos_cds`
+#'
+#' @param df tibble
+#'
+#'
+get_normalized_protein_junc_pos <- function(df){
+
+  df_mod <- df %>%
+    # bring all junction positions to left side
+    dplyr::mutate(
+      normalized_cds_junc_pos = case_when(
+        intron_retention & junc_pos_cds_wt == 0 ~
+          junc_pos_cds - cds_length_difference,
+        cds_length_difference > 0  & junc_pos_cds_wt == 0 ~
+          junc_pos_cds - cds_length_difference,
+        TRUE ~ junc_pos_cds
+      ), normalized_protein_junc_pos = case_when(
+        intron_retention & junc_pos_cds_wt == 0 ~
+          ceiling(normalized_cds_junc_pos / 3),
+        !frame_shift & protein_length_difference > 0  & junc_pos_cds_wt == 0 ~
+          protein_junc_pos - protein_length_difference,
+
+        TRUE ~ protein_junc_pos
+      ),
+      WT_protein_length_difference = ifelse(
+        !frame_shift & protein_length_difference > 0 ,
+        1,
+        abs(protein_length_difference)
+      )
+    )
+
+  # get left and right WT AA
+  df_mod <- df_mod %>%
+    dplyr::mutate(
+      exon1_end_AA = substr(
+        protein,
+        normalized_protein_junc_pos,
+        normalized_protein_junc_pos
+      ),
+      exon1_end_AA_WT = substr(
+        protein_wt,
+        normalized_protein_junc_pos,
+        normalized_protein_junc_pos
+      ),
+      exon2_start_AA_WT = substr(
+        protein_wt,
+        normalized_protein_junc_pos + WT_protein_length_difference,
+        normalized_protein_junc_pos + WT_protein_length_difference
+      )
+    )
+
+  df_mod <- df_mod %>%
+    dplyr::mutate(
+      normalized_protein_junc_pos = case_when(
+        !is_first_reading_frame & (exon1_end_AA == exon1_end_AA_WT) ~
+          ceiling(normalized_cds_junc_pos / 3),
+        !is_first_reading_frame & (exon1_end_AA != exon1_end_AA_WT) ~
+          floor(normalized_cds_junc_pos / 3),
+        intron_retention & (exon1_end_AA != exon1_end_AA_WT) ~
+          floor(normalized_cds_junc_pos / 3),
+        !is_first_reading_frame  ~
+          floor(normalized_cds_junc_pos / 3),
+        TRUE ~ normalized_protein_junc_pos
+      )
+    )
+
+  return(df_mod)
+}
+
+#' Get peptide context sequence given a tibble with
+#'  `intron_retention`
+#'  `normalized_protein_junc_pos`
+#'  `is_first_reading_frame`
+#'  `frame_shift`
+#'  `exon1_end_AA`
+#'  `exon1_end_AA_WT`
+#'  `exon2_start_AA_WT`,
+#'  `protein_len`
+#'  `protein_len`
+#'  `protein_length_difference`
+#'  `protein`
+#'
+#' @param df Data frame with information about position of junction etc.
+#' @param flanking_size number amino acids left and right of the breakpoint or novel sequence part
+#'
+#'
+get_peptide_context <- function(df, flanking_size = 14){
+
+  # peptide start coordinate in full protein sequence
+  # 14 AA upstream of junction
+  df_mod <- df %>%
+    dplyr::mutate(
+      pep_start = pmax(normalized_protein_junc_pos - flanking_size + 1, 1)
+      ) %>%
+    # if not 1st reading frame, there can be an additional novel AA
+    mutate(
+      addtional_AA = case_when(
+       !frame_shift & !is_first_reading_frame &
+         (exon1_end_AA != exon1_end_AA_WT & exon1_end_AA != exon2_start_AA_WT )
+         ~
+         1,
+       frame_shift & !is_first_reading_frame & (exon1_end_AA != exon1_end_AA_WT  ) ~
+         1,
+       TRUE ~ 0
+      )
+    )
+
+  # peptide end coordinate in full protein sequence
+  # frame-shifts: full sequence downstream of junction
+  # no frame-shift: novel  sequence + WT-AA downstream of junction or until stop codon
+  df_mod <- df_mod %>%
+    dplyr::mutate(
+      pep_end = case_when(
+        # IR: WT-AA + ir + WT-AA or until stop
+        intron_retention ~
+          pmin(normalized_protein_junc_pos + addtional_AA + flanking_size, protein_len),
+        # frameshift: until stop
+        frame_shift ~
+          protein_len,
+        # no frame-shift & no IR & insertion of novel sequence: WT-AA + novel seq + WT-AA or until stop
+        !frame_shift & protein_length_difference > 0 ~
+          pmin(normalized_protein_junc_pos + addtional_AA + protein_length_difference + flanking_size, protein_len),
+        # no frame-shift & no IR & deletion of sequence: WT-AA + junction + WT-AA or until stop
+        !frame_shift & protein_length_difference <= 0 ~
+          pmin(normalized_protein_junc_pos + addtional_AA + flanking_size, protein_len)
+      ))
+
+  # get raw sequence
+  df_mod <- df_mod %>%
+    dplyr::mutate(peptide_context_seq_raw = stringr::str_sub(protein, start = pep_start, end = pep_end))
+
+
+  # calculate junction position relative to context sequence
+  # get peptide_context sequence until first stop codon
+  df_mod <- df_mod %>%
+    dplyr::mutate(
+      peptide_context_junc_pos =
+        normalized_protein_junc_pos - pep_start + 1
+    ) %>%
+    dplyr::mutate(
+      peptide_context =
+        seq_truncate_nonstop(peptide_context_seq_raw, peptide_context_junc_pos)
+    )
+
+  return(df_mod)
 }
 
 
