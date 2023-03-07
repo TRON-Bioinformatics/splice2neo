@@ -249,6 +249,7 @@ annotate_junc_in_orf <- function(df){
       end = pmin(normalized_protein_junc_pos, protein_len)
     )) %>%
     dplyr::mutate(junc_in_orf = stringr::str_detect(protein_until_junction, "\\*", negate = TRUE))%>%
+    dplyr::mutate(junc_in_orf = ifelse(is.na(junc_in_orf), FALSE, junc_in_orf))%>%
     dplyr::select(-protein_until_junction)
 
   return(df_mod)
