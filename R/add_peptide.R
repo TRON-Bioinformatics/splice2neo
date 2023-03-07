@@ -150,25 +150,25 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
       )
   }
 
-  # df_annotated_peptide <- df_annotated_peptide %>%
-  #   dplyr::select(
-  #     -intron_retention,
-  #     -strand,
-  #     #-protein_wt,
-  #     -junc_in_cds,
-  #     -protein_len,
-  #     -pep_start,
-  #     -pep_end,
-  #     -exon1_end_AA,
-  #     -exon1_end_AA_WT,
-  #     -exon2_start_AA_WT,
-  #     -cds_length_difference,
-  #     -WT_protein_length_difference,
-  #     -addtional_AA,
-  #     -protein_length_difference,
-  #     -junc_pos_cds_wt,
-  #     -protein_junc_pos_not
-  #   )
+  df_annotated_peptide <- df_annotated_peptide %>%
+    dplyr::select(
+      -intron_retention,
+      -strand,
+      #-protein_wt,
+      -junc_in_cds,
+      -protein_len,
+      -pep_start,
+      -pep_end,
+      -exon1_end_AA,
+      -exon1_end_AA_WT,
+      -exon2_start_AA_WT,
+      -cds_length_difference,
+      -WT_protein_length_difference,
+      -addtional_AA,
+      -protein_length_difference,
+      -junc_pos_cds_wt,
+      -protein_junc_pos_not
+    )
 
   # add annotations to input data.frame
   df <- df %>%
