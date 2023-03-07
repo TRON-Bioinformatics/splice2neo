@@ -41,7 +41,7 @@
 #' requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 #' bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 #'
-#' add_peptide(toy_junc_df, toy_cds, bsg = bsg)
+#' add_peptide(toy_junc_df, toy_cds, bsg = bsg, flanking_size = 13)
 #'
 #' @export
 add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = FALSE){

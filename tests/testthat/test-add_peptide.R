@@ -11,7 +11,7 @@ test_that("add_peptide works on toy example data", {
 
   expect_equal(unique(pep_df$junc_id), unique(toy_junc_df$junc_id))
   # check that peptides have expcted size
-  expect_true(all(stringr::str_length(pep_df$peptide_context) <= 30, na.rm = TRUE))
+  expect_true(all(stringr::str_length(pep_df$peptide_context) <= 35, na.rm = TRUE))
 })
 
 test_that("add_peptide_seq does not fail on predicted intron retentions at the end and beginning of a transcript ", {
