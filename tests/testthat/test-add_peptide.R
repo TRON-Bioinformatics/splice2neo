@@ -14,6 +14,34 @@ test_that("add_peptide works on toy example data", {
   expect_true(all(stringr::str_length(pep_df$peptide_context) <= 35, na.rm = TRUE))
 })
 
+test_that("flanking_size parameter in add_peptide parameter works ", {
+
+  requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
+  bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
+
+  pep_df <- add_peptide(toy_junc_df, toy_cds, bsg = bsg, flanking_size = 14)
+
+  test_junc <- pep_df %>% filter(junc_id == "chr2:152389996-152392205:-")
+  expect_true(nchar(test_junc$peptide_context) == 16)
+  expect_true(test_junc$peptide_context_junc_pos == 14)
+
+  pep_df <- add_peptide(toy_junc_df, toy_cds, bsg = bsg, flanking_size = 13)
+
+  test_junc <- pep_df %>% filter(junc_id == "chr2:152389996-152392205:-")
+  expect_true(nchar(test_junc$peptide_context) == 15)
+  expect_true(test_junc$peptide_context_junc_pos == 13)
+
+  test_junc <- pep_df %>% filter(junc_id == "chr2:152388410-152392205:-")
+  expect_true(nchar(test_junc$peptide_context) == 26)
+  expect_true(test_junc$peptide_context_junc_pos == 13)
+  # left side
+  expect_true(substr(test_junc$peptide_context, 1, test_junc$peptide_context_junc_pos) == "NRHFKYATQLMNE")
+  # right side
+  expect_true(substr(test_junc$peptide_context, test_junc$peptide_context_junc_pos + 1, nchar(test_junc$peptide_context) ) == "IKYRKNYEKSKDK")
+
+})
+
+
 test_that("add_peptide_seq does not fail on predicted intron retentions at the end and beginning of a transcript ", {
 
   requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
@@ -299,3 +327,16 @@ test_that("add_peptide does tranlate CDS with removed start codon", {
 
 })
 
+test_that("is_first_reading_frame works on example data", {
+
+
+  df <- tibble(
+    junc_pos_cds = c(6,7,8,9)
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  expect_true(all(df1$is_first_reading_frame == c(TRUE, FALSE, FALSE, TRUE)))
+
+})

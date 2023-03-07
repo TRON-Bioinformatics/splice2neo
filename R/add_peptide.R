@@ -233,9 +233,9 @@ is_first_reading_frame <- function(df){
 
 #' Tests if junction position is in ORF
 # i.e. no stop codon `*` in whole seq before junction given a tibble with:
-#'  `intron_retention`
 #'  `normalized_protein_junc_pos`
 #'  `protein_len`
+#'  `protein`
 #'
 #' @param df tibble
 #'
