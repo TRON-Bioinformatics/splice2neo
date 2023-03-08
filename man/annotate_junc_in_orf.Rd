@@ -3,9 +3,9 @@
 \name{annotate_junc_in_orf}
 \alias{annotate_junc_in_orf}
 \title{Tests if junction position is in ORF
-\code{intron_retention}
 \code{normalized_protein_junc_pos}
-\code{protein_len}}
+\code{protein_len}
+\code{protein}}
 \usage{
 annotate_junc_in_orf(df)
 }
@@ -14,7 +14,7 @@ annotate_junc_in_orf(df)
 }
 \description{
 Tests if junction position is in ORF
-\code{intron_retention}
 \code{normalized_protein_junc_pos}
 \code{protein_len}
+\code{protein}
 }

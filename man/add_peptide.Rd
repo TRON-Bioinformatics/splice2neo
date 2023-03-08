@@ -39,6 +39,7 @@ A data.frame as the input with the additional column(s):
 \item \code{peptide_context_seq_raw} the peptide sequence around the junction including stop codons.
 \item \code{peptide_context} the peptide sequence around the junction truncated after stop codons.
 \item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
+\item \code{truncated_cds} Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, \code{peptide_context} = NA.
 }
 
 If the \code{keep_ranges} is TRUE, the following additional columns are added to
