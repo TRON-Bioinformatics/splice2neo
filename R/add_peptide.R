@@ -118,7 +118,6 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     junc_pos_cds_wt = junc_pos_cds_wt,
     # Get context peptides around junction
     protein_junc_pos = ceiling(junc_pos_cds / 3),
-    protein_junc_pos_not = junc_pos_cds / 3,
     # end for IRs
     protein_length_difference = ifelse(!frame_shift &
                                          !intron_retention, cds_length_difference / 3, NA),
@@ -170,7 +169,6 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
       -addtional_AA,
       -protein_length_difference,
       -junc_pos_cds_wt,
-      -protein_junc_pos_not
     )
 
   # add annotations to input data.frame
@@ -246,13 +244,15 @@ is_first_reading_frame <- function(df){
 annotate_junc_in_orf <- function(df){
 
   df_mod <- df %>%
-    dplyr::mutate(protein_until_junction = stringr::str_sub(
-      protein,
-      start = 1,
-      end = pmin(normalized_protein_junc_pos, protein_len)
-    )) %>%
-    dplyr::mutate(junc_in_orf = stringr::str_detect(protein_until_junction, "\\*", negate = TRUE))%>%
-    dplyr::mutate(junc_in_orf = ifelse(is.na(junc_in_orf), FALSE, junc_in_orf))%>%
+    dplyr::mutate(
+      protein_until_junction = stringr::str_sub(
+        protein,
+        start = 1,
+        end = pmin(normalized_protein_junc_pos, protein_len)
+      ),
+      junc_in_orf = stringr::str_detect(protein_until_junction, "\\*", negate = TRUE),
+      junc_in_orf = ifelse(is.na(junc_in_orf), FALSE, junc_in_orf)
+    ) %>%
     dplyr::select(-protein_until_junction)
 
   return(df_mod)
@@ -368,10 +368,8 @@ get_peptide_context <- function(df, flanking_size = 14){
   # 14 AA upstream of junction
   df_mod <- df %>%
     dplyr::mutate(
-      pep_start = pmax(normalized_protein_junc_pos - flanking_size + 1, 1)
-      ) %>%
-    # if not 1st reading frame, there can be an additional novel AA
-    mutate(
+      pep_start = pmax(normalized_protein_junc_pos - flanking_size + 1, 1),
+      # if not 1st reading frame, there can be an additional novel AA
       addtional_AA = case_when(
        !frame_shift & !is_first_reading_frame &
          (exon1_end_AA != exon1_end_AA_WT & exon1_end_AA != exon2_start_AA_WT )
