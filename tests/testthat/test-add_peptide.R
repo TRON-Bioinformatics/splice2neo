@@ -330,7 +330,7 @@ test_that("add_peptide does tranlate CDS with removed start codon", {
 test_that("is_first_reading_frame works on example data", {
 
 
-  df <- tibble(
+  df <- dplyr::tibble(
     junc_pos_cds = c(6,7,8,9)
   )
 
@@ -338,5 +338,29 @@ test_that("is_first_reading_frame works on example data", {
     is_first_reading_frame()
 
   expect_true(all(df1$is_first_reading_frame == c(TRUE, FALSE, FALSE, TRUE)))
+
+})
+
+
+test_that("annotate_junc_in_orf works on example data", {
+
+  protein_junc_not_in_orf = "XX*XXXXXXXXXXXXXXXX"
+  protein_junc_in_orf = "XXXXXXXXXXXXXX*XXXX"
+  protein_junc_in_orf2 = "XXXXXXXXXXXXXXXXXX*"
+
+  df <- dplyr::tibble(
+    normalized_protein_junc_pos = c(5, 5, 5),
+    protein_len = c(
+      nchar(protein_junc_not_in_orf),
+      nchar(protein_junc_in_orf),
+      nchar(protein_junc_in_orf2)
+    ),
+    protein = c(protein_not_in_orf, protein_in_orf, protein_in_orf2)
+  )
+
+  df1 <- df %>%
+    annotate_junc_in_orf()
+
+  expect_true(all(df1$junc_in_orf == c(FALSE, TRUE, TRUE)))
 
 })
