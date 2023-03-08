@@ -355,7 +355,7 @@ test_that("annotate_junc_in_orf works on example data", {
       nchar(protein_junc_in_orf),
       nchar(protein_junc_in_orf2)
     ),
-    protein = c(protein_not_in_orf, protein_in_orf, protein_in_orf2)
+    protein = c(protein_junc_not_in_orf, protein_junc_in_orf, protein_junc_in_orf2)
   )
 
   df1 <- df %>%
@@ -382,6 +382,7 @@ test_that("get_normalized_protein_junc_pos works for first frame and insertion o
     frame_shift,
     intron_retention,
     protein_length_difference = nchar(protein) - nchar(protein_wt),
+    cds_length_difference,
     protein,
     protein_junc_pos,
     protein_wt,
@@ -414,6 +415,7 @@ test_that("get_normalized_protein_junc_pos works for first frame and insertion o
     protein_length_difference = nchar(protein) - nchar(protein_wt),
     protein,
     protein_junc_pos,
+    cds_length_difference,
     protein_wt,
     junc_pos_cds,
     junc_pos_cds_wt
@@ -446,6 +448,7 @@ test_that("get_normalized_protein_junc_pos works for first frame and insertion o
     frame_shift,
     intron_retention,
     protein_length_difference = nchar(protein) - nchar(protein_wt),
+    cds_length_difference,
     protein,
     protein_junc_pos,
     protein_wt,
@@ -484,6 +487,7 @@ test_that("get_normalized_protein_junc_pos works for first frame and deletion of
     protein_length_difference = nchar(protein) - nchar(protein_wt),
     protein,
     protein_junc_pos,
+    cds_length_difference,
     protein_wt,
     junc_pos_cds,
     junc_pos_cds_wt
@@ -518,6 +522,7 @@ test_that("get_normalized_protein_junc_pos works for non-first frame and deletio
     protein_length_difference = nchar(protein) - nchar(protein_wt),
     protein,
     protein_junc_pos,
+    cds_length_difference,
     protein_wt,
     junc_pos_cds,
     junc_pos_cds_wt
@@ -548,6 +553,7 @@ test_that("get_normalized_protein_junc_pos works for non-first frame and deletio
     protein_length_difference = nchar(protein) - nchar(protein_wt),
     protein,
     protein_junc_pos,
+    cds_length_difference,
     protein_wt,
     junc_pos_cds,
     junc_pos_cds_wt
@@ -567,4 +573,49 @@ test_that("get_normalized_protein_junc_pos works for non-first frame and deletio
   expect_true(df1$exon1_end_AA == df1$exon2_start_AA_WT )
 
 })
+
+test_that("get_peptide_context works for toy data", {
+
+  # toy example
+  protein = c("AAAAAAA","AAADAAA","AAAAAAAA","AAAABXXCAAAA", "AAAABXXCAAAA", "AAAABXXBAAAA", "AAAABXXXX")
+  protein_wt = c("AAAABCDAAA","AAAABCDAAA","AAAABCDAAA","AAAABCDAAA","AAAABCDAAA","AAAABCDAAA", "AAAABCDAAA")
+  junc_pos_cds = c(11, 11, 12, 24, 15, 15, 15)
+  junc_pos_cds_wt = c(11, 11, 12, 0, 15, 15, 15)
+  cds_length_difference = c(-6, -6,-6, 6, 6, 6, -3)
+  frame_shift = c(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE)
+  intron_retention = FALSE
+  protein_junc_pos = c(4, 4, 4, 7, 5, 5, 5)
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt,
+    protein_len = as.numeric(nchar(protein)),
+    cds_length_difference,
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame() %>%
+    get_normalized_protein_junc_pos()
+
+  flanking_size = 2
+
+  df1 <- df1 %>%
+    get_peptide_context(flanking_size = flanking_size)
+
+  expect_true(all(df1$peptide_context_junc_pos == flanking_size ))
+  expect_true(all(nchar(df1$peptide_context[1:3]) == 2*flanking_size))
+  expect_true(all(nchar(df1$peptide_context[4:6]) == 2*flanking_size + df1$protein_length_difference[4:6]))
+  #frame-shift
+  expect_true(nchar(df1$peptide_context[7]) == flanking_size + df1$protein_len[7] - df1$normalized_protein_junc_pos[7])
+
+})
+
+
+
 
