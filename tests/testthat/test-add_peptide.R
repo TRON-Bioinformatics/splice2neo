@@ -659,6 +659,141 @@ test_that("add_peptide returns NA for truncated peptides ", {
 
 
 
+test_that("add_peptides works with custom toy example data", {
+
+  ##############################################################################
+  #       M  M  M  M  M  M  M  M  M  M
+  #      <=><=><=><=><=><=><=><=><=><=>
+  #seq   ATGATGATGATGATGATGATGATGATGATG
+  #      0        1         2         3
+  #      123456789012345678901234567890
+  #cds1     ======         ======
+  #jx1           |--------|
+  #mcds1    ======        =======
+
+  #cds2     ======         ======
+  #jx2              |------|
+  #mcds2    =========      ======
+
+  #cds3     =====         ======
+  #jx3             |------|
+  #mcds3    ========      ======
+
+
+  ##############################################################################
+
+  # consturctur function to build custom geome seq.
+  # Source: https://github.com/Bioconductor/BSgenome/issues/3
+  build_bsgenome <- function(dna, circ_seqs=NA, genome=NA,
+                       organism=NA, common_name=NA, provider=NA,
+                       release_date=NA, release_name=NA, source_url=NA)
+  {
+    ## Some sanity checks.
+    if (!is(dna, "DNAStringSet"))
+      dna <- as(dna, "DNAStringSet")
+    seqnames <- names(dna)
+    if (is.null(seqnames))
+      stop("'dna' must have names")
+    if (!is.character(circ_seqs))
+      circ_seqs <- as.character(circ_seqs)
+    if (!identical(circ_seqs, NA_character_)) {
+      if (anyNA(circ_seqs) ||
+          anyDuplicated(circ_seqs) ||
+          !all(circ_seqs %in% seqnames))
+        stop(wmsg("when not set to NA, 'circ_seqs' must ",
+                  "contain unique sequence names that are ",
+                  "present in 'names(dna)'"))
+    }
+    stopifnot(S4Vectors::isSingleStringOrNA(genome),
+              S4Vectors::isSingleStringOrNA(organism),
+              S4Vectors::isSingleStringOrNA(common_name),
+              S4Vectors::isSingleStringOrNA(provider),
+              S4Vectors::isSingleStringOrNA(release_date),
+              S4Vectors::isSingleStringOrNA(release_name),
+              S4Vectors::isSingleStringOrNA(source_url))
+
+    ## Write the sequences to disk.
+    seqs_dirpath <- tempfile(pattern="BSgenome_seqs_dir")
+    dir.create(seqs_dirpath)
+    twobit_filepath <- file.path(seqs_dirpath, "single_sequences.2bit")
+    rtracklayer::export(dna, twobit_filepath)
+
+    ## Create the BSgenome object.
+    BSgenome:::BSgenome(organism=as.character(organism),
+                        common_name=as.character(organism),
+                        provider=as.character(provider),
+                        provider_version=as.character(genome),
+                        release_date=as.character(release_date),
+                        release_name=as.character(release_name),
+                        source_url=as.character(source_url),
+                        seqnames=seqnames,
+                        circ_seqs=circ_seqs,
+                        mseqnames=NULL,
+                        seqs_pkgname=NA_character_,
+                        seqs_dirpath=seqs_dirpath)
+  }
+  toy_bsg <- build_bsgenome(c(
+    c = stringr::str_c(rep("ATG", 10), collapse = ""),
+    chrM = "GGAATAT"),
+    circ_seqs="chrM",
+    genome="hg00")
+
+
+  cds_wt <- GenomicRanges::GRangesList(list(
+    cds1 = GenomicRanges::GRanges(c(
+      "c:4-9:+",
+      "c:19-24:+"
+    )),
+    cds2 = GenomicRanges::GRanges(c(
+      "c:4-9:+",
+      "c:19-24:+"
+    )),
+    cds3 = GenomicRanges::GRanges(c(
+      "c:4-8:+",
+      "c:19-24:+"
+    ))
+  ))
+
+  jx <- GenomicRanges::GRanges(c(
+    "c:9-18",
+    "c:12-19",
+    "c:11-19"
+  )
+  )
+
+  cds_mod <- GenomicRanges::GRangesList(list(
+    cds1 = GenomicRanges::GRanges(c(
+      "c:4-9:+",
+      "c:18-24:+"
+    )),
+    cds2 = GenomicRanges::GRanges(c(
+      "c:4-12:+",
+      "c:19-24:+"
+    )),
+    cds3 = GenomicRanges::GRanges(c(
+      "c:4-11:+",
+      "c:19-24:+"
+    ))
+  ))
+
+  junc_df <- tibble(
+    junc_id = as.character(jx),
+    tx_id = names(cds_wt)
+  )
+
+  pep_df <- junc_df %>%
+    add_peptide(cds = cds_wt, bsg = toy_bsg)
+
+  expect_equal(
+    pep_df$peptide_context,
+    c("MMDD",
+      "MMMMM",
+      "MMI")
+  )
+
+
+})
+
 
 
 
