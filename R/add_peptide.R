@@ -28,6 +28,7 @@
 #'  - `peptide_context_seq_raw` the peptide sequence around the junction including stop codons.
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
 #'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
+#'  - `truncated_cds` Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, `peptide_context` = NA.
 #'
 #'   If the `keep_ranges` is TRUE, the following additional columns are added to
 #'   the output data.frame:
@@ -139,6 +140,8 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
       peptide_context_seq_raw = ifelse(junc_in_orf, as.character(peptide_context_seq_raw), NA),
       peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
       peptide_context_junc_pos = ifelse(junc_in_orf, peptide_context_junc_pos, NA),
+      # mutated protein truncated wt protein? --> no peptide_context
+      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(protein))
     )
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts

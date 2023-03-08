@@ -616,6 +616,49 @@ test_that("get_peptide_context works for toy data", {
 
 })
 
+test_that("add_peptide returns NA for truncated peptides ", {
+
+  # toy example-2
+  protein = "AAAA"
+  protein_wt = "AAAABCDAAA"
+  junc_pos_cds = 12
+  junc_pos_cds_wt = 12
+  cds_length_difference = -15
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 4
+  protein_len = 4
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = as.numeric(nchar(protein) - nchar(protein_wt)),
+    protein,
+    protein_junc_pos,
+    cds_length_difference,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt,
+    protein_len
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  df1 <- df1 %>%
+    get_peptide_context(flanking_size = 2)
+
+  expect_true(is.na(df1$peptide_context))
+  expect_true(stringr::str_detect(fixed(df1$protein_wt), fixed(df1$protein)))
+
+})
+
+
+
+
 
 
 
