@@ -364,3 +364,207 @@ test_that("annotate_junc_in_orf works on example data", {
   expect_true(all(df1$junc_in_orf == c(FALSE, TRUE, TRUE)))
 
 })
+
+
+test_that("get_normalized_protein_junc_pos works for first frame and insertion of novel sequence and protein_junc_pos already on left side", {
+
+  # toy example 1
+  protein = "AAAABXXCAAAA"
+  protein_wt = "AAAABCAAAA"
+  junc_pos_cds = 15
+  junc_pos_cds_wt = 15
+  cds_length_difference = 6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 5
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos == df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos == df1$protein_junc_pos )
+
+  # toy example 2
+  protein = "AAAABXXBAAAA"
+  protein_wt = "AAAABCAAAA"
+  junc_pos_cds = 15
+  junc_pos_cds_wt = 15
+  cds_length_difference = 6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 5
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos == df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos == df1$protein_junc_pos )
+
+})
+
+test_that("get_normalized_protein_junc_pos works for first frame and insertion of novel sequence and protein_junc_pos on right side", {
+
+  # toy example
+  protein = "AAAABXXCAAAA"
+  protein_wt = "AAAABCAAAA"
+  junc_pos_cds = 24
+  junc_pos_cds_wt = 0
+  cds_length_difference = 6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 7
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos != df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos != df1$protein_junc_pos )
+  expect_true(df1$normalized_protein_junc_pos == 5 )
+
+})
+
+
+test_that("get_normalized_protein_junc_pos works for first frame and deletion of sequence", {
+
+  # toy example
+  protein = "AAAAAAAA"
+  protein_wt = "AAAABCAAAA"
+  junc_pos_cds = 12
+  junc_pos_cds_wt = 12
+  cds_length_difference = -6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 4
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos == df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos == df1$protein_junc_pos )
+
+})
+
+test_that("get_normalized_protein_junc_pos works for non-first frame and deletion of sequence", {
+
+  # toy example-1
+  protein = "AAAAAAA"
+  protein_wt = "AAAABCDAAA"
+  junc_pos_cds = 11
+  junc_pos_cds_wt = 11
+  cds_length_difference = -6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 4
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos == df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos == df1$protein_junc_pos )
+
+  # toy example-2
+  protein = "AAADAAA"
+  protein_wt = "AAAABCDAAA"
+  junc_pos_cds = 11
+  junc_pos_cds_wt = 11
+  cds_length_difference = -6
+  frame_shift = FALSE
+  intron_retention = FALSE
+  protein_junc_pos = 4
+
+  df <- dplyr::tibble(
+    frame_shift,
+    intron_retention,
+    protein_length_difference = nchar(protein) - nchar(protein_wt),
+    protein,
+    protein_junc_pos,
+    protein_wt,
+    junc_pos_cds,
+    junc_pos_cds_wt
+  )
+
+  df1 <- df %>%
+    is_first_reading_frame()
+
+  df1 <- df1 %>%
+    get_normalized_protein_junc_pos()
+
+  expect_true(df1$normalized_cds_junc_pos == df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos != df1$protein_junc_pos )
+  expect_true(df1$normalized_cds_junc_pos  ==  df1$junc_pos_cds )
+  expect_true(df1$normalized_protein_junc_pos == 3 )
+  expect_true(df1$exon1_end_AA != df1$exon1_end_AA_WT )
+  expect_true(df1$exon1_end_AA == df1$exon2_start_AA_WT )
+
+})
+

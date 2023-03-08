@@ -265,6 +265,9 @@ annotate_junc_in_orf <- function(df){
 #'  `protein`
 #'  `protein_wt`
 #'  `junc_pos_cds`
+#'  `is_first_reading_frame`
+#'  `junc_pos_cds_wt`
+#'  `cds_length_difference`
 #'
 #' @param df tibble
 #'
