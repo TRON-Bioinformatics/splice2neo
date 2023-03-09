@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.5.4-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.5.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -127,12 +127,12 @@ junction positions, the context sequence.
 
 ``` r
 toy_junc_df
-#> # A tibble: 14 × 2
+#> # A tibble: 17 × 2
 #>    junc_id                    tx_id          
 #>    <chr>                      <chr>          
 #>  1 chr2:152389996-152392205:- ENST00000409198
 #>  2 chr2:152389996-152390729:- ENST00000409198
-#>  3 chr2:152389955-152389956:- ENST00000409198
+#>  3 chr2:152389955-152389956:- ENST00000397345
 #>  4 chr2:152388410-152392205:- ENST00000409198
 #>  5 chr2:152388410-152390729:- ENST00000409198
 #>  6 chr2:179415981-179416357:- ENST00000342992
@@ -144,6 +144,9 @@ toy_junc_df
 #> 12 chr2:179642044-179642187:- ENST00000342992
 #> 13 chr2:179642146-179642147:- ENST00000342992
 #> 14 chr2:179642044-179642431:- ENST00000342992
+#> 15 chr2:152226533-152226534:+ ENST00000460812
+#> 16 chr2:152222731-152222732:+ ENST00000460812
+#> 17 chr2:152388410-152388411:- ENST00000397345
 
 
 junc_df <- toy_junc_df %>% 
@@ -151,23 +154,26 @@ junc_df <- toy_junc_df %>%
 
 
 junc_df
-#> # A tibble: 14 × 8
+#> # A tibble: 17 × 8
 #>    junc_id                  tx_id tx_mo…¹ junc_…² cts_seq cts_j…³ cts_s…⁴ cts_id
-#>    <chr>                    <chr> <chr>     <int> <chr>     <dbl>   <int> <chr> 
-#>  1 chr2:152389996-15239220… ENST… ENST00…   16412 AAGAAG…     200     400 ef606…
-#>  2 chr2:152389996-15239072… ENST… ENST00…   16517 AAGAAG…     200     400 6c189…
-#>  3 chr2:152389955-15238995… ENST… ENST00…   17290 ACATCT…     200     400 c8bd5…
-#>  4 chr2:152388410-15239220… ENST… ENST00…   16412 AAGAAG…     200     400 d41d2…
-#>  5 chr2:152388410-15239072… ENST… ENST00…   16517 AAGAAG…     200     400 db9b3…
-#>  6 chr2:179415981-17941635… ENST… ENST00…   83789 TGGATT…     200     400 744c1…
-#>  7 chr2:179415987-17941598… ENST… ENST00…   84158 ATTTGA…     200     400 5315f…
-#>  8 chr2:179415000-17941635… ENST… ENST00…   83789 TGGATT…     200     400 8eec0…
-#>  9 chr2:179445336-17944620… ENST… ENST00…   59307 CGGGCT…     200     400 5ab65…
-#> 10 chr2:179446225-17944622… ENST… ENST00…   59288 TTATCT…     200     400 c233b…
-#> 11 chr2:179445336-17944663… ENST… ENST00…   58982 TGGCTA…     200     400 fddf5…
-#> 12 chr2:179642044-17964218… ENST… ENST00…    4828 TAGAAG…     200     400 ce662…
-#> 13 chr2:179642146-17964214… ENST… ENST00…    4868 TAGACC…     200     400 86af1…
-#> 14 chr2:179642044-17964243… ENST… ENST00…    4703 GTCTCC…     200     400 ec963…
+#>    <chr>                    <chr> <chr>     <int> <chr>   <chr>     <int> <chr> 
+#>  1 chr2:152389996-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 90bfc…
+#>  2 chr2:152389996-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 26f77…
+#>  3 chr2:152389955-15238995… ENST… ENST00…   21620 AAGAAG… 0,200,…    1945 f1f2c…
+#>  4 chr2:152388410-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 d4f9e…
+#>  5 chr2:152388410-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 c715a…
+#>  6 chr2:179415981-17941635… ENST… ENST00…   83789 TGGATT… 200         400 0128d…
+#>  7 chr2:179415987-17941598… ENST… ENST00…   84158 TGGATT… 0,200,…     769 50119…
+#>  8 chr2:179415000-17941635… ENST… ENST00…   83789 TGGATT… 200         400 c5083…
+#>  9 chr2:179445336-17944620… ENST… ENST00…   59307 CGGGCT… 200         400 38759…
+#> 10 chr2:179446225-17944622… ENST… ENST00…   59288 TTATCT… 0,200,…    1289 c4f9e…
+#> 11 chr2:179445336-17944663… ENST… ENST00…   58982 TGGCTA… 200         400 4796f…
+#> 12 chr2:179642044-17964218… ENST… ENST00…    4828 TAGAAG… 200         400 a4759…
+#> 13 chr2:179642146-17964214… ENST… ENST00…    4868 TAGACC… 0,200,…     502 46a57…
+#> 14 chr2:179642044-17964243… ENST… ENST00…    4703 GTCTCC… 200         400 77c18…
+#> 15 chr2:152226533-15222653… ENST… ENST00…    3878 AAAACT… 0,76,3…    4078 b8f7a…
+#> 16 chr2:152222731-15222273… ENST… ENST00…      76 AAAACT… 0,76,3…    4078 b8f7a…
+#> 17 chr2:152388410-15238841… ENST… ENST00…   23165 AAGAAG… 0,200,…    1945 f1f2c…
 #> # … with abbreviated variable names ¹​tx_mod_id, ²​junc_pos_tx, ³​cts_junc_pos,
 #> #   ⁴​cts_size
 ```
@@ -182,29 +188,34 @@ peptide, and the location of the junction in an open reading frame
 (ORF).
 
 ``` r
+
 junc_df <- junc_df %>% 
-  add_peptide(cds=toy_cds, size = 30, bsg = bsg)
+  add_peptide(cds=toy_cds, flanking_size = 13, bsg = bsg)
 
 junc_df %>% 
-  dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
-#> # A tibble: 14 × 4
-#>    junc_id                    junc_in_orf peptide_context                pepti…¹
-#>    <chr>                      <lgl>       <chr>                            <dbl>
-#>  1 chr2:152389996-152392205:- TRUE        PINRHFKYATQLMNEIC                   14
-#>  2 chr2:152389996-152390729:- TRUE        PRHLLAKTAGDQISQIC                   14
-#>  3 chr2:152389955-152389956:- FALSE       <NA>                                NA
-#>  4 chr2:152388410-152392205:- TRUE        PINRHFKYATQLMNEIKYRKNYEKSKDKF…      14
-#>  5 chr2:152388410-152390729:- TRUE        PRHLLAKTAGDQISQIKYRKNYEKSKDKF…      14
-#>  6 chr2:179415981-179416357:- TRUE        PSDPSKFTLAVSPVAGTPDYIDVTRETIT…      14
-#>  7 chr2:179415987-179415988:- FALSE       <NA>                                NA
-#>  8 chr2:179415000-179416357:- TRUE        PSDPSKFTLAVSPVVPPIVEFGPEYFDGL…      14
-#>  9 chr2:179445336-179446207:- TRUE        KHYPKDILSKYYQGDST                   14
-#> 10 chr2:179446225-179446226:- TRUE        PSDVPDKHYPKDILSKYYQGEYIRLFLLI…      14
-#> 11 chr2:179445336-179446633:- TRUE        PSDASKAAYARDPQFPPEGELDADLRKTL…      14
-#> 12 chr2:179642044-179642187:- TRUE        TPSDSGEWTVVAQNRLWNIR                14
-#> 13 chr2:179642146-179642147:- TRUE        RAGRSSISVILTVEGKMR                  14
-#> 14 chr2:179642044-179642431:- TRUE        VVGRPMPETFWFHDAVEHQVKPMFVEKLK…      14
-#> # … with abbreviated variable name ¹​peptide_context_junc_pos
+  dplyr::select(junc_id, peptide_context, peptide_context_junc_pos, junc_in_orf, cds_description, truncated_cds)
+#> # A tibble: 17 × 6
+#>    junc_id                    peptide_context    pepti…¹ junc_…² cds_d…³ trunc…⁴
+#>    <chr>                      <chr>                <dbl> <lgl>   <chr>   <lgl>  
+#>  1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         13 TRUE    mutate… FALSE  
+#>  2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         13 TRUE    mutate… FALSE  
+#>  3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
+#>  4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYR…      13 TRUE    mutate… FALSE  
+#>  5 chr2:152388410-152390729:- <NA>                    NA TRUE    trunca… TRUE   
+#>  6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTP…      13 TRUE    mutate… FALSE  
+#>  7 chr2:179415987-179415988:- SDPSKFTLAVSPVGK         13 TRUE    mutate… FALSE  
+#>  8 chr2:179415000-179416357:- SDPSKFTLAVSPVVPPI…      13 TRUE    mutate… FALSE  
+#>  9 chr2:179445336-179446207:- DVPDKHYPKDILSKYYQ…      13 TRUE    mutate… FALSE  
+#> 10 chr2:179446225-179446226:- SDVPDKHYPKDILSKYY…      13 TRUE    mutate… FALSE  
+#> 11 chr2:179445336-179446633:- SDASKAAYARDPQFPPE…      13 TRUE    mutate… FALSE  
+#> 12 chr2:179642044-179642187:- SDSGEWTVVAQNRLWNIR      13 TRUE    mutate… FALSE  
+#> 13 chr2:179642146-179642147:- AGRSSISVILTVEGKMR       13 TRUE    mutate… FALSE  
+#> 14 chr2:179642044-179642431:- VGRPMPETFWFHDAVEH…      13 TRUE    mutate… FALSE  
+#> 15 chr2:152226533-152226534:+ <NA>                    NA NA      no wt … NA     
+#> 16 chr2:152222731-152222732:+ <NA>                    NA NA      no wt … NA     
+#> 17 chr2:152388410-152388411:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
+#> # … with abbreviated variable names ¹​peptide_context_junc_pos, ²​junc_in_orf,
+#> #   ³​cds_description, ⁴​truncated_cds
 ```
 
 ## 4 Dummy workflow
@@ -312,7 +323,7 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # add peptide sequence
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
+  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
 
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
