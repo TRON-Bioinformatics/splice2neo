@@ -122,6 +122,7 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     protein_length_difference = ifelse(!frame_shift &
                                          !intron_retention, cds_length_difference / 3, NA),
     protein_len = as.numeric(BiocGenerics::width(protein)),
+    truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(gsub("*", "", protein, fixed = TRUE)))
   )
 
   # empty mutated proteins to NA --> junc outside of ORF
@@ -140,11 +141,10 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   df_annotated_peptide <- df_annotated_peptide %>%
     dplyr::mutate(
       # add NA for context sequences if the junction position is not in an open reading frame
-      peptide_context_seq_raw = ifelse(junc_in_orf, as.character(peptide_context_seq_raw), NA),
-      peptide_context = ifelse(junc_in_orf, as.character(peptide_context), NA),
-      peptide_context_junc_pos = ifelse(junc_in_orf, peptide_context_junc_pos, NA),
-      # mutated protein truncated wt protein? --> no peptide_context
-      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(protein))
+      # or cds is truncated, i.e. mutated gene product is truncated version of the WT gene product
+      peptide_context_seq_raw = ifelse(junc_in_orf | truncated_cds, as.character(peptide_context_seq_raw), NA),
+      peptide_context = ifelse(junc_in_orf | truncated_cds, as.character(peptide_context), NA),
+      peptide_context_junc_pos = ifelse(junc_in_orf | truncated_cds, peptide_context_junc_pos, NA),
     )
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
