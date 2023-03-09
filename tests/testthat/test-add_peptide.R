@@ -719,7 +719,7 @@ test_that("add_peptides works with custom toy example data", {
     rtracklayer::export(dna, twobit_filepath)
 
     ## Create the BSgenome object.
-    BSgenome:::BSgenome(organism=as.character(organism),
+    BSgenome::BSgenome(organism=as.character(organism),
                         common_name=as.character(organism),
                         provider=as.character(provider),
                         provider_version=as.character(genome),

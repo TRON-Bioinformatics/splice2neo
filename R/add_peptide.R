@@ -124,6 +124,10 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     protein_len = as.numeric(BiocGenerics::width(protein)),
   )
 
+  # empty mutated proteins to NA --> junc outside of ORF
+  df_positions <- df_positions %>%
+    mutate(protein = ifelse(protein == "", NA, protein))
+
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%
     get_normalized_protein_junc_pos()%>%
