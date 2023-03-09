@@ -128,19 +128,28 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   # mutated gene product truncated version of WT gene product?
   df_positions <- df_positions %>%
     rowwise() %>%
-    dplyr::mutate(
-      stop_position = stringr::str_locate(protein, "\\*")[[1]]
-    ) %>%
+    dplyr::mutate(stop_position = stringr::str_locate(protein, "\\*")[[1]]) %>%
+    ungroup() %>%
+    # get protein seq until first stop codon
     dplyr::mutate(
       protein = ifelse(protein == "", NA, protein),
       protein_until_stop_codon = stringr::str_sub(
         protein,
         start = 1,
-        end = pmin(stop_position, protein_len, na.rm = TRUE)
+        end = pmin(stop_position - 1, protein_len, na.rm = TRUE)
+      )
+    ) %>%
+    dplyr::mutate(
+      # protein_until_stop_codon cannot be "" or NA --> assign "empty"
+      protein_until_stop_codon = ifelse(
+        protein_until_stop_codon == "" |
+          is.na(protein_until_stop_codon),
+        "empty",
+        protein_until_stop_codon
       ),
-      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(gsub("*", "", protein_until_stop_codon, fixed = TRUE)))
-      ) %>%
-    select(-protein_until_stop_codon, -stop_position)
+      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(protein_until_stop_codon))
+    ) %>%
+    select(-protein_until_stop_codon,-stop_position)
 
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%
@@ -163,6 +172,7 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
   if(keep_ranges){
     df_annotated_peptide <- df_annotated_peptide %>%
+
       dplyr::mutate(
         cds_lst = as.list(cds_lst),
         cds_mod_lst = as.list(cds_mod),
