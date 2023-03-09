@@ -124,37 +124,15 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     protein_len = as.numeric(BiocGenerics::width(protein))
   )
 
-  # empty mutated proteins to NA --> junc outside of ORF
-  # mutated gene product truncated version of WT gene product?
-  df_positions <- df_positions %>%
-    rowwise() %>%
-    dplyr::mutate(stop_position = stringr::str_locate(protein, "\\*")[[1]]) %>%
-    ungroup() %>%
-    # get protein seq until first stop codon
-    dplyr::mutate(
-      protein = ifelse(protein == "", NA, protein),
-      protein_until_stop_codon = stringr::str_sub(
-        protein,
-        start = 1,
-        end = pmin(stop_position - 1, protein_len, na.rm = TRUE)
-      )
-    ) %>%
-    dplyr::mutate(
-      # protein_until_stop_codon cannot be "" or NA --> assign "empty"
-      protein_until_stop_codon = ifelse(
-        protein_until_stop_codon == "" |
-          is.na(protein_until_stop_codon),
-        "empty",
-        protein_until_stop_codon
-      ),
-      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(protein_until_stop_codon))
-    ) %>%
-    select(-protein_until_stop_codon,-stop_position)
-
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%
     get_normalized_protein_junc_pos()%>%
     annotate_junc_in_orf()
+
+  # empty mutated proteins to NA --> junc outside of ORF
+  # mutated gene product truncated version of WT gene product?
+  df_positions <- df_positions %>%
+    annotate_truncated_cds()
 
   df_annotated_peptide <- df_positions %>%
     get_peptide_context(flanking_size = flanking_size)
@@ -200,7 +178,10 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
 
   # add annotations to input data.frame
   df <- df %>%
-    dplyr::left_join(df_annotated_peptide, by = c("junc_id", "tx_id"))
+    dplyr::left_join(df_annotated_peptide, by = c("junc_id", "tx_id")) %>%
+    dplyr::mutate(
+      cds_description = ifelse(is.na(protein_wt), "no wt cds", cds_description)
+    )
 
   return(df)
 
@@ -281,6 +262,55 @@ annotate_junc_in_orf <- function(df){
       junc_in_orf = ifelse(is.na(junc_in_orf), FALSE, junc_in_orf)
     ) %>%
     dplyr::select(-protein_until_junction)
+
+  return(df_mod)
+}
+
+
+#' Tests if junction leads to truncated mutated gene product
+#   given a tibble with:
+#'  `protein_wt`
+#'  `protein`
+#'  `protein_len`
+#'  `junc_in_orf`
+#'
+#' @param df tibble
+#'
+#'
+annotate_truncated_cds <- function(df){
+
+  df_mod <- df %>%
+    rowwise() %>%
+    dplyr::mutate(stop_position = stringr::str_locate(protein, "\\*")[[1]]) %>%
+    ungroup() %>%
+    # get protein seq until first stop codon
+    dplyr::mutate(
+      protein = ifelse(protein == "", NA, protein),
+      protein_until_stop_codon = stringr::str_sub(
+        protein,
+        start = 1,
+        end = pmin(stop_position - 1, protein_len, na.rm = TRUE)
+      )
+    ) %>%
+    dplyr::mutate(
+      # protein_until_stop_codon cannot be "" or NA as search pattern otherwise warning --> assign "empty"
+      protein_until_stop_codon = ifelse(
+        protein_until_stop_codon == "" |
+          is.na(protein_until_stop_codon),
+        "empty",
+        protein_until_stop_codon
+      ),
+      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(protein_until_stop_codon)),
+      cds_description = case_when(
+        !junc_in_orf ~ "not in ORF",
+        protein_until_stop_codon == "empty" ~ "no mutated gene product",
+        truncated_cds ~ "truncated cds",
+        TRUE ~ "mutated cds"
+      ),
+      truncated_cds = ifelse(!junc_in_orf, NA, truncated_cds)
+    ) %>%
+    select(-protein_until_stop_codon,
+           -stop_position)
 
   return(df_mod)
 }

@@ -795,5 +795,37 @@ test_that("add_peptides works with custom toy example data", {
 })
 
 
+test_that("annotate_truncated_cds works on toy sample ", {
+
+  # toy example-2
+  protein = c("AAAA*XXXX", "AAAAXX*XX", "AAXX*XX", "*XXXX", "", "XXXXXXX")
+  protein_wt = c("AAAABCDAAA", "AAAABCDAAA", "AAAABCDAAA", "AAAABCDAAA", NA, "AAAABCDAAA")
+  junc_in_orf = c(TRUE, TRUE, TRUE, TRUE, NA, FALSE)
+
+  df <- dplyr::tibble(
+    protein,
+    protein_wt,
+    protein_len = as.numeric(nchar(protein)),
+    junc_in_orf
+  )
+
+  df1 <- df %>%
+    annotate_truncated_cds()
+
+  expect_true(ncol(df) + 2 == ncol(df1) )
+  expect_true(df1$truncated_cds[1])
+  expect_true(!df1$truncated_cds[2])
+  expect_true(all(
+    df1$cds_description == c(
+      "truncated cds",
+      "mutated cds",
+      "mutated cds",
+      "no mutated gene product",
+      "no mutated gene product",
+      "not in ORF"
+    )
+  ))
+
+})
 
 
