@@ -121,13 +121,26 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     # end for IRs
     protein_length_difference = ifelse(!frame_shift &
                                          !intron_retention, cds_length_difference / 3, NA),
-    protein_len = as.numeric(BiocGenerics::width(protein)),
-    truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(gsub("*", "", protein, fixed = TRUE)))
+    protein_len = as.numeric(BiocGenerics::width(protein))
   )
 
   # empty mutated proteins to NA --> junc outside of ORF
+  # mutated gene product truncated version of WT gene product?
   df_positions <- df_positions %>%
-    mutate(protein = ifelse(protein == "", NA, protein))
+    rowwise() %>%
+    dplyr::mutate(
+      stop_position = stringr::str_locate(protein, "\\*")[[1]]
+    ) %>%
+    dplyr::mutate(
+      protein = ifelse(protein == "", NA, protein),
+      protein_until_stop_codon = stringr::str_sub(
+        protein,
+        start = 1,
+        end = pmin(stop_position, protein_len, na.rm = TRUE)
+      ),
+      truncated_cds = stringr::str_detect(fixed(protein_wt), fixed(gsub("*", "", protein_until_stop_codon, fixed = TRUE)))
+      ) %>%
+    select(-protein_until_stop_codon, -stop_position)
 
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%
@@ -142,9 +155,9 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     dplyr::mutate(
       # add NA for context sequences if the junction position is not in an open reading frame
       # or cds is truncated, i.e. mutated gene product is truncated version of the WT gene product
-      peptide_context_seq_raw = ifelse(junc_in_orf | truncated_cds, as.character(peptide_context_seq_raw), NA),
-      peptide_context = ifelse(junc_in_orf | truncated_cds, as.character(peptide_context), NA),
-      peptide_context_junc_pos = ifelse(junc_in_orf | truncated_cds, peptide_context_junc_pos, NA),
+      peptide_context_seq_raw = ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context_seq_raw), NA),
+      peptide_context = ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context), NA),
+      peptide_context_junc_pos = ifelse(junc_in_orf & !truncated_cds, peptide_context_junc_pos, NA),
     )
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
