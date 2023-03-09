@@ -29,6 +29,7 @@
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
 #'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
 #'  - `truncated_cds` Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, `peptide_context` = NA.
+#'  - `cds_description` Descriptor of of the mutated gene product. Can be one of c("mutated cds", "truncated cds", "no mutated gene product", "no wt cds", "not in ORF")
 #'
 #'   If the `keep_ranges` is TRUE, the following additional columns are added to
 #'   the output data.frame:
