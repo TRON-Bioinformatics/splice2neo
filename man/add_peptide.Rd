@@ -4,14 +4,7 @@
 \alias{add_peptide}
 \title{Annotate splice junctions with resulting CDS and peptide sequence}
 \usage{
-add_peptide(
-  df,
-  cds,
-  full_pep_seq = TRUE,
-  size = NULL,
-  bsg = NULL,
-  keep_ranges = FALSE
-)
+add_peptide(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = FALSE)
 }
 \arguments{
 \item{df}{A data.frame with splice junctions in rows and at least the columns:
@@ -22,10 +15,8 @@ add_peptide(
 
 \item{cds}{as a named \code{\link[GenomicRanges]{GRangesList}} of coding sequences (CDS) ranges}
 
-\item{full_pep_seq}{If \code{full_pep_seq} is set to TRUE, the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.}
-
-\item{size}{the total size of the output sequence (might be shorter if peptide is shorter).
-This parameter is only relevant if \code{full_pep_seq} is set to FALSE.}
+\item{flanking_size}{the number of wild-type amino acids flanking the junction or novel sequence caused by the splice junction to the left and to the right.
+Frame shift junctions are flanked by wild-type amino acids to the left and are annotated until the first stop codon.}
 
 \item{bsg}{\code{\link[BSgenome]{BSgenome}} object such as
 \code{\link[BSgenome.Hsapiens.UCSC.hg19]{BSgenome.Hsapiens.UCSC.hg19}}}
@@ -38,12 +29,18 @@ A data.frame as the input with the additional column(s):
 \itemize{
 \item \code{cds_mod_id} an identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_cds} the junction position in the modified CDS sequence
+\item \code{frame_shift} Indicator whether junction leads to frame shift.
+\item \code{is_first_reading_frame} Indicator whether junction is in 1st reading frame for in-frame junctions.
+\item \code{normalized_cds_junc_pos} The normalized position of the junction in the modified CDS sequence to the left junction side.
 \item \code{protein} the full protein sequence of the translated modified CDS.
-\item \code{protein_junc_pos} The position of the junction in the \code{protein} sequence
+\item \code{normalized_protein_junc_pos} The normalized position of the junction in the \code{protein} sequence to the left junction side.
+\item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
 \item \code{junc_in_orf} Indicator whether the junction is located in an open reading frame.
 \item \code{peptide_context_seq_raw} the peptide sequence around the junction including stop codons.
 \item \code{peptide_context} the peptide sequence around the junction truncated after stop codons.
 \item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
+\item \code{truncated_cds} Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, \code{peptide_context} = NA.
+\item \code{cds_description} Descriptor of of the mutated gene product. Can be one of c("mutated cds", "truncated cds", "no mutated gene product", "no wt cds", "not in ORF")
 }
 
 If the \code{keep_ranges} is TRUE, the following additional columns are added to
@@ -62,6 +59,6 @@ Annotate splice junctions with resulting CDS and peptide sequence
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
-add_peptide(toy_junc_df, toy_cds, size = 30, bsg = bsg)
+add_peptide(toy_junc_df, toy_cds, bsg = bsg, flanking_size = 13)
 
 }
