@@ -675,9 +675,10 @@ test_that("add_peptides works with custom toy example data", {
   #jx2              |------|
   #mcds2    =========      ======
 
-  #cds3     =====         ======
-  #jx3             |------|
-  #mcds3    ========      ======
+  #seq   ATGATGATGATGATGATGATGATGATGATG
+  #cds3     =====          ======
+  #jx3             |-------|
+  #mcds3    ========       ======
 
 
   ##############################################################################
