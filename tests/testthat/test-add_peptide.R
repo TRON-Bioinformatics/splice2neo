@@ -732,10 +732,8 @@ test_that("add_peptides works with custom toy example data", {
                         seqs_pkgname=NA_character_,
                         seqs_dirpath=seqs_dirpath)
   }
-  toy_bsg <- build_bsgenome(c(
-    c = stringr::str_c(rep("ATG", 10), collapse = ""),
-    chrM = "GGAATAT"),
-    circ_seqs="chrM",
+  toy_bsg <- build_bsgenome(
+    c(c = stringr::str_c(rep("ATG", 10), collapse = "")),
     genome="hg00")
 
 
