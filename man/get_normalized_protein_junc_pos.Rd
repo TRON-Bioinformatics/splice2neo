@@ -32,3 +32,4 @@ Annotate the normalized junction position in the protein,
 \code{junc_pos_cds_wt}
 \code{cds_length_difference}
 }
+\keyword{internal}

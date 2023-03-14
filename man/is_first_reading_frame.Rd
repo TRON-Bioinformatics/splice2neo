@@ -17,3 +17,4 @@ occurs.}
 Determine if transcript is in first reading frame, given a tibble with:
 \code{junc_pos_cds}
 }
+\keyword{internal}

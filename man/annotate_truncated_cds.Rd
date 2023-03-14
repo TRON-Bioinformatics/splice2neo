@@ -20,3 +20,4 @@ Tests if junction leads to truncated mutated gene product
 \code{protein_len}
 \code{junc_in_orf}
 }
+\keyword{internal}
