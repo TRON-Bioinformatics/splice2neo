@@ -228,6 +228,7 @@ seq_truncate_nonstop <- function(seq, pos){
 #' Returns `TRUE` if transcript is in first reading frame and `FALSE` if transcript follows second or third reading frame.
 #' occurs.
 #'
+#' @keywords internal
 is_first_reading_frame <- function(df){
 
   df_mod <- df %>%
@@ -249,7 +250,7 @@ is_first_reading_frame <- function(df){
 #'
 #' @param df tibble
 #'
-#'
+#' @keywords internal
 annotate_junc_in_orf <- function(df){
 
   df_mod <- df %>%
@@ -277,7 +278,7 @@ annotate_junc_in_orf <- function(df){
 #'
 #' @param df tibble
 #'
-#'
+#' @keywords internal
 annotate_truncated_cds <- function(df){
 
   df_mod <- df %>%
@@ -332,7 +333,7 @@ annotate_truncated_cds <- function(df){
 #'
 #' @param df tibble
 #'
-#'
+#' @keywords internal
 get_normalized_protein_junc_pos <- function(df){
 
   df_mod <- df %>%
@@ -419,7 +420,7 @@ get_normalized_protein_junc_pos <- function(df){
 #' @param df Data frame with information about position of junction etc.
 #' @param flanking_size number amino acids left and right of the breakpoint or novel sequence part
 #'
-#'
+#' @keywords internal
 get_peptide_context <- function(df, flanking_size = 14){
 
   # peptide start coordinate in full protein sequence

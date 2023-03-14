@@ -18,3 +18,4 @@ Tests if junction position is in ORF
 \code{protein_len}
 \code{protein}
 }
+\keyword{internal}
