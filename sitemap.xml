@@ -31,10 +31,16 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_tx.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_junc_in_orf.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_mmsplice.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_mut_effect.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_truncated_cds.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/bed_to_junc.html</loc>
@@ -85,6 +91,12 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_junc_pos.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_normalized_protein_junc_pos.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_peptide_context.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_unknown_exon_intron_retention.html</loc>
   </url>
   <url>
@@ -98,6 +110,9 @@
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_canonical.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_first_reading_frame.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/is_in_rnaseq.html</loc>

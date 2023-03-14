@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">exon_in_intron</span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">tx_id</span>, <span class="va">transcripts</span>, patient_id <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">exon_in_intron</span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">tx_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,10 +69,6 @@
 <dt>transcripts</dt>
 <dd><p>a GRangesList with transcripts defined as GRanges of exons
 created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)</code>.</p></dd>
-
-
-<dt>patient_id</dt>
-<dd><p>Patient id. This is only relevant if a dataset from multiple patients is annotated.</p></dd>
 
 </dl></div>
     <div id="value">

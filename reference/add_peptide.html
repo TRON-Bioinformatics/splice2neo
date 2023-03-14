@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
       </span>
     </div>
 
@@ -53,14 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_peptide</span><span class="op">(</span></span>
-<span>  <span class="va">df</span>,</span>
-<span>  <span class="va">cds</span>,</span>
-<span>  full_pep_seq <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  size <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  bsg <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  keep_ranges <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_peptide</span><span class="op">(</span><span class="va">df</span>, <span class="va">cds</span>, flanking_size <span class="op">=</span> <span class="fl">14</span>, bsg <span class="op">=</span> <span class="cn">NULL</span>, keep_ranges <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -75,13 +68,9 @@
 <dd><p>as a named <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GRangesList</a></code> of coding sequences (CDS) ranges</p></dd>
 
 
-<dt>full_pep_seq</dt>
-<dd><p>If <code>full_pep_seq</code> is set to TRUE, the output sequence will cover 15 amino acids upstream of the junction and the complete sequence until the next stop codon.</p></dd>
-
-
-<dt>size</dt>
-<dd><p>the total size of the output sequence (might be shorter if peptide is shorter).
-This parameter is only relevant if <code>full_pep_seq</code> is set to FALSE.</p></dd>
+<dt>flanking_size</dt>
+<dd><p>the number of wild-type amino acids flanking the junction or novel sequence caused by the splice junction to the left and to the right.
+Frame shift junctions are flanked by wild-type amino acids to the left and are annotated until the first stop codon.</p></dd>
 
 
 <dt>bsg</dt>
@@ -100,12 +89,18 @@ kept? If TRUE, the list columns <code>cds_lst</code> and <code>cds_mod_lst</code
 
 <p>A data.frame as the input with the additional column(s):</p><ul><li><p><code>cds_mod_id</code> an identifier made from <code>tx_id</code> and <code>junc_id</code></p></li>
 <li><p><code>junc_pos_cds</code> the junction position in the modified CDS sequence</p></li>
+<li><p><code>frame_shift</code> Indicator whether junction leads to frame shift.</p></li>
+<li><p><code>is_first_reading_frame</code> Indicator whether junction is in 1st reading frame for in-frame junctions.</p></li>
+<li><p><code>normalized_cds_junc_pos</code> The normalized position of the junction in the modified CDS sequence to the left junction side.</p></li>
 <li><p><code>protein</code> the full protein sequence of the translated modified CDS.</p></li>
-<li><p><code>protein_junc_pos</code> The position of the junction in the <code>protein</code> sequence</p></li>
+<li><p><code>normalized_protein_junc_pos</code> The normalized position of the junction in the <code>protein</code> sequence to the left junction side.</p></li>
+<li><p><code>peptide_context_junc_pos</code> The junction position relative to the <code>peptide_context</code> sequence</p></li>
 <li><p><code>junc_in_orf</code> Indicator whether the junction is located in an open reading frame.</p></li>
 <li><p><code>peptide_context_seq_raw</code> the peptide sequence around the junction including stop codons.</p></li>
 <li><p><code>peptide_context</code> the peptide sequence around the junction truncated after stop codons.</p></li>
 <li><p><code>peptide_context_junc_pos</code> The junction position relative to the <code>peptide_context</code> sequence</p></li>
+<li><p><code>truncated_cds</code> Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, <code>peptide_context</code> = NA.</p></li>
+<li><p><code>cds_description</code> Descriptor of of the mutated gene product. Can be one of c("mutated cds", "truncated cds", "no mutated gene product", "no wt cds", "not in ORF")</p></li>
 </ul><p>If the <code>keep_ranges</code> is TRUE, the following additional columns are added to
 the output data.frame:</p><ul><li><p><code>cds_lst</code> a list of <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></code> with
 the original CDS as provided in <code>tx_id</code> column and <code>cds</code> object..</p></li>
@@ -118,30 +113,33 @@ modified CDS ranges.</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bsg</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">add_peptide</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_cds</span>, size <span class="op">=</span> <span class="fl">30</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id tx_id cds_m…¹ junc_…² protein prote…³ junc_…⁴ pepti…⁵ pepti…⁶ pepti…⁷</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">16</span>209 MADDED…    <span style="text-decoration: underline;">5</span>403 TRUE    PINRHF… PINRHF…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">16</span>314 MADDED…    <span style="text-decoration: underline;">5</span>438 TRUE    PRHLLA… PRHLLA…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">21</span>417 MADDED…    <span style="text-decoration: underline;">7</span>139 TRUE    PDMLTA… PDMLTA…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">16</span>209 MADDED…    <span style="text-decoration: underline;">5</span>403 TRUE    PINRHF… PINRHF…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">16</span>314 MADDED…    <span style="text-decoration: underline;">5</span>438 TRUE    PRHLLA… PRHLLA…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">83</span>566 MTTQAP…   <span style="text-decoration: underline;">27</span>856 TRUE    PSDPSK… PSDPSK…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">83</span>935 MTTQAP…   <span style="text-decoration: underline;">27</span>979 TRUE    PSDPSK… PSDPSK…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">83</span>566 MTTQAP…   <span style="text-decoration: underline;">27</span>856 TRUE    PSDPSK… PSDPSK…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">59</span>084 MTTQAP…   <span style="text-decoration: underline;">19</span>695 TRUE    KHYPKD… KHYPKD…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">59</span>065 MTTQAP…   <span style="text-decoration: underline;">19</span>689 TRUE    PSDVPD… PSDVPD…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">58</span>759 MTTQAP…   <span style="text-decoration: underline;">19</span>587 TRUE    PSDASK… PSDASK…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:1… ENST… ENST00…    <span style="text-decoration: underline;">4</span>605 MTTQAP…    <span style="text-decoration: underline;">1</span>535 TRUE    TPSDSG… TPSDSG…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:1… ENST… ENST00…    <span style="text-decoration: underline;">4</span>645 MTTQAP…    <span style="text-decoration: underline;">1</span>549 TRUE    RAGRSS… RAGRSS…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:1… ENST… ENST00…    <span style="text-decoration: underline;">4</span>480 MTTQAP…    <span style="text-decoration: underline;">1</span>494 TRUE    VVGRPM… VVGRPM…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:1… ENST… <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:1… ENST… <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:1… ENST… ENST00…   <span style="text-decoration: underline;">22</span>962 MADDED…    <span style="text-decoration: underline;">7</span>654 TRUE    PDMLTA… PDMLTA…      14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​cds_mod_id, ²​junc_pos_cds,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ³​protein_junc_pos, ⁴​junc_in_orf, ⁵​peptide_context_seq_raw,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁶​peptide_context, ⁷​peptide_context_junc_pos</span></span>
+<span class="r-in"><span><span class="fu">add_peptide</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_cds</span>, bsg <span class="op">=</span> <span class="va">bsg</span>, flanking_size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id tx_id protein prote…¹ frame…² cds_m…³ junc_…⁴ prote…⁵ is_fi…⁶ norma…⁷</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:1… ENST… MADDED… MADDED… TRUE    ENST00…   <span style="text-decoration: underline;">16</span>209    <span style="text-decoration: underline;">5</span>403 TRUE      <span style="text-decoration: underline;">16</span>209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:1… ENST… MADDED… MADDED… TRUE    ENST00…   <span style="text-decoration: underline;">16</span>314    <span style="text-decoration: underline;">5</span>438 TRUE      <span style="text-decoration: underline;">16</span>314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:1… ENST… MADDED… MADDED… FALSE   ENST00…   <span style="text-decoration: underline;">21</span>417    <span style="text-decoration: underline;">7</span>139 TRUE      <span style="text-decoration: underline;">21</span>417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:1… ENST… MADDED… MADDED… FALSE   ENST00…   <span style="text-decoration: underline;">16</span>209    <span style="text-decoration: underline;">5</span>403 TRUE      <span style="text-decoration: underline;">16</span>209</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:1… ENST… MADDED… MADDED… FALSE   ENST00…   <span style="text-decoration: underline;">16</span>314    <span style="text-decoration: underline;">5</span>438 TRUE      <span style="text-decoration: underline;">16</span>314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…   <span style="text-decoration: underline;">83</span>566   <span style="text-decoration: underline;">27</span>856 FALSE     <span style="text-decoration: underline;">83</span>566</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…   <span style="text-decoration: underline;">83</span>935   <span style="text-decoration: underline;">27</span>979 FALSE     <span style="text-decoration: underline;">83</span>566</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…   <span style="text-decoration: underline;">83</span>566   <span style="text-decoration: underline;">27</span>856 FALSE     <span style="text-decoration: underline;">83</span>566</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:1… ENST… MTTQAP… MTTQAP… TRUE    ENST00…   <span style="text-decoration: underline;">59</span>084   <span style="text-decoration: underline;">19</span>695 FALSE     <span style="text-decoration: underline;">59</span>065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:1… ENST… MTTQAP… MTTQAP… TRUE    ENST00…   <span style="text-decoration: underline;">59</span>065   <span style="text-decoration: underline;">19</span>689 FALSE     <span style="text-decoration: underline;">59</span>065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…   <span style="text-decoration: underline;">58</span>759   <span style="text-decoration: underline;">19</span>587 FALSE     <span style="text-decoration: underline;">58</span>759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:1… ENST… MTTQAP… MTTQAP… TRUE    ENST00…    <span style="text-decoration: underline;">4</span>605    <span style="text-decoration: underline;">1</span>535 TRUE       <span style="text-decoration: underline;">4</span>605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…    <span style="text-decoration: underline;">4</span>645    <span style="text-decoration: underline;">1</span>549 FALSE      <span style="text-decoration: underline;">4</span>645</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:1… ENST… MTTQAP… MTTQAP… FALSE   ENST00…    <span style="text-decoration: underline;">4</span>480    <span style="text-decoration: underline;">1</span>494 FALSE      <span style="text-decoration: underline;">4</span>480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:1… ENST… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:1… ENST… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span> <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:1… ENST… MADDED… MADDED… FALSE   ENST00…   <span style="text-decoration: underline;">22</span>962    <span style="text-decoration: underline;">7</span>654 TRUE      <span style="text-decoration: underline;">21</span>417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 7 more variables: normalized_protein_junc_pos &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   junc_in_orf &lt;lgl&gt;, truncated_cds &lt;lgl&gt;, cds_description &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   peptide_context_seq_raw &lt;chr&gt;, peptide_context_junc_pos &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   peptide_context &lt;chr&gt;, and abbreviated variable names ¹​protein_wt,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​frame_shift, ³​cds_mod_id, ⁴​junc_pos_cds, ⁵​protein_junc_pos,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁶​is_first_reading_frame, ⁷​normalized_cds_junc_pos</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
