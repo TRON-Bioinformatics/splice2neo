@@ -1,12 +1,33 @@
 image: bioconductor/bioconductor_docker:RELEASE_3_13
 
 stages:
+  - build
   - check
+  - deploy
 
 building:
+  stage: build
+  script:
+    - R -e 'devtools::install()'
+
+testing:
   stage: check
+  dependencies:
+    - building
   script:
     - R -e 'devtools::install()'
     - R -e 'devtools::check()'
-    - R -e 'pkgdown::build_site()'
 
+pages:
+  stage: deploy
+  dependencies:
+    - testing
+  script:
+    - R -e 'devtools::install()'
+    - R -e 'install.packages("pkgdown")'
+    - R -e "pkgdown::build_site()"
+    - mkdir -p public
+    - cp -r docs/* public
+  artifacts:
+    paths:
+      - public
