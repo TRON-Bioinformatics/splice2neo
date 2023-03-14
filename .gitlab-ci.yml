@@ -9,3 +9,10 @@ building:
     - R -e 'devtools::install()'
     - R -e 'devtools::check()'
 
+website:
+  stage: doc
+  branch: dev, main
+  script:
+    - R -e 'pkgdown::build_site()'
+
+
