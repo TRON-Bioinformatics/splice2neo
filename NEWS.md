@@ -1,3 +1,8 @@
+# splice2neo 0.6.0
+
+* major update of add_peptide() function + adding some tests
+* minor bug fix in exon_in_intron() function
+
 # splice2neo 0.5.6
 
 * minor changes to support stringr >= 1.5.0
