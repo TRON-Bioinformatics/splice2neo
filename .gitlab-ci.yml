@@ -1,14 +1,8 @@
 image: bioconductor/bioconductor_docker:RELEASE_3_13
 
 stages:
-  - build
   - check
   - deploy
-
-building:
-  stage: build
-  script:
-    - R -e 'devtools::install()'
 
 testing:
   stage: check
@@ -31,3 +25,6 @@ pages:
   artifacts:
     paths:
       - public
+  only:
+    - master
+    - dev      
