@@ -6,8 +6,6 @@ stages:
 
 testing:
   stage: check
-  dependencies:
-    - building
   script:
     - R -e 'devtools::install()'
     - R -e 'devtools::check()'
