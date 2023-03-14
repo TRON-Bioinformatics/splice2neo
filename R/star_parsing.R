@@ -64,8 +64,21 @@ transform_star_sj <- function(tib){
     filter(strand != "*") %>%
     mutate(
       junc_id = generate_junction_id(chromosome, junction_start, junction_end, strand)
-    ) %>%
-    sort_columns()
+    )
+  tib <- tib[
+    c(
+      "junction_start",
+      "junction_end",
+      "strand",
+      "chromosome",
+      "Gene",
+      "class",
+      "AS_event_ID",
+      "junc_id",
+      "uniquely_mapping_reads",
+      "multi_mapping_reads"
+    )
+  ]
   return(tib)
 }
 
