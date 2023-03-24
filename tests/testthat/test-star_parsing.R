@@ -28,6 +28,15 @@ test_that("parse.star.sj works correctly", {
   expect_true(all(! exepected_unknown_strand %in% expected_junc_ids))
 })
 
+test_that("parse.star.sj returns parses raw RNA-seq support", {
+  unique_reads <- c(0, 0, 0, 0, 0, 0, 14)
+  multi_reads <- c(13, 7, 3, 61, 8, 9, 132)
+  path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
+  dat.combined <- parse_star_sj(path)
+  expect_true(all(dat.combined$uniquely_mapping_reads == unique_reads))
+  expect_true(all(dat.combined$multi_mapping_reads == multi_reads))
+
+})
 
 test_that("import_star_sj returns error message when file doesn't exists", {
 
