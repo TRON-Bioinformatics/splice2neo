@@ -20,6 +20,7 @@ Imports tabular STAR SJ.out.tab splice junctions
 \examples{
 
 path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-import_star_sj(path)
+splice2neo:::import_star_sj(path)
 
 }
+\keyword{internal}

@@ -11,9 +11,10 @@
 #' @examples
 #'
 #' path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-#' import_star_sj(path)
+#' splice2neo:::import_star_sj(path)
 #'
 #' @import readr
+#' @keywords internal
 import_star_sj <- function(file.name) {
   if(!file.exists(file.name)){
     stop("STAR SJ.out.tab is missing")
@@ -52,10 +53,11 @@ import_star_sj <- function(file.name) {
 #'
 #' @examples
 #' path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-#' star_raw <- import_star_sj(path)
-#' transform_star_sj(star_raw)
+#' star_raw <- splice2neo:::import_star_sj(path)
+#' splice2neo:::transform_star_sj(star_raw)
 #'
 #' @import dplyr
+#' @keywords internal
 transform_star_sj <- function(tib){
 
   tib <- tib %>%

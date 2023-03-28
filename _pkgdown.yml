@@ -54,8 +54,6 @@ reference:
   desc: "Functions to parse STAR SJ.out.tab into standard splice junction format"
 - contents:
   - parse_star_sj
-  - import_star_sj
-  - transform_star_sj
 
 - title: "Parse other formats"
   desc: "Functions to parse otherformats into standard splice junction format"

@@ -19,7 +19,8 @@ Transforms STAR intermediate table into standardized junction format
 }
 \examples{
 path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
-star_raw <- import_star_sj(path)
-transform_star_sj(star_raw)
+star_raw <- splice2neo:::import_star_sj(path)
+splice2neo:::transform_star_sj(star_raw)
 
 }
+\keyword{internal}
