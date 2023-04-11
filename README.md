@@ -7,8 +7,14 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
+<<<<<<< HEAD
 [![Codecov test coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
 [![](https://img.shields.io/badge/devel%20version-0.5.5--0001-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+=======
+[![Codecov test
+coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
+[![](https://img.shields.io/badge/devel%20version-0.5.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+>>>>>>> 4d1d686d789562ddc68bba978d9b2823b87bc1b6
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -187,10 +193,16 @@ junction in an open reading frame (ORF).
 
 ```r
 
+<<<<<<< HEAD
+=======
+``` r
+
+>>>>>>> 4d1d686d789562ddc68bba978d9b2823b87bc1b6
 junc_df <- junc_df %>% 
-  add_peptide(cds=toy_cds, size = 30, bsg = bsg)
+  add_peptide(cds=toy_cds, flanking_size = 13, bsg = bsg)
 
 junc_df %>% 
+<<<<<<< HEAD
   dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
 #> # A tibble: 17 × 4
 #>    junc_id                    junc_in_orf peptide_context                pepti…¹
@@ -213,6 +225,31 @@ junc_df %>%
 #> 16 chr2:152222731-152222732:+ NA          <NA>                                NA
 #> 17 chr2:152388410-152388411:- TRUE        PDMLTALYNSHMWSQVMSDGM               14
 #> # … with abbreviated variable name ¹​peptide_context_junc_pos
+=======
+  dplyr::select(junc_id, peptide_context, peptide_context_junc_pos, junc_in_orf, cds_description, truncated_cds)
+#> # A tibble: 17 × 6
+#>    junc_id                    peptide_context    pepti…¹ junc_…² cds_d…³ trunc…⁴
+#>    <chr>                      <chr>                <dbl> <lgl>   <chr>   <lgl>  
+#>  1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         13 TRUE    mutate… FALSE  
+#>  2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         13 TRUE    mutate… FALSE  
+#>  3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
+#>  4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYR…      13 TRUE    mutate… FALSE  
+#>  5 chr2:152388410-152390729:- <NA>                    NA TRUE    trunca… TRUE   
+#>  6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTP…      13 TRUE    mutate… FALSE  
+#>  7 chr2:179415987-179415988:- SDPSKFTLAVSPVGK         13 TRUE    mutate… FALSE  
+#>  8 chr2:179415000-179416357:- SDPSKFTLAVSPVVPPI…      13 TRUE    mutate… FALSE  
+#>  9 chr2:179445336-179446207:- DVPDKHYPKDILSKYYQ…      13 TRUE    mutate… FALSE  
+#> 10 chr2:179446225-179446226:- SDVPDKHYPKDILSKYY…      13 TRUE    mutate… FALSE  
+#> 11 chr2:179445336-179446633:- SDASKAAYARDPQFPPE…      13 TRUE    mutate… FALSE  
+#> 12 chr2:179642044-179642187:- SDSGEWTVVAQNRLWNIR      13 TRUE    mutate… FALSE  
+#> 13 chr2:179642146-179642147:- AGRSSISVILTVEGKMR       13 TRUE    mutate… FALSE  
+#> 14 chr2:179642044-179642431:- VGRPMPETFWFHDAVEH…      13 TRUE    mutate… FALSE  
+#> 15 chr2:152226533-152226534:+ <NA>                    NA NA      no wt … NA     
+#> 16 chr2:152222731-152222732:+ <NA>                    NA NA      no wt … NA     
+#> 17 chr2:152388410-152388411:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
+#> # … with abbreviated variable names ¹​peptide_context_junc_pos, ²​junc_in_orf,
+#> #   ³​cds_description, ⁴​truncated_cds
+>>>>>>> 4d1d686d789562ddc68bba978d9b2823b87bc1b6
 ```
 
 
@@ -321,7 +358,7 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # add peptide sequence
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
+  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
 
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
