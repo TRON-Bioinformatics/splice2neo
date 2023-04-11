@@ -1,4 +1,8 @@
 
+
+# go to sync branch
+git checkout sync
+
 # to update to the dev branch in the current repo
 git fetch
 git rebase dev
