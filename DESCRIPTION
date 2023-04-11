@@ -56,7 +56,6 @@ Imports:
     ggbio,
     fs,
     BSgenome
-
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)

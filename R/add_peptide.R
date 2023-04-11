@@ -100,47 +100,30 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   suppressWarnings(
     protein <- Biostrings::translate(cds_seq, if.fuzzy.codon = "solve")
   )
-
-  # Get context peptides around junction
-  protein_junc_pos <- ceiling(junc_pos_cds / 3)
-  protein_end_pos <- ceiling(junc_end_tx / 3)
-
-  protein_len <- BiocGenerics::width(protein)
-
-
-  # test if junction position is in ORF (i.e. no stop codon `*` in whole seq before)
-  junc_in_orf <- XVector::subseq(
-    protein, start = 1,
-    end = ifelse(
-      intron_retention & protein_end_pos < protein_junc_pos,
-      pmin(protein_end_pos, protein_len),
-      pmin(protein_junc_pos, protein_len)
-      )
-    ) %>%
-    as.character()
-
-  junc_in_orf <- stringr::str_detect(junc_in_orf, "\\*", negate = TRUE)
+  suppressWarnings(
+    protein_wt <- Biostrings::translate(cds_seq_wt, if.fuzzy.codon = "solve")
+  )
 
   # extract context sequence from full peptide and cut before stop codon (*)
   df_positions <- df_sub %>%
     dplyr::mutate(
-    intron_retention = intron_retention,
-    strand = str_sub(df_sub$junc_id, -1),
-    protein = protein %>% as.character(),
-    protein_wt = protein_wt %>% as.character(),
-    frame_shift = frame_shift,
-    junc_in_cds = junc_in_cds,
-    cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
-    cds_length_difference = cds_length_difference,
-    junc_pos_cds = junc_pos_cds,
-    junc_pos_cds_wt = junc_pos_cds_wt,
-    # Get context peptides around junction
-    protein_junc_pos = ceiling(junc_pos_cds / 3),
-    # end for IRs
-    protein_length_difference = ifelse(!frame_shift &
-                                         !intron_retention, cds_length_difference / 3, NA),
-    protein_len = as.numeric(BiocGenerics::width(protein))
-  )
+      intron_retention = intron_retention,
+      strand = str_sub(df_sub$junc_id, -1),
+      protein = protein %>% as.character(),
+      protein_wt = protein_wt %>% as.character(),
+      frame_shift = frame_shift,
+      junc_in_cds = junc_in_cds,
+      cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
+      cds_length_difference = cds_length_difference,
+      junc_pos_cds = junc_pos_cds,
+      junc_pos_cds_wt = junc_pos_cds_wt,
+      # Get context peptides around junction
+      protein_junc_pos = ceiling(junc_pos_cds / 3),
+      # end for IRs
+      protein_length_difference = ifelse(!frame_shift &
+                                           !intron_retention, cds_length_difference / 3, NA),
+      protein_len = as.numeric(BiocGenerics::width(protein))
+    )
 
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%
@@ -151,6 +134,9 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   # mutated gene product truncated version of WT gene product?
   df_positions <- df_positions %>%
     annotate_truncated_cds()
+
+  df_annotated_peptide <- df_positions %>%
+    get_peptide_context(flanking_size = flanking_size)
 
   # Annotate table
   df_annotated_peptide <- df_annotated_peptide %>%
