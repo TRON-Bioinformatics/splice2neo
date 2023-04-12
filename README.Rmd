@@ -242,10 +242,10 @@ junction in an open reading frame (ORF).
 ```{r}
 
 junc_df <- junc_df %>% 
-  add_peptide(cds=toy_cds, size = 30, bsg = bsg)
+  add_peptide(cds=toy_cds, flanking_size = 13, bsg = bsg)
 
 junc_df %>% 
-  dplyr::select(junc_id, junc_in_orf, peptide_context, peptide_context_junc_pos)
+  dplyr::select(junc_id, peptide_context, peptide_context_junc_pos, junc_in_orf, cds_description, truncated_cds)
 
 ```
 
@@ -354,7 +354,7 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # add peptide sequence
 dat_for_requantification_cts_peptide <-
   dat_for_requantification_cts  %>%
-  add_peptide(size = 30, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
+  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
 
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
