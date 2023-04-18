@@ -50,7 +50,7 @@ format_spliceai <- function(spliceai_variants, gene_table = NULL){
         left_join(., gene_table, by = c("SYMBOL" = "gene_name")) %>%
         dplyr::select(mut_id, effect, score, chr, pos_rel, pos, gene_id)
       else
-        select(. , mut_id, effect, score, chr, pos_rel, pos)
+        dplyr::select(. , mut_id, effect, score, chr, pos_rel, pos)
     } %>%
 
     dplyr::distinct()
