@@ -17,7 +17,7 @@
 #'
 #' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}, \code{\link{format_spliceai}}
 #' @export
-format_pangolin <- function(variants, keep_gene_id = TRUE){
+format_pangolin <- function(variants, keep_gene_id = FALSE){
 
   # get all splicing affects for each variant in rows
   variants %>%
