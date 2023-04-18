@@ -7,7 +7,7 @@
 #'
 #' @param variants [tibble][tibble::tibble-package] with parsed
 #' pangolin mutations from \code{\link{parse_pangolin}}
-#' @param keep_gene_id Indicator whether the gene_id should be kept in the formatted data.
+#' @param keep_gene_id Indicator whether the gene_id should be kept in the formatted data (default: FALSE).
 #'
 #' @return A [tibble][tibble::tibble-package] with splicing effects per row
 #'
