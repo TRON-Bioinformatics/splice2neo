@@ -108,7 +108,9 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
 
     if(gene_mapping){
 
-      if(!"gene_id" %in% names(junc_df)){stop("The column gene_id is required in effect_df if gene mapping should be applied")}
+      if(!"gene_id" %in% names(junc_df)) {
+        stop("The column gene_id is required in effect_df if gene mapping should be applied")
+      }
 
       # gene and transcripts
       gene_transcript_mapping <-
