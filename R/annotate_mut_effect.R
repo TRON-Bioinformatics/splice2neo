@@ -129,7 +129,8 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
         ) %>%
         group_by(mut_id, junc_id, effect) %>%
         dplyr::filter(gene_id == gene_id_mapped) %>%
-        dplyr::select(-gene_id_mapped)
+        dplyr::select(-gene_id_mapped) %>%
+        ungroup()
 
     }
 
