@@ -6,8 +6,8 @@
 #'    `tx_id`, `junc_id` and might have individual sets of other tool/source
 #'    specific columns.
 #'
-#' @return A combined data set with unique junctions based on the three columns
-#'    `mut_id`, `tx_id`, `junc_id`.
+#' @return A combined data set with unique junctions based on the four columns
+#'    `mut_id`, `tx_id`, `junc_id`, `event_type`.
 #'    Additional columns in the input data.frames will be prefixed with the
 #'    tool/source name followed by an underscore `_`.
 #'    E.g. the column `score` in the input data sets `spliceai` becomes
@@ -31,7 +31,7 @@ combine_mut_junc <- function(junc_data_list){
   junc_df <- junc_data_list %>%
 
     # select distinct junctions by the indicator columns
-    map(dplyr::distinct, mut_id, tx_id, junc_id) %>%
+    map(dplyr::distinct, mut_id, tx_id, junc_id, event_type) %>%
 
     # combine into a single data.frame with tool column
     dplyr::bind_rows(.id = "tool") %>%
@@ -41,7 +41,7 @@ combine_mut_junc <- function(junc_data_list){
 
     # expand by junction and tool
     complete(
-      nesting(mut_id, tx_id, junc_id),
+      nesting(mut_id, tx_id, junc_id, event_type),
       tool,
       fill = list(detected = FALSE)
     ) %>%
@@ -62,15 +62,16 @@ combine_mut_junc <- function(junc_data_list){
                               ~rename_with(
                                 .data = .x,
                                 .fn = my_rename,
-                                .cols = -all_of(c("mut_id", "tx_id", "junc_id")),
+                                .cols = -all_of(c("mut_id", "tx_id", "junc_id", "event_type")),
                                 prefix_name = .y
                               ))
 
   # add tool/source specific columns/annotations
   # by iteratively apply a left_join()
+
   for (df in junc_data_list_names){
     junc_df <- junc_df %>%
-      left_join(df, by = c("mut_id", "tx_id", "junc_id"))
+      left_join(df, by = c("mut_id", "tx_id", "junc_id", "event_type"))
   }
 
   return(junc_df)
