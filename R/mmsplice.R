@@ -97,8 +97,8 @@ annotate_mmsplice <- function(mmsplice_df, transcripts){
 
       # depending on effect take proper junctions
       junc_id_lst = case_when(
-        effect == "exon_skipping" ~ skip_junc,
-        effect == "exon_inclusion" ~ incl_junc,
+        effect == "exon skipping" ~ skip_junc,
+        effect == "exon inclusion" ~ incl_junc,
       )
     )
 
