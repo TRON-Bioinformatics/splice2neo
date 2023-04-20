@@ -8,35 +8,46 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.5.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.6.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
 
-1.  [Overview](##1-Overview)
-2.  [Installation](##2-Installation)
-3.  [Example](##3-Example)
-4.  [Dummy workflow](##4-Dummy-workflow)
-5.  [Building the transcript
-    database](##5-Building-the-transcript%20database)
-6.  [Requantification with
-    Easyquant](##6-Requantification-with-Easyquant)
+[1. Overview](##1-Overview)  
+\| [1.1 Splice junction format](###1.1-Splice-junction-format)  
+\| [1.2 Building splice junctions](###1.2-Building-splice-junctions)  
+[2. Installation](##2-Installation)  
+[3. Example](##3-Example)  
+[4. Dummy workflow](##4-Dummy-workflow)  
+[5. Building the transcript
+database](##5-Building-the-transcript%20database)  
+[6. Requantification with
+Easyquant](##6-Requantification-with-Easyquant)
 
 ## 1 Overview
 
-This package provides functions for the analysis of alternative splicing
-junctions and their association with somatic mutations. It integrates
-the output of several tools which predict splicing effects from
-mutations or which detect expressed splice junctions from RNA-seq data
-into a standardized splice junction format based on genomic coordinates.
-Detected splice junctions can be filtered against canonical ones and
+This package provides functions for the analysis of splice junctions and
+their association with somatic mutations. It integrates the output of
+several tools which predict splicing effects from mutations or which
+detect expressed splice junctions from RNA-seq data into a standardized
+splice junction format based on genomic coordinates. Detected splice
+junctions can be filtered against canonical splice junctsion and
 annotated with affected transcript sequences, CDS, and resulting peptide
-sequences. The resulting tumor-specific splice junctions can encode
-neoantigens.
+sequences. Splice2neo currently supports splice events from alternative
+3’/5’ splice sites, exons skipping, intron retentions, exitrons and
+mutually exclusive exons.  
+Integrating splice2neo functions and detection rules based on splice
+effect scores and RNA-seq support facilitates the identification of
+mutation-associated splice junctions which are tumor-specific and can
+encode neoantigen candidates.
 
-Splice2neo currently supports events from alternative 3’/5’ splice
-sites, exons skipping, intron retentions, exitrons and mutually
-exclusive exons.
+Website: <https://tron-bioinformatics.github.io/splice2neo/>
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="55%" />
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="55%" />
+
+### 1.1 Splice junction format
 
 In general, a splice junction is defined by the format:
 `chr:start-end:strand` .  
@@ -46,11 +57,26 @@ the exon-intron or intron-exon boundary, following the format
 Two junctions relating to the same intron retention event event will
 generate the same transcript and peptide context sequence.
 
-Website: <https://tron-bioinformatics.github.io/splice2neo/>
+### 1.2 Building splice junctions
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="55%" />
+The table below describes the rules on how the left and right coordinate
+of the splice junction (“chr:start-end:strand“) are determined based on
+the predicted effect from SpliceAI and Pangolin. Pos refers to the
+position that is predicted to be affected by the mutation. Upstream_end
+and downstream_start refer to exon end or start coordinates. Splice
+junctions that relate to an intron retention event are defined by the
+rule `chr:pos-(pos+1):strand` and must cover an exon-intron boundary.
+The strand_offset is +1 for transcript on the positive strand and -1
+otherwise.
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="55%" />
+| effect        | event_type        | rule_left           | rule_right          |
+|:--------------|:------------------|:--------------------|:--------------------|
+| Donor loss    | intron retention  | pos                 | pos + strand_offset |
+| Donor loss    | exon skipping     | upstream_end        | downstream_start    |
+| Donor gain    | alternative 5prim | pos                 | downstream_start    |
+| Acceptor loss | intron retention  | pos - strand_offset | pos                 |
+| Acceptor loss | exon skipping     | upstream_end        | downstream_start    |
+| Acceptor gain | alternative 3prim | upstream_end        | pos                 |
 
 ## 2 Installation
 
