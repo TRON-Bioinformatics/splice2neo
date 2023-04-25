@@ -149,7 +149,7 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
         "downstream_end"= NA,
         "at_start"= NA,
         "at_end"= NA,
-        "class"= NA,
+        "event_type"= NA,
         "rule_left"= NA,
         "rule_right"= NA,
         "strand_offset"= NA,
@@ -252,7 +252,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
 #' Rules on how a splicing affecting variant creates a junction
 effect_to_junction_rules <- tribble(
-  ~effect, ~class,             ~rule_left,        ~rule_right,
+  ~effect, ~event_type,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
   "DL",    "exon skipping",    "upstream_end",    "downstream_start",
 

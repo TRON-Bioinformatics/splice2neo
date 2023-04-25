@@ -87,7 +87,7 @@ annotate_mmsplice <- function(mmsplice_df, transcripts){
     filter(transcript_id %in% names(transcripts)) %>%
 
     mutate(
-      effect = ifelse(delta_logit_psi <= 0, "exon_skipping", "exon_inclusion"),
+      event_type = ifelse(delta_logit_psi <= 0, "exon skipping", "exon inclusion"),
 
       # get junctions for exon skipping
       skip_junc = get_exon_skipping_junction(exon_id, transcript_id, transcripts),
@@ -97,8 +97,8 @@ annotate_mmsplice <- function(mmsplice_df, transcripts){
 
       # depending on effect take proper junctions
       junc_id_lst = case_when(
-        effect == "exon_skipping" ~ skip_junc,
-        effect == "exon_inclusion" ~ incl_junc,
+        event_type == "exon skipping" ~ skip_junc,
+        event_type == "exon inclusion" ~ incl_junc,
       )
     )
 

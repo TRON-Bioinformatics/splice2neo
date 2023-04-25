@@ -14,8 +14,8 @@ The individual tibbles should at least contain the columns \code{mut_id},
 specific columns.}
 }
 \value{
-A combined data set with unique junctions based on the three columns
-\code{mut_id}, \code{tx_id}, \code{junc_id}.
+A combined data set with unique junctions based on the four columns
+\code{mut_id}, \code{tx_id}, \code{junc_id}, \code{event_type}.
 Additional columns in the input data.frames will be prefixed with the
 tool/source name followed by an underscore \verb{_}.
 E.g. the column \code{score} in the input data sets \code{spliceai} becomes
