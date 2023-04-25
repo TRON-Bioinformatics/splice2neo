@@ -21,7 +21,7 @@ with an exon-intron junction in the provided transcripts."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
       </span>
     </div>
 
@@ -61,7 +61,12 @@ with an exon-intron junction in the provided transcripts.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">annotate_mut_effect</span><span class="op">(</span><span class="va">effect_df</span>, <span class="va">transcripts</span>, <span class="va">transcripts_gr</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">annotate_mut_effect</span><span class="op">(</span></span>
+<span>  <span class="va">effect_df</span>,</span>
+<span>  <span class="va">transcripts</span>,</span>
+<span>  <span class="va">transcripts_gr</span>,</span>
+<span>  gene_mapping <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,7 +75,9 @@ with an exon-intron junction in the provided transcripts.</p>
 <dd><p>a data.frame with variant effects on splicing per row. It
 should have at least the following columns:</p><ul><li><p><code>chr</code> chromosome</p></li>
 <li><p><code>pos</code> absolute position of the effect</p></li>
-<li><p><code>effect</code> an splicing effect class, one of <code>DL</code>, <code>DG</code>, <code>AL</code>, <code>AG</code>.</p></li>
+<li><p><code>effect</code> an splicing effect class, one of <code>DL</code>, <code>DG</code>, <code>AL</code>, <code>AG</code>.
+optional column:</p></li>
+<li><p><code>gene_id</code> ENSEMBL gene id. Is required if <code>gene_mapping</code> is set to TRUE</p></li>
 </ul></dd>
 
 
@@ -81,7 +88,16 @@ created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)<
 
 <dt>transcripts_gr</dt>
 <dd><p>a GRanges object with transcript created by
-<code>GenomicFeatures::transcripts(txdb)</code></p></dd>
+<code>GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))</code></p></dd>
+
+
+<dt>gene_mapping</dt>
+<dd><p>Indicator whether only transcripts related to the gene
+provided in the <code>gene_id</code> column in <code>effect_df</code> are considered.
+If <code>gene_mapping</code> is FALSE, all potentially affected  transcripts covering
+the relevant genomic position are considered.
+If <code>gene_mapping</code> is TRUE, potentially affected transcripts from the gene
+provided in <code>effect_df</code> that cover the relevant genomic positions are considered.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -107,24 +123,24 @@ splice junction in the column <code>junc_id</code>.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> INFO: calculate junction coordinates from predicted effect...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> INFO: Evaluation of rules done.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 168 × 27</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    mut_id  effect score chr   pos_rel    pos effec…¹ var_nr tx_chr tx_id tx_st…²</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2_1… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1       1 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2_1… DL      0.74 chr2        3 1.52<span style="color: #949494;">e</span>8 EIDX_2       2 chr2   ENST… -      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 158 more rows, 16 more variables: upstream_start &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    mut_id     effect score chr   pos_rel    pos effect_index var_nr tx_chr tx_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2_1523… AG      0.01 chr2       43 1.52<span style="color: #949494;">e</span>8 EIDX_1            1 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2_1523… DL      0.74 chr2        3 1.52<span style="color: #949494;">e</span>8 EIDX_2            2 chr2   ENST…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 158 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17 more variables: tx_strand &lt;chr&gt;, upstream_start &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   upstream_end &lt;int&gt;, downstream_start &lt;int&gt;, downstream_end &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   at_start &lt;lgl&gt;, at_end &lt;lgl&gt;, class &lt;chr&gt;, rule_left &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   at_start &lt;lgl&gt;, at_end &lt;lgl&gt;, event_type &lt;chr&gt;, rule_left &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   rule_right &lt;chr&gt;, strand_offset &lt;dbl&gt;, coord_1 &lt;dbl&gt;, coord_2 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   left &lt;dbl&gt;, right &lt;dbl&gt;, junc_id &lt;chr&gt;, tx_junc_id &lt;chr&gt;, and abbreviated</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable names ¹​effect_index, ²​tx_strand</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   left &lt;dbl&gt;, right &lt;dbl&gt;, junc_id &lt;chr&gt;, tx_junc_id &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

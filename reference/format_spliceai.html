@@ -19,7 +19,7 @@ data to make non-redundant output."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@ data to make non-redundant output.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">spliceai_variants</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_spliceai</span><span class="op">(</span><span class="va">spliceai_variants</span>, gene_table <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +65,13 @@ data to make non-redundant output.</p>
     <dl><dt>spliceai_variants</dt>
 <dd><p><a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with parsed
 spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></code></p></dd>
+
+
+<dt>gene_table</dt>
+<dd><p>optional <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with the columns:</p><ul><li><p><code>gene_id</code>: ENSEMBL gene id</p></li>
+<li><p><code>gene_name</code>: gene symbol
+If <code>gene_table</code> is provided, the formatted data contains a column with the <code>gene_id</code>.</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
@@ -96,7 +103,7 @@ spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2_179415988_C_CA    AL      1    chr2       -<span style="color: #BB0000;">1</span> 179<span style="text-decoration: underline;">415</span>987</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2_179446218_ATACT_A DG      0.02 chr2      -<span style="color: #BB0000;">11</span> 179<span style="text-decoration: underline;">446</span>207</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2_179446218_ATACT_A DL      0.91 chr2        8 179<span style="text-decoration: underline;">446</span>226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 11 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

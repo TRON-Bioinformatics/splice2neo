@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
       </span>
     </div>
 
@@ -109,27 +109,25 @@ the modified transcript (see <code><a href="modify_tx.html">modify_tx</a></code>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">add_context_seq</span><span class="op">(</span><span class="va">toy_junc_df</span>, <span class="va">toy_transcripts</span>, size <span class="op">=</span> <span class="fl">20</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 17 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id                  tx_id tx_mo…¹ junc_…² cts_seq cts_j…³ cts_s…⁴ cts_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:152389996-15239220… ENST… ENST00…   <span style="text-decoration: underline;">16</span>412 GATGAA… 10           20 83d60…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:152389996-15239072… ENST… ENST00…   <span style="text-decoration: underline;">16</span>517 GATCAG… 10           20 563a4…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:152389955-15238995… ENST… ENST00…   <span style="text-decoration: underline;">21</span>620 GTGGAG… 0,10,1…    <span style="text-decoration: underline;">1</span>565 73426…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:152388410-15239220… ENST… ENST00…   <span style="text-decoration: underline;">16</span>412 GATGAA… 10           20 ca48b…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:152388410-15239072… ENST… ENST00…   <span style="text-decoration: underline;">16</span>517 GATCAG… 10           20 aae48…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:179415981-17941635… ENST… ENST00…   <span style="text-decoration: underline;">83</span>789 TCTCCA… 10           20 ea545…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:179415987-17941598… ENST… ENST00…   <span style="text-decoration: underline;">84</span>158 TCTCCA… 0,10,3…     389 e84b4…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:179415000-17941635… ENST… ENST00…   <span style="text-decoration: underline;">83</span>789 TCTCCA… 10           20 a1ab2…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:179445336-17944620… ENST… ENST00…   <span style="text-decoration: underline;">59</span>307 ACCAGG… 10           20 cfcaf…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:179446225-17944622… ENST… ENST00…   <span style="text-decoration: underline;">59</span>288 GACATC… 0,10,8…     909 af1aa…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:179445336-17944663… ENST… ENST00…   <span style="text-decoration: underline;">58</span>982 GACCCT… 10           20 21e75…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:179642044-17964218… ENST… ENST00…    <span style="text-decoration: underline;">4</span>828 CCAAAA… 10           20 f2ed0…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:179642146-17964214… ENST… ENST00…    <span style="text-decoration: underline;">4</span>868 ACTGTG… 0,10,1…     122 6896b…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:179642044-17964243… ENST… ENST00…    <span style="text-decoration: underline;">4</span>703 TTTCAT… 10           20 4b22f…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:152226533-15222653… ENST… ENST00…    <span style="text-decoration: underline;">3</span>878 AACCCA… 0,10,3…    <span style="text-decoration: underline;">3</span>822 5abc8…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:152222731-15222273… ENST… ENST00…      76 AACCCA… 0,10,3…    <span style="text-decoration: underline;">3</span>822 5abc8…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:152388410-15238841… ENST… ENST00…   <span style="text-decoration: underline;">23</span>165 GTGGAG… 0,10,1…    <span style="text-decoration: underline;">1</span>565 73426…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​tx_mod_id, ²​junc_pos_tx, ³​cts_junc_pos,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁴​cts_size</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:152389… ENST… ENST0000…       <span style="text-decoration: underline;">16</span>412 GATGAA… 10                 20 83d60…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:152389… ENST… ENST0000…       <span style="text-decoration: underline;">16</span>517 GATCAG… 10                 20 563a4…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:152389… ENST… ENST0000…       <span style="text-decoration: underline;">21</span>620 GTGGAG… 0,10,1555,1…     <span style="text-decoration: underline;">1</span>565 73426…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:152388… ENST… ENST0000…       <span style="text-decoration: underline;">16</span>412 GATGAA… 10                 20 ca48b…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:152388… ENST… ENST0000…       <span style="text-decoration: underline;">16</span>517 GATCAG… 10                 20 aae48…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:179415… ENST… ENST0000…       <span style="text-decoration: underline;">83</span>789 TCTCCA… 10                 20 ea545…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:179415… ENST… ENST0000…       <span style="text-decoration: underline;">84</span>158 TCTCCA… 0,10,379,389      389 e84b4…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:179415… ENST… ENST0000…       <span style="text-decoration: underline;">83</span>789 TCTCCA… 10                 20 a1ab2…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:179445… ENST… ENST0000…       <span style="text-decoration: underline;">59</span>307 ACCAGG… 10                 20 cfcaf…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:179446… ENST… ENST0000…       <span style="text-decoration: underline;">59</span>288 GACATC… 0,10,899,909      909 af1aa…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:179445… ENST… ENST0000…       <span style="text-decoration: underline;">58</span>982 GACCCT… 10                 20 21e75…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:179642… ENST… ENST0000…        <span style="text-decoration: underline;">4</span>828 CCAAAA… 10                 20 f2ed0…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:179642… ENST… ENST0000…        <span style="text-decoration: underline;">4</span>868 ACTGTG… 0,10,112,122      122 6896b…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:179642… ENST… ENST0000…        <span style="text-decoration: underline;">4</span>703 TTTCAT… 10                 20 4b22f…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:152226… ENST… ENST0000…        <span style="text-decoration: underline;">3</span>878 AACCCA… 0,10,3812,3…     <span style="text-decoration: underline;">3</span>822 5abc8…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:152222… ENST… ENST0000…          76 AACCCA… 0,10,3812,3…     <span style="text-decoration: underline;">3</span>822 5abc8…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:152388… ENST… ENST0000…       <span style="text-decoration: underline;">23</span>165 GTGGAG… 0,10,1555,1…     <span style="text-decoration: underline;">1</span>565 73426…</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
