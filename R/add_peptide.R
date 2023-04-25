@@ -19,7 +19,7 @@
 #'  - `cds_mod_id` an identifier made from `tx_id` and `junc_id`
 #'  - `junc_pos_cds` the junction position in the modified CDS sequence
 #'  - `frame_shift` Indicator whether junction leads to frame shift.
-#'  - `is_first_reading_frame` Indicator whether junction is in 1st reading frame for in-frame junctions.
+#'  - `is_first_reading_frame` Indicator whether modified CDS sequence is translated into `protein` sequence using the 1st reading frame (i.e. reading is starting from the first nucleotide) for in-frame peptides.
 #'  - `normalized_cds_junc_pos` The normalized position of the junction in the modified CDS sequence to the left junction side.
 #'  - `protein` the full protein sequence of the translated modified CDS.
 #'  - `normalized_protein_junc_pos` The normalized position of the junction in the `protein` sequence to the left junction side.
@@ -27,7 +27,6 @@
 #'  - `junc_in_orf` Indicator whether the junction is located in an open reading frame.
 #'  - `peptide_context_seq_raw` the peptide sequence around the junction including stop codons.
 #'  - `peptide_context` the peptide sequence around the junction truncated after stop codons.
-#'  - `peptide_context_junc_pos` The junction position relative to the `peptide_context` sequence
 #'  - `truncated_cds` Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, `peptide_context` = NA.
 #'  - `cds_description` Descriptor of of the mutated gene product. Can be one of c("mutated cds", "truncated cds", "no mutated gene product", "no wt cds", "not in ORF")
 #'
