@@ -270,7 +270,7 @@ txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
 
 transcripts <-
   GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
-transcripts_gr <- GenomicFeatures::transcripts(txdb)
+transcripts_gr <- GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))
 # Build a GRangesList with cds composed of individual exon ranges
 cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 

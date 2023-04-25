@@ -26,6 +26,48 @@ test_that("annotate_mut_effect works on toy example with pangolin", {
 
 })
 
+test_that("annotate_mut_effect works on toy example with pangolin with gene_mapping = TRUE", {
+
+
+  gene_transcript_mapping <-
+    tibble::tibble(
+      gene_id = unlist(toy_transcripts_gr@elementMetadata$gene_id),
+      tx_name = toy_transcripts_gr@elementMetadata$tx_name
+    )
+
+
+  pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+
+  effect_df <- parse_pangolin(pangolin_file)
+  # modify : same mutation for two distinct genes + different scores
+
+  effect_df <- effect_df %>% format_pangolin(keep_gene_id = TRUE)
+
+  annot_df <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE)
+  # annot_df1 <- annot_df %>%
+  #   mutate(id = paste0(mut_id,  gene_id))
+  annot_df_map <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE)
+  # annot_df_map1 <- annot_df_map %>%
+  #   mutate(id = paste0(mut_id,  gene_id))
+
+  expect_true(nrow(annot_df) >= nrow(effect_df))
+  expect_true(nrow(annot_df_map) >= nrow(effect_df))
+  expect_true(nrow(annot_df) >= nrow(annot_df_map))
+
+  # check that additional rows if gene_mapping = FALSE are becuase of not fitting gene-transcript pair
+  df_not_mapped <- annot_df %>%
+    dplyr::select(mut_id, junc_id, tx_id, gene_id) %>%
+    left_join(annot_df_map %>% dplyr::select(mut_id, junc_id, tx_id, gene_id), by = c("mut_id", "junc_id", "tx_id")) %>%
+    filter(is.na(gene_id.y)) %>%
+    dplyr::select(-gene_id.y) %>%
+    left_join(gene_transcript_mapping, by = c("tx_id" = "tx_name"))
+
+  expect_true(all(df_not_mapped$gene_id.x != df_not_mapped$gene_id))
+
+
+
+})
+
 test_that("annotate_mut_effect works on empty tibble", {
 
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")

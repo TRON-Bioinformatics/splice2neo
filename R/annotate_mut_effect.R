@@ -12,11 +12,19 @@
 #'   - `chr` chromosome
 #'   - `pos` absolute position of the effect
 #'   - `effect` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
+#'   optional column:
+#'   - `gene_id` ENSEMBL gene id. Is required if `gene_mapping` is set to TRUE
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #' @param transcripts_gr a GRanges object with transcript created by
-#'   `GenomicFeatures::transcripts(txdb)`
+#'   `GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))`
+#' @param gene_mapping Indicator whether only transcripts related to the gene
+#' provided in the `gene_id` column in `effect_df` are considered.
+#' If `gene_mapping` is FALSE, all potentially affected  transcripts covering
+#' the relevant genomic position are considered.
+#' If `gene_mapping` is TRUE, potentially affected transcripts from the gene
+#' provided in `effect_df` that cover the relevant genomic positions are considered.
 #'
 #' @return A data.frame with with additional rows and columns including the
 #' splice junction in the column `junc_id`.
@@ -30,7 +38,7 @@
 #'
 #'
 #' @export
-annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
+annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_mapping = FALSE){
 
   effect_df <- effect_df  %>%
     mutate(
@@ -44,7 +52,7 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
         ":",
         as.character(effect_df$pos)
     ))
-    names(var_gr) <-effect_df$effect_index
+    names(var_gr) <- effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
     # get all possible junctions of by start and end coordinates of upsteam and downstream exons
@@ -96,6 +104,35 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
         tx_junc_id  = str_c(tx_id, junc_id, sep = "_"),
       ) %>%
       ungroup()
+
+
+    if(gene_mapping){
+
+      if(!"gene_id" %in% names(junc_df)) {
+        stop("The column gene_id is required in effect_df if gene mapping should be applied")
+      }
+
+      # gene and transcripts
+      gene_transcript_mapping <-
+        tibble::tibble(
+          gene_id = unlist(transcripts_gr@elementMetadata$gene_id),
+          tx_name = transcripts_gr@elementMetadata$tx_name
+        )
+
+      # consider only transcripts that relate to gene that is provided in the
+      # output of mutation effect prediction tools
+      junc_df <- junc_df %>%
+        dplyr::left_join(
+          gene_transcript_mapping,
+          by = c("tx_id" = "tx_name"),
+          suffix = c("", "_mapped")
+        ) %>%
+        group_by(mut_id, junc_id, effect) %>%
+        dplyr::filter(gene_id == gene_id_mapped) %>%
+        dplyr::select(-gene_id_mapped) %>%
+        ungroup()
+
+    }
 
     message("INFO: Evaluation of rules done.")
   } else{
