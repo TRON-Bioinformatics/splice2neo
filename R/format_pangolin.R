@@ -7,17 +7,17 @@
 #'
 #' @param variants [tibble][tibble::tibble-package] with parsed
 #' pangolin mutations from \code{\link{parse_pangolin}}
+#' @param keep_gene_id Indicator whether the gene_id should be kept in the formatted data (default: FALSE).
 #'
 #' @return A [tibble][tibble::tibble-package] with splicing effects per row
 #'
-#' @examples
 #' pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
 #' df <- parse_pangolin(pangolin_file)
 #' format_pangolin(df)
 #'
 #' @seealso \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}, \code{\link{format_spliceai}}
 #' @export
-format_pangolin <- function(variants){
+format_pangolin <- function(variants, keep_gene_id = FALSE){
 
   # get all splicing affects for each variant in rows
   variants %>%
@@ -47,7 +47,13 @@ format_pangolin <- function(variants){
     ) %>%
 
     # keep only relevant columns
-    dplyr::select(mut_id, effect, score, chr, pos_rel, pos) %>%
+    {
+      if (keep_gene_id)
+        dplyr::select(. ,mut_id, effect, score, chr, pos_rel, pos, gene_id)
+      else
+        dplyr::select(. , mut_id, effect, score, chr, pos_rel, pos)
+    } %>%
+
     dplyr::distinct()
 }
 

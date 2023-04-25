@@ -25,7 +25,7 @@ transcripts <- GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 # pryr::object_size(transcripts)
 
 # Build GRanges of whole transcripts
-transcripts_gr <- GenomicFeatures::transcripts(txdb)
+transcripts_gr <- GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))
 
 # # Build GRanges of all exons
 # exons_gr <- GenomicFeatures::exons(txdb, columns = "exon_name", use.names = TRUE)

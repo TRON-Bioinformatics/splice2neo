@@ -1,3 +1,11 @@
+# splice2neo 0.6.1
+
+* annotate_mut_effect() now optionally considers only transcripts from genes provided by SpliceAI or Pangolin
+* Column `class` was renamed to `event_type`
+* combine_mut_junc() returns now rows that are unique based on `mut_id`, `junc_id`, `tx_id`, `event_type`
+* update of README
+* update of description of add_peptide()
+
 # splice2neo 0.6.0
 
 * major update of add_peptide() function + adding some tests
