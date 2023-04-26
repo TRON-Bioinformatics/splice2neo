@@ -44,7 +44,6 @@ Imports:
     readr,
     tidyr,
     vcfR,
-    furrr,
     purrr,
     S4Vectors,
     GenomicFeatures (>= 1.21.10),

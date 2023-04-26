@@ -49,7 +49,7 @@ modify_tx <- function(tx, jx){
   int_lst <- as.list(int)
 
   # get introns that overlap with jx
-  old_int <- furrr::future_map2(int_lst, jx_lst, IRanges::subsetByOverlaps) %>%
+  old_int <- map2(int_lst, jx_lst, IRanges::subsetByOverlaps) %>%
     GenomicRanges::GRangesList()
 
   # remove overlapping introns

@@ -29,7 +29,7 @@ parse_mmsplice <- function(infile){
   df <- df %>%
     mutate(
       mut_id = str_split(ID, ":|>", 4) %>%
-        furrr::future_map_chr(~str_c(.x[1], "_", .x[2], "_", .x[3], "_", .x[4]))
+        map_chr(~str_c(.x[1], "_", .x[2], "_", .x[3], "_", .x[4]))
     )
 
   return(df)
