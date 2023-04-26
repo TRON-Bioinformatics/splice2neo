@@ -205,9 +205,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
   var_to_transcript <- var_to_transcript %>%
     mutate(
-      #var_gr = map(var_nr, ~var_gr[.x]),
-      var_gr = furrr::future_map(var_nr, ~var_gr[.x]),
-      # tx_gr = map(tx_nr, ~transcripts[[.x]]),
+      var_gr = purrr::map(var_nr, ~var_gr[.x]),
       tx_gr = transcripts[tx_nr] %>% as.list()
     )
 
@@ -225,23 +223,23 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       tx_id = if(!is.null(names(transcripts_gr))){names(transcripts_gr)[tx_nr]} else{as.character(transcripts_gr$tx_name)[tx_nr]},
 
       # extract all exon start and end coordinates of transcripts as GRanges
-      starts_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
-      ends_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
+      starts_gr = purrr::map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
+      ends_gr = purrr::map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
 
       # get the closest upstream and downstream start and end positions
-      upstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::follow),
-      downstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::precede),
-      upstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::follow),
-      downstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::precede),
+      upstream_start_idx =purrr:: map2_int(var_gr, starts_gr, GenomicRanges::follow),
+      downstream_start_idx = purrr::map2_int(var_gr, starts_gr, GenomicRanges::precede),
+      upstream_end_idx = purrr::map2_int(var_gr, ends_gr, GenomicRanges::follow),
+      downstream_end_idx = purrr::map2_int(var_gr, ends_gr, GenomicRanges::precede),
 
-      upstream_start = map2_int(starts_gr, upstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      downstream_start = map2_int(starts_gr, downstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      upstream_end = map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      downstream_end = map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      upstream_start = purrr::map2_int(starts_gr, upstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_start = purrr::map2_int(starts_gr, downstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      upstream_end = purrr::map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_end = purrr::map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
 
       # calculate if effect position overlaps with exon start or exon end
-      at_start = suppressWarnings(map2_lgl(var_gr, starts_gr, IRanges::overlapsAny)),
-      at_end = suppressWarnings(map2_lgl(var_gr, ends_gr, IRanges::overlapsAny)),
+      at_start = suppressWarnings(purrr::map2_lgl(var_gr, starts_gr, IRanges::overlapsAny)),
+      at_end = suppressWarnings(purrr::map2_lgl(var_gr, ends_gr, IRanges::overlapsAny)),
 
     ) %>%
 
