@@ -205,9 +205,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
   var_to_transcript <- var_to_transcript %>%
     mutate(
-      #var_gr = map(var_nr, ~var_gr[.x]),
-      var_gr = map(var_nr, ~var_gr[.x]),
-      # tx_gr = map(tx_nr, ~transcripts[[.x]]),
+      var_gr = purrr::map(var_nr, ~var_gr[.x]),
       tx_gr = transcripts[tx_nr] %>% as.list()
     )
 

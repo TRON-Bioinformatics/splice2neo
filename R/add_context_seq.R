@@ -128,7 +128,7 @@ add_context_seq <- function(df,
       cts_seq = as.character(cts_seq),
       cts_junc_pos = ifelse(intron_retention, cts_intervall, cts_junc_pos),
       cts_size = stringr::str_length(cts_seq),
-      cts_id = map2_chr(cts_seq, cts_junc_pos, ~rlang::hash(c(.x, .y)))
+      cts_id = purrr::map2_chr(cts_seq, cts_junc_pos, ~rlang::hash(c(.x, .y)))
     )
 
   # if keep_ranges argument is TRUE add list columns of GRanges as transcripts
