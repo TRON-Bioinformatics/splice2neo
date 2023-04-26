@@ -22,16 +22,16 @@ combine_mut_junc <- function(junc_data_list){
   # check input types and format
   stopifnot(is.list(junc_data_list))
   stopifnot(!is.null(names(junc_data_list)))
-  stopifnot(all(map_lgl(junc_data_list, is.data.frame)))
-  stopifnot(all(map_lgl(junc_data_list, ~ "mut_id" %in% names(.x))))
-  stopifnot(all(map_lgl(junc_data_list, ~ "junc_id" %in% names(.x))))
-  stopifnot(all(map_lgl(junc_data_list, ~ "tx_id" %in% names(.x))))
+  stopifnot(all(purrr::map_lgl(junc_data_list, is.data.frame)))
+  stopifnot(all(purrr::map_lgl(junc_data_list, ~ "mut_id" %in% names(.x))))
+  stopifnot(all(purrr::map_lgl(junc_data_list, ~ "junc_id" %in% names(.x))))
+  stopifnot(all(purrr::map_lgl(junc_data_list, ~ "tx_id" %in% names(.x))))
 
   # get union of junctions from all inputs with detection variables
   junc_df <- junc_data_list %>%
 
     # select distinct junctions by the indicator columns
-    map(dplyr::distinct, mut_id, tx_id, junc_id, event_type) %>%
+    purrr::map(dplyr::distinct, mut_id, tx_id, junc_id, event_type) %>%
 
     # combine into a single data.frame with tool column
     dplyr::bind_rows(.id = "tool") %>%
@@ -56,9 +56,9 @@ combine_mut_junc <- function(junc_data_list){
     stringr::str_c(prefix_name, "_", x)
   }
 
-  # for each input data add the suffix of the tool/source name to all columm names
+  # for each input data add the suffix of the tool/source name to all column names
   # except the indicator columns
-  junc_data_list_names = map2(junc_data_list, names(junc_data_list),
+  junc_data_list_names = purrr::map2(junc_data_list, names(junc_data_list),
                               ~rename_with(
                                 .data = .x,
                                 .fn = my_rename,
