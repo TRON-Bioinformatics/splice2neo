@@ -177,7 +177,7 @@ get_exon_skipping_junction <- function(exon_id, exons, transcript_id, transcript
   # parse genomic location of exon of interest into format of "exons"
   exon_start_idx <- purrr::map2_int(exon_starts, exon_idx, ~ .x[.y])
   exon_end_idx <- purrr::map2_int(exon_ends, exon_idx, ~ .x[.y])
-  exon_range <- purrr::pmap(list(exon_chr, exon_start_idx, exon_end_idx, exon_strand), generate_junction_id)
+  exon_range <- purrr::pmap_chr(list(exon_chr, exon_start_idx - 1, exon_end_idx, exon_strand), generate_junction_id)
 
   # only return junc_id if exon_range is the same as provided in MMSplice output (exons)
   # NA juncs are removed in annotate_mmsplice
@@ -250,7 +250,7 @@ get_exon_inclusion_junction <- function(exon_id, exons, transcript_id, transcrip
   # parse genomic location of exon of interest into format of "exons"
   exon_start_idx <- purrr::map2_int(exon_starts, exon_idx, ~ .x[.y])
   exon_end_idx <- purrr::map2_int(exon_ends, exon_idx, ~ .x[.y])
-  exon_range <- purrr::pmap(list(exon_chr, exon_start_idx, exon_end_idx, exon_strand), generate_junction_id)
+  exon_range <- purrr::pmap(list(exon_chr, exon_start_idx - 1, exon_end_idx, exon_strand), generate_junction_id)
 
   # only return junc_id if exon_range is the same as provided in MMSplice output (exons)
   # NA juncs are removed in annotate_mmsplice
