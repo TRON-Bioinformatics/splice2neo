@@ -11,6 +11,8 @@ annotate_mmsplice(mmsplice_df, transcripts)
 have the following columns:
 - ID
 - exon_id
+- exons
+- transcript_id
 - delta_logit_psi}
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
@@ -23,7 +25,7 @@ by descending position for transcripts on negative strand.}
 A data.frame like object like the input but with additional columns:
 \itemize{
 \item junc_id: \verb{<chr>_<pos1>_<pos2>_<strand>}
-\item effect: either \code{exon_skipping} or \code{exon_inclusion}
+\item event_type: either \code{exon_skipping} or \code{exon_inclusion}
 }
 
 If the logit delta PSI score is <= 0, the event is treated as exon skipping.
