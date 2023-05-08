@@ -5,10 +5,12 @@
 \title{Compute the resulting junction (junc_id) for exon skipping of given exon
 and transcript.}
 \usage{
-get_exon_skipping_junction(exon_id, transcript_id, transcripts)
+get_exon_skipping_junction(exon_id, exons, transcript_id, transcripts)
 }
 \arguments{
 \item{exon_id}{A vector of exon IDs}
+
+\item{exons}{A vector of the genomic coordinates of the exon.}
 
 \item{transcript_id}{A vector of transcript IDs}
 
@@ -26,8 +28,9 @@ and transcript.
 
 transcript_id <- c("ENST00000243347", "ENST00000460812")
 exon_id <- c("ENSE00000840477", "ENSE00003481758")
+exons <- c("chr2:152222570-152222731:+", "chr2:152226534-152226762:+")
 transcripts <- toy_transcripts
 
-get_exon_skipping_junction(exon_id, transcript_id, transcripts)
+get_exon_skipping_junction(exon_id, exons, transcript_id, transcripts)
 
 }

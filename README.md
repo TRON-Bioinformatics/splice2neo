@@ -8,14 +8,12 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.6.0-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.6.2-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
 
 [1. Overview](##1-Overview)  
-\| [1.1 Splice junction format](###1.1-Splice-junction-format)  
-\| [1.2 Building splice junctions](###1.2-Building-splice-junctions)  
 [2. Installation](##2-Installation)  
 [3. Example](##3-Example)  
 [4. Dummy workflow](##4-Dummy-workflow)  
@@ -249,7 +247,12 @@ junc_df %>%
 In the following a dummy example workflow how to integrate predict
 splicing effects from mutations or which detect expressed splice
 junctions from RNA-seq data to predict potential neoantigen candidates
-with splice2neo. A test case will be added later
+with splice2neo.  
+Tools that predict splicing effect from somatic mutations can predict
+distinct splice scores for the same mutation considering distinct genes.
+If you want to consider gene annotation, please checkout
+[4.1](###4.1-Consider-gene-annotation-in-mutation-tools)  
+A test case will be added later
 
 ``` r
 library(splice2neo)
@@ -298,8 +301,8 @@ dat_spliceai <-
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
 dat_spliceai_annotated <-
   annotate_mut_effect(var_df = dat_splicai_formatted,
-                             transcripts = transcripts,
-                             transcripts_gr = transcripts_gr)
+                      transcripts = transcripts,
+                      transcripts_gr = transcripts_gr)
 
 # get pangolin results and annotate effects as splice junctions
 pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
@@ -314,11 +317,17 @@ dat_mmsplice <- parse_mmsplice(infile = "path/to/mmsplice/file.csv")
 dat_mmsplice_annotated  <-
   annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
-# mutation-based junctions
+# filter for unique junctions transcripts and consider only the event with the best score
+# this is recommended before combining the junctions from several tools
+dat_spliceai_annotated_unique <- unique_mut_junc(dat_spliceai_annotated)
+dat_pangolin_annotated_unique <- unique_mut_junc(pangolin_annot_df)
+dat_mmsplice_annotated_unique <- unique_junc_mmsplice(dat_mmsplice_annotated)
+
+# combine mutation-based junctions from several tools into one tibbles
 dat_mut <- combine_mut_junc(list(
-    "spliceai" = dat_spliceai_annotated, 
-    "mmsplice" = dat_mmsplice_annotated,
-    "pangolin" = pangolin_annot_df
+    "spliceai" = dat_spliceai_annotated_unique, 
+    "mmsplice" = dat_mmsplice_annotated_unique,
+    "pangolin" = dat_pangolin_annotated_unique
     ))
 
 # add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter
@@ -365,6 +374,50 @@ dat_requant <-
 dat_cts_peptide_requantification <- 
   dat_cts_peptide_requantification %>%
   mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
+```
+
+### 4.1 Consider gene annotation in mutation tools
+
+The currently supported tools that predict the effect of somatic
+mutations on splicing consider gene annotations. These tools can predict
+distinct splice scores for the same mutation in distinct genes.
+Therefore, the user may want to consider only transcripts related to the
+annotated gene during the annotation to prevent that combination of
+junction-transcripts are matched with scores from another gene. The
+following dummy example shows how to consider gene annotation during the
+formatting and annotation of SpliceAI Pangolin results.
+
+``` r
+library(splice2neo)
+library(tidyverse)
+# load genome of choice
+library(BSgenome.Hsapiens.UCSC.hg19)
+library(AnnotationDbi)
+
+
+# import & transform SpliceAi results
+dat_spliceai <-
+  parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
+# add ENSEMBL gene id while formatting SpliceAI output
+# gene_table is a tible with the columns gene_id (=ENSEMBL gene id)and gene_name (= gene symbol) 
+dat_splicai_formatted <-
+  format_spliceai(dat_spliceai, gene_table = gene_table)
+# consider only transcript related to gene provided by SpliceAI
+dat_spliceai_annotated <-
+  annotate_mut_effect(
+    var_df = dat_splicai_formatted,
+    transcripts = transcripts,
+    transcripts_gr = transcripts_gr,
+    gene_mapping = TRUE
+  )
+
+# get pangolin results and annotate effects as splice junctions
+pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+
+# keep gene_id while formatting of Pangolin output and onsider only transcript related to gene provided by Pangolin
+pangolin_annot_df <- parse_pangolin(pangolin_file) %>%
+  format_pangolin(keep_gene_id =TRUE) %>%
+  annotate_mut_effect(toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE)
 ```
 
 ## 5 Building the transcript database
