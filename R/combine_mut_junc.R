@@ -31,7 +31,7 @@ combine_mut_junc <- function(junc_data_list){
   junc_df <- junc_data_list %>%
 
     # select distinct junctions by the indicator columns
-    purrr::map(dplyr::distinct, mut_id, tx_id, junc_id, event_type) %>%
+    purrr::map(dplyr::distinct, mut_id, tx_id, junc_id) %>%
 
     # combine into a single data.frame with tool column
     dplyr::bind_rows(.id = "tool") %>%
@@ -41,7 +41,7 @@ combine_mut_junc <- function(junc_data_list){
 
     # expand by junction and tool
     complete(
-      nesting(mut_id, tx_id, junc_id, event_type),
+      nesting(mut_id, tx_id, junc_id),
       tool,
       fill = list(detected = FALSE)
     ) %>%
@@ -62,7 +62,7 @@ combine_mut_junc <- function(junc_data_list){
                               ~rename_with(
                                 .data = .x,
                                 .fn = my_rename,
-                                .cols = -all_of(c("mut_id", "tx_id", "junc_id", "event_type")),
+                                .cols = -all_of(c("mut_id", "tx_id", "junc_id")),
                                 prefix_name = .y
                               ))
 
@@ -71,7 +71,7 @@ combine_mut_junc <- function(junc_data_list){
 
   for (df in junc_data_list_names){
     junc_df <- junc_df %>%
-      left_join(df, by = c("mut_id", "tx_id", "junc_id", "event_type"))
+      left_join(df, by = c("mut_id", "tx_id", "junc_id"))
   }
 
   return(junc_df)

@@ -318,11 +318,12 @@ dat_mmsplice_annotated  <-
   annotate_mmsplice(mmsplice_df = dat_mmsplice, transcripts = transcripts)
 
 # filter for unique junctions transcripts and consider only the event with the best score
+# this is recommended before combining the junctions from several tools
 dat_spliceai_annotated_unique <- unique_mut_junc(dat_spliceai_annotated)
 dat_pangolin_annotated_unique <- unique_mut_junc(pangolin_annot_df)
 dat_mmsplice_annotated_unique <- unique_junc_mmsplice(dat_mmsplice_annotated)
 
-# mutation-based junctions
+# combine mutation-based junctions from several tools into one tibbles
 dat_mut <- combine_mut_junc(list(
     "spliceai" = dat_spliceai_annotated_unique, 
     "mmsplice" = dat_mmsplice_annotated_unique,

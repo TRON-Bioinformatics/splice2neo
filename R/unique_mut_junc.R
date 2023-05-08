@@ -52,7 +52,7 @@ unique_junc_mmsplice <- function(junc_data) {
   stopifnot("tx_id" %in% names(junc_data))
   stopifnot("delta_logit_psi" %in% names(junc_data))
 
-  junc_data_incl_skp <- junc_data %>%
+  junc_data_skp <- junc_data %>%
     filter(event_type == "exon skipping")
 
   junc_data_incl <- junc_data %>%
@@ -60,7 +60,7 @@ unique_junc_mmsplice <- function(junc_data) {
     arrange(mut_id, junc_id, tx_id, desc(delta_logit_psi)) %>%
     distinct(mut_id, junc_id, tx_id, .keep_all = TRUE)
 
-  junc_data_res <- bind_rows(junc_data_incl_skp, junc_data_incl) %>%
+  junc_data_res <- bind_rows(junc_data_skp, junc_data_incl) %>%
     arrange(mut_id, junc_id, tx_id)
 
   return(junc_data_res)
