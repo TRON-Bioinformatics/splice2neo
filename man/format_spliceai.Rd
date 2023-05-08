@@ -14,11 +14,11 @@ spliceAI mutations from \code{\link{parse_spliceai}}}
 \itemize{
 \item \code{gene_id}: ENSEMBL gene id
 \item \code{gene_name}: gene symbol
-If \code{gene_table} is provided, the formatted data contains a column with the \code{gene_id}.
 }}
 }
 \value{
-A \link[tibble:tibble-package]{tibble} with splicing effects per row
+A \link[tibble:tibble-package]{tibble} with splicing effects per row.
+If \code{gene_table} is provided, the formatted data contains a column with the \code{gene_id}.
 }
 \description{
 Reformat the data for each annotated effect per row, filters effects
