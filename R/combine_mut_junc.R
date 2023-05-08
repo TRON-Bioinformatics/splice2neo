@@ -6,8 +6,8 @@
 #'    `tx_id`, `junc_id` and might have individual sets of other tool/source
 #'    specific columns.
 #'
-#' @return A combined data set with unique junctions based on the four columns
-#'    `mut_id`, `tx_id`, `junc_id`, `event_type`.
+#' @return A combined data set with unique junctions based on the columns
+#'    `mut_id`, `tx_id`, `junc_id`.
 #'    Additional columns in the input data.frames will be prefixed with the
 #'    tool/source name followed by an underscore `_`.
 #'    E.g. the column `score` in the input data sets `spliceai` becomes
