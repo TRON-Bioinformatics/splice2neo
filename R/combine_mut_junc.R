@@ -4,7 +4,9 @@
 #'    should be the source, e.g. the tool name, such as `spliceai` or `pangolin`.
 #'    The individual tibbles should at least contain the columns `mut_id`,
 #'    `tx_id`, `junc_id` and might have individual sets of other tool/source
-#'    specific columns.
+#'    specific columns. It is recommended that these input tables are unique
+#'    with respect to `mut_id`, `tx_id`, `junc_id`, e.g. by using `unique_mut_junc()` or
+#'    `unique_junc_mmsplice()`.
 #'
 #' @return A combined data set with unique junctions based on the columns
 #'    `mut_id`, `tx_id`, `junc_id`.
