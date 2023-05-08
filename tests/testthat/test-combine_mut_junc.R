@@ -16,13 +16,13 @@ test_that("combine_mut_junc works", {
 
   # get mmsplice junctions
   mmsplice_file <- system.file("extdata", "mmsplice_pred.csv", package = "splice2neo")
-  mmsplice_annot_df <- parse_mmsplice(mmsplice_file) %>%
+  mmsplice_df <- parse_mmsplice(mmsplice_file)
+  mmsplice_annot_df <- mmsplice_df %>%
     annotate_mmsplice(toy_transcripts)
 
   mmsplice_annot_df$pathogenicity <- "xx"
   mmsplice_annot_df$effect <- "xx"
   mmsplice_annot_df$efficiency <- "xx"
-  # junc_annot <- annotate_mmsplice(mmsplice_df, toy_transcripts)
 
   junc_data_list = list(
     "spliceai" = spliceai_annot_df,
