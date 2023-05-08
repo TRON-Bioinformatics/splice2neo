@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -75,9 +75,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><a href="#id_#1-Overview">1. Overview</a><br>
-| <a href="#id_##1.1-Splice-junction-format">1.1 Splice junction format</a><br>
-| <a href="#id_##1.2-Building-splice-junctions">1.2 Building splice junctions</a><br><a href="#id_#2-Installation">2. Installation</a><br><a href="#id_#3-Example">3. Example</a><br><a href="#id_#4-Dummy-workflow">4. Dummy workflow</a><br><a href="#id_#5-Building-the-transcript%20database">5. Building the transcript database</a><br><a href="#id_#6-Requantification-with-Easyquant">6. Requantification with Easyquant</a></p>
+<p><a href="#id_#1-Overview">1. Overview</a><br><a href="#id_#2-Installation">2. Installation</a><br><a href="#id_#3-Example">3. Example</a><br><a href="#id_#4-Dummy-workflow">4. Dummy workflow</a><br><a href="#id_#5-Building-the-transcript%20database">5. Building the transcript database</a><br><a href="#id_#6-Requantification-with-Easyquant">6. Requantification with Easyquant</a></p>
 <div class="section level2">
 <h2 id="id_1-overview">1 Overview<a class="anchor" aria-label="anchor" href="#id_1-overview"></a>
 </h2>
@@ -304,7 +302,9 @@ Two junctions relating to the same intron retention event event will generate th
 <div class="section level2">
 <h2 id="id_4-dummy-workflow">4 Dummy workflow<a class="anchor" aria-label="anchor" href="#id_4-dummy-workflow"></a>
 </h2>
-<p>In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo. A test case will be added later</p>
+<p>In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo.<br>
+Tools that predict splicing effect from somatic mutations can predict distinct splice scores for the same mutation considering distinct genes. If you want to consider gene annotation, please checkout <a href="#id_##4.1-Consider-gene-annotation-in-mutation-tools">4.1</a><br>
+A test case will be added later</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -352,8 +352,8 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="va">dat_splicai_formatted</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">dat_spliceai</span><span class="op">)</span></span>
 <span><span class="va">dat_spliceai_annotated</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span>var_df <span class="op">=</span> <span class="va">dat_splicai_formatted</span>,</span>
-<span>                             transcripts <span class="op">=</span> <span class="va">transcripts</span>,</span>
-<span>                             transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span><span class="op">)</span></span>
+<span>                      transcripts <span class="op">=</span> <span class="va">transcripts</span>,</span>
+<span>                      transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># get pangolin results and annotate effects as splice junctions</span></span>
 <span><span class="va">pangolin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.pangolin.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
@@ -368,11 +368,17 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="va">dat_mmsplice_annotated</span>  <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="reference/annotate_mmsplice.html">annotate_mmsplice</a></span><span class="op">(</span>mmsplice_df <span class="op">=</span> <span class="va">dat_mmsplice</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># mutation-based junctions</span></span>
+<span><span class="co"># filter for unique junctions transcripts and consider only the event with the best score</span></span>
+<span><span class="co"># this is recommended before combining the junctions from several tools</span></span>
+<span><span class="va">dat_spliceai_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_mut_junc.html">unique_mut_junc</a></span><span class="op">(</span><span class="va">dat_spliceai_annotated</span><span class="op">)</span></span>
+<span><span class="va">dat_pangolin_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_mut_junc.html">unique_mut_junc</a></span><span class="op">(</span><span class="va">pangolin_annot_df</span><span class="op">)</span></span>
+<span><span class="va">dat_mmsplice_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_junc_mmsplice.html">unique_junc_mmsplice</a></span><span class="op">(</span><span class="va">dat_mmsplice_annotated</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># combine mutation-based junctions from several tools into one tibbles</span></span>
 <span><span class="va">dat_mut</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_mut_junc.html">combine_mut_junc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">"spliceai"</span> <span class="op">=</span> <span class="va">dat_spliceai_annotated</span>, </span>
-<span>    <span class="st">"mmsplice"</span> <span class="op">=</span> <span class="va">dat_mmsplice_annotated</span>,</span>
-<span>    <span class="st">"pangolin"</span> <span class="op">=</span> <span class="va">pangolin_annot_df</span></span>
+<span>    <span class="st">"spliceai"</span> <span class="op">=</span> <span class="va">dat_spliceai_annotated_unique</span>, </span>
+<span>    <span class="st">"mmsplice"</span> <span class="op">=</span> <span class="va">dat_mmsplice_annotated_unique</span>,</span>
+<span>    <span class="st">"pangolin"</span> <span class="op">=</span> <span class="va">dat_pangolin_annotated_unique</span></span>
 <span>    <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter</span></span>
@@ -419,12 +425,48 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="va">dat_cts_peptide_requantification</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">dat_cts_peptide_requantification</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>exon_free <span class="op">=</span> <span class="fu"><a href="reference/exon_in_intron.html">exon_in_intron</a></span><span class="op">(</span>junc_id <span class="op">=</span> <span class="va">junc_id</span>, tx_id <span class="op">=</span> <span class="va">tx_id</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="id_41-consider-gene-annotation-in-mutation-tools">4.1 Consider gene annotation in mutation tools<a class="anchor" aria-label="anchor" href="#id_41-consider-gene-annotation-in-mutation-tools"></a>
+</h3>
+<p>The currently supported tools that predict the effect of somatic mutations on splicing consider gene annotations. These tools can predict distinct splice scores for the same mutation in distinct genes. Therefore, the user may want to consider only transcripts related to the annotated gene during the annotation to prevent that combination of junction-transcripts are matched with scores from another gene. The following dummy example shows how to consider gene annotation during the formatting and annotation of SpliceAI Pangolin results.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co"># load genome of choice</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">AnnotationDbi</a></span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># import &amp; transform SpliceAi results</span></span>
+<span><span class="va">dat_spliceai</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>vcf_file <span class="op">=</span> <span class="st">"path/to/spliceai/file.vcf"</span><span class="op">)</span></span>
+<span><span class="co"># add ENSEMBL gene id while formatting SpliceAI output</span></span>
+<span><span class="co"># gene_table is a tible with the columns gene_id (=ENSEMBL gene id)and gene_name (= gene symbol) </span></span>
+<span><span class="va">dat_splicai_formatted</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">dat_spliceai</span>, gene_table <span class="op">=</span> <span class="va">gene_table</span><span class="op">)</span></span>
+<span><span class="co"># consider only transcript related to gene provided by SpliceAI</span></span>
+<span><span class="va">dat_spliceai_annotated</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span></span>
+<span>    var_df <span class="op">=</span> <span class="va">dat_splicai_formatted</span>,</span>
+<span>    transcripts <span class="op">=</span> <span class="va">transcripts</span>,</span>
+<span>    transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span>,</span>
+<span>    gene_mapping <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get pangolin results and annotate effects as splice junctions</span></span>
+<span><span class="va">pangolin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.pangolin.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># keep gene_id while formatting of Pangolin output and onsider only transcript related to gene provided by Pangolin</span></span>
+<span><span class="va">pangolin_annot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_pangolin.html">parse_pangolin</a></span><span class="op">(</span><span class="va">pangolin_file</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/format_pangolin.html">format_pangolin</a></span><span class="op">(</span>keep_gene_id <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span><span class="va">toy_transcripts</span>, <span class="va">toy_transcripts_gr</span>, gene_mapping <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="id_5-building-the-transcript-database">5 Building the transcript database<a class="anchor" aria-label="anchor" href="#id_5-building-the-transcript-database"></a>
 </h2>
 <p>A database of transcripts can be build from a GTF file, saved and re-loaded as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use gtf file of choice and transform into transcript database</span></span>
 <span><span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span></span>
 <span></span>
@@ -488,7 +530,7 @@ Two junctions relating to the same intron retention event event will generate th
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.0-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.2-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>

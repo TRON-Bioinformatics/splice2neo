@@ -2,7 +2,7 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2023-04-25T11:26Z
+last_built: 2023-05-08T15:29Z
 urls:
   reference: https://tron-bioinformatics.github.io/splice2neo/reference
   article: https://tron-bioinformatics.github.io/splice2neo/articles

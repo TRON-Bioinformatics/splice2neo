@@ -208,6 +208,12 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_counts.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/unique_junc_mmsplice.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/unique_mut_junc.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/unsorted_junc_df.html</loc>
   </url>
 </urlset>

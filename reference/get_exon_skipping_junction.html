@@ -20,7 +20,7 @@ and transcript."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -58,13 +58,17 @@ and transcript.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_exon_skipping_junction</span><span class="op">(</span><span class="va">exon_id</span>, <span class="va">transcript_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_exon_skipping_junction</span><span class="op">(</span><span class="va">exon_id</span>, <span class="va">exons</span>, <span class="va">transcript_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>exon_id</dt>
 <dd><p>A vector of exon IDs</p></dd>
+
+
+<dt>exons</dt>
+<dd><p>A vector of the genomic coordinates of the exon.</p></dd>
 
 
 <dt>transcript_id</dt>
@@ -88,14 +92,15 @@ created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)<
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">transcript_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENST00000243347"</span>, <span class="st">"ENST00000460812"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">exon_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENSE00000840477"</span>, <span class="st">"ENSE00003481758"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">exons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr2:152222570-152222731:+"</span>, <span class="st">"chr2:152226534-152226762:+"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">transcripts</span> <span class="op">&lt;-</span> <span class="va">toy_transcripts</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">get_exon_skipping_junction</span><span class="op">(</span><span class="va">exon_id</span>, <span class="va">transcript_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr2:152220594-152226534:+"</span>
+<span class="r-in"><span><span class="fu">get_exon_skipping_junction</span><span class="op">(</span><span class="va">exon_id</span>, <span class="va">exons</span>, <span class="va">transcript_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ENST00000243347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "chr2:152222731-152230063:+"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ENST00000460812</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -63,15 +63,17 @@
 should be the source, e.g. the tool name, such as <code>spliceai</code> or <code>pangolin</code>.
 The individual tibbles should at least contain the columns <code>mut_id</code>,
 <code>tx_id</code>, <code>junc_id</code> and might have individual sets of other tool/source
-specific columns.</p></dd>
+specific columns. It is recommended that these input tables are unique
+with respect to <code>mut_id</code>, <code>tx_id</code>, <code>junc_id</code>, e.g. by using <code><a href="unique_mut_junc.html">unique_mut_junc()</a></code> or
+<code><a href="unique_junc_mmsplice.html">unique_junc_mmsplice()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>A combined data set with unique junctions based on the four columns
-<code>mut_id</code>, <code>tx_id</code>, <code>junc_id</code>, <code>event_type</code>.
+<p>A combined data set with unique junctions based on the columns
+<code>mut_id</code>, <code>tx_id</code>, <code>junc_id</code>.
 Additional columns in the input data.frames will be prefixed with the
 tool/source name followed by an underscore <code>_</code>.
 E.g. the column <code>score</code> in the input data sets <code>spliceai</code> becomes

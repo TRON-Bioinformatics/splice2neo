@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -62,6 +62,13 @@
           <p><code><a href="annotate_mut_effect.html">annotate_mut_effect()</a></code> </p>
         </td>
         <td><p>Annotate splice variants effects with resulting junctions</p></td>
+      </tr><tr><td>
+          <p><code><a href="unique_mut_junc.html">unique_mut_junc()</a></code> </p>
+        </td>
+        <td><p>Filter junction datasets for unique <code>mut_id</code>,
+<code>junc_id</code>, <code>tx_id</code>. If there were multiple effects (DL/AL)
+predicted to lead to the same combination of <code>mut_id</code>, <code>junc_id</code>, <code>tx_id</code>,
+only the  effect with the maximal score is returned.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="parse-mmsplice">Parse MMsplice <a href="#parse-mmsplice" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to parse MMsplice output into standard splice junction format</p>
@@ -84,6 +91,13 @@ and transcript.</p></td>
         </td>
         <td><p>Compute the resulting junction (junc_id) for exon skipping of given exon
 and transcript.</p></td>
+      </tr><tr><td>
+          <p><code><a href="unique_junc_mmsplice.html">unique_junc_mmsplice()</a></code> </p>
+        </td>
+        <td><p>Filter junction datasets for unique <code>mut_id</code>,
+<code>junc_id</code>, <code>tx_id</code>. If there were multiple exon inclusion events
+predicted to lead to the same combination of <code>mut_id</code>, <code>junc_id</code>, <code>tx_id</code>,
+only the  effect with the maximal score is returned.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="parse-pangolin">Parse Pangolin <a href="#parse-pangolin" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to parse Pangolin output into standard splice junction format</p>
@@ -100,6 +114,13 @@ and transcript.</p></td>
           <p><code><a href="annotate_mut_effect.html">annotate_mut_effect()</a></code> </p>
         </td>
         <td><p>Annotate splice variants effects with resulting junctions</p></td>
+      </tr><tr><td>
+          <p><code><a href="unique_mut_junc.html">unique_mut_junc()</a></code> </p>
+        </td>
+        <td><p>Filter junction datasets for unique <code>mut_id</code>,
+<code>junc_id</code>, <code>tx_id</code>. If there were multiple effects (DL/AL)
+predicted to lead to the same combination of <code>mut_id</code>, <code>junc_id</code>, <code>tx_id</code>,
+only the  effect with the maximal score is returned.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="parse-leafcutter">Parse LeafCutter <a href="#parse-leafcutter" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to parse LeafCutter output into standard splice junction format</p>

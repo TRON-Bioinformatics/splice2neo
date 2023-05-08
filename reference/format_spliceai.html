@@ -19,7 +19,7 @@ data to make non-redundant output."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -69,8 +69,7 @@ spliceAI mutations from <code><a href="parse_spliceai.html">parse_spliceai</a></
 
 <dt>gene_table</dt>
 <dd><p>optional <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with the columns:</p><ul><li><p><code>gene_id</code>: ENSEMBL gene id</p></li>
-<li><p><code>gene_name</code>: gene symbol
-If <code>gene_table</code> is provided, the formatted data contains a column with the <code>gene_id</code>.</p></li>
+<li><p><code>gene_name</code>: gene symbol</p></li>
 </ul></dd>
 
 </dl></div>
@@ -78,7 +77,8 @@ If <code>gene_table</code> is provided, the formatted data contains a column wit
     <h2>Value</h2>
     
 
-<p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with splicing effects per row</p>
+<p>A <a href="https://tibble.tidyverse.org/reference/tibble-package.html" class="external-link">tibble</a> with splicing effects per row.
+If <code>gene_table</code> is provided, the formatted data contains a column with the <code>gene_id</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

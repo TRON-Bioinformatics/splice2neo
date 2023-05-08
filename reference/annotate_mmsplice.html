@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
@@ -63,6 +63,8 @@
 have the following columns:
 - ID
 - exon_id
+- exons
+- transcript_id
 - delta_logit_psi</p></dd>
 
 
@@ -79,7 +81,7 @@ by descending position for transcripts on negative strand.</p></dd>
     
 
 <p>A data.frame like object like the input but with additional columns:</p><ul><li><p>junc_id: <code>&lt;chr&gt;_&lt;pos1&gt;_&lt;pos2&gt;_&lt;strand&gt;</code></p></li>
-<li><p>effect: either <code>exon_skipping</code> or <code>exon_inclusion</code></p></li>
+<li><p>event_type: either <code>exon_skipping</code> or <code>exon_inclusion</code></p></li>
 </ul><p>If the logit delta PSI score is &lt;= 0, the event is treated as exon skipping.
 In this case a junction is build from the end of the exon before, and the
 start of the exon after that.</p>
