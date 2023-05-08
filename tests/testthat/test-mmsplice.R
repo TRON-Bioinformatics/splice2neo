@@ -93,31 +93,33 @@ test_that("get_exon_skipping_junction() and get_exon_sincljusion_junction work w
 
   # run function and combine observed results
   obs_pos <- c(
-    get_exon_skipping_junction("ex2", "tx1", toy_tx),
-    get_exon_inclusion_junction("ex2", "tx1", toy_tx)
+    get_exon_skipping_junction("ex2", "1:14-23:+", "tx1", toy_tx),
+    get_exon_inclusion_junction("ex2","1:14-23:+",  "tx1", toy_tx)
   ) %>% unlist()
+  names(obs_pos) <- NULL
 
   # run function and combine observed results for negative transcript
   obs_neg <- c(
-    get_exon_skipping_junction("ex2", "tx2", toy_tx),
-    get_exon_inclusion_junction("ex2", "tx2", toy_tx)
+    get_exon_skipping_junction("ex2", "1:14-23:-", "tx2", toy_tx),
+    get_exon_inclusion_junction("ex2", "1:14-23:-", "tx2", toy_tx)
   ) %>% unlist()
+  names(obs_neg) <- NULL
 
 
   expect_equal(obs_pos, expected_pos)
   expect_equal(obs_neg, expected_neg)
 
   # test first and last exons which should lead to NA  -------------------------
-  l1 <- get_exon_skipping_junction("ex1", "tx1", toy_tx)
+  l1 <- get_exon_skipping_junction("ex1","1:1-8:+", "tx1", toy_tx)
   expect_equal(l1[[1]], NA_character_)
 
-  l2 <- get_exon_inclusion_junction("ex1", "tx1", toy_tx)
+  l2 <- get_exon_inclusion_junction("ex1", "1:1-8:+", "tx1", toy_tx)
   expect_equal(l2[[1]][1], NA_character_)
   expect_true(!is.na(l2[[1]][2]))
 
   # test vectorized use --------------------------------------------------------
-  l1 <- get_exon_skipping_junction(c("ex2", "ex2"), c("tx1", "tx2"), toy_tx)
-  l2 <- get_exon_inclusion_junction(c("ex2", "ex2"), c("tx1", "tx2"), toy_tx)
+  l1 <- get_exon_skipping_junction(c("ex2", "ex2"), c("1:14-23:+", "1:14-23:-"), c("tx1", "tx2"), toy_tx)
+  l2 <- get_exon_inclusion_junction(c("ex2", "ex2"), c("1:14-23:+", "1:14-23:-"), c("tx1", "tx2"), toy_tx)
   expect_equal(length(l1), 2)
   expect_equal(length(l2), 2)
 

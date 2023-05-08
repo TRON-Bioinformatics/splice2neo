@@ -8,6 +8,7 @@ reference:
   - parse_spliceai
   - format_spliceai
   - annotate_mut_effect
+  - unique_mut_junc
 
 - title: "Parse MMsplice"
   desc: "Functions to parse MMsplice output into standard splice junction format"
@@ -16,6 +17,7 @@ reference:
   - annotate_mmsplice
   - get_exon_inclusion_junction
   - get_exon_skipping_junction
+  - unique_junc_mmsplice
 
 - title: "Parse Pangolin"
   desc: "Functions to parse Pangolin output into standard splice junction format"
@@ -23,6 +25,7 @@ reference:
   - parse_pangolin
   - format_pangolin
   - annotate_mut_effect
+  - unique_mut_junc
 
 - title: "Parse LeafCutter"
   desc: "Functions to parse LeafCutter output into standard splice junction format"

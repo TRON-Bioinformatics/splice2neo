@@ -10,9 +10,9 @@
 #' @param gene_table optional [tibble][tibble::tibble-package] with the columns:
 #' - `gene_id`: ENSEMBL gene id
 #' - `gene_name`: gene symbol
-#' If `gene_table` is provided, the formatted data contains a column with the `gene_id`.
 #'
-#' @return A [tibble][tibble::tibble-package] with splicing effects per row
+#' @return A [tibble][tibble::tibble-package] with splicing effects per row.
+#' If `gene_table` is provided, the formatted data contains a column with the `gene_id`.
 #'
 #' @examples
 #' spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")

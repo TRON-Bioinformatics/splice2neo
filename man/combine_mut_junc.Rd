@@ -11,11 +11,13 @@ combine_mut_junc(junc_data_list)
 should be the source, e.g. the tool name, such as \code{spliceai} or \code{pangolin}.
 The individual tibbles should at least contain the columns \code{mut_id},
 \code{tx_id}, \code{junc_id} and might have individual sets of other tool/source
-specific columns.}
+specific columns. It is recommended that these input tables are unique
+with respect to \code{mut_id}, \code{tx_id}, \code{junc_id}, e.g. by using \code{unique_mut_junc()} or
+\code{unique_junc_mmsplice()}.}
 }
 \value{
-A combined data set with unique junctions based on the four columns
-\code{mut_id}, \code{tx_id}, \code{junc_id}, \code{event_type}.
+A combined data set with unique junctions based on the columns
+\code{mut_id}, \code{tx_id}, \code{junc_id}.
 Additional columns in the input data.frames will be prefixed with the
 tool/source name followed by an underscore \verb{_}.
 E.g. the column \code{score} in the input data sets \code{spliceai} becomes
