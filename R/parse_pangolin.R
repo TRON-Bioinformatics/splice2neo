@@ -17,7 +17,8 @@
 parse_pangolin <- function(vcf_file){
 
   # Format: Pangolin=ENSG00000237298.10_8|33:0.0|-50:0.0|Wa
-  # Format: gene|pos:largest_increase|pos:largest_decrease|
+  # Format: gene|pos:largest_increase|pos:largest_decrease|,gene|pos:largest_increase|pos:largest_decrease|
+  # if pangolin option -s was used, there can be multiple increase/decrease scores!
 
   col_names <- c("gene_id",
                  "pos_largest_increase","pos_largest_decrease")
@@ -35,33 +36,35 @@ parse_pangolin <- function(vcf_file){
   pangolin_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("Pangolin")) %>%
     mutate(
-      annot = Pangolin %>%
+      annot_gene = Pangolin %>%
 
         # remove warning massage
         str_replace_all("Warnings:NoAnnotatedSitesToMaskForThisGene", "") %>%
+        str_replace_all("Warnings:", "") %>%
 
-        # extract each annotation per variant
-        str_extract_all("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|")
+        # extract all gene-wise annotations per variant
+        str_split(",")
     ) %>%
     select(-Pangolin) %>%
-    unnest(annot) %>%
+    unnest(annot_gene) %>%
     # pares individual annotation values
     mutate(
-      gene_id = annot %>%
-        str_replace("([^|]*)\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|", "\\1"),
-      increase_pos = annot %>%
-        str_replace("[^|]*\\|(-?\\d+):\\d\\.+\\d+\\|-?\\d+:\\d\\.+\\d+\\|", "\\1") %>%
+      gene_id = annot_gene %>%
+        str_replace("([^|]*)\\|-?\\d+:-?\\d\\.+\\d+\\|-?\\d+:-?\\d\\.+\\d+\\|", "\\1"),
+      # extract all annotations per variant - gene
+      annot = annot_gene %>%
+        str_extract_all("-?\\d+:-?\\d\\.+\\d+")
+    ) %>%
+    unnest(annot) %>%
+    mutate(
+      pos = annot %>%
+        str_replace("(-?\\d+):-?\\d\\.+\\d+", "\\1") %>%
         as.integer(),
-      increase_score = annot %>%
-        str_replace("[^|]*\\|-?\\d+:(\\d\\.+\\d+)\\|-?\\d+:\\d\\.+\\d+\\|", "\\1") %>%
-        as.numeric(),
-      decrease_pos = annot %>%
-        str_replace("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|(-?\\d+):\\d\\.+\\d+\\|", "\\1") %>%
-        as.integer(),
-      decrease_score = annot %>%
-        str_replace("[^|]*\\|-?\\d+:\\d\\.+\\d+\\|-?\\d+:(\\d\\.+\\d+)\\|", "\\1") %>%
-        as.numeric(),
-    )
+      score = annot %>%
+        str_replace("-?\\d+:(-?\\d\\.+\\d+)", "\\1") %>%
+        as.numeric()
+    ) %>%
+    select(-annot, -annot_gene)
 
 
   fix_df %>%
