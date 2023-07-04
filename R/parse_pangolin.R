@@ -57,10 +57,10 @@ parse_pangolin <- function(vcf_file){
     ) %>%
     unnest(annot) %>%
     mutate(
-      pos = annot %>%
+      pos_rel = annot %>%
         str_replace("(-?\\d+):-?\\d\\.+\\d+", "\\1") %>%
         as.integer(),
-      score = annot %>%
+      pangolin_score = annot %>%
         str_replace("-?\\d+:(-?\\d\\.+\\d+)", "\\1") %>%
         as.numeric()
     ) %>%
