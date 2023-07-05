@@ -26,7 +26,15 @@ parse_pangolin <- function(vcf_file){
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
 
   # get fixed fields for variants
-  fix_df <-  vcfR::getFIX(vcf) %>%
+  fix_df <- vcfR::getFIX(vcf)
+
+  # required for vcf with only one mutation
+  if(is.null(nrow(fix_df))){
+    fix_df <- fix_df %>%
+      t()
+  }
+
+  fix_df <- fix_df %>%
     tibble::as_tibble() %>%
     mutate(
       Key = row_number()
