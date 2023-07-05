@@ -6,7 +6,7 @@ test_that("parse_pangolin works on provided example file", {
   expect_true(nrow(pangolin_df) > 0)
 
   expect_true(all(
-    c("increase_pos", "increase_score", "decrease_pos", "decrease_score") %in% names(pangolin_df)
+    c("pos_rel", "pangolin_score") %in% names(pangolin_df)
     ))
 
 })
