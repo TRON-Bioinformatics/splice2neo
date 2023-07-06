@@ -35,7 +35,6 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
       tx_name = toy_transcripts_gr@elementMetadata$tx_name
     )
 
-
   pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
 
   effect_df <- parse_pangolin(pangolin_file)
@@ -43,12 +42,20 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
   effect_df <- effect_df %>% format_pangolin(keep_gene_id = TRUE)
 
+  # we need to do a dirty fix because different versions of gencode annotations in effect_df and toy_transcripts
+  toy_transcripts_gr_fix <- toy_transcripts_gr
+  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("_.*", "", unlist(toy_transcripts_gr@elementMetadata$gene_id))
+  effect_df$gene_id <- gsub("_.*", "", effect_df$gene_id)
+  effect_df$gene_id <- gsub("\\...*", "", effect_df$gene_id)
+  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("\\...*", "", unlist(toy_transcripts_gr_fix@elementMetadata$gene_id))
+  effect_df <- effect_df %>%
+    filter(gene_id %in% toy_transcripts_gr_fix@elementMetadata$gene_id)
+
+
+  # without gene mapping
   annot_df <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE)
-  # annot_df1 <- annot_df %>%
-  #   mutate(id = paste0(mut_id,  gene_id))
-  annot_df_map <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE)
-  # annot_df_map1 <- annot_df_map %>%
-  #   mutate(id = paste0(mut_id,  gene_id))
+  # with gene mapping
+  annot_df_map <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr_fix, gene_mapping = TRUE)
 
   expect_true(nrow(annot_df) >= nrow(effect_df))
   expect_true(nrow(annot_df_map) >= nrow(effect_df))
@@ -63,8 +70,6 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
     left_join(gene_transcript_mapping, by = c("tx_id" = "tx_name"))
 
   expect_true(all(df_not_mapped$gene_id.x != df_not_mapped$gene_id))
-
-
 
 })
 

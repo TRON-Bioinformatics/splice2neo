@@ -22,7 +22,7 @@ format_pangolin(df)
 \description{
 Reformat the data for each annotated effect per row. As pangolin does not
 provide information on donor or acceptor, use both for gain and loss annotations.
-Effects with score = 0 are filtered out.
+Effects with score = 0 are filtered out. The resulting \code{score} represents the absolute value of the Pangolin score.
 }
 \seealso{
 \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}, \code{\link{format_spliceai}}

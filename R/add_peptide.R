@@ -181,7 +181,10 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     dplyr::left_join(df_annotated_peptide, by = c("junc_id", "tx_id")) %>%
     dplyr::mutate(
       cds_description = ifelse(is.na(protein_wt), "no wt cds", cds_description)
-    )
+    ) %>%
+  # return protein seq only until first stop codon
+    dplyr::mutate(protein = protein %>% str_extract("[^*]+"))
+
 
   return(df)
 
