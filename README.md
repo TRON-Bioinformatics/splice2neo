@@ -29,7 +29,7 @@ their association with somatic mutations. It integrates the output of
 several tools which predict splicing effects from mutations or which
 detect expressed splice junctions from RNA-seq data into a standardized
 splice junction format based on genomic coordinates. Detected splice
-junctions can be filtered against canonical splice junctsion and
+junctions can be filtered against canonical splice junction and
 annotated with affected transcript sequences, CDS, and resulting peptide
 sequences. Splice2neo currently supports splice events from alternative
 3’/5’ splice sites, exons skipping, intron retentions, exitrons and
