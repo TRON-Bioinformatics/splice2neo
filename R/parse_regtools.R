@@ -37,7 +37,7 @@ import_regtools_junc <- function(file.name) {
 transform_regtools_junc <- function(tib) {
     # 20211222 (JoHa): Event classification based on regtools documentation (add link)
     names_events <- c('DA'  = 'canonical_junction',
-                      'NDA' = 'casette_exon',
+                      'NDA' = 'cassette_exon',
                       'D'   = 'A3SS',
                       'A'   = 'A5SS',
                       'N'   = 'novel_acceptor_novel_donor')
