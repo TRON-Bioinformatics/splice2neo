@@ -15,6 +15,7 @@
 #' @examples
 #' path <-  system.file("extdata", "", package = "splice2neo")
 #' spladder_juncs <- spladder_transform(path)
+#' path <-  system.file("extdata", "test_regtools_Aligned.out.sorted.bam.junc", package = "splice2neo")
 #' regtools_juncs <- regtools_transform(path)
 #' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs, "regtools" = regtools_juncs))
 #'
