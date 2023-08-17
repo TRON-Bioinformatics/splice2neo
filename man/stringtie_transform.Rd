@@ -8,7 +8,7 @@ into standardized junction output format}
 stringtie_transform(gtf.file)
 }
 \arguments{
-\item{path}{The path to StringTie GTF file}
+\item{gtf.file}{The path to StringTie GTF file}
 }
 \value{
 A tibble in standardized junction format

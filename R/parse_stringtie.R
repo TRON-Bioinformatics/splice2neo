@@ -88,7 +88,7 @@ stringtie_transform_format <- function(tib) {
 #' Imports StringTie assembled transcripts and transforms the raw output
 #' into standardized junction output format
 #'
-#' @param path The path to StringTie GTF file
+#' @param gtf.file The path to StringTie GTF file
 #'
 #' @return A tibble in standardized junction format
 #'
