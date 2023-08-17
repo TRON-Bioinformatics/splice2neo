@@ -16,8 +16,7 @@
 #' path <-  system.file("extdata", "", package = "splice2neo")
 #' spladder_juncs <- spladder_transform(path)
 #' regtools_juncs <- regtools_transform(path)
-#' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs,
-#'   "regtools" = regtools_juncs))
+#' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs, "regtools" = regtools_juncs))
 #'
 #' @import dplyr purrr stringr tidyr
 #' @export
