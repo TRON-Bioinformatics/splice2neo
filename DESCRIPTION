@@ -55,7 +55,8 @@ Imports:
     BSgenome.Hsapiens.UCSC.hg19,
     ggbio,
     fs,
-    BSgenome
+    BSgenome,
+    assertthat
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)
