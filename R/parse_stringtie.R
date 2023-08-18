@@ -7,7 +7,7 @@
 #' @return A tibble with one splice junction per row and columns
 #'  chromosome, junction_start, junction_end, strand, junc_id
 #'
-#' @import readr stringr rtracklayer
+#' @import readr stringr
 #' @export
 import_stringtie_gtf <- function(file.name) {
   if(!file.exists(file.name)){
