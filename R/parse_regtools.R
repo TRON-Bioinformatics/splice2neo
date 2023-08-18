@@ -44,7 +44,8 @@ transform_regtools_junc <- function(tib) {
     tib <- tib %>%
         mutate(class = names_events[anchor],
                AS_event_ID = NA,
-               junc_id = generate_junction_id(chrom, start, end, strand)) %>%
+               junc_id = generate_junction_id(chrom, start, end, strand),
+               score = as.numeric(score)) %>%
         dplyr::select(start,
                       end,
                       strand,
