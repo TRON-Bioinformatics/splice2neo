@@ -2,16 +2,16 @@
 
 test_that("regtools.transform works", {
   path <- system.file("extdata", "test_regtools_Aligned.out.sorted.bam.junc", package = "splice2neo")
-  dat.combined <- regtools_transform(path)
-  expect_true(ncol(dat.combined) == 9)
-  expect_true(nrow(dat.combined) == 5)
-  expect_true(all(!is.na(dat.combined$junc_id)))
+  df <- regtools_transform(path)
+  expect_true(ncol(df) == 9)
+  expect_true(nrow(df) == 5)
+  expect_true(all(!is.na(df$junc_id)))
 
 })
 
 test_that("regtools.transform works correctly", {
   path <-  system.file("extdata", "test_regtools_Aligned.out.sorted.bam.junc", package = "splice2neo")
-  dat.combined <- regtools_transform(path)
+  df <- regtools_transform(path)
   expected_junc_ids <-
     c(
       "chr1:14829-14970:-",
@@ -28,8 +28,8 @@ test_that("regtools.transform works correctly", {
       "canonical_junction",
       "A5SS"
     )
-  expect_true(all(dat.combined$junc_id == expected_junc_ids))
-  expect_true(all(dat.combined$class == expected_classification))
+  expect_true(all(df$junc_id == expected_junc_ids))
+  expect_true(all(df$class == expected_classification))
 })
 
 

@@ -14,6 +14,8 @@ stringtie_transform(gtf.file)
 A tibble in standardized junction format
 }
 \description{
-Imports StringTie assembled transcripts and transforms the raw output
-into standardized junction output format
+\itemize{
+\item GitHub: https://github.com/gpertea/stringtie
+\item Paper: https://doi.org/10.1038/nbt.3122
+}
 }

@@ -14,6 +14,11 @@ regtools_transform(path)
 A tibble in standardized junction format
 }
 \description{
-Imports Regtools junctions annotate output and transforms the raw output
-into standardized junction output format
+\itemize{
+\item GitHub: https://github.com/griffithlab/regtools
+\item Paper: https://doi.org/10.1038/s41467-023-37266-6
+}
+}
+\details{
+Ignores junctions without strand annotation.
 }

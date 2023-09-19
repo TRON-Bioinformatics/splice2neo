@@ -2,6 +2,8 @@
 
 #' Imports Regtools junctions annotate table
 #'
+#' Ignores junctions without strand annotation.
+#'
 #' @param file.name The path to the file
 #'
 #' @return A tibble with regtools identified junctions
@@ -13,9 +15,7 @@ import_regtools_junc <- function(file.name) {
     if(!file.exists(file.name)){
             stop("Regtools junctions annotate output file is missing")
     }
-    junc.file <- read_delim(file.name,
-                            delim = "\t",
-                            col_names = T,
+    junc.file <- read_tsv(file.name,
                             show_col_types = FALSE,
                             col_types = cols(.default = "c"))
     # 20211222 (JoHa): This filtering might be required since in rare cases the strand information
@@ -55,7 +55,7 @@ transform_regtools_junc <- function(tib) {
                       AS_event_ID,
                       junc_id,
                       score)
-    
+
     junc.cols <- c("junction_start",
                    "junction_end",
                    "strand",
@@ -71,6 +71,11 @@ transform_regtools_junc <- function(tib) {
 
 #' Imports Regtools junctions annotate output and transforms the raw output
 #' into standardized junction output format
+#'
+#'  - GitHub: https://github.com/griffithlab/regtools
+#'  - Paper: https://doi.org/10.1038/s41467-023-37266-6
+#'
+#' Ignores junctions without strand annotation.
 #'
 #' @param path The path to the Regtools output file
 #'

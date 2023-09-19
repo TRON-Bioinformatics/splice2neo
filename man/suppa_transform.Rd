@@ -16,13 +16,8 @@ A tibble in standardized junction format, combining all alternative
 splicing classes that are covered by SUPPA2
 }
 \description{
-Imports SUPPA2 output from a given path and transforms it into standardized
-junction format. Results from one patients should be stored per folder. Please note
-that alternative first exons (AF) and alternative last exons (AL) are not supported.
+\itemize{
+\item GitHub: https://github.com/comprna/SUPPA
+\item Paper: https://doi.org/10.1186/s13059-018-1417-1
 }
-\examples{
-path <-  system.file("extdata", "", package = "splice2neo")
-spladder_juncs <- spladder_transform(path)
-spladder_juncs
-
 }

@@ -59,7 +59,7 @@ transform_suppa_se_events <- function(tib) {
       junc_id2 = generate_junction_id(chromosome, e2_end, e3_start, strand),
       junc_id3 = generate_junction_id(chromosome, e1_end, e3_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";")
-    ) %>% 
+    ) %>%
     tidyr::separate_rows(junc_id, sep=";") %>%
     dplyr::select(junc_id, Gene, class, AS_event_ID)
   return(tib)
@@ -96,7 +96,7 @@ transform_suppa_ir_events <- function(tib) {
       junc_id1 = generate_junction_id(chromosome, e1_end, e1_end + 1, strand),
       junc_id2 = generate_junction_id(chromosome, e2_start - 1 , e2_start, strand),
       junc_id = paste(junc_id1, junc_id2, sep = ";")
-    ) %>% 
+    ) %>%
     tidyr::separate_rows(junc_id, sep=";") %>%
     dplyr::select(junc_id, Gene, class, AS_event_ID)
   return(tib)
@@ -128,11 +128,11 @@ transform_suppa_ass_events <- function(tib, type="A5SS") {
     # or e1_end and e2_start for A5SS:- and A3SS:+
     tidyr::separate(
       junc1,
-      sep = "-", 
+      sep = "-",
       into = c("junc1_start", "junc1_end")
     ) %>%
-    # junc2 always consists of e1_end & e3_start 
-    # no matter which event type or strand were are on 
+    # junc2 always consists of e1_end & e3_start
+    # no matter which event type or strand were are on
     tidyr::separate(
       junc2,
       sep = "-",
@@ -192,7 +192,7 @@ transform_suppa_mxe_events <- function(tib) {
       junc_id3 = generate_junction_id(chromosome, e1_end, e3_start, strand),
       junc_id4 = generate_junction_id(chromosome, e3_end, e4_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, junc_id4, sep = ";")
-    ) %>% 
+    ) %>%
     tidyr::separate_rows(junc_id, sep=";") %>%
     dplyr::select(junc_id, Gene, class, AS_event_ID)
   return(tib)
@@ -270,7 +270,7 @@ suppa_transform_format <- function(tib_list) {
 #'  "A3SS", "cassette_exon", "intron_retention", "mutex_exons".
 #'
 #'
-#' @import readr purrr 
+#' @import readr purrr
 #' @export
 suppa_import <- function(path) {
   message("Importing SUPPA files ...")
@@ -309,14 +309,13 @@ suppa_import <- function(path) {
 #' junction format. Results from one patients should be stored per folder. Please note
 #' that alternative first exons (AF) and alternative last exons (AL) are not supported.
 #'
+#' - GitHub: https://github.com/comprna/SUPPA
+#' - Paper: https://doi.org/10.1186/s13059-018-1417-1
+#'
 #' @param path The path to a folder with SUPPA2 output
 #'
 #' @return A tibble in standardized junction format, combining all alternative
 #'   splicing classes that are covered by SUPPA2
-#' @examples
-#' path <-  system.file("extdata", "", package = "splice2neo")
-#' spladder_juncs <- spladder_transform(path)
-#' spladder_juncs
 #'
 #' @import readr
 #' @export

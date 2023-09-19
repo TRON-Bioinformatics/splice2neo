@@ -13,5 +13,5 @@ import_regtools_junc(file.name)
 A tibble with regtools identified junctions
 }
 \description{
-Imports Regtools junctions annotate table
+Ignores junctions without strand annotation.
 }
