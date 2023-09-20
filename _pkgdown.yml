@@ -30,6 +30,13 @@ reference:
   - import_leafcutter_counts
   - leafcutter_transform
   - transform_leafcutter_counts
+  
+- title: "Parse Regtools"
+  desc: "Functions to parse Regtools output into standard splice junction format"
+- contents:
+  - import_regtools_junc
+  - regtools_transform
+  - transform_regtools_junc
 
 - title: "Parse SplAdder"
   desc: "Functions to parse SplAdder output into standard splice junction format"
@@ -49,11 +56,30 @@ reference:
   - filter_irfinder_txt
   - parse_irfinder_txt
   - transform_irfinder_txt
+  
+- title: "Parse SUPPA2"
+  desc: "Functions to parse SUPPA2 output into standard splice junction format"
+- contents:
+  - read_suppa_ioe
+  - transform_suppa_se_events
+  - transform_suppa_ir_events
+  - transform_suppa_ass_events
+  - transform_suppa_mxe_events
+  - suppa_transform_format
+  - suppa_import
+  - suppa_transform
 
 - title: "Parse STAR"
   desc: "Functions to parse STAR SJ.out.tab into standard splice junction format"
 - contents:
   - parse_star_sj
+  
+- title: "Parse StringTie"
+  desc: "Functions to parse StringTie into standard splice junction format"
+- contents:
+  - import_stringtie_gtf
+  - stringtie_transform_format
+  - stringtie_transform
 
 - title: "Parse other formats"
   desc: "Functions to parse otherformats into standard splice junction format"

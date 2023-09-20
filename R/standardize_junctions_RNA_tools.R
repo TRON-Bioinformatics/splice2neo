@@ -15,9 +15,10 @@
 #' @examples
 #' path <-  system.file("extdata", "", package = "splice2neo")
 #' spladder_juncs <- spladder_transform(path)
-#' leafcutter_juncs <- leafcutter_transform(path)
+#' path <-  system.file("extdata", "test_regtools_Aligned.out.sorted.bam.junc", package = "splice2neo")
+#' regtools_juncs <- regtools_transform(path)
 #' dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs,
-#'   "leafcutter" = leafcutter_juncs))
+#'                                                "regtools" = regtools_juncs))
 #'
 #' @import dplyr purrr stringr tidyr
 #' @export
@@ -81,28 +82,28 @@ generate_combined_dataset <- function(rna_junc_data_list){
 
 
 
-#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by LeafCutter or SplAdder
+#' This is a wrapper function to directly map the information if a junction predicted from WES data was found in RNA-seq by Regtools or SplAdder
 #'
 #' @param path_to_spladder The path to the results from RNA-seq analysis with SplAdder
-#' @param path_to_leafcutter The path to the results from RNA-seq analysis with LeafCutter
+#' @param path_to_regtools The path to the results from RNA-seq analysis with Regtools
 #' @param mutation_juncs The junction-transcript centric data predicted from WES data.
 #'
 #' @return The junction-transcript centric data predicted from WES data is extended by the information if a respective aberrant junctions was
-#' identified by spladder or LeafCutter (`identified_by_leafcutter`, `identified_by_spladder`)
+#' identified by spladder or regtools (`identified_by_regtools`, `identified_by_spladder`)
 #'
 #'
 #' @import dplyr
 #' @export
 #'
-add_identified_in_RNA <- function(mutation_juncs, path_to_spladder, path_to_leafcutter){
+add_identified_in_RNA <- function(mutation_juncs, path_to_spladder, path_to_regtools){
 
   spladder_juncs <- spladder_transform(path_to_spladder)
-  leafcutter_juncs <- leafcutter_transform(path_to_leafcutter)
+  regtools_juncs <- regtools_transform(path_to_regtools)
 
-  rna_juncs <- generate_combined_dataset(list("spladder" = spladder_juncs, "leafcutter" = leafcutter_juncs))
+  rna_juncs <- generate_combined_dataset(list("spladder" = spladder_juncs, "regtools" = regtools_juncs))
 
   rna_juncs <- rna_juncs %>%
-    select(junc_id, identified_by_leafcutter, identified_by_spladder)
+    select(junc_id, identified_by_regtools, identified_by_spladder)
 
   mutation_juncs <- mutation_juncs %>%
     left_join(rna_juncs, by = "junc_id")
