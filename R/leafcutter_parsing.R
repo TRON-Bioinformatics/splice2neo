@@ -12,7 +12,7 @@
 #' @export
 import_leafcutter_counts <- function(file.name) {
   if(!file.exists(file.name)){
-    stop("Aligned.out.bam.junc file is missing")
+    stop("perind.counts.gz file is missing")
   }
   myData <- read_delim(file.name,
                        delim = " ",
@@ -50,7 +50,6 @@ transform_leafcutter_counts <- function(tib) {
     mutate(
       Gene = NA,
       class = NA,
-      AS_event_ID = NA,
       junc_id = generate_junction_id(chromosome, junction_start, junction_end, strand)
     )  %>%
     dplyr::select(
@@ -60,7 +59,6 @@ transform_leafcutter_counts <- function(tib) {
       chromosome,
       Gene,
       class,
-      AS_event_ID,
       junc_id
     )
 }
