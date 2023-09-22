@@ -51,6 +51,6 @@ df <- tibble(
  tx_id = c("tx1", "tx1")
 )
 df1 <- df \%>\%
- exon_in_intron(transcripts = toy_tx))
+ exon_in_intron(transcripts = toy_tx)
 
 }
