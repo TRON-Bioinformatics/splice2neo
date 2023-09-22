@@ -41,7 +41,7 @@ test_that("exon_in_intron works in case there is a exon of another transcripts i
   )
 
   df1 <- df %>%
-    mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+    exon_in_intron( transcripts = toy_tx)
 
   expect_equal(unique(df1$exon_free), FALSE)
   expect_equal(nrow(df), nrow(df1))
@@ -91,7 +91,7 @@ test_that("exon_in_intron works in case there is NO exon of another transcripts 
   )
 
   df1 <- df %>%
-    mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+    exon_in_intron(transcripts = toy_tx)
 
   expect_equal(unique(df1$exon_free), TRUE)
   expect_equal(nrow(df), nrow(df1))
@@ -141,7 +141,7 @@ test_that("exon_in_intron works for non IRs", {
   )
 
   df1 <- df %>%
-    mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+    exon_in_intron( transcripts = toy_tx)
 
   expect_true(is.na(unique(df1$exon_free[3:4])))
   expect_equal(nrow(df), nrow(df1))
@@ -190,7 +190,7 @@ test_that("exon_in_intron does not fail for junctions at the end of a transcript
   )
 
   df1 <- df %>%
-    mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+    exon_in_intron(transcripts = toy_tx)
 
   expect_true(is.na(unique(df1$exon_free)))
   expect_equal(nrow(df), nrow(df1))

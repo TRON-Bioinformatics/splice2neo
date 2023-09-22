@@ -1,6 +1,7 @@
 # splice2neo 0.6.4
 
 * add new function to select more relevant junction-transcript combinations 
+* adapt input and output of exon_in_intron()
 
 # splice2neo 0.6.3
 

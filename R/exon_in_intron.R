@@ -1,12 +1,17 @@
 
 #' Annotate if there is an exon within an intron
 #'
-#' @param junc_id Junction id
-#' @param tx_id Transcript id
+#' @param df A data.frame with splice junctions in rows and at least the columns:
+#'
+#'  -  `junc_id` junction id consisting of genomic coordinates
+#'  - `tx_id` transcript id consisting of genomic coordinates
+#'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #'
-#' @return Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
+#' @return A data.frame as the input but with potentially multiple rows
+#'     and with the additional column(s):
+#'     - `exon_free`: Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
 #' @examples
 #'
 #' library(dplyr)
@@ -34,21 +39,21 @@
 #'  tx_id = c("tx1", "tx1")
 #')
 #'df1 <- df %>%
-#'  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+#'  exon_in_intron(transcripts = toy_tx))
 #'
 #' @export
-exon_in_intron <- function(junc_id, tx_id, transcripts){
+exon_in_intron <- function(df, transcripts){
 
   # get junctions as GRanges object
-  jx <- junc_to_gr(junc_id)
-  junc_strand <- str_sub(junc_id,-1,-1)
+  jx <- junc_to_gr(df$junc_id)
+  junc_strand <- str_sub(df$junc_id,-1,-1)
 
   # test if junction is an intron retention event
   # TODO: are non IR junctions possible that follow the rule chr:pos-pos+1:strand?
   intron_retention <- jx@ranges@width == 2
 
   # get GRanges as subset of transcripts
-  tx_lst <- transcripts[tx_id]
+  tx_lst <- transcripts[df$tx_id]
 
   # modify transcripts by appliing the splice junctions
   tx_mod <- modify_tx(tx_lst, jx)
@@ -56,8 +61,8 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   # only relevant for intron retention events: get the other position of retained
   # interval
   other_genomic_position <- get_intronretention_genomic_alt_pos(tx_lst, tx_mod, jx, intron_retention, junc_strand)
-  other_genomic_position$junc_id = junc_id
-  other_genomic_position$tx_id = tx_id
+  other_genomic_position$junc_id = df$junc_id
+  other_genomic_position$tx_id = df$tx_id
 
   # get interval as id
   intron_ranges <- other_genomic_position %>%
@@ -116,12 +121,15 @@ exon_in_intron <- function(junc_id, tx_id, transcripts){
   # returns TRUE if no exon of other transcript in the given intron region
   # returns FALSE if there is an exon of another transcript
   # returns NA if no intron retention or if the predicted event is at the end or start of a transcript
-  exon_free <- case_when(
-    abs(intron_ranges$junc_end - intron_ranges$junc_start) != 1 ~ NA,
-    intron_ranges$interval_exon_overlap ~ FALSE,
-    !intron_ranges$interval_exon_overlap ~TRUE
-  )
+  df_out <- df %>%
+    mutate(
+      exon_free = case_when(
+        abs(intron_ranges$junc_end - intron_ranges$junc_start) != 1 ~ NA,
+        intron_ranges$interval_exon_overlap ~ FALSE,
+        !intron_ranges$interval_exon_overlap ~TRUE
+      )
+    )
 
-  return(exon_free)
+  return(df_out)
 
 }
