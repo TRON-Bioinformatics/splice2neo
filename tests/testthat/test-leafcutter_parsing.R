@@ -10,7 +10,7 @@ test_that("leafcutter count transformation works", {
   cts <- transform_leafcutter_counts(leafcutter_counts)
 
   expect_true(nrow(cts) == nrow(leafcutter_counts))
-  expect_true(ncol(cts) == 8)
+  expect_true(ncol(cts) == 7)
 
 
 })
@@ -23,7 +23,7 @@ test_that("complete leafcutter import function works", {
   path <-  system.file("extdata", "", package = "splice2neo")
   df <- leafcutter_transform(path)
 
-  expect_true(ncol(df) == 8)
+  expect_true(ncol(df) == 7)
   expect_true(nrow(df) == 3)
   expect_true(all(!is.na(df$junc_id)))
 

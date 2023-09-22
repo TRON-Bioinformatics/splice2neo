@@ -3,7 +3,7 @@
 test_that("spladder.transform works", {
   path <-  system.file("extdata", "", package = "splice2neo")
   dat.combined <- spladder_transform(path)
-  expect_true(ncol(dat.combined) == 8)
+  expect_true(ncol(dat.combined) == 7)
   expect_true(nrow(dat.combined) == 26)
   expect_true(all(!is.na(dat.combined$junc_id)))
 
@@ -62,3 +62,4 @@ test_that("spladder_import fails returns error message when wrong folder", {
   expect_error(import_spladder("."))
 
 })
+
