@@ -12,7 +12,7 @@ test_that("choose_tx works on toy example data and provides expected results ", 
   # works?
   expect_true(all(na.omit(toy_junc_id) %in% df_filtered$junc_id))
   expect_true(nrow(df) >= nrow(df_filtered))
-  expect_true(all(df_filtered$putative_event_type %in% c("ASS", "ES", "exitron", "IR", "WT junction")))
+  expect_true(all(df_filtered$putative_event_type %in% c("ASS", "ES", "exitron", "IR", "ref junction")))
 
 
   # provides expected results?
@@ -45,27 +45,27 @@ test_that("choose_tx works for exon skippings", {
 
   expect_true(all(
     df_filtered %>% filter(junc_id == "chr2:157332719-157352556:+") %>% pull(putative_event_type) == c(
-      "WT junction",
-      "WT junction",
-      "WT junction",
-      "WT junction",
-      "WT junction",
+      "ref junction",
+      "ref junction",
+      "ref junction",
+      "ref junction",
+      "ref junction",
       "ES",
-      "WT junction",
-      "WT junction",
-      "WT junction",
+      "ref junction",
+      "ref junction",
+      "ref junction",
       "ES"
     )
   ))
 
   expect_true(all(
     df_filtered %>% filter(junc_id == "chr2:152388410-152390729:-") %>% pull(putative_event_type) == c(
-      "WT junction",
-      "WT junction",
-      "WT junction",
+      "ref junction",
+      "ref junction",
+      "ref junction",
       "ES",
-      "WT junction",
-      "WT junction"
+      "ref junction",
+      "ref junction"
     )
   ))
 
