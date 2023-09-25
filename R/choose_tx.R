@@ -160,8 +160,8 @@ classify_junc_tx <- function(df){
                any(both_pos_on_exon_boundaries) & both_pos_on_same_exon ~ "exitron",
 
                # Alternative splice site (ASS): There is a exon boundary match for any transcript, no exon skipping for this transcript,
-               # and one (the reight/second) junciton positions overlaps an exon,
-               any(both_pos_on_exon_boundaries) & abs(pos_left_on_exon_idx - pos_right_on_exon_idx) == 1 & pos_right_on_exon ~ "ASS",
+               # and both (the reight/second) junction positions overlaps an exon,
+               any(both_pos_on_exon_boundaries) & abs(pos_left_on_exon_idx - pos_right_on_exon_idx) == 1  ~ "ASS",
 
                # other transcripts will be removed
                any(both_pos_on_exon_boundaries) & !both_pos_on_exon_boundaries ~ "rm",
