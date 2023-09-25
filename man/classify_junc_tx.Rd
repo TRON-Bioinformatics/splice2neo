@@ -15,3 +15,4 @@ A data.frame as the input but with more annotations in additional columns.
 \description{
 Classify splice junctions- transcripts combinations based on junction and coordinates of annotated exons
 }
+\keyword{internal}

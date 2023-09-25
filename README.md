@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.6.2-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.6.4-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -140,6 +140,36 @@ junc_df
 #>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>   
 #>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>   
 #> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>   
+#> # … with 11 more rows
+```
+
+The `add_tx` function annotates all possible transcripts that overlap
+with the splice junctions which can lead to large data sets containing
+of many highly unlikely junction transcript combinations.  
+We can select a subset of transcripts per junction that are more likely
+to be affected by a junction with `choose_tx()`. Please note that this
+function may loose relevant or keep irrelevant junction-transcripts in
+particular in regions with mutliple isoforms with distinct splicing
+pattern.
+
+``` r
+selected_junc_df <- junc_df %>% 
+  choose_tx()
+
+selected_junc_df
+#> # A tibble: 21 × 4
+#>    junc_id                    tx_id           tx_lst       putative_event_type
+#>    <chr>                      <chr>           <named list> <chr>              
+#>  1 chr2:152389996-152392205:- ENST00000409198 <GRanges>    ASS                
+#>  2 chr2:152389996-152392205:- ENST00000172853 <GRanges>    ASS                
+#>  3 chr2:152389996-152392205:- ENST00000397345 <GRanges>    ASS                
+#>  4 chr2:152389996-152392205:- ENST00000427231 <GRanges>    ASS                
+#>  5 chr2:152389996-152392205:- ENST00000618972 <GRanges>    ASS                
+#>  6 chr2:152389996-152392205:- ENST00000413693 <GRanges>    ASS                
+#>  7 chr2:152389996-152392205:- ENST00000603639 <GRanges>    ASS                
+#>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>    ASS                
+#>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>    ASS                
+#> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>    ASS                
 #> # … with 11 more rows
 ```
 

@@ -28,3 +28,4 @@ A data.frame as the input but with more annotations in the following columns:
 \description{
 Annotate splice junctions- transcripts combination and transcripts with exon details
 }
+\keyword{internal}

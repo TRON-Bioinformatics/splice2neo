@@ -119,6 +119,7 @@ choose_tx <- function(df){
 #'
 #'
 #' @import dplyr
+#' @keywords internal
 classify_junc_tx <- function(df){
 
   df1 <- df %>%
@@ -212,6 +213,7 @@ classify_junc_tx <- function(df){
 #'  - `pos_right_on_exon_idx` exon index in transcript if junction end overlaps exon
 #'
 #' @import dplyr
+#' @keywords internal
 annotate_exon_idx <- function(df){
 
   df %>%
