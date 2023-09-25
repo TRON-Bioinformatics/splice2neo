@@ -1,4 +1,4 @@
-image: bioconductor/bioconductor_docker:RELEASE_3_13
+image: bioconductor/bioconductor_docker:RELEASE_3_17
 
 stages:
   - check
@@ -25,4 +25,4 @@ pages:
       - public
   only:
     - master
-    - dev      
+    - dev

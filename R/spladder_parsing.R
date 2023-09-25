@@ -3,7 +3,7 @@
 
 #' Sorts columns of junction output file in the following order:
 #' "junction_start", "junction_end", "strand", "chromosome", "Gene",
-#' "class", "AS_event_ID", "junction_id"
+#' "class", "junction_id"
 #'
 #' @param tib A tibble with the following as given in the description.
 #'
@@ -21,7 +21,6 @@ sort_columns <- function(tib) {
       "Gene",
       "class",
       #"junction_info",
-      "AS_event_ID",
       "junc_id"
     )
   tib[column_order]
@@ -53,10 +52,9 @@ spladder_transform_ass <- function(tib, AS_class) {
       ),
       junc_id = paste(junc_id1, junc_id2, sep = ";"),
       class = AS_class,
-      AS_event_ID = event_id
     ) %>%
     tidyr::separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
+    dplyr::select(junc_id, gene_name, class)
 }
 
 
@@ -77,11 +75,10 @@ spladder_transform_exon_skipping <- function(tib) {
       junc_id2 = generate_junction_id(chrm, e2_end, e3_start, strand),
       junc_id3 = generate_junction_id(chrm, e1_end, e3_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, sep = ";"),
-      class = "cassette_exon",
-      AS_event_ID = event_id
+      class = "cassette_exon"
     ) %>%
     separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
+    dplyr::select(junc_id, gene_name, class)
 }
 
 
@@ -100,11 +97,10 @@ spladder_transform_intron_retention <- function(tib) {
       junc_id1 = generate_junction_id(chrm, e1_end, e2_start, strand),
       junc_id2 = generate_junction_id(chrm, e2_end, e3_start, strand),
       class = "intron_retention",
-      AS_event_ID = event_id,
       junc_id = paste(junc_id1, junc_id2, sep = ";")
     ) %>%
     separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
+    dplyr::select(junc_id, gene_name, class)
 }
 
 
@@ -125,11 +121,10 @@ spladder_transform_mutex_exon <- function(tib) {
       junc_id3 = generate_junction_id(chrm, e1_end, e3_start, strand),
       junc_id4 = generate_junction_id(chrm, e3_end, e4_start, strand),
       junc_id = paste(junc_id1, junc_id2, junc_id3, junc_id4, sep=";"),
-      class = "mutex_exon",
-      AS_event_ID = event_id
+      class = "mutex_exon"
     ) %>%
     separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID)
+    dplyr::select(junc_id, gene_name, class)
 }
 
 

@@ -4,18 +4,22 @@
 \alias{exon_in_intron}
 \title{Annotate if there is an exon within an intron}
 \usage{
-exon_in_intron(junc_id, tx_id, transcripts)
+exon_in_intron(df, transcripts)
 }
 \arguments{
-\item{junc_id}{Junction id}
-
-\item{tx_id}{Transcript id}
+\item{df}{A data.frame with splice junctions in rows and at least the columns:
+\itemize{
+\item \code{junc_id} junction id consisting of genomic coordinates
+\item \code{tx_id} transcript id consisting of genomic coordinates
+}}
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
 created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
 }
 \value{
-Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
+A data.frame as the input but with potentially multiple rows
+and with the additional column(s):
+- \code{exon_free}: Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.
 }
 \description{
 Annotate if there is an exon within an intron
@@ -47,6 +51,6 @@ df <- tibble(
  tx_id = c("tx1", "tx1")
 )
 df1 <- df \%>\%
- mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = toy_tx))
+ exon_in_intron(transcripts = toy_tx)
 
 }
