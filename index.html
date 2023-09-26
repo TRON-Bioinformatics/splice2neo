@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.4</span>
       </span>
     </div>
 
@@ -207,12 +207,33 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="co">#&gt;  9 chr2:152389996-152392205:- ENST00000420924 &lt;GRanges&gt;   </span></span>
 <span><span class="co">#&gt; 10 chr2:179415981-179416357:- ENST00000342992 &lt;GRanges&gt;   </span></span>
 <span><span class="co">#&gt; # … with 11 more rows</span></span></code></pre></div>
+<p>The <code>add_tx</code> function annotates all possible transcripts that overlap with the splice junctions which can lead to large data sets containing of many highly unlikely junction transcript combinations.<br>
+We can select a subset of transcripts per junction that are more likely to be affected by a junction with <code><a href="reference/choose_tx.html">choose_tx()</a></code>. Please note that this function may loose relevant or keep irrelevant junction-transcripts in particular in regions with mutliple isoforms with distinct splicing pattern.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">selected_junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/choose_tx.html">choose_tx</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">selected_junc_df</span></span>
+<span><span class="co">#&gt; # A tibble: 21 × 4</span></span>
+<span><span class="co">#&gt;    junc_id                    tx_id           tx_lst       putative_event_type</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt; &lt;chr&gt;              </span></span>
+<span><span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  2 chr2:152389996-152392205:- ENST00000172853 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  3 chr2:152389996-152392205:- ENST00000397345 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  4 chr2:152389996-152392205:- ENST00000427231 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  5 chr2:152389996-152392205:- ENST00000618972 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  6 chr2:152389996-152392205:- ENST00000413693 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  7 chr2:152389996-152392205:- ENST00000603639 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  8 chr2:152389996-152392205:- ENST00000604864 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt;  9 chr2:152389996-152392205:- ENST00000420924 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt; 10 chr2:179415981-179416357:- ENST00000342992 &lt;GRanges&gt;    ASS                </span></span>
+<span><span class="co">#&gt; # … with 11 more rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="id_33-modify-transcripts-with-junctions">3.3 Modify transcripts with junctions<a class="anchor" aria-label="anchor" href="#id_33-modify-transcripts-with-junctions"></a>
 </h3>
 <p>We modify the canonical transcripts by introducing the splice junctions. Then we add the transcript sequence in a fixed-sized window around the junction positions, the context sequence.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_junc_df</span></span>
 <span><span class="co">#&gt; # A tibble: 17 × 2</span></span>
 <span><span class="co">#&gt;    junc_id                    tx_id          </span></span>
@@ -268,7 +289,7 @@ Two junctions relating to the same intron retention event event will generate th
 <h3 id="id_34-annotate-peptide-sequence">3.4 Annotate peptide sequence<a class="anchor" aria-label="anchor" href="#id_34-annotate-peptide-sequence"></a>
 </h3>
 <p>Finally, we use the splice junctions to modify the coding sequences (CDS) of the reference transcripts. The resulting CDS sequences are translated into protein sequence and further annotated with the peptide around the junction, the relative position of the splice junction in the peptide, and the location of the junction in an open reading frame (ORF).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>cds<span class="op">=</span><span class="va">toy_cds</span>, flanking_size <span class="op">=</span> <span class="fl">13</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span>
@@ -305,7 +326,7 @@ Two junctions relating to the same intron retention event event will generate th
 <p>In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo.<br>
 Tools that predict splicing effect from somatic mutations can predict distinct splice scores for the same mutation considering distinct genes. If you want to consider gene annotation, please checkout <a href="#id_##4.1-Consider-gene-annotation-in-mutation-tools">4.1</a><br>
 A test case will be added later</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="co"># load genome of choice</span></span>
@@ -429,7 +450,7 @@ A test case will be added later</p>
 <h3 id="id_41-consider-gene-annotation-in-mutation-tools">4.1 Consider gene annotation in mutation tools<a class="anchor" aria-label="anchor" href="#id_41-consider-gene-annotation-in-mutation-tools"></a>
 </h3>
 <p>The currently supported tools that predict the effect of somatic mutations on splicing consider gene annotations. These tools can predict distinct splice scores for the same mutation in distinct genes. Therefore, the user may want to consider only transcripts related to the annotated gene during the annotation to prevent that combination of junction-transcripts are matched with scores from another gene. The following dummy example shows how to consider gene annotation during the formatting and annotation of SpliceAI Pangolin results.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="co"># load genome of choice</span></span>
@@ -466,7 +487,7 @@ A test case will be added later</p>
 <h2 id="id_5-building-the-transcript-database">5 Building the transcript database<a class="anchor" aria-label="anchor" href="#id_5-building-the-transcript-database"></a>
 </h2>
 <p>A database of transcripts can be build from a GTF file, saved and re-loaded as follows:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use gtf file of choice and transform into transcript database</span></span>
 <span><span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span></span>
 <span></span>
@@ -530,7 +551,7 @@ A test case will be added later</p>
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.2-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.4-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>

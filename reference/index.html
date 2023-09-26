@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.4</span>
       </span>
     </div>
 
@@ -230,6 +230,10 @@ in the genomic sequences</p></td>
           <p><code><a href="is_start_on_exon.html">is_start_on_exon()</a></code> </p>
         </td>
         <td><p>Tests if start or and end of junc is on exon.</p></td>
+      </tr><tr><td>
+          <p><code><a href="choose_tx.html">choose_tx()</a></code> </p>
+        </td>
+        <td><p>Select a subset of transcripts per junction that are more likely to be affected by a junction.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="requantification">Requantification <a href="#requantification" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions for read support re-quantification with easyquant</p>
@@ -325,7 +329,7 @@ in the transcript sequences</p></td>
         </td>
         <td><p>Sorts columns of junction output file in the following order:
 "junction_start", "junction_end", "strand", "chromosome", "Gene",
-"class", "AS_event_ID", "junction_id"</p></td>
+"class", "junction_id"</p></td>
       </tr><tr><td>
           <p><code><a href="unsorted_junc_df.html">unsorted_junc_df</a></code> </p>
         </td>

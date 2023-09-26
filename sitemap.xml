@@ -31,6 +31,9 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/add_tx.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_exon_idx.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/annotate_junc_in_orf.html</loc>
   </url>
   <url>
@@ -53,6 +56,12 @@
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/canonical_junctions.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/choose_tx.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/classify_junc_tx.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/combine_mut_junc.html</loc>

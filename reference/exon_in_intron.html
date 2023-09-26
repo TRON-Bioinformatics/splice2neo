@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.4</span>
       </span>
     </div>
 
@@ -53,17 +53,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">exon_in_intron</span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">tx_id</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">exon_in_intron</span><span class="op">(</span><span class="va">df</span>, <span class="va">transcripts</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>junc_id</dt>
-<dd><p>Junction id</p></dd>
-
-
-<dt>tx_id</dt>
-<dd><p>Transcript id</p></dd>
+    <dl><dt>df</dt>
+<dd><p>A data.frame with splice junctions in rows and at least the columns:</p><ul><li><p><code>junc_id</code> junction id consisting of genomic coordinates</p></li>
+<li><p><code>tx_id</code> transcript id consisting of genomic coordinates</p></li>
+</ul></dd>
 
 
 <dt>transcripts</dt>
@@ -75,7 +73,9 @@ created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)<
     <h2>Value</h2>
     
 
-<p>Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.</p>
+<p>A data.frame as the input but with potentially multiple rows
+and with the additional column(s):
+- <code>exon_free</code>: Boolean indicating if the given IR junctions is exon-free. Will return NA for non-intron retentions.</p>
     </div>
 
     <div id="ref-examples">
@@ -114,7 +114,7 @@ created by <code>GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)<
 <span class="r-in"><span> tx_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tx1"</span>, <span class="st">"tx1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>exon_free <span class="op">=</span> <span class="fu">exon_in_intron</span><span class="op">(</span>junc_id <span class="op">=</span> <span class="va">junc_id</span>, tx_id <span class="op">=</span> <span class="va">tx_id</span>, transcripts <span class="op">=</span> <span class="va">toy_tx</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu">exon_in_intron</span><span class="op">(</span>transcripts <span class="op">=</span> <span class="va">toy_tx</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
