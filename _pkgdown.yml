@@ -63,6 +63,7 @@ reference:
   - seq_truncate_nonstop
   - exon_in_intron
   - is_start_on_exon
+  - choose_tx
 
 - title: "Requantification"
   desc: "Functions for read support re-quantification with easyquant"
