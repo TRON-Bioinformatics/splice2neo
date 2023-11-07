@@ -7,7 +7,6 @@ stages:
 testing:
   stage: check
   script:
-    - R -e 'install.packages("devtools")'
     - R -e 'devtools::install()'
     - R -e 'devtools::check()'
 
@@ -16,7 +15,6 @@ pages:
   dependencies:
     - testing
   script:
-    - R -e 'install.packages("devtools")'
     - R -e 'devtools::install()'
     - R -e 'install.packages("pkgdown")'
     - R -e "pkgdown::build_site()"
