@@ -43,3 +43,45 @@ format_spliceai <- function(spliceai_variants){
     dplyr::select(mut_id, effect, score, chr, pos_rel, pos) %>%
     dplyr::distinct()
 }
+
+
+#' Formats SpliceAI with -T flag output and filter for predicted effects
+#'
+#' Reformat the data for each annotated effect per row, filters effects
+#' to have a probability score not NA and score > 0, and removes gene symbol from
+#' data to make non-redundant output.
+#'
+#' @param spliceai_variants [tibble][tibble::tibble-package] with parsed
+#' spliceAI mutations from \code{\link{parse_spliceai}}
+#'
+#' @return A [tibble][tibble::tibble-package] with splicing effects per row
+#'
+#' @examples
+#' spliceai_file <- system.file("extdata", "spliceai_thresh_output.vcf", package = "splice2neo")
+#' df <- parse_spliceai_thresh(spliceai_file)
+#' format_spliceai_thresh(df)
+#'
+#' @seealso \code{\link{parse_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
+#' @export
+format_spliceai_thresh <- function(spliceai_variants){
+
+  #format columns
+  spliceai_variants <- spliceai_variants %>%
+    mutate(score = as.numeric(score),
+           pos_rel = as.integer(pos_rel), 
+           effect = as.factor(effect)) %>%
+
+    # filter effects without probability score given
+    filter(!is.na(score) & score > 0) %>%
+
+    # add unique IDs for mutation
+    mutate(
+      mut_id = str_c(CHROM, POS, REF, ALT, sep = "_"),
+      chr = CHROM,
+      pos = as.integer(POS) + pos_rel
+    ) %>%
+
+    # keep only relevant columns
+    dplyr::select(mut_id, effect, score, chr, pos_rel, pos) %>%
+    dplyr::distinct()
+}
