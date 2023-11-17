@@ -25,3 +25,12 @@ and with the additional column(s):
 \description{
 Annotate splice junctions with all possible transcript IDs in the given genomic region.
 }
+\examples{
+junc_df <- tibble::tibble(
+  junc_id = c("chr2:152389996-152392205:-", "chr2:152389996-152390729:-",
+              "chr2:152389955-152389956:-")
+)
+
+add_tx(junc_df, toy_transcripts)
+
+}

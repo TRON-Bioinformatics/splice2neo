@@ -2,7 +2,7 @@
 ##fileDate=20191004
 ##reference=GRCh37/hg19
 ##INFO=<ID=SpliceAI,Number=.,Type=String,Description="SpliceAIv1.3.1 variant annotation. These include delta scores (DS) and delta positions (DP) for acceptor gain (AG), acceptor loss (AL), donor gain (DG), and donor loss (DL). Format: ALLELE|SYMBOL|DS_AG|DS_AL|DS_DG|DS_DL|DP_AG|DP_AL|DP_DG|DP_DL">
-##INFO=<ID=Pangolin,Number=.,Type=String,Description="Pangolin splice scores. Format: gene|pos:score_change|pos:score_change|...">
+##INFO=<ID=Pangolin,Number=.,Type=String,Description="Pangolin splice scores. Format: gene|pos:score_change|pos:score_change|warnings,...">
 ##FILTER=<ID=PASS,Description="All filters passed">
 ##contig=<ID=chr1,length=249250621>
 ##contig=<ID=chr2,length=243199373>
@@ -29,13 +29,13 @@
 ##contig=<ID=chrX,length=155270560>
 ##contig=<ID=chrY,length=59373566>
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
-chr1	25000	.	A	C,G,T	.	.	Pangolin=ENSG00000227232.5_3|8:0.01|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr2	152389953	.	T	A,C,G	.	.	SpliceAI=A|NEB|0.01|0.00|0.00|0.74|43|3|-26|3,C|NEB|0.04|0.00|0.00|0.71|43|3|-26|3,G|NEB|0.03|0.00|0.00|0.75|43|3|-26|3;Pangolin=ENSG00000183091.19_10|2:0.01|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr2	179415988	.	C	CA	.	.	SpliceAI=CA|TTN|0.07|1.00|0.00|0.00|-7|-1|35|-29;Pangolin=ENSG00000237298.10_8|33:0.0|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGeneENSG00000155657.27_6|-26:0.08|-49:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr2	179446218	.	ATACT	A	.	.	SpliceAI=A|TTN|0.00|0.00|0.02|0.91|-7|34|-11|8;Pangolin=ENSG00000237298.10_8|14:0.0|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGeneENSG00000155657.27_6|-7:0.08|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
+chr1	25000	.	A	C,G,T	.	.	Pangolin=ENSG00000227232.5_5|8:0.009999999776482582|-50:0.0|Warnings:
+chr2	152389953	.	T	A,C,G	.	.	SpliceAI=A|NEB|0.01|0.00|0.00|0.74|43|3|-26|3,C|NEB|0.04|0.00|0.00|0.71|43|3|-26|3,G|NEB|0.03|0.00|0.00|0.75|43|3|-26|3;Pangolin=ENSG00000183091.20_14|2:0.009999999776482582|3:-0.33000001311302185|Warnings:
+chr2	179415988	.	C	CA	.	.	SpliceAI=CA|TTN|0.07|1.00|0.00|0.00|-7|-1|35|-29;Pangolin=ENSG00000237298.10_10|33:0.0|-50:0.0|Warnings:,ENSG00000155657.28_10|-26:0.07999999821186066|-1:-0.8600000143051147|Warnings:
+chr2	179446218	.	ATACT	A	.	.	SpliceAI=A|TTN|0.00|0.00|0.02|0.91|-7|34|-11|8;Pangolin=ENSG00000237298.10_10|14:0.0|-50:0.0|Warnings:,ENSG00000155657.28_10|-7:0.08|8:-0.81|Warnings:
 chr2	179446218	.	ATACT	AT,ATA	.	.	SpliceAI=AT|TTN|.|.|.|.|.|.|.|.,ATA|TTN|.|.|.|.|.|.|.|.
-chr2	179642185	.	G	A	.	.	SpliceAI=A|TTN|0.00|0.00|0.64|0.55|2|38|2|-38;Pangolin=ENSG00000237298.10_8|-2:0.0|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGeneENSG00000155657.27_6|2:0.54|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr19	38958362	.	C	T	.	.	SpliceAI=T|RYR1|0.00|0.00|0.91|0.08|-28|-46|-2|-31;Pangolin=ENSG00000196218.13_8|-2:0.85|-50:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr21	47406854	.	CCA	C	.	.	SpliceAI=C|COL6A1|0.04|0.98|0.00|0.00|-38|4|38|4;Pangolin=ENSG00000142156.15_4|-38:0.06|-40:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chr21	47406856	.	A	AT	.	.	SpliceAI=AT|COL6A1|0.03|0.99|0.00|0.00|-40|2|36|2;Pangolin=ENSG00000142156.15_4|-40:0.08|-42:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
-chrX	129274636	.	A	C,G,T	.	.	SpliceAI=C|AIFM1|0.00|0.18|0.00|0.00|-28|-44|-44|45,G|AIFM1|0.00|0.17|0.00|0.00|-8|-44|-44|45,T|AIFM1|0.00|0.19|0.00|0.00|-2|-44|-44|45;Pangolin=ENSG00000156709.14_6|-41:0.01|-49:0.0|Warnings:NoAnnotatedSitesToMaskForThisGene
+chr2	179642185	.	G	A	.	.	SpliceAI=A|TTN|0.00|0.00|0.64|0.55|2|38|2|-38;Pangolin=ENSG00000237298.10_10|-2:0.0|-50:0.0|Warnings:,ENSG00000155657.28_10|2:0.5400000214576721|-38:-0.3499999940395355|Warnings:
+chr19	38958362	.	C	T	.	.	SpliceAI=T|RYR1|0.00|0.00|0.91|0.08|-28|-46|-2|-31;Pangolin=ENSG00000196218.13_12|-2:0.8500000238418579|-50:0.0|Warnings:
+chr21	47406854	.	CCA	C	.	.	SpliceAI=C|COL6A1|0.04|0.98|0.00|0.00|-38|4|38|4;Pangolin=ENSG00000142156.16_6|-38:0.06|4:-0.82|Warnings:
+chr21	47406856	.	A	AT	.	.	SpliceAI=AT|COL6A1|0.03|0.99|0.00|0.00|-40|2|36|2;Pangolin=ENSG00000142156.16_6|-40:0.07999999821186066|2:-0.8100000023841858|Warnings:
+chrX	129274636	.	A	C,G,T	.	.	SpliceAI=C|AIFM1|0.00|0.18|0.00|0.00|-28|-44|-44|45,G|AIFM1|0.00|0.17|0.00|0.00|-8|-44|-44|45,T|AIFM1|0.00|0.19|0.00|0.00|-2|-44|-44|45;Pangolin=ENSG00000156709.15_10|-41:0.009999999776482582|-44:-0.2800000011920929|Warnings:

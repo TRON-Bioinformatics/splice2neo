@@ -4,7 +4,7 @@
 \alias{sort_columns}
 \title{Sorts columns of junction output file in the following order:
 "junction_start", "junction_end", "strand", "chromosome", "Gene",
-"class", "AS_event_ID", "junction_id"}
+"class", "junction_id"}
 \usage{
 sort_columns(tib)
 }
@@ -17,5 +17,5 @@ A tibble with sorted columns as given above
 \description{
 Sorts columns of junction output file in the following order:
 "junction_start", "junction_end", "strand", "chromosome", "Gene",
-"class", "AS_event_ID", "junction_id"
+"class", "junction_id"
 }

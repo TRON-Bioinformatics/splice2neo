@@ -4,14 +4,21 @@
 \alias{format_spliceai}
 \title{Formats spliceAI output and filter for predicted effects}
 \usage{
-format_spliceai(spliceai_variants)
+format_spliceai(spliceai_variants, gene_table = NULL)
 }
 \arguments{
 \item{spliceai_variants}{\link[tibble:tibble-package]{tibble} with parsed
 spliceAI mutations from \code{\link{parse_spliceai}}}
+
+\item{gene_table}{optional \link[tibble:tibble-package]{tibble} with the columns:
+\itemize{
+\item \code{gene_id}: ENSEMBL gene id
+\item \code{gene_name}: gene symbol
+}}
 }
 \value{
-A \link[tibble:tibble-package]{tibble} with splicing effects per row
+A \link[tibble:tibble-package]{tibble} with splicing effects per row.
+If \code{gene_table} is provided, the formatted data contains a column with the \code{gene_id}.
 }
 \description{
 Reformat the data for each annotated effect per row, filters effects

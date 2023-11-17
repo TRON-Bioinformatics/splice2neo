@@ -13,6 +13,13 @@
 #'  - `tx_id` the ID of the affected transcript
 #'  - `tx_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the transcript
 #'
+#' @examples
+#' junc_df <- tibble::tibble(
+#'   junc_id = c("chr2:152389996-152392205:-", "chr2:152389996-152390729:-",
+#'               "chr2:152389955-152389956:-")
+#' )
+#'
+#' add_tx(junc_df, toy_transcripts)
 #'
 #' @import dplyr
 #' @export
