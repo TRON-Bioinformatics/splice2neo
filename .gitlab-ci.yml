@@ -8,6 +8,7 @@ testing:
   stage: check
   script:
     - R -e 'install.packages("devtools")'
+    - R -e 'devtools::install_version("stringr", version = "1.5.0", repos = "https://cloud.r-project.org/")'
     - R -e 'devtools::install()'
     - R -e 'devtools::check()'
 
@@ -17,6 +18,7 @@ pages:
     - testing
   script:
     - R -e 'install.packages("devtools")'
+    - R -e 'devtools::install_version("stringr", version = "1.5.0", repos = "https://cloud.r-project.org/")'
     - R -e 'devtools::install()'
     - R -e 'install.packages("pkgdown")'
     - R -e "pkgdown::build_site()"
