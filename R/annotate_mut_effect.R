@@ -12,11 +12,19 @@
 #'   - `chr` chromosome
 #'   - `pos` absolute position of the effect
 #'   - `effect` an splicing effect class, one of `DL`, `DG`, `AL`, `AG`.
+#'   optional column:
+#'   - `gene_id` ENSEMBL gene id. Is required if `gene_mapping` is set to TRUE
 #'
 #' @param transcripts a GRangesList with transcripts defined as GRanges of exons
 #'   created by `GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)`.
 #' @param transcripts_gr a GRanges object with transcript created by
-#'   `GenomicFeatures::transcripts(txdb)`
+#'   `GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))`
+#' @param gene_mapping Indicator whether only transcripts related to the gene
+#' provided in the `gene_id` column in `effect_df` are considered.
+#' If `gene_mapping` is FALSE, all potentially affected  transcripts covering
+#' the relevant genomic position are considered.
+#' If `gene_mapping` is TRUE, potentially affected transcripts from the gene
+#' provided in `effect_df` that cover the relevant genomic positions are considered.
 #'
 #' @return A data.frame with with additional rows and columns including the
 #' splice junction in the column `junc_id`.
@@ -30,7 +38,7 @@
 #'
 #'
 #' @export
-annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
+annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_mapping = FALSE){
 
   effect_df <- effect_df  %>%
     mutate(
@@ -44,7 +52,7 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
         ":",
         as.character(effect_df$pos)
     ))
-    names(var_gr) <-effect_df$effect_index
+    names(var_gr) <- effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
     # get all possible junctions of by start and end coordinates of upsteam and downstream exons
@@ -106,7 +114,8 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
       # remove predicted effects with missing values
       filter(!is.na(left) & !is.na(right) & !is.na(tx_strand) & !is.na(chr)) %>%
       # remove predicted effects outside of transcript range
-      filter((!is.na(downstream_start) & !is.na(downstream_end)) | (!is.na(upstream_start) & !is.na(upstream_end)))%>%
+      filter(!(is.na(downstream_start) & is.na(downstream_end))) %>%
+      filter(!(is.na(upstream_start) & is.na(upstream_end))) %>%
 
       # add junction IDs
       mutate(
@@ -114,6 +123,35 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
         tx_junc_id  = str_c(tx_id, junc_id, sep = "_"),
       ) %>%
       ungroup()
+
+
+    if(gene_mapping){
+
+      if(!"gene_id" %in% names(junc_df)) {
+        stop("The column gene_id is required in effect_df if gene mapping should be applied")
+      }
+
+      # gene and transcripts
+      gene_transcript_mapping <-
+        tibble::tibble(
+          gene_id = unlist(transcripts_gr@elementMetadata$gene_id),
+          tx_name = transcripts_gr@elementMetadata$tx_name
+        )
+
+      # consider only transcripts that relate to gene that is provided in the
+      # output of mutation effect prediction tools
+      junc_df <- junc_df %>%
+        dplyr::left_join(
+          gene_transcript_mapping,
+          by = c("tx_id" = "tx_name"),
+          suffix = c("", "_mapped")
+        ) %>%
+        group_by(mut_id, junc_id, effect) %>%
+        dplyr::filter(gene_id == gene_id_mapped) %>%
+        dplyr::select(-gene_id_mapped) %>%
+        ungroup()
+
+    }
 
     message("INFO: Evaluation of rules done.")
   } else{
@@ -130,7 +168,7 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr){
         "downstream_end"= NA,
         "at_start"= NA,
         "at_end"= NA,
-        "class"= NA,
+        "event_type"= NA,
         "rule_left"= NA,
         "rule_right"= NA,
         "strand_offset"= NA,
@@ -186,9 +224,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
   var_to_transcript <- var_to_transcript %>%
     mutate(
-      #var_gr = map(var_nr, ~var_gr[.x]),
-      var_gr = furrr::future_map(var_nr, ~var_gr[.x]),
-      # tx_gr = map(tx_nr, ~transcripts[[.x]]),
+      var_gr = purrr::map(var_nr, ~var_gr[.x]),
       tx_gr = transcripts[tx_nr] %>% as.list()
     )
 
@@ -206,23 +242,23 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
       tx_id = if(!is.null(names(transcripts_gr))){names(transcripts_gr)[tx_nr]} else{as.character(transcripts_gr$tx_name)[tx_nr]},
 
       # extract all exon start and end coordinates of transcripts as GRanges
-      starts_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
-      ends_gr = map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
+      starts_gr = purrr::map(tx_gr, GenomicRanges::resize, width = 1, fix = "start"),
+      ends_gr = purrr::map(tx_gr, GenomicRanges::resize, width = 1, fix = "end"),
 
       # get the closest upstream and downstream start and end positions
-      upstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::follow),
-      downstream_start_idx = map2_int(var_gr, starts_gr, GenomicRanges::precede),
-      upstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::follow),
-      downstream_end_idx = map2_int(var_gr, ends_gr, GenomicRanges::precede),
+      upstream_start_idx =purrr:: map2_int(var_gr, starts_gr, GenomicRanges::follow),
+      downstream_start_idx = purrr::map2_int(var_gr, starts_gr, GenomicRanges::precede),
+      upstream_end_idx = purrr::map2_int(var_gr, ends_gr, GenomicRanges::follow),
+      downstream_end_idx = purrr::map2_int(var_gr, ends_gr, GenomicRanges::precede),
 
-      upstream_start = map2_int(starts_gr, upstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      downstream_start = map2_int(starts_gr, downstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      upstream_end = map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
-      downstream_end = map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      upstream_start = purrr::map2_int(starts_gr, upstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_start = purrr::map2_int(starts_gr, downstream_start_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      upstream_end = purrr::map2_int(ends_gr, upstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
+      downstream_end = purrr::map2_int(ends_gr, downstream_end_idx, ~ifelse(!is.na(.y), BiocGenerics::start(.x[.y]), NA)),
 
       # calculate if effect position overlaps with exon start or exon end
-      at_start = suppressWarnings(map2_lgl(var_gr, starts_gr, IRanges::overlapsAny)),
-      at_end = suppressWarnings(map2_lgl(var_gr, ends_gr, IRanges::overlapsAny)),
+      at_start = suppressWarnings(purrr::map2_lgl(var_gr, starts_gr, IRanges::overlapsAny)),
+      at_end = suppressWarnings(purrr::map2_lgl(var_gr, ends_gr, IRanges::overlapsAny)),
 
     ) %>%
 
@@ -233,7 +269,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 
 #' Rules on how a splicing affecting variant creates a junction
 effect_to_junction_rules <- tribble(
-  ~effect, ~class,             ~rule_left,        ~rule_right,
+  ~effect, ~event_type,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
   "DL",    "exon skipping",    "upstream_end",    "downstream_start",
 

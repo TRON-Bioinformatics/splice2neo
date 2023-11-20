@@ -4,7 +4,12 @@
 \alias{annotate_mut_effect}
 \title{Annotate splice variants effects with resulting junctions}
 \usage{
-annotate_mut_effect(effect_df, transcripts, transcripts_gr)
+annotate_mut_effect(
+  effect_df,
+  transcripts,
+  transcripts_gr,
+  gene_mapping = FALSE
+)
 }
 \arguments{
 \item{effect_df}{a data.frame with variant effects on splicing per row. It
@@ -13,13 +18,22 @@ should have at least the following columns:
 \item \code{chr} chromosome
 \item \code{pos} absolute position of the effect
 \item \code{effect} an splicing effect class, one of \code{DL}, \code{DG}, \code{AL}, \code{AG}.
+optional column:
+\item \code{gene_id} ENSEMBL gene id. Is required if \code{gene_mapping} is set to TRUE
 }}
 
 \item{transcripts}{a GRangesList with transcripts defined as GRanges of exons
 created by \code{GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)}.}
 
 \item{transcripts_gr}{a GRanges object with transcript created by
-\code{GenomicFeatures::transcripts(txdb)}}
+\code{GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))}}
+
+\item{gene_mapping}{Indicator whether only transcripts related to the gene
+provided in the \code{gene_id} column in \code{effect_df} are considered.
+If \code{gene_mapping} is FALSE, all potentially affected  transcripts covering
+the relevant genomic position are considered.
+If \code{gene_mapping} is TRUE, potentially affected transcripts from the gene
+provided in \code{effect_df} that cover the relevant genomic positions are considered.}
 }
 \value{
 A data.frame with with additional rows and columns including the

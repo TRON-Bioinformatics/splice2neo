@@ -62,3 +62,4 @@ test_that("spladder_import fails returns error message when wrong folder", {
   expect_error(import_spladder("."))
 
 })
+

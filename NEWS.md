@@ -1,3 +1,27 @@
+# splice2neo 0.6.4
+
+* add new function to select more relevant junction-transcript combinations 
+* adapt input and output of exon_in_intron()
+
+# splice2neo 0.6.3
+
+* revision of parse_pangolin and format_pangolin functions 
+* annotate_mut_junc should remove predicted effects outside of transcript range
+* add_peptide returns full protein sequence until first stop codon
+
+# splice2neo 0.6.2
+
+* ensure correct exon usage in MMSplice annotation
+* two new functions to filter for unique junctions based on mut_id, junc_id and tx_id based on the highest effect score
+
+# splice2neo 0.6.1
+
+* annotate_mut_effect() now optionally considers only transcripts from genes provided by SpliceAI or Pangolin
+* Column `class` was renamed to `event_type`
+* combine_mut_junc() returns now rows that are unique based on `mut_id`, `junc_id`, `tx_id`, `event_type`
+* update of README
+* update of description of add_peptide()
+
 # splice2neo 0.6.0
 
 * major update of add_peptide() function + adding some tests

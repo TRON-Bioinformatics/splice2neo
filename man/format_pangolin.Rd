@@ -4,25 +4,25 @@
 \alias{format_pangolin}
 \title{Formats pangolin output and filter for predicted effects}
 \usage{
-format_pangolin(variants)
+format_pangolin(variants, keep_gene_id = FALSE)
 }
 \arguments{
 \item{variants}{\link[tibble:tibble-package]{tibble} with parsed
 pangolin mutations from \code{\link{parse_pangolin}}}
+
+\item{keep_gene_id}{Indicator whether the gene_id should be kept in the formatted data (default: FALSE).}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with splicing effects per row
+
+pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+df <- parse_pangolin(pangolin_file)
+format_pangolin(df)
 }
 \description{
 Reformat the data for each annotated effect per row. As pangolin does not
 provide information on donor or acceptor, use both for gain and loss annotations.
-Effects with score = 0 are filtered out.
-}
-\examples{
-pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
-df <- parse_pangolin(pangolin_file)
-format_pangolin(df)
-
+Effects with score = 0 are filtered out. The resulting \code{score} represents the absolute value of the Pangolin score.
 }
 \seealso{
 \code{\link{parse_spliceai}}, \code{\link{annotate_mut_effect}}, \code{\link{format_spliceai}}
