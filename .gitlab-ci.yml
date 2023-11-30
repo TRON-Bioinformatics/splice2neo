@@ -1,4 +1,4 @@
-image: rocker/r-bspm:22.04
+image: rocker/r-bspm:20.04
 
 stages:
   - check
