@@ -1,4 +1,4 @@
-image: rocker/r-base:4.3.2
+image: r-base:4.3.2
 
 stages:
   - check
