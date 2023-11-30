@@ -1,4 +1,4 @@
-image: rocker/r-bspm:jammy
+image: rocker/r-base:4.3.2
 
 stages:
   - check
