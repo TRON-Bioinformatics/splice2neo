@@ -1,4 +1,4 @@
-image: r-base:4.3.2
+image: rocker/r-bspm:f38
 
 stages:
   - check
