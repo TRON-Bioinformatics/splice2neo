@@ -1,4 +1,4 @@
-image: rocker/r-bspm:22.04
+image: bioconductor/bioconductor_docker:RELEASE_3_17
 
 stages:
   - check

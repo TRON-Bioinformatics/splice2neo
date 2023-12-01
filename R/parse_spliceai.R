@@ -25,11 +25,15 @@ parse_spliceai <- function(vcf_file){
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
 
   # get fixed fields for variants
-  fix_df <-  vcfR::getFIX(vcf) %>%
-    tibble::as_tibble() %>%
-    mutate(
-      Key = row_number()
-    )
+  if (nrow(vcf) > 1){
+    fix_df <-  vcfR::getFIX(vcf) %>%
+      tibble::as_tibble() %>%
+      mutate(Key = row_number())
+  } else {
+    fix_df <-  vcfR::getFIX(vcf) %>%
+      tibble::as_tibble_row() %>%
+      mutate(Key = row_number())
+  }
 
   # get annotations
   splice_df <- vcf %>%
