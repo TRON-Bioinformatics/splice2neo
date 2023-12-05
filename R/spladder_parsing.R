@@ -233,14 +233,17 @@ import_spladder <- function(path){
   message("Importing Spladder files ...")
 
   files <- list.files(path, "confirmed.txt.gz")
+  if(length(files) == 0){
+    stop(paste("There are no SplAdder confirmed.txt.gz input files in ", path, sep=""))
+  }
   if(any(grepl("mult_exon_skip", files))){
     files <- files[-which(grepl("mult_exon_skip", files))]
   }
   as_types <- gsub("_C[0-3].confirmed.txt.gz", "", files)
-  str_split(as_types, "_")
-  n_items <- length(str_split(as_types, "_")[[1]])
-  typ1 <- sapply(str_split(as_types, "_"), "[[", n_items-1)
-  typ2 <- sapply(str_split(as_types, "_"), "[[", n_items)
+  stringr::str_split(as_types, "_")
+  n_items <- length(stringr::str_split(as_types, "_")[[1]])
+  typ1 <- sapply(stringr::str_split(as_types, "_"), "[[", n_items-1)
+  typ2 <- sapply(stringr::str_split(as_types, "_"), "[[", n_items)
   as_types <- paste0(typ1, "_", typ2)
   path_files <- paste(path, files ,sep = "/" )
 
@@ -248,9 +251,6 @@ import_spladder <- function(path){
                   delim = "\t",
                   col_types = cols(.default = "c"))
 
-  if(length(files) == 0){
-    stop("There are no SplAdder confirmed.txt.gz input files")
-  }
   names_events <-
     c(
       "alt_3prime" = "A3SS",

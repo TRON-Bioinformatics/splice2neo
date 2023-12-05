@@ -1,3 +1,8 @@
+# splice2neo 0.6.5
+
+* Fixed bug while parsing VCF files containing only a single variant
+* Improved error handling of spladder import
+
 # splice2neo 0.6.4
 
 * add new function to select more relevant junction-transcript combinations 
