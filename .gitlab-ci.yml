@@ -7,19 +7,19 @@ stages:
 testing:
   stage: check
   script:
-    - R -e 'install.packages("devtools")'
-    - R -e 'devtools::install()'
-    - R -e 'devtools::check()'
+    - R -e 'install.packages("devtools")' > /dev/null
+    - R -e 'devtools::install()' > /dev/null
+    - R -e 'devtools::check()' > /dev/null
 
 pages:
   stage: deploy
   dependencies:
     - testing
   script:
-    - R -e 'install.packages("devtools")'
-    - R -e 'devtools::install()'
-    - R -e 'install.packages("pkgdown")'
-    - R -e "pkgdown::build_site()"
+    - R -e 'install.packages("devtools")' > /dev/null
+    - R -e 'devtools::install()' > /dev/null
+    - R -e 'install.packages("pkgdown")' > /dev/null
+    - R -e "pkgdown::build_site()" > /dev/null
     - mkdir -p public
     - cp -r docs/* public
   artifacts:
