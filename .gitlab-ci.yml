@@ -8,7 +8,7 @@ testing:
   stage: check
   script:
     - R --no-echo -e 'install.packages("devtools")'
-    - R --no-echo -e 'devtools::install(quiet = TRUE)'
+    - R --no-echo -e 'devtools::install()'
     - R --no-echo -e 'devtools::check()'
 
 pages:
@@ -17,7 +17,7 @@ pages:
     - testing
   script:
     - R --no-echo -e 'install.packages("devtools")'
-    - R --no-echo -e 'devtools::install(quiet = TRUE)'
+    - R --no-echo -e 'devtools::install()'
     - R --no-echo -e 'install.packages("pkgdown")'
     - R --no-echo -e 'pkgdown::build_site()'
     - mkdir -p public
