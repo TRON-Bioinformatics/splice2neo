@@ -70,8 +70,7 @@ transform_star_sj <- function(tib){
         strand_enc == "2"  ~ "-",
       ),
       Gene = NA,
-      class = NA,
-      AS_event_ID = NA
+      class = NA
     ) %>%
     filter(strand != "*") %>%
     mutate(
@@ -84,7 +83,6 @@ transform_star_sj <- function(tib){
       chromosome,
       Gene,
       class,
-      AS_event_ID,
       junc_id,
       uniquely_mapping_reads,
       multi_mapping_reads
