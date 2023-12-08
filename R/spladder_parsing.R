@@ -66,7 +66,8 @@ spladder_transform_ass <- function(tib, AS_class) {
       class = AS_class,
     ) %>%
     tidyr::separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, number_supporting_reads)
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
+    dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 
 
@@ -96,7 +97,8 @@ spladder_transform_exon_skipping <- function(tib) {
       class = "cassette_exon"
     ) %>%
     separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, number_supporting_reads)
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
+    dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 
 
@@ -118,7 +120,7 @@ spladder_transform_intron_retention <- function(tib) {
       class = "intron_retention",
       junc_id = paste(junc_id1, junc_id2, sep = ";")
     ) %>%
-    separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
+    separate_rows(junc_id, sep = ";") %>%
     dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
     dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }

@@ -9,7 +9,7 @@ test_that("generate_combined_dataset works", {
 
   dat.combined <- generate_combined_dataset(list("spladder" = spladder_juncs,
                                                  "regtools" = regtools_juncs))
-  expect_true(ncol(dat.combined) == 12)
+  expect_true(ncol(dat.combined) == 11)
   expect_true(nrow(dat.combined) == 31)
   expect_true(all(!is.na(dat.combined$junc_id)))
 
