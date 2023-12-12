@@ -74,8 +74,6 @@ generate_combined_dataset <- function(rna_junc_data_list){
     tidyr::unite("Gene", ends_with("_Gene"), sep = ",", remove = TRUE, na.rm = TRUE)
   rna_juncs <- rna_juncs %>%
     tidyr::unite("class", ends_with("_class"), sep=",", remove = TRUE, na.rm = TRUE)
-  rna_juncs <- rna_juncs %>%
-    tidyr::unite("AS_event_ID", ends_with("_AS_event_ID"), sep = ",", remove = TRUE, na.rm = TRUE)
 
   return(rna_juncs)
 }

@@ -43,7 +43,6 @@ transform_regtools_junc <- function(tib) {
                       'N'   = 'novel_acceptor_novel_donor')
     tib <- tib %>%
         mutate(class = names_events[anchor],
-               AS_event_ID = NA,
                junc_id = generate_junction_id(chrom, start, end, strand),
                score = as.numeric(score)) %>%
         dplyr::select(start,
@@ -52,7 +51,6 @@ transform_regtools_junc <- function(tib) {
                       chrom,
                       gene_ids,
                       class,
-                      AS_event_ID,
                       junc_id,
                       score)
 
@@ -62,7 +60,6 @@ transform_regtools_junc <- function(tib) {
                    "chromosome",
                    "Gene",
                    "class",
-                   "AS_event_ID",
                    "junc_id",
                    "number_supporting_reads")
     colnames(tib) <- junc.cols

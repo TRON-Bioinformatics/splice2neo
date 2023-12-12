@@ -3,7 +3,7 @@
 test_that("regtools.transform works", {
   path <- system.file("extdata", "test_regtools_Aligned.out.sorted.bam.junc", package = "splice2neo")
   df <- regtools_transform(path)
-  expect_true(ncol(df) == 9)
+  expect_true(ncol(df) == 8)
   expect_true(nrow(df) == 5)
   expect_true(all(!is.na(df$junc_id)))
 

@@ -21,7 +21,6 @@ sort_columns <- function(tib) {
       "Gene",
       "class",
       #"junction_info",
-      "AS_event_ID",
       "junc_id",
       "number_supporting_reads"
     )
@@ -67,7 +66,7 @@ spladder_transform_ass <- function(tib, AS_class) {
       class = AS_class,
     ) %>%
     tidyr::separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID, number_supporting_reads) %>%
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
     dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 
@@ -95,11 +94,10 @@ spladder_transform_exon_skipping <- function(tib) {
       number_supporting_reads = paste(supporting_reads_junc1,
                                      supporting_reads_junc2,
                                      supporting_reads_junc3, sep = ";"),
-      class = "cassette_exon",
-      AS_event_ID = event_id
+      class = "cassette_exon"
     ) %>%
-    tidyr::separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID, number_supporting_reads) %>%
+    separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
     dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 
@@ -122,8 +120,8 @@ spladder_transform_intron_retention <- function(tib) {
       class = "intron_retention",
       junc_id = paste(junc_id1, junc_id2, sep = ";")
     ) %>%
-    tidyr::separate_rows(junc_id, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID, number_supporting_reads) %>%
+    separate_rows(junc_id, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
     dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 
@@ -153,11 +151,10 @@ spladder_transform_mutex_exon <- function(tib) {
                                      supporting_reads_junc2,
                                      supporting_reads_junc3,
                                      supporting_reads_junc4, sep = ";"),
-      class = "mutex_exon",
-      AS_event_ID = event_id
+      class = "mutex_exon"
     ) %>%
-    tidyr::separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
-    dplyr::select(junc_id, gene_name, class, AS_event_ID, number_supporting_reads) %>%
+    separate_rows(junc_id, number_supporting_reads, sep = ";") %>%
+    dplyr::select(junc_id, gene_name, class, number_supporting_reads) %>%
     dplyr::mutate(number_supporting_reads = as.numeric(number_supporting_reads))
 }
 

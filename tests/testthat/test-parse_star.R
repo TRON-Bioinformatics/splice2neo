@@ -26,7 +26,7 @@ test_that("parse.star.sj works", {
   path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
   dat.combined <- parse_star_sj(path)
 
-  expect_true(ncol(dat.combined) == 10)
+  expect_true(ncol(dat.combined) == 9)
   expect_true(nrow(dat.combined) == 7)
   expect_true(all(!is.na(dat.combined$junc_id)))
 
