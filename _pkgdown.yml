@@ -3,10 +3,14 @@ url: https://tron-bioinformatics.github.io/splice2neo/
 reference:
 
 - title: "Parse SpliceAI"
-  desc: "Functions to parse SpliceAI output into standard splice junction format"
+  desc: "Functions to parse SpliceAI and CI-SpliceAI output into standard splice junction format"
 - contents:
   - parse_spliceai
+  - parse_spliceai_thresh
+  - parse_cispliceai_thresh
   - format_spliceai
+  - format_spliceai_thresh
+  - format_cispliceai_thresh
   - annotate_mut_effect
   - unique_mut_junc
 
@@ -33,7 +37,7 @@ reference:
   - import_leafcutter_counts
   - leafcutter_transform
   - transform_leafcutter_counts
-  
+
 - title: "Parse Regtools"
   desc: "Functions to parse Regtools output into standard splice junction format"
 - contents:
@@ -59,7 +63,7 @@ reference:
   - filter_irfinder_txt
   - parse_irfinder_txt
   - transform_irfinder_txt
-  
+
 - title: "Parse SUPPA2"
   desc: "Functions to parse SUPPA2 output into standard splice junction format"
 - contents:
@@ -76,7 +80,7 @@ reference:
   desc: "Functions to parse STAR SJ.out.tab into standard splice junction format"
 - contents:
   - parse_star_sj
-  
+
 - title: "Parse StringTie"
   desc: "Functions to parse StringTie into standard splice junction format"
 - contents:
