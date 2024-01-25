@@ -96,6 +96,11 @@ filter_irfinder_txt <- function(tib, warnings=FALSE, ratio_cutoff=0.1){
     filtered_introns <- filtered_introns %>%
       dplyr::filter(Warnings == '-')
   }
+  
+  message('Removing IR calls with overlapping features...')
+  filtered_introns <- filtered_introns %>%
+    dplyr::filter((stringr::str_split(Name, "/") %>% purrr::map_chr(., 3)) == 'clean')
+
   return(filtered_introns)
 
 }
