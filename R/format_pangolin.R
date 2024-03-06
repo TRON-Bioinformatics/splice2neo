@@ -44,9 +44,9 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
     # keep only relevant columns
     {
       if (keep_gene_id)
-        dplyr::select(. , mut_id, effect, score, chr, pos_rel, pos, gene_id)
+        dplyr::select(. , mut_id, POS, effect, score, chr, pos_rel, pos, gene_id)
       else
-        dplyr::select(. , mut_id, effect, score, chr, pos_rel, pos)
+        dplyr::select(. , mut_id, POS, effect, score, chr, pos_rel, pos)
     } %>%
 
     dplyr::distinct()
