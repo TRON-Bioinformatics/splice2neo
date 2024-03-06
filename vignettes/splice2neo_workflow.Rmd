@@ -39,15 +39,414 @@ This package provides functions for the analysis of splice junctions and their a
 Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions which are tumor-specific and can encode neoantigen candidates. The following workflow explains how to use splice2neo to predict neoantigen candidates from mutation-associated splice junctions using example data. 
 
 ```{r setup}
+
+# load splice2neo
 library(splice2neo)
-library(tidyverse)
-library(BSgenome.Hsapiens.UCSC.hg19)
+
 ```
 
-## Annotation of mutation effect on splicing
+
+## Building transcript database 
+
+A database of transcripts is required for transcript annotation with splice2neo. Here, we show how to build the database from GENCODE annotation but users can build these databases also from other resources.  
+
+```{r db}
+
+# use gtf file of choice and transform into transcript database
+gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+
+# parse GTF file as txdb object
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+# optionally save database for later re-use 
+# saveDb(txdb, file = "/path/to/transripts/txdb.sqlite")
+
+# Build transcript database
+transcripts <-
+  GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
+transcripts_gr <- GenomicFeatures::transcripts(txdb, columns = c("gene_id", "tx_id", "tx_name"))
+
+# Build cds database
+cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
+
+```
+
+
 
 
 ## Annotation of RNA-seq derived splice junctions 
 
+Splice2neo transforms splice events identified in RNA-seq into a standardized junction format. Currently, the transformation of results by LeafCutter and SplAdder are supported. 
 
+### LeafCutter 
+
+LeafCutter results can be transformed using `leafcutter_transform`: 
+
+```{r}
+
+leafcutter_path <- system.file("extdata/example/leafcutter", package="splice2neo")
+
+leafcutter <-
+  leafcutter_transform(path = leafcutter_path)
+
+
+head(leafcutter)
+```
+
+
+### SplAdder
+
+SplAdder results can be transformed using `leafcutter_transform`: 
+
+```{r}
+
+spladder_path <- system.file("extdata/example/spladder", package="splice2neo")
+
+spladder <-
+  spladder_transform(path = spladder_path)
+
+
+head(spladder)
+```
+
+
+### Combine RNA-seq derived splice junctions 
+
+Get a dataframe of all splice junctions identified by RNA-seq tools and information by which tool they were identified. 
+
+```{r}
+
+rna_junctions <-
+  generate_combined_dataset(spladder_juncs = spladder, leafcutter_juncs = leafcutter)
+
+head(rna_junctions)
+```
+
+
+## Annotation of mutation effect on splicing
+
+Splice2neo transforms the predicted effect of mutations on splicing into unified splice junction format. Currently, the transformation of predictions by SpliceAI, MMSplice and Pangolin are supported.  
+Here, we show how to annotate results from SpliceAI and MMSplice. The annotation of Pangolin results works analogue to SpliceAI results and is described in the README. 
+
+### SpliceAI
+
+Effect predictions by SpliceAI can be read with `parse_spliceai`
+
+```{r}
+
+spliceai_file <- system.file("extdata/example/spliceAI.vcf", package="splice2neo")
+
+# parse SpliceAI results 
+spliceai <-
+  parse_spliceai(spliceai_file)
+
+head(spliceai)
+```
+
+Next, SpliceAi effects can be transformed into a standardized effect dataframe with `format_spliceai`. Here, the user can optionally provide a dataframe (`gene_table`) which relates gene symbols with GENCODE gene ids. If `gene_table` is provided,  the formatted dataframe contains the GENCODE gene ids. Importantly, this advised to better select relevant transcripts but it is not required. 
+
+```{r}
+
+gene_table <-
+  readr::read_tsv(system.file("extdata/example/gene_table.tsv", package =
+                                "splice2neo"))
+
+head(gene_table)
+
+```
+
+
+```{r}
+
+# format SpliceAI results
+splicai_formatted <-
+  format_spliceai(spliceai, gene_table = gene_table)
+
+head(splicai_formatted)
+```
+
+Predicted SpliceAI effects can be annotated with all potential resulting junctions and transcripts with `annotate_mut_effect`. If the input was formatted using `gene_table`, the user may want to choose `gene_mapping = TRUE` which removes unlikely events from the results. Otherwise, the default `gene_mapping = FALSE` should be used. 
+The resulting dataframe contains all potential alternative transcripts per row, meaning that there can be multiple annotated transcripts per junction and also multiple junctions per mutation effect. At this point, no filtering based on effect size has been applied meaning that the dataframe contains unlikely events. 
+
+```{r }
+
+# annotate SpliceAI junctions with all potential junctions and transcripts
+spliceai_annotated <-
+  annotate_mut_effect(
+    effect_df = splicai_formatted,
+    transcripts = transcripts,
+    transcripts_gr = transcripts_gr,
+    gene_mapping = TRUE
+  )
+
+
+spliceai_annotated %>% 
+  dplyr::select(mut_id, junc_id, gene_id, tx_id, effect, score) %>% 
+  head()
+```
+
+It can happen that multiple effects lead to the same altered transcripts (defined by `mut_id`, `junc_id`, `tx_id` ). The function `unique_mut_junc ` can be used to filter for unique altered transcripts by keeping the effect with the highest effect score. 
+
+```{r}
+
+# unique altered transcripts
+spliceai_annotated_unique <- unique_mut_junc(spliceai_annotated)
+
+nrow(spliceai_annotated_unique) < nrow(spliceai_annotated)
+
+```
+
+
+
+### MMSplice
+
+Effect predictions by MMSplice can be read with `parse_spliceai`
+
+```{r}
+
+mmsplice_file <- system.file("extdata/example/MMsplice.csv", package="splice2neo")
+
+# parse MMSplice results 
+mmsplice <-
+  parse_mmsplice(mmsplice_file)
+
+head(mmsplice)
+```
+
+
+MMSplice can be annotated with all potential splice junctions using `annotate_mmsplice`
+
+```{r}
+
+mmsplice_annotated <- mmsplice %>%
+  annotate_mmsplice(transcripts = transcripts)
+
+head(mmsplice_annotated)
+
+```
+
+
+Junctions predicted from MMSplice results can contain duplicated altered transcripts for exon inclusion events. The function `unique_junc_mmsplice ` can be used to filter for unique altered transcripts by keeping the effect with the highest effect score. 
+
+```{r}
+
+# unique altered transcripts
+mmsplice_annotated_unique <- unique_junc_mmsplice(mmsplice_annotated)
+
+nrow(mmsplice_annotated_unique) < nrow(mmsplice_annotated)
+
+```
+
+
+### Combine mutation-retrieved splice junctions 
+
+Splice junctions from SpliceAI and MMSplice can be combined into one dataframe using `combine_mut_junc`. This dataframe will contain unique altered transcripts (defined by `mut_id`, `junc_id`, `tx_id`) in rows. Tool specific information are defined in columns starting with the respective tool name.    
+
+```{r}
+
+mut_junctions <- combine_mut_junc(list(
+    "spliceai" = spliceai_annotated_unique, 
+    "mmsplice" = mmsplice_annotated_unique,
+    ))
+
+
+mut_junctions %>%
+  dplyr::select(mut_id, junc_id, tx_id, spliceai_event_type, spliceai_score) %>% 
+  head()
+
+```
+
+
+## Integrative analysis of mutation-retrieved splice junctions
+
+### Annotate canonical junctions
+
+Users may want to filter predicted junctions for non-canoncal splice junctions. Here, users could for instance use exon-exon junctions from GENCODE and junctions found in healthy tisssue samples. Splice2neo provides the function `bed_to_junc` which allows to transform a bed file into a list of splice junctions. Users need to generate the bed file with canonical junctions by themselves.  
+
+```{r}
+
+# this is just an example file with a few canonical junctions --> incomplete
+canonical_juncs_file <- system.file("extdata/example/test_canonical.bed", package="splice2neo")
+
+canonical_junctios <- bed_to_junc(bed_file = canonical_juncs_file, type = "exon-exon")
+
+```
+
+Annotate mutation-retrieved splice junction whether they are canonical splice junctions. 
+
+```{r}
+
+# annotated canonical junctions
+mut_junctions <- mut_junctions %>%
+  mutate(is_canonical = is_canonical(junc_id, ref_junc = canonical_junctios, exons_gr = transcripts))
+
+mut_junctions %>% 
+  count(is_canonical)
+
+# remove canonical junctions 
+noncan_mut_junctions <- mut_junctions %>% 
+  filter(!is_canonical)
+
+```
+
+### Annotate support in RNA-seq derived splice junctions
+
+Annotate whether mutation-retrieved splice junction were also detected by a RNA-seq tool. 
+
+```{r}
+
+noncan_mut_junctions <- noncan_mut_junctions %>%
+  mutate(is_in_rnaseq = is_in_rnaseq(junc_id, rna_juncs = rna_junctions$junc_id))
+
+```
+
+### Annotate transcript context sequence 
+
+Splice2neo can annotate the resulting transcript sequence for each altered transcript with `add_context_seq`. For instance, this is relevant for the targeted re-quantification of splice junctions with EasyQuant (see below). 
+
+
+```{r}
+
+noncan_mut_junctions <- noncan_mut_junctions %>%
+  add_context_seq(
+    size = 400,
+    bsg = BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19,
+    transcripts = transcripts
+  )
+
+noncan_mut_junctions %>%
+  dplyr::select(mut_id, junc_id, tx_id, cts_id, cts_seq) %>%
+  head()
+
+```
+
+### Annotate peptide context sequence 
+
+Splice2neo can annotate the resulting peptide sequence for each altered transcript with `add_peptide`. This is relevant to analyze which altered transcript could qualify as neoantigens. Users can define by the parameter `flanking_size` the number of wild-type amino acids flanking the junction or novel sequence caused by the splice junction to the left and to the right. Frame shift sequences are flanked by wild-type amino acids to the left and are annotated until the first stop codon.
+
+
+```{r}
+
+noncan_mut_junctions <- noncan_mut_junctions %>%
+  add_peptide(flanking_size = 13,
+              bsg = BSgenome.Hsapiens.UCSC.hg19,
+              cds = cds)
+
+noncan_mut_junctions %>%
+  dplyr::select(mut_id,
+                junc_id,
+                tx_id,
+                junc_in_orf,
+                peptide_context,
+                frame_shift) %>%
+  head()
+
+```
+
+
+### Annotate if predicted retained introns are covered by an exon of another transcript 
+
+Relevant intron retention events are particular challenging to predict. Splice2neo provides the function `exon_in_intron` to annotate whether the exon of another transcript is in the genomic region of a predicted retained introns. Users may not want to consider them in the downstream analysis as it is difficult to differentiate if the read support from RNA-seq relates to the retained intron or to the exon of the other transcript.  
+
+
+```{r}
+
+# annotate exons in introns of other transcript
+noncan_mut_junctions <-
+  noncan_mut_junctions %>%
+  exon_in_intron(transcripts = transcripts)
+
+```
+
+
+### Re-quantification of altered transcripts with EasyQuant
+
+Altered transcript from predicted splice junctions can be re-quantified in RNA-seq in a targeted manner with EasyQuant (available at  [https://github.com/TRON-Bioinformatics/easyquant](https://github.com/TRON-Bioinformatics/easyquant)). Users can generate the input for EasyQuant using the splice2neo function `transform_for_requant`.  
+EasyQuant should be run in interval mode for the re-quantification of splice junction and it is advised to set the BP_distannce parameter to 10. For more information please refer to the EasyQuant [README](https://github.com/TRON-Bioinformatics/easyquant). 
+
+```{r}
+
+# transform for EasyQuant
+easyquant_input <- noncan_mut_junctions %>%
+  transform_for_requant()
+
+head(easyquant_input)
+
+# DO RE-QUANTIFICATION WITH EASYQUANT using easyquant_input
+# https://github.com/TRON-Bioinformatics/easyquant
+
+```
+
+After running EasyQuant, splice2neo supports import of EasyQuant results. 
+
+```{r}
+# path to easyquant folder 
+easyquant_path <- system.file("extdata/example/easyquant", package="splice2neo")
+
+# merge easyquant results 
+requant_noncan_mut_junctions <-
+  map_requant(path_to_easyquant_folder = easyquant_path,
+              junc_tib = noncan_mut_junctions)
+
+```
+
+
+The user may be interested in different result columns depending on the type of splice
+event. In case of alternative splice sites or exon skipping events, users may want use  the number of junction reads that map on the splice junction
+(`junc_interval_start`) and/or the number of spanning reads that frame the splice junction (`span_interval_start`). 
+
+```{r}
+# re-quantification results
+requant_noncan_mut_junctions %>% 
+  filter(spliceai_event_type != "intron retention") %>% 
+  dplyr::select(mut_id, junc_id, tx_id, junc_interval_start, span_interval_start) %>% 
+  head()
+```
+
+In case of intron retentions, users may want to use the following columns:  
+
+ - within_interval: Number of reads that map to the intron of interest  
+ - coverage_perc: Relative read coverage of the intron of interest  
+ - coverage_median: Median read coverage of the intron of interest  
+ - coverage_mean: Mean read coverage of the intron of interest. This value can be misleading by skewed read distribution and the user may rather want to use the median coverage
+ 
+```{r}
+# re-quantification results
+requant_noncan_mut_junctions %>%
+  filter(spliceai_event_type == "intron retention") %>%
+  dplyr::select(
+    mut_id,
+    junc_id,
+    tx_id,
+    within_interval,
+    coverage_perc,
+    coverage_median,
+    coverage_mean
+  ) %>%
+  head()
+```
+ 
+
+```{r}
+
+# alternative to only import EasyQuant results without merging 
+
+requantification_results  <-
+  read_requant(path_folder = easyquant_path)
+
+head(easyquant_path)
+```
+
+
+## Detection rule of mutation-assoicated splicing
+
+
+# Other Splice2neo functions 
+
+## Annotation of transcipts 
+
+If us
+
+```{r}
+
+```
 
