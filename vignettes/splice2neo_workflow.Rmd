@@ -1,0 +1,53 @@
+---
+title: "Splice2neo example workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Splice2neo example workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Getting started 
+
+This R package is not yet on [CRAN](https://CRAN.R-project.org) or
+[Bioconductor](https://www.bioconductor.org/). Therefore, you need to install it
+from github [https://github.com/TRON-Bioinformatics/splice2neo](https://github.com/TRON-Bioinformatics/splice2neo) . 
+
+```{r, eval=FALSE}
+
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+remotes::install_github("TRON-Bioinformatics/splice2neo")
+```
+
+# Introduction 
+
+This package provides functions for the analysis of splice junctions and their association with somatic mutations. It integrates the output of several tools which predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Detected splice junctions can be filtered against canonical splice junctsion and annotated with affected transcript sequences, CDS, and resulting peptide sequences. Splice2neo currently supports splice events from alternative 3’/5’ splice sites, exons skipping, intron retentions, exitrons and mutually exclusive exons.
+
+
+# Example workflow to predict neoantigen candidates from mutation-associated alternative splicing
+
+Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions which are tumor-specific and can encode neoantigen candidates. The following workflow explains how to use splice2neo to predict neoantigen candidates from mutation-associated splice junctions using example data. 
+
+```{r setup}
+library(splice2neo)
+library(tidyverse)
+library(BSgenome.Hsapiens.UCSC.hg19)
+```
+
+## Annotation of mutation effect on splicing
+
+
+## Annotation of RNA-seq derived splice junctions 
+
+
+
