@@ -444,9 +444,35 @@ head(easyquant_path)
 
 ## Annotation of transcipts 
 
-If us
+Users may have a list of splice junctions and want to know all potential affected transcripts. 
+
+Given a dataframe of splice junctions, the `add_tx` function annotates all possible transcripts which overlap
+with the splice junctions. 
 
 ```{r}
+junc_df <- dplyr::tibble(
+  junc_id = toy_junc_id[c(1, 6, 10)]
+)
 
+
+junc_df <- junc_df %>% 
+  add_tx(toy_transcripts)
+
+junc_df
+```
+
+This  can lead to large data sets containing
+many highly unlikely junction transcript combinations.
+We can select a subset of transcripts per junction that are more likely
+to be affected by a junction with `choose_tx()`. Please note that this
+function may loose relevant or keep irrelevant junction-transcripts in
+particular in regions with multiple isoforms with distinct splicing
+pattern.
+
+```{r}
+selected_junc_df <- junc_df %>% 
+  choose_tx()
+
+selected_junc_df
 ```
 
