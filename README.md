@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.6.4-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.6.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
@@ -140,12 +140,12 @@ junc_df
 #>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>   
 #>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>   
 #> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>   
-#> # … with 11 more rows
+#> # ℹ 11 more rows
 ```
 
 The `add_tx` function annotates all possible transcripts that overlap
 with the splice junctions which can lead to large data sets containing
-of many highly unlikely junction transcript combinations.  
+many highly unlikely junction transcript combinations.  
 We can select a subset of transcripts per junction that are more likely
 to be affected by a junction with `choose_tx()`. Please note that this
 function may loose relevant or keep irrelevant junction-transcripts in
@@ -170,7 +170,7 @@ selected_junc_df
 #>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>    ASS                
 #>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>    ASS                
 #> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>    ASS                
-#> # … with 11 more rows
+#> # ℹ 11 more rows
 ```
 
 ### 3.3 Modify transcripts with junctions
@@ -209,27 +209,25 @@ junc_df <- toy_junc_df %>%
 
 junc_df
 #> # A tibble: 17 × 8
-#>    junc_id                  tx_id tx_mo…¹ junc_…² cts_seq cts_j…³ cts_s…⁴ cts_id
-#>    <chr>                    <chr> <chr>     <int> <chr>   <chr>     <int> <chr> 
-#>  1 chr2:152389996-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 90bfc…
-#>  2 chr2:152389996-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 26f77…
-#>  3 chr2:152389955-15238995… ENST… ENST00…   21620 AAGAAG… 0,200,…    1945 f1f2c…
-#>  4 chr2:152388410-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 d4f9e…
-#>  5 chr2:152388410-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 c715a…
-#>  6 chr2:179415981-17941635… ENST… ENST00…   83789 TGGATT… 200         400 0128d…
-#>  7 chr2:179415987-17941598… ENST… ENST00…   84158 TGGATT… 0,200,…     769 50119…
-#>  8 chr2:179415000-17941635… ENST… ENST00…   83789 TGGATT… 200         400 c5083…
-#>  9 chr2:179445336-17944620… ENST… ENST00…   59307 CGGGCT… 200         400 38759…
-#> 10 chr2:179446225-17944622… ENST… ENST00…   59288 TTATCT… 0,200,…    1289 c4f9e…
-#> 11 chr2:179445336-17944663… ENST… ENST00…   58982 TGGCTA… 200         400 4796f…
-#> 12 chr2:179642044-17964218… ENST… ENST00…    4828 TAGAAG… 200         400 a4759…
-#> 13 chr2:179642146-17964214… ENST… ENST00…    4868 TAGACC… 0,200,…     502 46a57…
-#> 14 chr2:179642044-17964243… ENST… ENST00…    4703 GTCTCC… 200         400 77c18…
-#> 15 chr2:152226533-15222653… ENST… ENST00…    3878 AAAACT… 0,76,3…    4078 b8f7a…
-#> 16 chr2:152222731-15222273… ENST… ENST00…      76 AAAACT… 0,76,3…    4078 b8f7a…
-#> 17 chr2:152388410-15238841… ENST… ENST00…   23165 AAGAAG… 0,200,…    1945 f1f2c…
-#> # … with abbreviated variable names ¹​tx_mod_id, ²​junc_pos_tx, ³​cts_junc_pos,
-#> #   ⁴​cts_size
+#>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
+#>    <chr>        <chr> <chr>           <int> <chr>   <chr>           <int> <chr> 
+#>  1 chr2:152389… ENST… ENST0000…       16412 AAGAAG… 200               400 90bfc…
+#>  2 chr2:152389… ENST… ENST0000…       16517 AAGAAG… 200               400 26f77…
+#>  3 chr2:152389… ENST… ENST0000…       21620 AAGAAG… 0,200,1745,…     1945 f1f2c…
+#>  4 chr2:152388… ENST… ENST0000…       16412 AAGAAG… 200               400 d4f9e…
+#>  5 chr2:152388… ENST… ENST0000…       16517 AAGAAG… 200               400 c715a…
+#>  6 chr2:179415… ENST… ENST0000…       83789 TGGATT… 200               400 0128d…
+#>  7 chr2:179415… ENST… ENST0000…       84158 TGGATT… 0,200,569,7…      769 50119…
+#>  8 chr2:179415… ENST… ENST0000…       83789 TGGATT… 200               400 c5083…
+#>  9 chr2:179445… ENST… ENST0000…       59307 CGGGCT… 200               400 38759…
+#> 10 chr2:179446… ENST… ENST0000…       59288 TTATCT… 0,200,1089,…     1289 c4f9e…
+#> 11 chr2:179445… ENST… ENST0000…       58982 TGGCTA… 200               400 4796f…
+#> 12 chr2:179642… ENST… ENST0000…        4828 TAGAAG… 200               400 a4759…
+#> 13 chr2:179642… ENST… ENST0000…        4868 TAGACC… 0,200,302,5…      502 46a57…
+#> 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC… 200               400 77c18…
+#> 15 chr2:152226… ENST… ENST0000…        3878 AAAACT… 0,76,3878,4…     4078 b8f7a…
+#> 16 chr2:152222… ENST… ENST0000…          76 AAAACT… 0,76,3878,4…     4078 b8f7a…
+#> 17 chr2:152388… ENST… ENST0000…       23165 AAGAAG… 0,200,1745,…     1945 f1f2c…
 ```
 
 ### 3.4 Annotate peptide sequence
@@ -249,27 +247,27 @@ junc_df <- junc_df %>%
 junc_df %>% 
   dplyr::select(junc_id, peptide_context, peptide_context_junc_pos, junc_in_orf, cds_description, truncated_cds)
 #> # A tibble: 17 × 6
-#>    junc_id                    peptide_context    pepti…¹ junc_…² cds_d…³ trunc…⁴
-#>    <chr>                      <chr>                <dbl> <lgl>   <chr>   <lgl>  
-#>  1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         13 TRUE    mutate… FALSE  
-#>  2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         13 TRUE    mutate… FALSE  
-#>  3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
-#>  4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYR…      13 TRUE    mutate… FALSE  
-#>  5 chr2:152388410-152390729:- <NA>                    NA TRUE    trunca… TRUE   
-#>  6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTP…      13 TRUE    mutate… FALSE  
-#>  7 chr2:179415987-179415988:- SDPSKFTLAVSPVGK         13 TRUE    mutate… FALSE  
-#>  8 chr2:179415000-179416357:- SDPSKFTLAVSPVVPPI…      13 TRUE    mutate… FALSE  
-#>  9 chr2:179445336-179446207:- DVPDKHYPKDILSKYYQ…      13 TRUE    mutate… FALSE  
-#> 10 chr2:179446225-179446226:- SDVPDKHYPKDILSKYY…      13 TRUE    mutate… FALSE  
-#> 11 chr2:179445336-179446633:- SDASKAAYARDPQFPPE…      13 TRUE    mutate… FALSE  
-#> 12 chr2:179642044-179642187:- SDSGEWTVVAQNRLWNIR      13 TRUE    mutate… FALSE  
-#> 13 chr2:179642146-179642147:- AGRSSISVILTVEGKMR       13 TRUE    mutate… FALSE  
-#> 14 chr2:179642044-179642431:- VGRPMPETFWFHDAVEH…      13 TRUE    mutate… FALSE  
-#> 15 chr2:152226533-152226534:+ <NA>                    NA NA      no wt … NA     
-#> 16 chr2:152222731-152222732:+ <NA>                    NA NA      no wt … NA     
-#> 17 chr2:152388410-152388411:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  
-#> # … with abbreviated variable names ¹​peptide_context_junc_pos, ²​junc_in_orf,
-#> #   ³​cds_description, ⁴​truncated_cds
+#>    junc_id    peptide_context peptide_context_junc…¹ junc_in_orf cds_description
+#>    <chr>      <chr>                            <dbl> <lgl>       <chr>          
+#>  1 chr2:1523… NRHFKYATQLMNEIC                     13 TRUE        mutated cds    
+#>  2 chr2:1523… HLLAKTAGDQISQIC                     13 TRUE        mutated cds    
+#>  3 chr2:1523… MLTALYNSHMWSQV…                     13 TRUE        mutated cds    
+#>  4 chr2:1523… NRHFKYATQLMNEI…                     13 TRUE        mutated cds    
+#>  5 chr2:1523… <NA>                                NA TRUE        truncated cds  
+#>  6 chr2:1794… SDPSKFTLAVSPVA…                     13 TRUE        mutated cds    
+#>  7 chr2:1794… SDPSKFTLAVSPVGK                     13 TRUE        mutated cds    
+#>  8 chr2:1794… SDPSKFTLAVSPVV…                     13 TRUE        mutated cds    
+#>  9 chr2:1794… DVPDKHYPKDILSK…                     13 TRUE        mutated cds    
+#> 10 chr2:1794… SDVPDKHYPKDILS…                     13 TRUE        mutated cds    
+#> 11 chr2:1794… SDASKAAYARDPQF…                     13 TRUE        mutated cds    
+#> 12 chr2:1796… SDSGEWTVVAQNRL…                     13 TRUE        mutated cds    
+#> 13 chr2:1796… AGRSSISVILTVEG…                     13 TRUE        mutated cds    
+#> 14 chr2:1796… VGRPMPETFWFHDA…                     13 TRUE        mutated cds    
+#> 15 chr2:1522… <NA>                                NA NA          no wt cds      
+#> 16 chr2:1522… <NA>                                NA NA          no wt cds      
+#> 17 chr2:1523… MLTALYNSHMWSQV…                     13 TRUE        mutated cds    
+#> # ℹ abbreviated name: ¹​peptide_context_junc_pos
+#> # ℹ 1 more variable: truncated_cds <lgl>
 ```
 
 ## 4 Dummy workflow
@@ -323,14 +321,14 @@ dat_leafcutter <-
 dat_spladder <-
   spladder_transform(path = "/your/path/to/spladder/results")
 dat_rna <-
-  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_spladder)
+  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_leafcutter)
 
 # import & transform SpliceAi results
 dat_spliceai <-
   parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
 dat_spliceai_annotated <-
-  annotate_mut_effect(var_df = dat_splicai_formatted,
+  annotate_mut_effect(effect_df = dat_splicai_formatted,
                       transcripts = transcripts,
                       transcripts_gr = transcripts_gr)
 
@@ -370,14 +368,17 @@ dat_for_requantification <- dat_mut %>%
   filter(!is_canonical)
 
 # add context sequences
-# a list of GRanges with the transcript needs to be added at the moment
-# this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
   add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = transcripts)
 
+# add peptide sequence
+dat_for_requantification_cts_peptide <-
+  dat_for_requantification_cts  %>%
+  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
+
 
 # transform to easyquant-format
-dat_easyquant <- dat_for_requantification_cts %>%
+dat_easyquant <- dat_for_requantification_cts_peptide %>%
   transform_for_requant()
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
@@ -385,25 +386,20 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # see Section 6 for more information on the requantifcation of splice junctions
 
 
-# add peptide sequence
-dat_for_requantification_cts_peptide <-
-  dat_for_requantification_cts  %>%
-  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
-
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
   map_requant(path_to_easyquant_folder = "/path/to/easyquant/output_folder",
               junc_tib = dat_for_requantification_cts_peptide)
 
 
-# EasyQuant results can be imported without direct merging with data
+# EasyQuant results can also be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
 
 # annotate if there is a exon of another transcript within a predicted intron retention
 dat_cts_peptide_requantification <- 
   dat_cts_peptide_requantification %>%
-  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
+  exon_in_intron( transcripts = transcripts))
 ```
 
 ### 4.1 Consider gene annotation in mutation tools
@@ -471,13 +467,13 @@ txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 Splice2neo enables the user to transform junctions into a format so that
 they can be quantified in RNA-seq data (`transform_for_requant`) using
-Easyquant (<https://github.com/TRON-Bioinformatics/easyquant>, v0.4.0)
-and to import results from this requantification (`map_requant` or
-`read_requant`). The user can add columns containing information on the
-read support for the given splice junction in this manner. The user may
-be interested in different columns depending on the type of splice
-event. Here, this are the most relevant columns for the different types
-of events:
+Easyquant (<https://github.com/TRON-Bioinformatics/easyquant>,
+\>=v0.4.0) and to import results from this requantification
+(`map_requant` or `read_requant`). The user can add columns containing
+information on the read support for the given splice junction in this
+manner. The user may be interested in different columns depending on the
+type of splice event. Here, this are the most relevant columns for the
+different types of events:
 
 **Alternative splice sites & exon skipping events**:  
 - *junc_interval_start*: Junction reads that map on the splice junction

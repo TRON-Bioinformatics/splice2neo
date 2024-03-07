@@ -243,7 +243,7 @@ junc_df
 ```
 
 
-The `add_tx` function annotates all possible transcripts that overlap with the splice junctions which can lead to large data sets containing of many highly unlikely junction transcript combinations.  
+The `add_tx` function annotates all possible transcripts that overlap with the splice junctions which can lead to large data sets containing many highly unlikely junction transcript combinations.  
 We can select a subset of transcripts per junction that are more likely to be affected by a junction with `choose_tx()`. Please note that this function may loose relevant or keep irrelevant junction-transcripts in particular in regions with mutliple isoforms with distinct splicing pattern.
 
 
@@ -341,14 +341,14 @@ dat_leafcutter <-
 dat_spladder <-
   spladder_transform(path = "/your/path/to/spladder/results")
 dat_rna <-
-  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_spladder)
+  generate_combined_dataset(spladder_juncs = dat_spladder, leafcutter_juncs = dat_leafcutter)
 
 # import & transform SpliceAi results
 dat_spliceai <-
   parse_spliceai(vcf_file = "path/to/spliceai/file.vcf")
 dat_splicai_formatted <- format_spliceai(dat_spliceai)
 dat_spliceai_annotated <-
-  annotate_mut_effect(var_df = dat_splicai_formatted,
+  annotate_mut_effect(effect_df = dat_splicai_formatted,
                       transcripts = transcripts,
                       transcripts_gr = transcripts_gr)
 
@@ -388,14 +388,17 @@ dat_for_requantification <- dat_mut %>%
   filter(!is_canonical)
 
 # add context sequences
-# a list of GRanges with the transcript needs to be added at the moment
-# this will be done within add_context_seq in a future version
 dat_for_requantification_cts <- dat_for_requantification %>%
   add_context_seq(size = 400, bsg = BSgenome.Hsapiens.UCSC.hg19, transcripts = transcripts)
 
+# add peptide sequence
+dat_for_requantification_cts_peptide <-
+  dat_for_requantification_cts  %>%
+  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
+
 
 # transform to easyquant-format
-dat_easyquant <- dat_for_requantification_cts %>%
+dat_easyquant <- dat_for_requantification_cts_peptide %>%
   transform_for_requant()
 write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # DO RE-QUANTIFICATION WITH EASYQUANT
@@ -403,25 +406,20 @@ write_delim(dat_easyquant, "path/to/easyquant/input/file.txt", delim = "\t")
 # see Section 6 for more information on the requantifcation of splice junctions
 
 
-# add peptide sequence
-dat_for_requantification_cts_peptide <-
-  dat_for_requantification_cts  %>%
-  add_peptide(flanking_size = 13, bsg = BSgenome.Hsapiens.UCSC.hg19, cds = cds)
-
 # merge EasyQuant results with data
 dat_cts_peptide_requantification <-
   map_requant(path_to_easyquant_folder = "/path/to/easyquant/output_folder",
               junc_tib = dat_for_requantification_cts_peptide)
 
 
-# EasyQuant results can be imported without direct merging with data
+# EasyQuant results can also be imported without direct merging with data
 dat_requant <-
   read_requant(path_folder = "/path/to/easyquant/output_folder")
 
 # annotate if there is a exon of another transcript within a predicted intron retention
 dat_cts_peptide_requantification <- 
   dat_cts_peptide_requantification %>%
-  mutate(exon_free = exon_in_intron(junc_id = junc_id, tx_id = tx_id, transcripts = transcripts))
+  exon_in_intron( transcripts = transcripts))
 
 
 ```
@@ -488,7 +486,7 @@ txdb <- loadDb("/path/to/transripts/txdb.sqlite")
 
 ## 6 Requantification with Easyquant  
 
-Splice2neo enables the user to transform junctions into a format so that they can be quantified in RNA-seq data (`transform_for_requant`) using Easyquant (https://github.com/TRON-Bioinformatics/easyquant, v0.4.0) and to import results from this requantification (`map_requant` or `read_requant`). The user can add columns containing information on the read support for the given splice junction in this manner. The user may be interested in different columns depending on the type of splice event. Here, this are the most relevant columns for the different types of events:   
+Splice2neo enables the user to transform junctions into a format so that they can be quantified in RNA-seq data (`transform_for_requant`) using Easyquant (https://github.com/TRON-Bioinformatics/easyquant, >=v0.4.0) and to import results from this requantification (`map_requant` or `read_requant`). The user can add columns containing information on the read support for the given splice junction in this manner. The user may be interested in different columns depending on the type of splice event. Here, this are the most relevant columns for the different types of events:   
 
 **Alternative splice sites & exon skipping events**:   
  - *junc_interval_start*: Junction reads that map on the splice junction of interest  
