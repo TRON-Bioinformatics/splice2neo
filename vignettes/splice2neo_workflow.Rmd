@@ -422,7 +422,8 @@ head(requantification_results)
 
 ### Prediction of mutation-assoicated splice targets  
 
-The upstream analysis identified mutation-retrieved splice junctions supported by RNA-seq. We have developed a stringent detection rule to predict tumor-specific targets from mutation-associated splice targets based on the mutation effect and the RNA-seq support (for further information please check our pre-print: https://doi.org/10.1101/2023.06.27.546494). Currently, we suggest to focus on events from alternative splice sites and exon skipping. 
+The upstream analysis identified mutation-retrieved splice junctions supported by RNA-seq. We have developed a stringent detection rule to predict tumor-specific targets from mutation-associated splice targets based on the mutation effect and the RNA-seq support (for further information please check our pre-print: https://doi.org/10.1101/2023.06.27.546494). Currently, we suggest to focus on events from alternative splice sites and exon skipping and define such splice junctions as targets that have a |splice effect score| >= 0.35 and are found by LeafCutter/SplAdder or have at least 3 junction reads.  
+
 
 ```{r}
 # exclude intron retention
@@ -434,15 +435,27 @@ potential_targets %>%
 
 ```
 
+
+
 ```{r}
 # apply detection rule 
 targets <- potential_targets %>% 
-  
-
-potential_targets %>% 
-  select(junc_id, tx_id, spliceai_score, mmsplice_delta_logit_psi, is_in_rnaseq, junc_interval_start)
+  filter(spliceai_score >= 0.35 | mmsplice_delta_logit_psi < -0.35) %>% 
+  filter(is_in_rnaseq | junc_interval_start >= 3)
 
 ```
+
+Please note that `targets` can contain several altered transcripts per junctions which may lead to several neoantigen candidate sequences per target splice junction. 
+
+```{r}
+# apply detection rule 
+targets %>% 
+  distinct(junc_id, peptide_context) %>% 
+  count(junc_id, name = "# neoantigen candidates") %>% 
+  arrange(-`# neoantigen candidates`)
+
+```
+
 
 
 ## Other Splice2neo functions 
