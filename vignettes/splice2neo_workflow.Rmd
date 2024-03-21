@@ -78,6 +78,39 @@ cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 
 
 
+### Canonical junctions
+
+We can retrieve the canonical splice junctions between all adjacent exons from a list of transcripts with `canonical_junctions()`. Here,  we use only the first ten transcripts.
+
+```{r}
+ref_junc <- canonical_junctions(transcripts[1:10])
+
+str(ref_junc)
+
+```
+
+### Splice junciton id
+
+In splice2neo, splice junctions are represented by a `junc_id`, which is defined by the genomic coordinates of the exon positions (1-based) that are combined through the junction and the transcription strand of the transcript: `chr:pos1-pos2:strand`.
+
+This format allows direct conversion to `GRangs` objects from the [GenomicRanges](https://bioconductor.org/packages/GenomicRanges) package.
+
+```{r}
+gr <- GenomicRanges::GRanges(ref_junc)
+
+gr
+```
+
+A given GRanges object with ranges of splice junctions can be converted into a vector of `junc_id``s:
+
+```{r}
+junc_id <- as.character(gr)
+
+head(junc_id)
+```
+
+
+
 ### Annotation of RNA-seq derived splice junctions 
 
 Splice2neo transforms splice events identified in RNA-seq into a standardized junction format. We show here how to parse the tools LeafCutter and SplAdder. 
