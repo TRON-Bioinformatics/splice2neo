@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 ## Introduction 
 
 The R package splice2neo provides multiple functions for the analysis of splice junctions. The main focus is on the association of splice junctions with somatic mutations. The package integrates the output of several tools that predict splicing effects from mutations. It annotates these mutation effects with the resulting splicing event (alternative 3’/5’ splice sites, exons skipping, intron retentions) and the resulting splice junctions in a standardized format. Expressed splice junctions detected by external tools from RNA-seq data can be parsed and integrated. Splice junctions can be filtered against canonical splice junctions and annotated with the altered transcript sequences, CDS, and resulting peptide sequences. 
-Splice2neo was mainly developed to support the detection of neoantigen candidates from tumor-specific splice junctions. Neoantigens are tumor-specific mutated peptides recognized by T-cells and utilized in immunotherapies against tumors [@lang_identification_2022]. However, most functions from the splice2neo package are useful for other types of splicing analysis. 
+Splice2neo was mainly developed to support the detection of neoantigen candidates from tumor-specific splice junctions. Neoantigens are tumor-specific mutated peptides recognized by T-cells and utilized in immunotherapies against tumors [@lang_identification_2022]. However, most functions from the splice2neo package are also useful for other types of splicing analysis. 
 
 In this vignette, we use use some toy example data to demonstrate how splice2neo can be used to analyze splice-junctions which are derived from mutation predictions as tumor-specific neoantigen candidates [@lang_prediction_2023]. 
 
@@ -120,7 +120,7 @@ Splice2neo transforms splice events identified in RNA-seq into a standardized ju
 
 #### LeafCutter 
 
-The output of the tool [LeafCutter](https://github.com/davidaknowles/leafcutter)[@li_annotation-free_2018] can be transformed using `leafcutter_transform()`: 
+The output of the tool [LeafCutter](https://github.com/davidaknowles/leafcutter) [@li_annotation-free_2018] can be transformed using `leafcutter_transform()`: 
 
 ```{r}
 leafcutter_path <- system.file("extdata/example/leafcutter", package="splice2neo")
@@ -135,7 +135,7 @@ head(leafcutter)
 
 #### SplAdder
 
-The output of the tool [SplAdder](https://github.com/ratschlab/spladder)[@kahles_spladder_2016] can be transformed using `spladder_transform()`: 
+The output of the tool [SplAdder](https://github.com/ratschlab/spladder) [@kahles_spladder_2016] can be transformed using `spladder_transform()`: 
 
 ```{r}
 spladder_path <- system.file("extdata/example/spladder", package="splice2neo")
@@ -233,7 +233,7 @@ nrow(spliceai_annotated_unique) < nrow(spliceai_annotated)
 
 #### MMSplice
 
-We can read the effect predictions by MMSplice with `parse_spliceai()`
+We can read the effect predictions by MMSplice with `parse_mmsplice()`
 
 ```{r}
 mmsplice_file <- system.file("extdata/example/MMsplice.csv", package="splice2neo")
@@ -385,8 +385,8 @@ noncan_mut_junctions <-
 
 #### Re-quantification of altered transcripts with EasyQuant
 
-Altered transcript from predicted splice junctions can be re-quantified in RNA-seq in a targeted manner with EasyQuant (available at  [https://github.com/TRON-Bioinformatics/easyquant](https://github.com/TRON-Bioinformatics/easyquant)). EasyQuant mapps all RNA-seq reads to to a custom reference build from the context sequence around splice junctions. We can generate the input for EasyQuant using the splice2neo function `transform_for_requant()`.  
-EasyQuant should be run in interval mode for the re-quantification of splice junction and it is advised to set the `BP_distannce` parameter to 10 (see[EasyQuant README](https://github.com/TRON-Bioinformatics/easyquant)). 
+Altered transcript from predicted splice junctions can be re-quantified in RNA-seq in a targeted manner with EasyQuant (available at  [https://github.com/TRON-Bioinformatics/easyquant](https://github.com/TRON-Bioinformatics/easyquant)). EasyQuant maps all RNA-seq reads to to a custom reference build from the context sequence around splice junctions. We can generate the input for EasyQuant using the splice2neo function `transform_for_requant()`.  
+EasyQuant should be run in interval mode for the re-quantification of splice junction and it is advised to set the `BP_distannce` parameter to 10 (see [EasyQuant README](https://github.com/TRON-Bioinformatics/easyquant)). 
 
 ```{r}
 # transform for EasyQuant
