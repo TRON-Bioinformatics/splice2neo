@@ -1,7 +1,8 @@
 # splice2neo 0.6.6
 
-* add vignette
+* add vignette with example workflow
 * fix parsing of pangolin results
+* simplify README
 
 # splice2neo 0.6.5
 
