@@ -1,3 +1,7 @@
+# splice2neo 0.6.7
+
+* add vignette
+
 # splice2neo 0.6.5
 
 * Fixed bug while parsing VCF files containing only a single variant
