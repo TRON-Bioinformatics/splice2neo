@@ -1,6 +1,7 @@
-# splice2neo 0.6.7
+# splice2neo 0.6.6
 
 * add vignette
+* fix parsing of pangolin results
 
 # splice2neo 0.6.5
 
