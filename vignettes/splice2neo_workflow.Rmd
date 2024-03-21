@@ -7,6 +7,7 @@ vignette: >
   %\VignetteIndexEntry{Splice2neo example analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: splice2neo_vignette.bib
 ---
 
 ```{r, include = FALSE}
@@ -20,9 +21,9 @@ knitr::opts_chunk$set(
 ## Introduction 
 
 The R package splice2neo provides multiple functions for the analysis of splice junctions. The main focus is on the association of splice junctions with somatic mutations. The package integrates the output of several tools that predict splicing effects from mutations. It annotates these mutation effects with the resulting splicing event (alternative 3’/5’ splice sites, exons skipping, intron retentions) and the resulting splice junctions in a standardized format. Expressed splice junctions detected by external tools from RNA-seq data can be parsed and integrated. Splice junctions can be filtered against canonical splice junctions and annotated with the altered transcript sequences, CDS, and resulting peptide sequences. 
-Splice2neo was mainly developed to support the detection of neoantigen candidates from tumor-specific splice junctions. Neoantigens are tumor-specific mutated peptides recognized by T-cells and utilized in immunotherapies against tumors. However, most functions from the splice2neo package are useful for other types of splicing analysis. 
+Splice2neo was mainly developed to support the detection of neoantigen candidates from tumor-specific splice junctions. Neoantigens are tumor-specific mutated peptides recognized by T-cells and utilized in immunotherapies against tumors [@lang_identification_2022]. However, most functions from the splice2neo package are useful for other types of splicing analysis. 
 
-In this vignette, we use use some toy example data to demonstrate how splice2neo can be used to analyze splice-junctions which are derived from mutation predictions as tumor-specific neoantigen candidates. 
+In this vignette, we use use some toy example data to demonstrate how splice2neo can be used to analyze splice-junctions which are derived from mutation predictions as tumor-specific neoantigen candidates [@lang_prediction_2023]. 
 
 ## Installation
 
@@ -119,7 +120,7 @@ Splice2neo transforms splice events identified in RNA-seq into a standardized ju
 
 #### LeafCutter 
 
-The output of the tool [LeafCutter](https://github.com/davidaknowles/leafcutter) can be transformed using `leafcutter_transform()`: 
+The output of the tool [LeafCutter](https://github.com/davidaknowles/leafcutter)[@li_annotation-free_2018] can be transformed using `leafcutter_transform()`: 
 
 ```{r}
 leafcutter_path <- system.file("extdata/example/leafcutter", package="splice2neo")
@@ -134,7 +135,7 @@ head(leafcutter)
 
 #### SplAdder
 
-The output of the tool [SplAdder](https://github.com/ratschlab/spladder) can be transformed using `spladder_transform()`: 
+The output of the tool [SplAdder](https://github.com/ratschlab/spladder)[@kahles_spladder_2016] can be transformed using `spladder_transform()`: 
 
 ```{r}
 spladder_path <- system.file("extdata/example/spladder", package="splice2neo")
@@ -162,7 +163,7 @@ head(rna_junctions)
 ### Annotation of mutation effect on splicing
 
 Deep learning tools can predict the effect of a mutation on the disruption or creation of canonical splicing sequence motifs. This is typically provided as gain or loss of splicing acceptor or donor sites. Splice2neo can transform and annotate such mutation effects into a unified splice junction format. 
-Currently, the transformation of predictions by [SpliceAI](https://github.com/Illumina/SpliceAI), [MMSplice](https://github.com/gagneurlab/MMSplice_MTSplice) and [Pangolin](https://github.com/tkzeng/Pangolin) are supported.  
+Currently, the transformation of predictions by [SpliceAI](https://github.com/Illumina/SpliceAI) [@jaganathan_predicting_2019], [MMSplice](https://github.com/gagneurlab/MMSplice_MTSplice)[@cheng_mmsplice_2019] and [Pangolin](https://github.com/tkzeng/Pangolin)[@zeng_predicting_2022] are supported.  
 Here, we show how to annotate results from SpliceAI and MMSplice. The annotation of Pangolin results works analogously with SpliceAI.
 
 #### SpliceAI
@@ -459,7 +460,7 @@ head(requantification_results)
 
 ### Prediction of mutation-assoicated splice targets  
 
-In the analysis described above we identified mutation-retrieved splice junctions supported by RNA-seq. We have developed a stringent detection rule to predict tumor-specific targets from mutation-associated splice targets based on the mutation effect and the RNA-seq support (See manuscript: https://doi.org/10.1101/2023.06.27.546494). Currently, we suggest to focus on events from alternative splice sites and exon skipping and define such splice junctions as targets that have a |splice effect score| $\geq$ 0.35 and are found by LeafCutter/SplAdder or have at least 3 junction reads.  
+In the analysis described above we identified mutation-retrieved splice junctions supported by RNA-seq. We have developed a stringent detection rule to predict tumor-specific targets from mutation-associated splice targets based on the mutation effect and the RNA-seq support (See @lang_prediction_2023). Currently, we suggest to focus on events from alternative splice sites and exon skipping and define such splice junctions as targets that have a |splice effect score| $\geq$ 0.35 and are found by LeafCutter/SplAdder or have at least 3 junction reads.  
 
 
 ```{r}
@@ -529,6 +530,11 @@ selected_junc_df <- junc_df %>%
 
 selected_junc_df
 ```
+
+
+## References
+
+<div id="refs"></div>
 
 ## Session info
 
