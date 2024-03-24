@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.6</span>
       </span>
     </div>
 
@@ -46,6 +46,18 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/splice2neo_workflow.html">Splice2neo example analysis</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="news/index.html">Changelog</a>
@@ -75,90 +87,27 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><a href="#id_#1-Overview">1. Overview</a><br><a href="#id_#2-Installation">2. Installation</a><br><a href="#id_#3-Example">3. Example</a><br><a href="#id_#4-Dummy-workflow">4. Dummy workflow</a><br><a href="#id_#5-Building-the-transcript%20database">5. Building the transcript database</a><br><a href="#id_#6-Requantification-with-Easyquant">6. Requantification with Easyquant</a></p>
 <div class="section level2">
-<h2 id="id_1-overview">1 Overview<a class="anchor" aria-label="anchor" href="#id_1-overview"></a>
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>This package provides functions for the analysis of splice junctions and their association with somatic mutations. It integrates the output of several tools which predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Detected splice junctions can be filtered against canonical splice junctsion and annotated with affected transcript sequences, CDS, and resulting peptide sequences. Splice2neo currently supports splice events from alternative 3’/5’ splice sites, exons skipping, intron retentions, exitrons and mutually exclusive exons.<br>
 Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions which are tumor-specific and can encode neoantigen candidates.</p>
-<p>Website: <a href="https://tron-bioinformatics.github.io/splice2neo/" class="uri">https://tron-bioinformatics.github.io/splice2neo/</a></p>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="55%"></p>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="55%"></p>
-<div class="section level3">
-<h3 id="id_11-splice-junction-format">1.1 Splice junction format<a class="anchor" aria-label="anchor" href="#id_11-splice-junction-format"></a>
-</h3>
-<p>In general, a splice junction is defined by the format: <code>chr:start-end:strand</code> .<br>
-Intron retentions are a special case. Here, the junctions is defined by the exon-intron or intron-exon boundary, following the format <code>chr:pos-(pos+1):strand</code>.<br>
-Two junctions relating to the same intron retention event event will generate the same transcript and peptide context sequence.</p>
-</div>
-<div class="section level3">
-<h3 id="id_12-building-splice-junctions">1.2 Building splice junctions<a class="anchor" aria-label="anchor" href="#id_12-building-splice-junctions"></a>
-</h3>
-<p>The table below describes the rules on how the left and right coordinate of the splice junction (“chr:start-end:strand“) are determined based on the predicted effect from SpliceAI and Pangolin. Pos refers to the position that is predicted to be affected by the mutation. Upstream_end and downstream_start refer to exon end or start coordinates. Splice junctions that relate to an intron retention event are defined by the rule <code>chr:pos-(pos+1):strand</code> and must cover an exon-intron boundary. The strand_offset is +1 for transcript on the positive strand and -1 otherwise.</p>
-<table class="table">
-<colgroup>
-<col width="19%">
-<col width="25%">
-<col width="27%">
-<col width="27%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">effect</th>
-<th align="left">event_type</th>
-<th align="left">rule_left</th>
-<th align="left">rule_right</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">Donor loss</td>
-<td align="left">intron retention</td>
-<td align="left">pos</td>
-<td align="left">pos + strand_offset</td>
-</tr>
-<tr class="even">
-<td align="left">Donor loss</td>
-<td align="left">exon skipping</td>
-<td align="left">upstream_end</td>
-<td align="left">downstream_start</td>
-</tr>
-<tr class="odd">
-<td align="left">Donor gain</td>
-<td align="left">alternative 5prim</td>
-<td align="left">pos</td>
-<td align="left">downstream_start</td>
-</tr>
-<tr class="even">
-<td align="left">Acceptor loss</td>
-<td align="left">intron retention</td>
-<td align="left">pos - strand_offset</td>
-<td align="left">pos</td>
-</tr>
-<tr class="odd">
-<td align="left">Acceptor loss</td>
-<td align="left">exon skipping</td>
-<td align="left">upstream_end</td>
-<td align="left">downstream_start</td>
-</tr>
-<tr class="even">
-<td align="left">Acceptor gain</td>
-<td align="left">alternative 3prim</td>
-<td align="left">upstream_end</td>
-<td align="left">pos</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>Documentation: <a href="https://tron-bioinformatics.github.io/splice2neo/" class="uri">https://tron-bioinformatics.github.io/splice2neo/</a></p>
+<p>For a more detailed description and a full example workflow see the <a href="https://tron-bioinformatics.github.io/splice2neo/articles/splice2neo_workflow.html">vignette</a></p>
 </div>
 <div class="section level2">
-<h2 id="id_2-installation">2 Installation<a class="anchor" aria-label="anchor" href="#id_2-installation"></a>
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>This R package is not yet on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> or <a href="https://www.bioconductor.org/" class="external-link">Bioconductor</a>. Therefore, you need to install it from this repository.</p>
+<p>The R package splice2neo is not yet on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> or <a href="https://www.bioconductor.org/" class="external-link">Bioconductor</a>. Therefore, you need to install splice2neo from <a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">github</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## install.packages("remotes")</span></span>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"TRON-Bioinformatics/splice2neo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="id_3-example">3 Example<a class="anchor" aria-label="anchor" href="#id_3-example"></a>
+<h2 id="example-usage">Example usage<a class="anchor" aria-label="anchor" href="#example-usage"></a>
 </h2>
 <p>This is a basic example of how to use some functions.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -168,7 +117,7 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">bsg</span> <span class="op">&lt;-</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span></span></code></pre></div>
 <div class="section level3">
-<h3 id="id_31-example-data">3.1 Example data<a class="anchor" aria-label="anchor" href="#id_31-example-data"></a>
+<h3 id="id_1-example-data">1 Example data<a class="anchor" aria-label="anchor" href="#id_1-example-data"></a>
 </h3>
 <p>We start with some example splice junctions provided with the package.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -185,331 +134,89 @@ Two junctions relating to the same intron retention event event will generate th
 <span><span class="co">#&gt; 3 chr2:179446225-179446226:-</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_32-add-transcripts">3.2 Add transcripts<a class="anchor" aria-label="anchor" href="#id_32-add-transcripts"></a>
+<h3 id="id_2-add-transcripts">2 Add transcripts<a class="anchor" aria-label="anchor" href="#id_2-add-transcripts"></a>
 </h3>
 <p>Next, we find the transcripts which are in the same genomic region as the splice junction and that may be affected by the junction.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/add_tx.html">add_tx</a></span><span class="op">(</span><span class="va">toy_transcripts</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">junc_df</span></span>
-<span><span class="co">#&gt; # A tibble: 21 × 3</span></span>
-<span><span class="co">#&gt;    junc_id                    tx_id           tx_lst      </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt;</span></span>
-<span><span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  2 chr2:152389996-152392205:- ENST00000172853 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  3 chr2:152389996-152392205:- ENST00000397345 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  4 chr2:152389996-152392205:- ENST00000427231 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  5 chr2:152389996-152392205:- ENST00000618972 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  6 chr2:152389996-152392205:- ENST00000413693 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  7 chr2:152389996-152392205:- ENST00000603639 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  8 chr2:152389996-152392205:- ENST00000604864 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt;  9 chr2:152389996-152392205:- ENST00000420924 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt; 10 chr2:179415981-179416357:- ENST00000342992 &lt;GRanges&gt;   </span></span>
-<span><span class="co">#&gt; # … with 11 more rows</span></span></code></pre></div>
-<p>The <code>add_tx</code> function annotates all possible transcripts that overlap with the splice junctions which can lead to large data sets containing of many highly unlikely junction transcript combinations.<br>
-We can select a subset of transcripts per junction that are more likely to be affected by a junction with <code><a href="reference/choose_tx.html">choose_tx()</a></code>. Please note that this function may loose relevant or keep irrelevant junction-transcripts in particular in regions with mutliple isoforms with distinct splicing pattern.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">selected_junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/choose_tx.html">choose_tx</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">selected_junc_df</span></span>
-<span><span class="co">#&gt; # A tibble: 21 × 4</span></span>
-<span><span class="co">#&gt;    junc_id                    tx_id           tx_lst       putative_event_type</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt; &lt;chr&gt;              </span></span>
-<span><span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  2 chr2:152389996-152392205:- ENST00000172853 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  3 chr2:152389996-152392205:- ENST00000397345 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  4 chr2:152389996-152392205:- ENST00000427231 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  5 chr2:152389996-152392205:- ENST00000618972 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  6 chr2:152389996-152392205:- ENST00000413693 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  7 chr2:152389996-152392205:- ENST00000603639 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  8 chr2:152389996-152392205:- ENST00000604864 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt;  9 chr2:152389996-152392205:- ENST00000420924 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt; 10 chr2:179415981-179416357:- ENST00000342992 &lt;GRanges&gt;    ASS                </span></span>
-<span><span class="co">#&gt; # … with 11 more rows</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/add_tx.html">add_tx</a></span><span class="op">(</span><span class="va">toy_transcripts</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   junc_id                    tx_id           tx_lst      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                      &lt;chr&gt;           &lt;named list&gt;</span></span>
+<span><span class="co">#&gt; 1 chr2:152389996-152392205:- ENST00000409198 &lt;GRanges&gt;   </span></span>
+<span><span class="co">#&gt; 2 chr2:152389996-152392205:- ENST00000172853 &lt;GRanges&gt;   </span></span>
+<span><span class="co">#&gt; 3 chr2:152389996-152392205:- ENST00000397345 &lt;GRanges&gt;   </span></span>
+<span><span class="co">#&gt; 4 chr2:152389996-152392205:- ENST00000427231 &lt;GRanges&gt;   </span></span>
+<span><span class="co">#&gt; 5 chr2:152389996-152392205:- ENST00000618972 &lt;GRanges&gt;   </span></span>
+<span><span class="co">#&gt; 6 chr2:152389996-152392205:- ENST00000413693 &lt;GRanges&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_33-modify-transcripts-with-junctions">3.3 Modify transcripts with junctions<a class="anchor" aria-label="anchor" href="#id_33-modify-transcripts-with-junctions"></a>
+<h3 id="id_3-modify-transcripts-with-junctions">3 Modify transcripts with junctions<a class="anchor" aria-label="anchor" href="#id_3-modify-transcripts-with-junctions"></a>
 </h3>
 <p>We modify the canonical transcripts by introducing the splice junctions. Then we add the transcript sequence in a fixed-sized window around the junction positions, the context sequence.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   junc_id                    tx_id          </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                      &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 chr2:152389996-152392205:- ENST00000409198</span></span>
+<span><span class="co">#&gt; 2 chr2:152389996-152390729:- ENST00000409198</span></span>
+<span><span class="co">#&gt; 3 chr2:152389955-152389956:- ENST00000397345</span></span>
+<span><span class="co">#&gt; 4 chr2:152388410-152392205:- ENST00000409198</span></span>
+<span><span class="co">#&gt; 5 chr2:152388410-152390729:- ENST00000409198</span></span>
+<span><span class="co">#&gt; 6 chr2:179415981-179416357:- ENST00000342992</span></span>
+<span></span>
+<span></span>
+<span><span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>transcripts <span class="op">=</span> <span class="va">toy_transcripts</span>, size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 8</span></span>
+<span><span class="co">#&gt;   junc_id       tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 chr2:1523899… ENST… ENST0000…       16412 AAGAAG… 200               400 90bfc…</span></span>
+<span><span class="co">#&gt; 2 chr2:1523899… ENST… ENST0000…       16517 AAGAAG… 200               400 26f77…</span></span>
+<span><span class="co">#&gt; 3 chr2:1523899… ENST… ENST0000…       21620 AAGAAG… 0,200,1745,…     1945 f1f2c…</span></span>
+<span><span class="co">#&gt; 4 chr2:1523884… ENST… ENST0000…       16412 AAGAAG… 200               400 d4f9e…</span></span>
+<span><span class="co">#&gt; 5 chr2:1523884… ENST… ENST0000…       16517 AAGAAG… 200               400 c715a…</span></span>
+<span><span class="co">#&gt; 6 chr2:1794159… ENST… ENST0000…       83789 TGGATT… 200               400 0128d…</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="id_4-annotate-peptide-sequence">4 Annotate peptide sequence<a class="anchor" aria-label="anchor" href="#id_4-annotate-peptide-sequence"></a>
+</h3>
+<p>Here, we use the splice junctions to modify the coding sequences (CDS) of the reference transcripts. The resulting CDS sequences are translated into protein sequence and further annotated with the peptide around the junction, the relative position of the splice junction in the peptide, and the location of the junction in an open reading frame (ORF).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">toy_junc_df</span></span>
-<span><span class="co">#&gt; # A tibble: 17 × 2</span></span>
-<span><span class="co">#&gt;    junc_id                    tx_id          </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;          </span></span>
-<span><span class="co">#&gt;  1 chr2:152389996-152392205:- ENST00000409198</span></span>
-<span><span class="co">#&gt;  2 chr2:152389996-152390729:- ENST00000409198</span></span>
-<span><span class="co">#&gt;  3 chr2:152389955-152389956:- ENST00000397345</span></span>
-<span><span class="co">#&gt;  4 chr2:152388410-152392205:- ENST00000409198</span></span>
-<span><span class="co">#&gt;  5 chr2:152388410-152390729:- ENST00000409198</span></span>
-<span><span class="co">#&gt;  6 chr2:179415981-179416357:- ENST00000342992</span></span>
-<span><span class="co">#&gt;  7 chr2:179415987-179415988:- ENST00000342992</span></span>
-<span><span class="co">#&gt;  8 chr2:179415000-179416357:- ENST00000342992</span></span>
-<span><span class="co">#&gt;  9 chr2:179445336-179446207:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 10 chr2:179446225-179446226:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 11 chr2:179445336-179446633:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 12 chr2:179642044-179642187:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 13 chr2:179642146-179642147:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 14 chr2:179642044-179642431:- ENST00000342992</span></span>
-<span><span class="co">#&gt; 15 chr2:152226533-152226534:+ ENST00000460812</span></span>
-<span><span class="co">#&gt; 16 chr2:152222731-152222732:+ ENST00000460812</span></span>
-<span><span class="co">#&gt; 17 chr2:152388410-152388411:- ENST00000397345</span></span>
-<span></span>
-<span></span>
-<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>transcripts <span class="op">=</span> <span class="va">toy_transcripts</span>, size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="va">junc_df</span></span>
-<span><span class="co">#&gt; # A tibble: 17 × 8</span></span>
-<span><span class="co">#&gt;    junc_id                  tx_id tx_mo…¹ junc_…² cts_seq cts_j…³ cts_s…⁴ cts_id</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                    &lt;chr&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt; &lt;chr&gt; </span></span>
-<span><span class="co">#&gt;  1 chr2:152389996-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 90bfc…</span></span>
-<span><span class="co">#&gt;  2 chr2:152389996-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 26f77…</span></span>
-<span><span class="co">#&gt;  3 chr2:152389955-15238995… ENST… ENST00…   21620 AAGAAG… 0,200,…    1945 f1f2c…</span></span>
-<span><span class="co">#&gt;  4 chr2:152388410-15239220… ENST… ENST00…   16412 AAGAAG… 200         400 d4f9e…</span></span>
-<span><span class="co">#&gt;  5 chr2:152388410-15239072… ENST… ENST00…   16517 AAGAAG… 200         400 c715a…</span></span>
-<span><span class="co">#&gt;  6 chr2:179415981-17941635… ENST… ENST00…   83789 TGGATT… 200         400 0128d…</span></span>
-<span><span class="co">#&gt;  7 chr2:179415987-17941598… ENST… ENST00…   84158 TGGATT… 0,200,…     769 50119…</span></span>
-<span><span class="co">#&gt;  8 chr2:179415000-17941635… ENST… ENST00…   83789 TGGATT… 200         400 c5083…</span></span>
-<span><span class="co">#&gt;  9 chr2:179445336-17944620… ENST… ENST00…   59307 CGGGCT… 200         400 38759…</span></span>
-<span><span class="co">#&gt; 10 chr2:179446225-17944622… ENST… ENST00…   59288 TTATCT… 0,200,…    1289 c4f9e…</span></span>
-<span><span class="co">#&gt; 11 chr2:179445336-17944663… ENST… ENST00…   58982 TGGCTA… 200         400 4796f…</span></span>
-<span><span class="co">#&gt; 12 chr2:179642044-17964218… ENST… ENST00…    4828 TAGAAG… 200         400 a4759…</span></span>
-<span><span class="co">#&gt; 13 chr2:179642146-17964214… ENST… ENST00…    4868 TAGACC… 0,200,…     502 46a57…</span></span>
-<span><span class="co">#&gt; 14 chr2:179642044-17964243… ENST… ENST00…    4703 GTCTCC… 200         400 77c18…</span></span>
-<span><span class="co">#&gt; 15 chr2:152226533-15222653… ENST… ENST00…    3878 AAAACT… 0,76,3…    4078 b8f7a…</span></span>
-<span><span class="co">#&gt; 16 chr2:152222731-15222273… ENST… ENST00…      76 AAAACT… 0,76,3…    4078 b8f7a…</span></span>
-<span><span class="co">#&gt; 17 chr2:152388410-15238841… ENST… ENST00…   23165 AAGAAG… 0,200,…    1945 f1f2c…</span></span>
-<span><span class="co">#&gt; # … with abbreviated variable names ¹​tx_mod_id, ²​junc_pos_tx, ³​cts_junc_pos,</span></span>
-<span><span class="co">#&gt; #   ⁴​cts_size</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="id_34-annotate-peptide-sequence">3.4 Annotate peptide sequence<a class="anchor" aria-label="anchor" href="#id_34-annotate-peptide-sequence"></a>
-</h3>
-<p>Finally, we use the splice junctions to modify the coding sequences (CDS) of the reference transcripts. The resulting CDS sequences are translated into protein sequence and further annotated with the peptide around the junction, the relative position of the splice junction in the peptide, and the location of the junction in an open reading frame (ORF).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>cds<span class="op">=</span><span class="va">toy_cds</span>, flanking_size <span class="op">=</span> <span class="fl">13</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">peptide_context</span>, <span class="va">peptide_context_junc_pos</span>, <span class="va">junc_in_orf</span>, <span class="va">cds_description</span>, <span class="va">truncated_cds</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 17 × 6</span></span>
-<span><span class="co">#&gt;    junc_id                    peptide_context    pepti…¹ junc_…² cds_d…³ trunc…⁴</span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;                      &lt;chr&gt;                &lt;dbl&gt; &lt;lgl&gt;   &lt;chr&gt;   &lt;lgl&gt;  </span></span>
-<span><span class="co">#&gt;  1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYR…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  5 chr2:152388410-152390729:- &lt;NA&gt;                    NA TRUE    trunca… TRUE   </span></span>
-<span><span class="co">#&gt;  6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTP…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  7 chr2:179415987-179415988:- SDPSKFTLAVSPVGK         13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  8 chr2:179415000-179416357:- SDPSKFTLAVSPVVPPI…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt;  9 chr2:179445336-179446207:- DVPDKHYPKDILSKYYQ…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 10 chr2:179446225-179446226:- SDVPDKHYPKDILSKYY…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 11 chr2:179445336-179446633:- SDASKAAYARDPQFPPE…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 12 chr2:179642044-179642187:- SDSGEWTVVAQNRLWNIR      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 13 chr2:179642146-179642147:- AGRSSISVILTVEGKMR       13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 14 chr2:179642044-179642431:- VGRPMPETFWFHDAVEH…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; 15 chr2:152226533-152226534:+ &lt;NA&gt;                    NA NA      no wt … NA     </span></span>
-<span><span class="co">#&gt; 16 chr2:152222731-152222732:+ &lt;NA&gt;                    NA NA      no wt … NA     </span></span>
-<span><span class="co">#&gt; 17 chr2:152388410-152388411:- MLTALYNSHMWSQVMSD…      13 TRUE    mutate… FALSE  </span></span>
-<span><span class="co">#&gt; # … with abbreviated variable names ¹​peptide_context_junc_pos, ²​junc_in_orf,</span></span>
-<span><span class="co">#&gt; #   ³​cds_description, ⁴​truncated_cds</span></span></code></pre></div>
+<span><span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  </span>
+<span>  <span class="co"># add peptide sequence</span></span>
+<span>  <span class="fu"><a href="reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>cds<span class="op">=</span><span class="va">toy_cds</span>, flanking_size <span class="op">=</span> <span class="fl">13</span>, bsg <span class="op">=</span> <span class="va">bsg</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span></span>
+<span>  <span class="co"># select subset of columns</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">peptide_context</span>, <span class="va">junc_in_orf</span>, <span class="va">cds_description</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   junc_id                    peptide_context         junc_in_orf cds_description</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                      &lt;chr&gt;                   &lt;lgl&gt;       &lt;chr&gt;          </span></span>
+<span><span class="co">#&gt; 1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         TRUE        mutated cds    </span></span>
+<span><span class="co">#&gt; 2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         TRUE        mutated cds    </span></span>
+<span><span class="co">#&gt; 3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSDGM     TRUE        mutated cds    </span></span>
+<span><span class="co">#&gt; 4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYRKNYEK… TRUE        mutated cds    </span></span>
+<span><span class="co">#&gt; 5 chr2:152388410-152390729:- &lt;NA&gt;                    TRUE        truncated cds  </span></span>
+<span><span class="co">#&gt; 6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTPDYIDV… TRUE        mutated cds</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
-<h2 id="id_4-dummy-workflow">4 Dummy workflow<a class="anchor" aria-label="anchor" href="#id_4-dummy-workflow"></a>
+<h2 id="issues">Issues<a class="anchor" aria-label="anchor" href="#issues"></a>
 </h2>
-<p>In the following a dummy example workflow how to integrate predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data to predict potential neoantigen candidates with splice2neo.<br>
-Tools that predict splicing effect from somatic mutations can predict distinct splice scores for the same mutation considering distinct genes. If you want to consider gene annotation, please checkout <a href="#id_##4.1-Consider-gene-annotation-in-mutation-tools">4.1</a><br>
-A test case will be added later</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="co"># load genome of choice</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">AnnotationDbi</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># this is an example of a transcript database (see below for details)</span></span>
-<span><span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span></span>
-<span><span class="co"># parse GTF file as txdb object</span></span>
-<span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_url</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">transcripts</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcriptsBy.html" class="external-link">exonsBy</a></span><span class="op">(</span><span class="va">txdb</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tx"</span><span class="op">)</span>, use.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">transcripts_gr</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcripts.html" class="external-link">transcripts</a></span><span class="op">(</span><span class="va">txdb</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gene_id"</span>, <span class="st">"tx_id"</span>, <span class="st">"tx_name"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># Build a GRangesList with cds composed of individual exon ranges</span></span>
-<span><span class="va">cds</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcriptsBy.html" class="external-link">cdsBy</a></span><span class="op">(</span><span class="va">txdb</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tx"</span><span class="op">)</span>, use.name <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># canonical junctions</span></span>
-<span><span class="co"># the user can choose the best suited data sets for canonical junctions</span></span>
-<span><span class="co"># the object `canonical junction` should be a vector of canonical junctions in the junction format</span></span>
-<span><span class="va">canonical_juncs</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1:33361245-33361511:-"</span>,</span>
-<span>    <span class="st">"chr1:32849649-32852380:-"</span>,</span>
-<span>    <span class="st">"chrom:start-end:strand"</span><span class="op">)</span></span>
-<span><span class="co"># OPTIONAL: if canonical junctions are available as a bed file, the user can transform the bed file into the juntion format:</span></span>
-<span><span class="co"># for bed files defined by exon-exon boundaries:</span></span>
-<span><span class="va">canonical_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bed_to_junc.html">bed_to_junc</a></span><span class="op">(</span>bed_file <span class="op">=</span> <span class="st">"/path/to/canonical/file.bed"</span>, type <span class="op">=</span> <span class="st">"exon-exon"</span><span class="op">)</span></span>
-<span><span class="co"># for bed files defined by introns:</span></span>
-<span><span class="va">canonical_juncs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bed_to_junc.html">bed_to_junc</a></span><span class="op">(</span>bed_file <span class="op">=</span> <span class="st">"/path/to/canonical/file.bed"</span>, type <span class="op">=</span> <span class="st">"intron"</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># import RNA data</span></span>
-<span><span class="va">dat_leafcutter</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/leafcutter_transform.html">leafcutter_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/your/path/to/leafcutter/results"</span><span class="op">)</span></span>
-<span><span class="co"># supported events: exon_skip, intron_retention, alt_3prime, alt_5prime, mutex_exons</span></span>
-<span><span class="va">dat_spladder</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/spladder_transform.html">spladder_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/your/path/to/spladder/results"</span><span class="op">)</span></span>
-<span><span class="va">dat_rna</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/generate_combined_dataset.html">generate_combined_dataset</a></span><span class="op">(</span>spladder_juncs <span class="op">=</span> <span class="va">dat_spladder</span>, leafcutter_juncs <span class="op">=</span> <span class="va">dat_spladder</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># import &amp; transform SpliceAi results</span></span>
-<span><span class="va">dat_spliceai</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>vcf_file <span class="op">=</span> <span class="st">"path/to/spliceai/file.vcf"</span><span class="op">)</span></span>
-<span><span class="va">dat_splicai_formatted</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">dat_spliceai</span><span class="op">)</span></span>
-<span><span class="va">dat_spliceai_annotated</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span>var_df <span class="op">=</span> <span class="va">dat_splicai_formatted</span>,</span>
-<span>                      transcripts <span class="op">=</span> <span class="va">transcripts</span>,</span>
-<span>                      transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># get pangolin results and annotate effects as splice junctions</span></span>
-<span><span class="va">pangolin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.pangolin.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">pangolin_annot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_pangolin.html">parse_pangolin</a></span><span class="op">(</span><span class="va">pangolin_file</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/format_pangolin.html">format_pangolin</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span><span class="va">toy_transcripts</span>, <span class="va">toy_transcripts_gr</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># import &amp; transform MMSplice results</span></span>
-<span><span class="va">dat_mmsplice</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_mmsplice.html">parse_mmsplice</a></span><span class="op">(</span>infile <span class="op">=</span> <span class="st">"path/to/mmsplice/file.csv"</span><span class="op">)</span></span>
-<span><span class="va">dat_mmsplice_annotated</span>  <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/annotate_mmsplice.html">annotate_mmsplice</a></span><span class="op">(</span>mmsplice_df <span class="op">=</span> <span class="va">dat_mmsplice</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># filter for unique junctions transcripts and consider only the event with the best score</span></span>
-<span><span class="co"># this is recommended before combining the junctions from several tools</span></span>
-<span><span class="va">dat_spliceai_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_mut_junc.html">unique_mut_junc</a></span><span class="op">(</span><span class="va">dat_spliceai_annotated</span><span class="op">)</span></span>
-<span><span class="va">dat_pangolin_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_mut_junc.html">unique_mut_junc</a></span><span class="op">(</span><span class="va">pangolin_annot_df</span><span class="op">)</span></span>
-<span><span class="va">dat_mmsplice_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/unique_junc_mmsplice.html">unique_junc_mmsplice</a></span><span class="op">(</span><span class="va">dat_mmsplice_annotated</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># combine mutation-based junctions from several tools into one tibbles</span></span>
-<span><span class="va">dat_mut</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/combine_mut_junc.html">combine_mut_junc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    <span class="st">"spliceai"</span> <span class="op">=</span> <span class="va">dat_spliceai_annotated_unique</span>, </span>
-<span>    <span class="st">"mmsplice"</span> <span class="op">=</span> <span class="va">dat_mmsplice_annotated_unique</span>,</span>
-<span>    <span class="st">"pangolin"</span> <span class="op">=</span> <span class="va">dat_pangolin_annotated_unique</span></span>
-<span>    <span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># add information if junction is canonical and if found to be expressed by SplAdder or LeafCutter</span></span>
-<span><span class="va">dat_mut</span> <span class="op">&lt;-</span> <span class="va">dat_mut</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>is_canonical <span class="op">=</span> <span class="fu"><a href="reference/is_canonical.html">is_canonical</a></span><span class="op">(</span><span class="va">junc_id</span>, ref_junc <span class="op">=</span> <span class="va">canonical_juncs</span>, exons_gr <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>is_in_rnaseq <span class="op">=</span> <span class="fu"><a href="reference/is_in_rnaseq.html">is_in_rnaseq</a></span><span class="op">(</span><span class="va">junc_id</span>, rna_juncs <span class="op">=</span> <span class="va">dat_rna</span><span class="op">$</span><span class="va">junc_id</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># remove canonical junctions for further downstream analysis</span></span>
-<span><span class="va">dat_for_requantification</span> <span class="op">&lt;-</span> <span class="va">dat_mut</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_canonical</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># add context sequences</span></span>
-<span><span class="co"># a list of GRanges with the transcript needs to be added at the moment</span></span>
-<span><span class="co"># this will be done within add_context_seq in a future version</span></span>
-<span><span class="va">dat_for_requantification_cts</span> <span class="op">&lt;-</span> <span class="va">dat_for_requantification</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">400</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># transform to easyquant-format</span></span>
-<span><span class="va">dat_easyquant</span> <span class="op">&lt;-</span> <span class="va">dat_for_requantification_cts</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/transform_for_requant.html">transform_for_requant</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">write_delim</span><span class="op">(</span><span class="va">dat_easyquant</span>, <span class="st">"path/to/easyquant/input/file.txt"</span>, delim <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
-<span><span class="co"># DO RE-QUANTIFICATION WITH EASYQUANT</span></span>
-<span><span class="co"># https://github.com/TRON-Bioinformatics/easyquant</span></span>
-<span><span class="co"># see Section 6 for more information on the requantifcation of splice junctions</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># add peptide sequence</span></span>
-<span><span class="va">dat_for_requantification_cts_peptide</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">dat_for_requantification_cts</span>  <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>flanking_size <span class="op">=</span> <span class="fl">13</span>, bsg <span class="op">=</span> <span class="va">BSgenome.Hsapiens.UCSC.hg19</span>, cds <span class="op">=</span> <span class="va">cds</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># merge EasyQuant results with data</span></span>
-<span><span class="va">dat_cts_peptide_requantification</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/map_requant.html">map_requant</a></span><span class="op">(</span>path_to_easyquant_folder <span class="op">=</span> <span class="st">"/path/to/easyquant/output_folder"</span>,</span>
-<span>              junc_tib <span class="op">=</span> <span class="va">dat_for_requantification_cts_peptide</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># EasyQuant results can be imported without direct merging with data</span></span>
-<span><span class="va">dat_requant</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/read_requant.html">read_requant</a></span><span class="op">(</span>path_folder <span class="op">=</span> <span class="st">"/path/to/easyquant/output_folder"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># annotate if there is a exon of another transcript within a predicted intron retention</span></span>
-<span><span class="va">dat_cts_peptide_requantification</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">dat_cts_peptide_requantification</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>exon_free <span class="op">=</span> <span class="fu"><a href="reference/exon_in_intron.html">exon_in_intron</a></span><span class="op">(</span>junc_id <span class="op">=</span> <span class="va">junc_id</span>, tx_id <span class="op">=</span> <span class="va">tx_id</span>, transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="id_41-consider-gene-annotation-in-mutation-tools">4.1 Consider gene annotation in mutation tools<a class="anchor" aria-label="anchor" href="#id_41-consider-gene-annotation-in-mutation-tools"></a>
-</h3>
-<p>The currently supported tools that predict the effect of somatic mutations on splicing consider gene annotations. These tools can predict distinct splice scores for the same mutation in distinct genes. Therefore, the user may want to consider only transcripts related to the annotated gene during the annotation to prevent that combination of junction-transcripts are matched with scores from another gene. The following dummy example shows how to consider gene annotation during the formatting and annotation of SpliceAI Pangolin results.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link">splice2neo</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="co"># load genome of choice</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BSgenome.Hsapiens.UCSC.hg19</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/AnnotationDbi" class="external-link">AnnotationDbi</a></span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># import &amp; transform SpliceAi results</span></span>
-<span><span class="va">dat_spliceai</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/parse_spliceai.html">parse_spliceai</a></span><span class="op">(</span>vcf_file <span class="op">=</span> <span class="st">"path/to/spliceai/file.vcf"</span><span class="op">)</span></span>
-<span><span class="co"># add ENSEMBL gene id while formatting SpliceAI output</span></span>
-<span><span class="co"># gene_table is a tible with the columns gene_id (=ENSEMBL gene id)and gene_name (= gene symbol) </span></span>
-<span><span class="va">dat_splicai_formatted</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">dat_spliceai</span>, gene_table <span class="op">=</span> <span class="va">gene_table</span><span class="op">)</span></span>
-<span><span class="co"># consider only transcript related to gene provided by SpliceAI</span></span>
-<span><span class="va">dat_spliceai_annotated</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span></span>
-<span>    var_df <span class="op">=</span> <span class="va">dat_splicai_formatted</span>,</span>
-<span>    transcripts <span class="op">=</span> <span class="va">transcripts</span>,</span>
-<span>    transcripts_gr <span class="op">=</span> <span class="va">transcripts_gr</span>,</span>
-<span>    gene_mapping <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># get pangolin results and annotate effects as splice junctions</span></span>
-<span><span class="va">pangolin_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"spliceai_output.pangolin.vcf"</span>, package <span class="op">=</span> <span class="st">"splice2neo"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># keep gene_id while formatting of Pangolin output and onsider only transcript related to gene provided by Pangolin</span></span>
-<span><span class="va">pangolin_annot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/parse_pangolin.html">parse_pangolin</a></span><span class="op">(</span><span class="va">pangolin_file</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/format_pangolin.html">format_pangolin</a></span><span class="op">(</span>keep_gene_id <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span><span class="va">toy_transcripts</span>, <span class="va">toy_transcripts_gr</span>, gene_mapping <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
+<p>Please report issues here: <a href="https://github.com/TRON-Bioinformatics/splice2neo/issues" class="external-link uri">https://github.com/TRON-Bioinformatics/splice2neo/issues</a></p>
 </div>
 <div class="section level2">
-<h2 id="id_5-building-the-transcript-database">5 Building the transcript database<a class="anchor" aria-label="anchor" href="#id_5-building-the-transcript-database"></a>
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<p>A database of transcripts can be build from a GTF file, saved and re-loaded as follows:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># use gtf file of choice and transform into transcript database</span></span>
-<span><span class="va">gtf_url</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"</span></span>
-<span></span>
-<span><span class="co"># parse GTF file as txdb object</span></span>
-<span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_url</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">saveDb</a></span><span class="op">(</span><span class="va">txdb</span>, file <span class="op">=</span> <span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># load </span></span>
-<span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/AnnotationDbi/man/AnnotationDb-class.html" class="external-link">loadDb</a></span><span class="op">(</span><span class="st">"/path/to/transripts/txdb.sqlite"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="id_6-requantification-with-easyquant">6 Requantification with Easyquant<a class="anchor" aria-label="anchor" href="#id_6-requantification-with-easyquant"></a>
-</h2>
-<p>Splice2neo enables the user to transform junctions into a format so that they can be quantified in RNA-seq data (<code>transform_for_requant</code>) using Easyquant (<a href="https://github.com/TRON-Bioinformatics/easyquant" class="external-link uri">https://github.com/TRON-Bioinformatics/easyquant</a>, v0.4.0) and to import results from this requantification (<code>map_requant</code> or <code>read_requant</code>). The user can add columns containing information on the read support for the given splice junction in this manner. The user may be interested in different columns depending on the type of splice event. Here, this are the most relevant columns for the different types of events:</p>
-<p><strong>Alternative splice sites &amp; exon skipping events</strong>:<br>
-- <em>junc_interval_start</em>: Junction reads that map on the splice junction of interest<br>
-- <em>span_interval_start</em>: Spanning reads that frame the splice junction of interest</p>
-<p><strong>Intron retention</strong>:<br>
-- <em>within_interval</em>: Number of reads that map to the intron of interest<br>
-- <em>coverage_perc</em>: Relative read coverage of the intron of interest<br>
-- <em>coverage_median</em>: Median read coverage of the intron of interest<br>
-- <em>coverage_mean</em>: Mean read coverage of the intron of interest. This value can be misleading by skewed read distribution and the user may rather want to use the median coverage</p>
+<p>Lang, Franziska, Patrick Sorn, Martin Suchan, Alina Henrich, Christian Albrecht, Nina Koehl, Aline Beicht, et al. 2023. “Prediction of Tumor-Specific Splicing from Somatic Mutations as a Source of Neoantigen Candidates.” bioRxiv. <a href="https://doi.org/10.1101/2023.06.27.546494" class="external-link uri">https://doi.org/10.1101/2023.06.27.546494</a>.</p>
 </div>
 </div>
   </div>
@@ -551,7 +258,7 @@ A test case will be added later</p>
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.4-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.7-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>
