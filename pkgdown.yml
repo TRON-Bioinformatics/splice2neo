@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   splice2neo_workflow: splice2neo_workflow.html
-last_built: 2024-03-24T18:50Z
+last_built: 2024-03-24T18:54Z
 urls:
   reference: https://tron-bioinformatics.github.io/splice2neo/reference
   article: https://tron-bioinformatics.github.io/splice2neo/articles
