@@ -53,14 +53,14 @@ library(dplyr)
 
 ### Building transcript database 
 
-A database of transcripts is required for transcript annotation with splice2neo. Here, we show how to build the database from GENCODE annotation but users can build these databases also from other resources.  
+A database of transcripts is required for transcript annotation with splice2neo. Here, we show how to build the database from a GTF file that is a subset of GENCODE annotations, but users can build these databases also from other resources.  
 
 ```{r db}
 # use gtf file of choice and transform into transcript database
-gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
+gtf_file <- system.file("extdata/example/gencode.v34lift37.annotation.subset.gtf.gz", package="splice2neo")
 
 # parse GTF file as txdb object
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file)
 ```
 
 ```{r}
@@ -83,13 +83,12 @@ cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
 
 ### Canonical junctions
 
-We can retrieve the canonical splice junctions between all adjacent exons from a list of transcripts with `canonical_junctions()`. Here,  we use only the first ten transcripts.
+We can retrieve the canonical splice junctions between all adjacent exons from a list of transcripts with `canonical_junctions()`.
 
 ```{r}
-ref_junc <- canonical_junctions(transcripts[1:10])
+ref_junc <- canonical_junctions(transcripts)
 
 str(ref_junc)
-
 ```
 
 ### Splice junciton id
