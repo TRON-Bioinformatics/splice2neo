@@ -57,8 +57,7 @@ parse_pangolin <- function(vcf_file){
     unnest(annot_gene) %>%
     # pares individual annotation values
     mutate(
-      gene_id = annot_gene %>%
-        str_replace("([^|]*)\\|-?\\d+:-?\\d\\.+\\d+\\|-?\\d+:-?\\d\\.+\\d+\\|", "\\1"),
+      gene_id = gsub("\\|.*", "", annot_gene),
       # extract all annotations per variant - gene
       annot = annot_gene %>%
         str_extract_all("-?\\d+:-?\\d\\.+\\d+")

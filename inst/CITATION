@@ -1,0 +1,14 @@
+citHeader("To cite splice2neo in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "Prediction of tumor-specific splicing from somatic mutations as a source of neoantigen candidates",
+  author   = "Franziska Lang, Patrick Sorn, Martin Suchan, Alina Henrich, Christian Albrecht, Nina Koehl, Aline Beicht, Pablo Riesgo-Ferreiro, Christoph Holtsträter, Barbara Schrörs, David Weber, Martin Löwer, Ugur Sahin, Jonas Ibn-Salem",
+  journal  = "bioRxiv",
+  year     = "2023",
+  url      = "https://www.biorxiv.org/content/10.1101/2023.06.27.546494v2",
+  doi = "10.1101/2023.06.27.546494",
+  textVersion = paste(
+
+  )
+)

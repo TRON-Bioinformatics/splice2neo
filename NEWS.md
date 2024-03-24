@@ -1,3 +1,9 @@
+# splice2neo 0.6.6
+
+* add vignette with example workflow
+* fix parsing of pangolin results
+* simplify README
+
 # splice2neo 0.6.5
 
 * Fixed bug while parsing VCF files containing only a single variant
