@@ -4,7 +4,7 @@ test_that("canonical_junctions works on test gtf", {
   gtf_file <- system.file("extdata","GTF_files","Aedes_aegypti.partial.gtf",
                           package="GenomicFeatures")
 
-  tx <- parse_gtf(gtf_file)
+  tx <- parse_gtf(gtf_file, format = "gtf")
 
   jx <- canonical_junctions(tx)
 
