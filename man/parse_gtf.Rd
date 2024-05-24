@@ -4,10 +4,12 @@
 \alias{parse_gtf}
 \title{Parse a GFF/GTF file as \code{\link[GenomicRanges]{GRangesList}} of exons}
 \usage{
-parse_gtf(file)
+parse_gtf(file, ...)
 }
 \arguments{
 \item{file}{path to a GFF or GTF file (See \code{\link[GenomicFeatures]{makeTxDbFromGFF}}))}
+
+\item{...}{other options passed to file path to \code{\link[GenomicFeatures]{makeTxDbFromGFF}})}
 }
 \value{
 A \code{\link[GenomicRanges]{GRangesList}} of exons grouped by transcripts

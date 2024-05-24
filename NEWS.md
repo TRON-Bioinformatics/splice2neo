@@ -1,3 +1,9 @@
+# splice2neo 0.6.6
+
+* add vignette with example workflow
+* fix parsing of pangolin results
+* simplify README
+
 # splice2neo 0.6.5
 
 * Fixed bug while parsing VCF files containing only a single variant
@@ -62,7 +68,7 @@
 
 # splice2neo 0.5.0
 
-* intron rentetion events are now supported by `add_context_seq()`. the resulting context sequence covers the complete intron instead of the exon/intron boundary only. Instead of a the junction position in the cts_seq, the positions are given in form of an interval in the `cts_junc_pos`  column for intron retentions. (0,start_IR, end_IR, end_cts) 
+* intron retention events are now supported by `add_context_seq()`. the resulting context sequence covers the complete intron instead of the exon/intron boundary only. Instead of a the junction position in the cts_seq, the positions are given in form of an interval in the `cts_junc_pos`  column for intron retentions. (0,start_IR, end_IR, end_cts) 
 * `add_peptide()` was adjusted for intron retentions
 * more tests were added for several functions
 * fix small bug in `annotate_spliceai_junction()` that led to annotation with same transcript 
@@ -77,7 +83,7 @@
 
 # splice2neo 0.4.0
 
-* Leafcutterr: The strand information while leafcutter parsing is now retrieved from the cluster id in the count table.
+* Leafcutter: The strand information while leafcutter parsing is now retrieved from the cluster id in the count table.
 * Spladder: previous code changes missed to consider the event type in generation of the junc id for alternative splice sites. This is fixed now.
 * More tests were added
 * An old bug in spladder_transform_mutex_exon was fixed
