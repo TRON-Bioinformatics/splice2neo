@@ -5,11 +5,15 @@ stages:
   - deploy
 
 testing:
+  artifacts:
+    when: on_failure
+    paths:
+      - testing.log
   stage: check
   script:
-    - R -e 'install.packages("devtools")'
-    - R -e 'devtools::install()'
-    - R -e 'devtools::check()'
+    - R -e 'install.packages("devtools")' | tee -a testing.log
+    - R -e 'devtools::install()' | tee -a testing.log
+    - R -e 'devtools::check()' | tee -a testing.log
 
 pages:
   stage: deploy
