@@ -16,7 +16,7 @@
 #' @import dplyr stringr tidyr
 #' @export
 parse_cispliceai_thresh <- function(vcf_file){
-  
+
   # read in vcf file
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
 
@@ -30,41 +30,35 @@ parse_cispliceai_thresh <- function(vcf_file){
       tibble::as_tibble_row() %>%
       mutate(Key = row_number())
   }
-  
+
   # get annotations
   splice_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("CI-SpliceAI")) %>%
     mutate(fields = `CI-SpliceAI` %>% stringr::str_split(",")) %>%
     dplyr::select(-`CI-SpliceAI`) %>%
     tidyr::unnest(fields) %>%
-    dplyr::filter(!is.na(fields))
-  
-  split_rows <- lapply(splice_df$fields, function(x){
-    split <- unlist(stringr::str_split(x, "\\|"))
-    if(length(split) == 2){
-      data.frame(ALLELE = split[1],
-                 SYMBOL = split[2], 
-                 splice_sites = NA)
-    } else {
-      data.frame(ALLELE = split[1],
-                 SYMBOL = split[2], 
-                 splice_sites = paste(split[3:length(split)], collapse = '_'))
-    }
-  })
-  split_rows <- Reduce(rbind, split_rows)
-  splice_df  <- cbind(splice_df %>% dplyr::select(-fields), split_rows)
-  
-  splice_df <- splice_df %>% 
-    dplyr::filter(!is.na(splice_sites)) %>%
-    mutate(fields = splice_sites %>% stringr::str_split("_")) %>%
-    dplyr::select(-splice_sites) %>%
-    tidyr::unnest(fields) %>%
-    tidyr::separate(fields, into = c("effect", "score", "pos_rel"), sep = ":") %>%
-    mutate(score = as.numeric(score),
-           pos_rel = as.integer(pos_rel), 
-           effect = as.factor(effect))
-  
+    dplyr::filter(!is.na(fields)) %>%
+
+  # parse multiple splice effects from fields column
+    mutate(
+      fields_split = str_split(fields, "\\|"),
+      ALLELE = purrr::map_chr(fields_split, ~ .x[1]),
+      SYMBOL = purrr::map_chr(fields_split, ~ .x[2]),
+      splice_sites = purrr::map(fields_split, tail, -2)
+    ) %>%
+    select(-fields, -fields_split) %>%
+
+  # extract and filter individual effects
+    tidyr::unnest(splice_sites) %>%
+    dplyr::filter(splice_sites != "") %>%
+    tidyr::separate(splice_sites, into = c("effect", "score", "pos_rel"), sep = ":") %>%
+    mutate(
+      score = as.numeric(score),
+      pos_rel = as.integer(pos_rel),
+      effect = as.factor(effect)
+    )
+
   fix_df %>%
-    left_join(splice_df, by = "Key")
-  
+    dplyr::left_join(splice_df, by = "Key")
+
 }
