@@ -1,0 +1,40 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##fileDate=20191004
+##reference=GRCh37/hg19
+##contig=<ID=chr1,length=249250621>
+##contig=<ID=chr2,length=243199373>
+##contig=<ID=chr3,length=198022430>
+##contig=<ID=chr4,length=191154276>
+##contig=<ID=chr5,length=180915260>
+##contig=<ID=chr6,length=171115067>
+##contig=<ID=chr7,length=159138663>
+##contig=<ID=chr8,length=146364022>
+##contig=<ID=chr9,length=141213431>
+##contig=<ID=chr10,length=135534747>
+##contig=<ID=chr11,length=135006516>
+##contig=<ID=chr12,length=133851895>
+##contig=<ID=chr13,length=115169878>
+##contig=<ID=chr14,length=107349540>
+##contig=<ID=chr15,length=102531392>
+##contig=<ID=chr16,length=90354753>
+##contig=<ID=chr17,length=81195210>
+##contig=<ID=chr18,length=78077248>
+##contig=<ID=chr19,length=59128983>
+##contig=<ID=chr20,length=63025520>
+##contig=<ID=chr21,length=48129895>
+##contig=<ID=chr22,length=51304566>
+##contig=<ID=chrX,length=155270560>
+##contig=<ID=chrY,length=59373566>
+##INFO=<ID=SpliceAI,Number=.,Type=String,Description="SpliceAIv1.3.1 variant annotation. These include delta scores (DS) and delta positions (DP) for acceptor gain (AG), acceptor loss (AL), donor gain (DG), and donor loss (DL). Format: ALLELE|SYMBOL|DS_AG|DS_AL|DS_DG|DS_DL|DP_AG|DP_AL|DP_DG|DP_DL">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr1	25000	.	A	C,G,T	.	.	.
+chr2	152389953	.	T	A,C,G	.	.	SpliceAI=A|NEB|AG:0.03:-41,C|NEB|AL:0.5:-20
+chr2	179415988	.	C	CA	.	.	SpliceAI=CA|TTN|AG:0.03:-41|AL:0.8:-2|DG:0.08:8|DL:0.5:12
+chr2	179446218	.	ATACT	A	.	.	SpliceAI=A|TTN|AG:0.03:14|DG:0.02:-48
+chr2	179446218	.	ATACT	AT,ATA	.	.	SpliceAI=AT|TTN|AG:0.03:14|AG:0.02:-48
+chr2	179642185	.	G	A	.	.	SpliceAI=A|TTN|AG:0.03:-41
+chr19	38958362	.	C	T	.	.	SpliceAI=T|RYR1|AL:0.03:14|DG:0.02:-48
+chr21	47406854	.	CCA	C	.	.	SpliceAI=C|COL6A1|DL:0.03:14|AG:0.02:-48|AG:0.8:-2
+chr21	47406856	.	A	AT	.	.	SpliceAI=AT|COL6A1|DL:0.02:-48
+chrX	129274636	.	A	C,G,T	.	.	SpliceAI=C|AIFM1|AG:0.7:-41,G|AIFM1|DG:0.03:10,T|AIFM1||AL:0.03:40

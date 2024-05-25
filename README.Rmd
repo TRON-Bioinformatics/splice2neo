@@ -123,7 +123,6 @@ junction in an open reading frame (ORF).
 
 ```{r}
 
-
 toy_junc_df %>% 
   
   # add peptide sequence
@@ -143,3 +142,4 @@ Please report issues here: https://github.com/TRON-Bioinformatics/splice2neo/iss
 ## Citation
 
 Lang, Franziska, Patrick Sorn, Martin Suchan, Alina Henrich, Christian Albrecht, Nina Koehl, Aline Beicht, et al. 2023. “Prediction of Tumor-Specific Splicing from Somatic Mutations as a Source of Neoantigen Candidates.” bioRxiv. https://doi.org/10.1101/2023.06.27.546494.
+
