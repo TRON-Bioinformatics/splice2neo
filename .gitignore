@@ -6,3 +6,5 @@ docs
 fix_issue_*.R
 vignettes/*.html
 vignettes/*.R
+/doc/
+/Meta/
