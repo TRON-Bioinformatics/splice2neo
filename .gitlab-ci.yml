@@ -5,6 +5,10 @@ stages:
   - deploy
 
 testing:
+  artifacts:
+    when: on_failure
+    paths:
+      - testing.log
   stage: check
   script:
     - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
