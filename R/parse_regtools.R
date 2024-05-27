@@ -35,7 +35,7 @@ import_regtools_junc <- function(file.name) {
 #' @import dplyr tidyr
 #' @export
 transform_regtools_junc <- function(tib) {
-    # 20211222 (JoHa): Event classification based on regtools documentation (add link)
+    # Event classification based on regtools documentation (add link) https://regtools.readthedocs.io/en/latest/commands/junctions-annotate/
     names_events <- c('DA'  = 'canonical_junction',
                       'NDA' = 'cassette_exon',
                       'D'   = 'A3SS',
