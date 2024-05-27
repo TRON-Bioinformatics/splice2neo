@@ -116,7 +116,7 @@ spladder_transform_intron_retention <- function(tib) {
     mutate(
       junc_id1 = generate_junction_id(chrm, e1_end, e2_start, strand),
       junc_id2 = generate_junction_id(chrm, e2_end, e3_start, strand),
-      number_supporting_reads = get(grep('e1e3_conf', colnames(tib), value = T)),
+      number_supporting_reads = get(grep('e2_cov', colnames(tib), value = T)),
       class = "intron_retention",
       junc_id = paste(junc_id1, junc_id2, sep = ";")
     ) %>%
