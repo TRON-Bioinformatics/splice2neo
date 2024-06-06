@@ -31,6 +31,7 @@ Suggests:
     covr,
     ggbio,
     rmarkdown
+    BSgenome,
 Config/testthat/edition: 3
 Language: en-US
 Imports: 
@@ -53,9 +54,7 @@ Imports:
     rlang,
     rtracklayer,
     BSgenome.Hsapiens.UCSC.hg19,
-    ggbio,
     fs,
-    BSgenome,
     assertthat
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
