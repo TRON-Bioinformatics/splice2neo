@@ -55,7 +55,8 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
     names(var_gr) <- effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
-    # get all possible junctions of by start and end coordinates of upsteam and downstream exons
+
+    # get all possible junctions by start and end coordinates of upstream and downstream exons
     next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
 
     message("INFO: calculate junction coordinates from predicted effect...")
@@ -69,10 +70,10 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
       filter(
         effect != "DL" | at_end,
         effect != "AL" | at_start
-      ) 
-    
-    #return empty tibble if non of the junctions fullfill the above filters (might be a problem in low mutation burden cases)
-    if(nrow(junc_df) == 0) { 
+      )
+
+    # return empty tibble if non of the junctions fulfill the above filters (might be a problem in low mutation burden cases)
+    if(nrow(junc_df) == 0) {
       junc_df <- junc_df %>%
         tibble::add_column(
           "class"= NA,
@@ -92,11 +93,11 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
     junc_df <- junc_df %>%
       mutate(
         effect = as.character(effect),
-        # pos = as.integer(POS) + pos_rel
       ) %>%
       left_join(
         effect_to_junction_rules,
-        by = c("effect")
+        by = c("effect"),
+        relationship = "many-to-many"
       ) %>%
 
       # apply rules
