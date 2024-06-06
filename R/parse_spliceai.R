@@ -75,7 +75,7 @@ parse_spliceai <- function(vcf_file){
 #' spliceai_file <- system.file("extdata", "spliceai_thresh_output.vcf", package = "splice2neo")
 #' parse_spliceai_thresh(spliceai_file)
 #'
-#' @seealso \code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
+#' @seealso \code{\link{parse_spliceai}}, \code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
 #' @import dplyr stringr tidyr
 #' @export
 parse_spliceai_thresh <- function(vcf_file){
@@ -94,7 +94,7 @@ parse_spliceai_thresh <- function(vcf_file){
       mutate(Key = row_number())
   }
 
-  # get annotations
+  # get effect annotations for all mutations (separate alleles on same position)
   splice_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
     mutate(fields = SpliceAI %>% stringr::str_split(",")) %>%
@@ -102,23 +102,23 @@ parse_spliceai_thresh <- function(vcf_file){
     tidyr::unnest(fields) %>%
     dplyr::filter(!is.na(fields))
 
-  split_rows <- lapply(splice_df$fields, function(x){
-    split <- unlist(stringr::str_split(x, "\\|"))
-    data.frame(ALLELE = split[1],
-               SYMBOL = split[2],
-               splice_sites = paste(split[3:length(split)], collapse = '_'))
-  })
-  split_rows <- Reduce(rbind, split_rows)
-  splice_df  <- cbind(splice_df %>% dplyr::select(-fields), split_rows)
-
+  # separate multiple effect predictions per mutation (unique alleles)
   splice_df <- splice_df %>%
-    mutate(fields = splice_sites %>% stringr::str_split("_")) %>%
+    tidyr::separate(fields,
+                    into = c("ALLELE", "SYMBOL", "splice_sites"),
+                    sep = "\\|",
+                    extra = "merge") %>%
+    mutate(fields = splice_sites %>% stringr::str_split("\\|")) %>%
     dplyr::select(-splice_sites) %>%
     tidyr::unnest(fields) %>%
+    # replace empty fields with NA
+    mutate(fields = na_if(fields, "")) %>%
     tidyr::separate(fields, into = c("effect", "score", "pos_rel"), sep = ":") %>%
-    mutate(score = as.numeric(score),
-           pos_rel = as.integer(pos_rel),
-           effect = as.factor(effect))
+    mutate(
+      score = as.numeric(score),
+      pos_rel = as.integer(pos_rel),
+      effect = as.factor(effect)
+    )
 
   fix_df %>%
     left_join(splice_df, by = "Key")
