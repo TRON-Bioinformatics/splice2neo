@@ -8,7 +8,8 @@ annotate_mut_effect(
   effect_df,
   transcripts,
   transcripts_gr,
-  gene_mapping = FALSE
+  gene_mapping = FALSE,
+  consider_intron_retention = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,10 @@ If \code{gene_mapping} is FALSE, all potentially affected  transcripts covering
 the relevant genomic position are considered.
 If \code{gene_mapping} is TRUE, potentially affected transcripts from the gene
 provided in \code{effect_df} that cover the relevant genomic positions are considered.}
+
+\item{consider_intron_retention}{Indicator whether intron retention events
+should be considered as splicing event types when building the resulting
+splice junctions.}
 }
 \value{
 A data.frame with with additional rows and columns including the

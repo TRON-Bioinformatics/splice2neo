@@ -25,6 +25,9 @@
 #' the relevant genomic position are considered.
 #' If `gene_mapping` is TRUE, potentially affected transcripts from the gene
 #' provided in `effect_df` that cover the relevant genomic positions are considered.
+#' @param consider_intron_retention Indicator whether intron retention events
+#' should be considered as splicing event types when building the resulting
+#' splice junctions.
 #'
 #' @return A data.frame with with additional rows and columns including the
 #' splice junction in the column `junc_id`.
@@ -38,7 +41,18 @@
 #'
 #'
 #' @export
-annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_mapping = FALSE){
+annotate_mut_effect <- function(effect_df,
+                                transcripts,
+                                transcripts_gr,
+                                gene_mapping = FALSE,
+                                consider_intron_retention = TRUE){
+
+  # choose rules based on intron retention consideration
+  if(consider_intron_retention){
+    effect_rule_table = effect_to_junction_rules
+  } else{
+    effect_rule_table = effect_to_junction_rules_wo_ir
+  }
 
   effect_df <- effect_df  %>%
     mutate(
@@ -95,7 +109,7 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
         effect = as.character(effect),
       ) %>%
       left_join(
-        effect_to_junction_rules,
+        effect_rule_table,
         by = c("effect"),
         relationship = "many-to-many"
       ) %>%
@@ -281,3 +295,15 @@ effect_to_junction_rules <- tribble(
 
   "AG",    "alternative 3prim",  "upstream_end",     "pos",
 )
+
+
+#' Rules on how a splicing affecting variant creates a junction without intron
+#' retentions
+effect_to_junction_rules_wo_ir <- tribble(
+  ~effect, ~event_type,             ~rule_left,        ~rule_right,
+  "DL",    "exon skipping",    "upstream_end",    "downstream_start",
+  "DG",    "alternative 5prim", "pos",             "downstream_start",
+  "AL",    "exon skipping",     "upstream_end",    "downstream_start",
+  "AG",    "alternative 3prim",  "upstream_end",     "pos",
+)
+
