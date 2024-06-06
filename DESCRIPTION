@@ -30,7 +30,7 @@ Suggests:
     testthat (>= 3.0.0),
     covr,
     ggbio,
-    rmarkdown
+    rmarkdown,
     BSgenome,
 Config/testthat/edition: 3
 Language: en-US
