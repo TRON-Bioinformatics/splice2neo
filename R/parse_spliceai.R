@@ -47,8 +47,8 @@ parse_spliceai <- function(vcf_file){
     mutate(
 
       # replace missing data with "." with NA
-      across(starts_with("DS_"), na_if, "."),
-      across(starts_with("DP_"), na_if, "."),
+      across(starts_with("DS_"), \(x) na_if(x, ".")),
+      across(starts_with("DP_"), \(x) na_if(x, ".")),
 
       # convert scores as numeric and positions as integers
       across(starts_with("DS_"), as.numeric),
@@ -101,23 +101,23 @@ parse_spliceai_thresh <- function(vcf_file){
     dplyr::select(-SpliceAI) %>%
     tidyr::unnest(fields) %>%
     dplyr::filter(!is.na(fields))
-  
+
   split_rows <- lapply(splice_df$fields, function(x){
     split <- unlist(stringr::str_split(x, "\\|"))
     data.frame(ALLELE = split[1],
-               SYMBOL = split[2], 
+               SYMBOL = split[2],
                splice_sites = paste(split[3:length(split)], collapse = '_'))
   })
   split_rows <- Reduce(rbind, split_rows)
   splice_df  <- cbind(splice_df %>% dplyr::select(-fields), split_rows)
-  
-  splice_df <- splice_df %>% 
+
+  splice_df <- splice_df %>%
     mutate(fields = splice_sites %>% stringr::str_split("_")) %>%
     dplyr::select(-splice_sites) %>%
     tidyr::unnest(fields) %>%
     tidyr::separate(fields, into = c("effect", "score", "pos_rel"), sep = ":") %>%
     mutate(score = as.numeric(score),
-           pos_rel = as.integer(pos_rel), 
+           pos_rel = as.integer(pos_rel),
            effect = as.factor(effect))
 
   fix_df %>%
