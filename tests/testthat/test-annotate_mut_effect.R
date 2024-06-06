@@ -144,6 +144,20 @@ test_that("annotate_mut_effect works for multiple effects from same mutation", {
 })
 
 
+test_that("annotate_mut_effect works on toy example without intron retention", {
+
+  spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+  df_raw <- parse_spliceai(spliceai_file)
+  df <- format_spliceai(df_raw)
+
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr, consider_intron_retention = FALSE)
+
+  expect_false("intron retention" %in% annot_df$event_type)
+  expect_true(nrow(annot_df) >= nrow(df))
+  expect_true(length(unique(annot_df$tx_id)) > 1)
+
+})
+
 test_that("annotate_mut_effect works for donor gain and aceptor gain in introns", {
 
   #=============================================================================
