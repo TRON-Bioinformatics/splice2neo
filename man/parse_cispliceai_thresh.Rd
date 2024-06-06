@@ -18,7 +18,7 @@ requires the vcfR package.
 }
 \examples{
 
-cispliceai_file <- system.file("extdata", "cispliceai_output.vcf", package = "splice2neo")
+cispliceai_file <- system.file("extdata", "cispliceai_thresh_output.vcf", package = "splice2neo")
 parse_cispliceai(cispliceai_file)
 
 }

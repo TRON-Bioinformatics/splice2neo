@@ -18,10 +18,10 @@ requires the vcfR package.
 }
 \examples{
 
-spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+spliceai_file <- system.file("extdata", "spliceai_thresh_output.vcf", package = "splice2neo")
 parse_spliceai_thresh(spliceai_file)
 
 }
 \seealso{
-\code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
+\code{\link{parse_spliceai}}, \code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
 }
