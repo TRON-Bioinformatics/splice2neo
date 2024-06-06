@@ -41,7 +41,7 @@ Imports:
     magrittr,
     tibble,
     stringr (>= 1.5.0),
-    dplyr,
+    dplyr (>= 1.1.1),
     readr,
     tidyr,
     vcfR,
