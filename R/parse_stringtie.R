@@ -31,7 +31,7 @@ import_stringtie_gtf <- function(file.name) {
   # sorting the GTF file. While GENCODE GTF files sort all the features
   # from upstream to downstream for both strands (ascending on + and descending on -),
   # StringTie sorts features with ascending coordinates regardless of the strand.
-  # This sort is required for splice2neo::canonical_junctions
+  # This sort is required for canonical_junctions
   stringtie_tibble <- as_tibble(stringtie_gtf) %>%
     dplyr::group_by(gene_id, transcript_id) %>%
     dplyr::group_modify(
@@ -45,7 +45,7 @@ import_stringtie_gtf <- function(file.name) {
   stringtie_junc <-
     GenomicRanges::makeGRangesListFromDataFrame(
       stringtie_tibble, split.field="transcript_id")
-  stringtie_junc <- splice2neo:::canonical_junctions(stringtie_junc)
+  stringtie_junc <- canonical_junctions(stringtie_junc)
   fields <- stringr::str_match(stringtie_junc, "(.*):(\\d+)-(\\d+):([*+-])")
 
   junc_tibble <- tibble(chr = fields[,2],
