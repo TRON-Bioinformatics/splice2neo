@@ -119,15 +119,15 @@ filter_irfinder_txt <- function(tib, warnings=FALSE, ratio_cutoff=0.1){
 #' ir_juncs <- parse_irfinder_txt(path)
 #' ir_juncs
 #'
-#' @import readr fs
+#' @import readr
 #' @export
 parse_irfinder_txt <- function(path, warnings=FALSE, irratio=0.1, cnn=FALSE) {
   if (isTRUE(cnn)) {
     message('Importing CNN validated IR predictions...')
-    file.intron <- fs::path_join(c(path, 'IRFinder-IR-nondir-val.txt'))
+    file.intron <- file.path(path, 'IRFinder-IR-nondir-val.txt')
   } else {
     message('Importing standard non-directional IR predictions...')
-    file.intron <- fs::path_join(c(path, 'IRFinder-IR-nondir.txt'))
+    file.intron <- file.path(path, 'IRFinder-IR-nondir.txt')
   }
   dat.junc <- file.intron %>%
     import_irfinder_txt() %>%

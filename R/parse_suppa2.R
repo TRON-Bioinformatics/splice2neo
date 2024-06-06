@@ -111,12 +111,11 @@ transform_suppa_ir_events <- function(tib) {
 #' @return A tibble in standardized junction format
 #'
 #'
-#' @import dplyr tidyr assertthat
+#' @import dplyr tidyr
 transform_suppa_ass_events <- function(tib, type="A5SS") {
-  assertthat::assert_that(
+  stopifnot(
     type %in% c("A5SS","A3SS"),
-    msg=str_glue("{type} not of type A3SS or A5SS")
-  )
+    "{type} not of type A3SS or A5SS")
   tib <- tib %>%
     tidyr::separate(
       event_id,
