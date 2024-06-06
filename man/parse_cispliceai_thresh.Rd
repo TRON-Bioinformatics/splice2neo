@@ -19,9 +19,9 @@ requires the vcfR package.
 \examples{
 
 cispliceai_file <- system.file("extdata", "cispliceai_thresh_output.vcf", package = "splice2neo")
-parse_cispliceai(cispliceai_file)
+parse_cispliceai_thresh(cispliceai_file)
 
 }
 \seealso{
-\code{\link{format_cispliceai}}, \code{\link{annotate_mut_effect}}
+\code{\link{format_cispliceai_thresh}}, \code{\link{annotate_mut_effect}}
 }
