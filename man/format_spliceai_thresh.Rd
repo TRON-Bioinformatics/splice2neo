@@ -19,7 +19,7 @@ to have a probability score not NA and score > 0, and removes gene symbol from
 data to make non-redundant output.
 }
 \examples{
-spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+spliceai_file <- system.file("extdata", "spliceai_thresh_output.vcf", package = "splice2neo")
 df <- parse_spliceai_thresh(spliceai_file)
 format_spliceai_thresh(df)
 
