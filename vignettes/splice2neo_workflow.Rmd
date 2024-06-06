@@ -153,7 +153,7 @@ Now we want to get a single `data.frame` of all splice junctions identified by R
 
 ```{r}
 rna_junctions <-
-  generate_combined_dataset(spladder_juncs = spladder, leafcutter_juncs = leafcutter)
+  generate_combined_dataset(list("spladder_juncs" = spladder, "leafcutter_juncs" = leafcutter))
 
 head(rna_junctions)
 ```
