@@ -91,7 +91,7 @@ ref_junc <- canonical_junctions(transcripts)
 str(ref_junc)
 ```
 
-### Splice junciton id
+### Splice junction id
 
 In splice2neo, splice junctions are represented by a `junc_id`, which is defined by the genomic coordinates of the exon positions (1-based) that are combined through the junction and the transcription strand of the transcript: `chr:pos1-pos2:strand`.
 
@@ -289,7 +289,7 @@ mut_junctions %>%
 
 #### Annotate canonical junctions
 
-To exclude junctions expressed in healthy tissues, we here want to filter predicted junctions for non-canoncal splice junctions. We can use for instance exon-exon junctions from GENCODE and junctions found in healthy tisssue samples. Splice2neo also provides the function `bed_to_junc()` which allows to transform a bed file into a list of splice junctions. 
+To exclude junctions expressed in healthy tissues, we here want to filter predicted junctions for non-canonical splice junctions. We can use for instance exon-exon junctions from GENCODE and junctions found in healthy tisssue samples. Splice2neo also provides the function `bed_to_junc()` which allows to transform a bed file into a list of splice junctions. 
 
 
 ```{r}
@@ -457,7 +457,7 @@ head(requantification_results)
 ```
 
 
-### Prediction of mutation-assoicated splice targets  
+### Prediction of mutation-associated splice targets  
 
 In the analysis described above we identified mutation-retrieved splice junctions supported by RNA-seq. We have developed a stringent detection rule to predict tumor-specific targets from mutation-associated splice targets based on the mutation effect and the RNA-seq support (See @lang_prediction_2023). Currently, we suggest to focus on events from alternative splice sites and exon skipping and define such splice junctions as targets that have a |splice effect score| $\geq$ 0.35 and are found by LeafCutter/SplAdder or have at least 3 junction reads.  
 
@@ -500,7 +500,7 @@ targets %>%
 
 Here, we have a list of splice junctions and want to know all potential affected transcripts. 
 
-Given a `data.frame` of splice junctions (with a colum `junc_id`), the function `add_tx()` annotates all possible transcripts which overlap
+Given a `data.frame` of splice junctions (with a column `junc_id`), the function `add_tx()` annotates all possible transcripts which overlap
 with the splice junctions. 
 
 ```{r}

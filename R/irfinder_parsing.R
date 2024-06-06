@@ -58,7 +58,7 @@ transform_irfinder_txt <- function(tib){
       remove = T
     ) %>%
     dplyr::select(
-      chromosome, 
+      chromosome,
       junction_start,
       junction_end,
       strand,
@@ -74,8 +74,8 @@ transform_irfinder_txt <- function(tib){
   return(tib)
 }
 
-#' Filter IRFinder intermediate table to remove likely 
-#' false postive IR predictions  
+#' Filter IRFinder intermediate table to remove likely
+#' false positive IR predictions
 #'
 #' @param tib IRFinder intermediate tibble with columns Warnings and IRratio
 #' @param warnings Filter out IR calls with Warnings
@@ -90,13 +90,13 @@ filter_irfinder_txt <- function(tib, warnings=FALSE, ratio_cutoff=0.1){
   stopifnot("Argument ratio_cutoff must be a value between 0 and 1!" = ratio_cutoff > 0 & ratio_cutoff <= 1)
   filtered_introns <- tib %>%
     dplyr::filter(IRratio >= ratio_cutoff)
-  
+
   if (isFALSE(warnings)){
     message('Removing IR calls with warnings...')
     filtered_introns <- filtered_introns %>%
       dplyr::filter(Warnings == '-')
   }
-  
+
   message('Removing IR calls with overlapping features...')
   filtered_introns <- filtered_introns %>%
     dplyr::filter((stringr::str_split(Name, "/") %>% purrr::map_chr(., 3)) == 'clean')
@@ -114,17 +114,17 @@ filter_irfinder_txt <- function(tib, warnings=FALSE, ratio_cutoff=0.1){
 #' @param cnn Use CNN validated table as input instead of standard output table
 #'
 #' @return A tibble in standardized junction format
-#' 
+#'
 #' path <- system.file("extdata", "", package = "splice2neo")
 #' ir_juncs <- parse_irfinder_txt(path)
 #' ir_juncs
-#' 
+#'
 #' @import readr fs
 #' @export
 parse_irfinder_txt <- function(path, warnings=FALSE, irratio=0.1, cnn=FALSE) {
   if (isTRUE(cnn)) {
     message('Importing CNN validated IR predictions...')
-    file.intron <- fs::path_join(c(path, 'IRFinder-IR-nondir-val.txt'))  
+    file.intron <- fs::path_join(c(path, 'IRFinder-IR-nondir-val.txt'))
   } else {
     message('Importing standard non-directional IR predictions...')
     file.intron <- fs::path_join(c(path, 'IRFinder-IR-nondir.txt'))

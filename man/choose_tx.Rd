@@ -20,7 +20,7 @@ A data.frame as with relevant transcript and junction combinations. If tx_id is 
 This function selects transcripts that are more likely to be affected to reduce the amount of junction and transcript combinations.
 The function excludes transcripts for which both junction positions are located in an intron. Junctions in a given transcript must either represent an
 exon skipping, intron retention, exitron, or alternative splice site event or have both junction positions in an exon. Other junction-transcript combinations are also excluded.
-This function may loose relevant or keep irrelevant junction-transcripts in particular in regions with mutliple isoforms with distinct splicing pattern.
+This function may loose relevant or keep irrelevant junction-transcripts in particular in regions with multiple isoforms with distinct splicing pattern.
 }
 \description{
 All possible affected transcripts are required and can be annotated with \code{add_tx()}

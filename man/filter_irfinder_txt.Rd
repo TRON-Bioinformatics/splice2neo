@@ -3,7 +3,7 @@
 \name{filter_irfinder_txt}
 \alias{filter_irfinder_txt}
 \title{Filter IRFinder intermediate table to remove likely
-false postive IR predictions}
+false positive IR predictions}
 \usage{
 filter_irfinder_txt(tib, warnings = FALSE, ratio_cutoff = 0.1)
 }
@@ -19,5 +19,5 @@ A tibble in standardized junction format
 }
 \description{
 Filter IRFinder intermediate table to remove likely
-false postive IR predictions
+false positive IR predictions
 }
