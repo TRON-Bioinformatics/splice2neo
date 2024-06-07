@@ -11,14 +11,23 @@ Authors@R:
     person(given = "Franziska",
            family = "Lang",
            role = c("aut"),
-           email = "franziska.lang@tron-mainz.de")
+           email = "franziska.lang@tron-mainz.de"),
+    person(given = "Michelle",
+           family = "Cervante",
+           role = c("aut")),
+    person(given = "Johannes",
+           family = "Hausmann",
+           role = c("aut")),
+    person(given = "Patrick",
+           family = "Sorn",
+           role = c("aut"))
     )
-Description: This package provides functions for the analysis of alternative or 
- aberrant splicing junctions and their creation from or association with 
- somatic mutations. It integrates the output of several tools which predict 
- splicing effects from mutation or RNA-seq data into a common splice junction 
- format based on genomic coordinates. Splice junctions can be annotated with 
- affected transcript sequences, CDS, and resulting peptide sequences.  
+Description: This package provides functions for analyzing alternative splicing 
+ and aberrant splice junctions and their creation from or association with 
+ somatic mutations. It integrates the output of several tools that predict 
+ splicing effects from mutation or RNA-seq data into a unified splice junction 
+ format. Splice junctions can be annotated with affected transcript sequences, 
+ CDS, and resulting peptide sequences.    
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
