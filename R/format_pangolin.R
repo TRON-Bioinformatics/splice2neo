@@ -28,7 +28,8 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
 
     # as no annotation on acceptor or donor existst in pangolin, both are considered
     left_join(pangolin_effect_translation,
-              by = "effect_direction") %>%
+              by = "effect_direction",
+              relationship = "many-to-many") %>%
 
     # add unique IDs for mutation
     mutate(
@@ -54,6 +55,7 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
 
 #' This dataset translates the increase/decrease splicing score from pangolin
 #' into a donor gain/loss and acceptor gain/loss effect annotations.
+#' @keywords internal
 pangolin_effect_translation <- dplyr::tibble(
   effect_direction = c("increase", "increase", "decrease", "decrease"),
   effect = c("DG", "AG", "DL", "AL")

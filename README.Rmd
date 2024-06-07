@@ -23,23 +23,29 @@ knitr::opts_chunk$set(
 `r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
 <!-- badges: end -->
 
+Documentation: https://tron-bioinformatics.github.io/splice2neo/
+
 
 ## Overview
 
 This package provides functions for the analysis of splice
-junctions and their association with somatic mutations. It integrates the output
-of several tools which predict splicing effects from mutations or which detect
-expressed splice junctions from RNA-seq data into a standardized splice junction
-format based on genomic coordinates. Detected splice junctions can be filtered
-against canonical splice junctsion and annotated with affected transcript sequences, CDS,
-and resulting peptide sequences. Splice2neo currently supports splice events 
-from alternative 3'/5' splice sites, exons skipping, intron retentions, 
-exitrons and mutually exclusive exons.  
-Integrating splice2neo functions and detection rules based on splice effect scores 
-and RNA-seq support facilitates the identification of mutation-associated splice 
-junctions which are tumor-specific and can encode neoantigen candidates. 
+junctions and their association with somatic mutations. It integrates the output of several tools that predict splicing effects from mutations or detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Users can filter detected splice junctions against canonical splice junctions and annotate them with affected transcript sequences, CDS, and resulting peptide sequences. Splice2neo supports splice events from alternative 3'/5' splice sites, exons skipping, intron retentions, exitrons, and mutually exclusive exons. Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions that are tumor-specific and can encode neoantigen candidates. 
 
-Documentation: https://tron-bioinformatics.github.io/splice2neo/
+Currently, splice2neo supports the output data from the following tools:
+
+- Mutation effect prediction tools:
+  - [SpliceAI](https://github.com/Illumina/SpliceAI)
+  - [CI-SpliceAI](https://github.com/YStrauch/CI-SpliceAI__Annotation)
+  - [MMsplice](https://github.com/gagneurlab/MMSplice_MTSplice)
+  - [Pangolin](https://github.com/tkzeng/Pangolin)
+- RNA-seq-based splice junction detection tools:
+  - [LeafCutter](https://github.com/davidaknowles/leafcutter) 
+  - [RegTools](https://github.com/griffithlab/regtools)
+  - [SplAdder](https://github.com/ratschlab/spladder)
+  - [IRfinder](https://github.com/RitchieLabIGH/IRFinder)
+  - [SUPPA2](https://github.com/comprna/SUPPA)
+  - [STAR](https://github.com/alexdobin/STAR)
+  - [StringTie](https://github.com/gpertea/stringtie)
 
 For a more detailed description and a full example workflow see the [vignette](https://tron-bioinformatics.github.io/splice2neo/articles/splice2neo_workflow.html)
  
@@ -123,7 +129,6 @@ junction in an open reading frame (ORF).
 
 ```{r}
 
-
 toy_junc_df %>% 
   
   # add peptide sequence
@@ -143,3 +148,4 @@ Please report issues here: https://github.com/TRON-Bioinformatics/splice2neo/iss
 ## Citation
 
 Lang, Franziska, Patrick Sorn, Martin Suchan, Alina Henrich, Christian Albrecht, Nina Koehl, Aline Beicht, et al. 2023. “Prediction of Tumor-Specific Splicing from Somatic Mutations as a Source of Neoantigen Candidates.” bioRxiv. https://doi.org/10.1101/2023.06.27.546494.
+

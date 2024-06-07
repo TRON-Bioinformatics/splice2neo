@@ -1,14 +1,18 @@
-image: bioconductor/bioconductor_docker:RELEASE_3_17
+image: bioconductor/bioconductor_docker:RELEASE_3_19
 
 stages:
   - check
   - deploy
 
 testing:
+  artifacts:
+    when: on_failure
+    paths:
+      - testing.log
   stage: check
   script:
-    - R -e 'install.packages("devtools")'
-    - R -e 'devtools::install()'
+    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - R -e 'devtools::install(quiet=TRUE)'
     - R -e 'devtools::check()'
 
 pages:
@@ -16,10 +20,10 @@ pages:
   dependencies:
     - testing
   script:
-    - R -e 'install.packages("devtools")'
-    - R -e 'devtools::install()'
-    - R -e 'install.packages("pkgdown")'
-    - R -e "pkgdown::build_site()"
+    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - R -e 'devtools::install(quiet=TRUE)'
+    - R -e 'install.packages("pkgdown", verbose = FALSE, quiet = TRUE)'
+    - R -e 'pkgdown::build_site()'
     - mkdir -p public
     - cp -r docs/* public
   artifacts:

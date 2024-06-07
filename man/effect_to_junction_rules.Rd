@@ -13,4 +13,4 @@ effect_to_junction_rules
 \description{
 Rules on how a splicing affecting variant creates a junction
 }
-\keyword{datasets}
+\keyword{internal}

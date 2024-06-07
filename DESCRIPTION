@@ -1,6 +1,6 @@
 Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
-Version: 0.6.6
+Version: 0.6.7
 Authors@R: 
     c(
     person(given = "Jonas",
@@ -11,26 +11,36 @@ Authors@R:
     person(given = "Franziska",
            family = "Lang",
            role = c("aut"),
-           email = "franziska.lang@tron-mainz.de")
+           email = "franziska.lang@tron-mainz.de"),
+    person(given = "Michelle",
+           family = "Cervante",
+           role = c("aut")),
+    person(given = "Johannes",
+           family = "Hausmann",
+           role = c("aut")),
+    person(given = "Patrick",
+           family = "Sorn",
+           role = c("aut"))
     )
-Description: This package provides functions for the analysis of alternative or 
- aberrant splicing junctions and their creation from or association with 
- somatic mutations. It integrates the output of several tools which predict 
- splicing effects from mutation or RNA-seq data into a common splice junction 
- format based on genomic coordinates. Splice junctions can be annotated with 
- affected transcript sequences, CDS, and resulting peptide sequences.  
+Description: This package provides functions for analyzing alternative splicing 
+ and aberrant splice junctions and their creation from or association with 
+ somatic mutations. It integrates the output of several tools that predict 
+ splicing effects from mutation or RNA-seq data into a unified splice junction 
+ format. Splice junctions can be annotated with affected transcript sequences, 
+ CDS, and resulting peptide sequences.    
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     spelling,
     knitr,
     testthat (>= 3.0.0),
     covr,
     ggbio,
-    rmarkdown
+    rmarkdown,
+    BSgenome,
 Config/testthat/edition: 3
 Language: en-US
 Imports: 
@@ -41,7 +51,7 @@ Imports:
     magrittr,
     tibble,
     stringr (>= 1.5.0),
-    dplyr,
+    dplyr (>= 1.1.1),
     readr,
     tidyr,
     vcfR,
@@ -52,8 +62,7 @@ Imports:
     XVector,
     rlang,
     rtracklayer,
-    BSgenome.Hsapiens.UCSC.hg19,
-    BSgenome
+    BSgenome.Hsapiens.UCSC.hg19
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)

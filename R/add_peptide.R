@@ -106,23 +106,23 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
   # extract context sequence from full peptide and cut before stop codon (*)
   df_positions <- df_sub %>%
     dplyr::mutate(
-    intron_retention = intron_retention,
-    strand = str_sub(df_sub$junc_id, -1),
-    protein = protein %>% as.character(),
-    protein_wt = protein_wt %>% as.character(),
-    frame_shift = frame_shift,
-    junc_in_cds = junc_in_cds,
-    cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
-    cds_length_difference = cds_length_difference,
-    junc_pos_cds = junc_pos_cds,
-    junc_pos_cds_wt = junc_pos_cds_wt,
-    # Get context peptides around junction
-    protein_junc_pos = ceiling(junc_pos_cds / 3),
-    # end for IRs
-    protein_length_difference = ifelse(!frame_shift &
-                                         !intron_retention, cds_length_difference / 3, NA),
-    protein_len = as.numeric(BiocGenerics::width(protein))
-  )
+      intron_retention = intron_retention,
+      strand = str_sub(df_sub$junc_id, -1),
+      protein = protein %>% as.character(),
+      protein_wt = protein_wt %>% as.character(),
+      frame_shift = frame_shift,
+      junc_in_cds = junc_in_cds,
+      cds_mod_id = stringr::str_c(tx_id, "|", junc_id),
+      cds_length_difference = cds_length_difference,
+      junc_pos_cds = junc_pos_cds,
+      junc_pos_cds_wt = junc_pos_cds_wt,
+      # Get context peptides around junction
+      protein_junc_pos = ceiling(junc_pos_cds / 3),
+      # end for IRs
+      protein_length_difference = ifelse(!frame_shift &
+                                           !intron_retention, cds_length_difference / 3, NA),
+      protein_len = as.numeric(BiocGenerics::width(protein))
+    )
 
   df_positions <- df_positions %>%
     is_first_reading_frame() %>%

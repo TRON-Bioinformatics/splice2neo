@@ -15,4 +15,4 @@ pangolin_effect_translation
 This dataset translates the increase/decrease splicing score from pangolin
 into a donor gain/loss and acceptor gain/loss effect annotations.
 }
-\keyword{datasets}
+\keyword{internal}

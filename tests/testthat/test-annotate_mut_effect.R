@@ -40,7 +40,8 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
   effect_df <- parse_pangolin(pangolin_file)
   # modify : same mutation for two distinct genes + different scores
 
-  effect_df <- effect_df %>% format_pangolin(keep_gene_id = TRUE)
+  effect_df <- effect_df %>%
+    format_pangolin(keep_gene_id = TRUE)
 
   # we need to do a dirty fix because different versions of gencode annotations in effect_df and toy_transcripts
   toy_transcripts_gr_fix <- toy_transcripts_gr
@@ -61,15 +62,13 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
   expect_true(nrow(annot_df_map) >= nrow(effect_df))
   expect_true(nrow(annot_df) >= nrow(annot_df_map))
 
-  # check that additional rows if gene_mapping = FALSE are becuase of not fitting gene-transcript pair
+  # check that additional rows if gene_mapping = FALSE are because of not fitting gene-transcript pair
   df_not_mapped <- annot_df %>%
     dplyr::select(mut_id, junc_id, tx_id, gene_id) %>%
-    left_join(annot_df_map %>% dplyr::select(mut_id, junc_id, tx_id, gene_id), by = c("mut_id", "junc_id", "tx_id")) %>%
-    filter(is.na(gene_id.y)) %>%
-    dplyr::select(-gene_id.y) %>%
+    anti_join(annot_df_map, by = c("mut_id", "junc_id", "tx_id")) %>%
     left_join(gene_transcript_mapping, by = c("tx_id" = "tx_name"))
 
-  expect_true(all(df_not_mapped$gene_id.x != df_not_mapped$gene_id))
+  expect_true(all(df_not_mapped$gene_id.x != df_not_mapped$gene_id.y))
 
 })
 
@@ -143,6 +142,20 @@ test_that("annotate_mut_effect works for multiple effects from same mutation", {
 
 })
 
+
+test_that("annotate_mut_effect works on toy example without intron retention", {
+
+  spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
+  df_raw <- parse_spliceai(spliceai_file)
+  df <- format_spliceai(df_raw)
+
+  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr, consider_intron_retention = FALSE)
+
+  expect_false("intron retention" %in% annot_df$event_type)
+  expect_true(nrow(annot_df) >= nrow(df))
+  expect_true(length(unique(annot_df$tx_id)) > 1)
+
+})
 
 test_that("annotate_mut_effect works for donor gain and aceptor gain in introns", {
 

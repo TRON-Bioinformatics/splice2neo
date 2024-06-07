@@ -25,6 +25,9 @@
 #' the relevant genomic position are considered.
 #' If `gene_mapping` is TRUE, potentially affected transcripts from the gene
 #' provided in `effect_df` that cover the relevant genomic positions are considered.
+#' @param consider_intron_retention Indicator whether intron retention events
+#' should be considered as splicing event types when building the resulting
+#' splice junctions.
 #'
 #' @return A data.frame with with additional rows and columns including the
 #' splice junction in the column `junc_id`.
@@ -38,7 +41,18 @@
 #'
 #'
 #' @export
-annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_mapping = FALSE){
+annotate_mut_effect <- function(effect_df,
+                                transcripts,
+                                transcripts_gr,
+                                gene_mapping = FALSE,
+                                consider_intron_retention = TRUE){
+
+  # choose rules based on intron retention consideration
+  if(consider_intron_retention){
+    effect_rule_table = effect_to_junction_rules
+  } else{
+    effect_rule_table = effect_to_junction_rules_wo_ir
+  }
 
   effect_df <- effect_df  %>%
     mutate(
@@ -55,7 +69,8 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
     names(var_gr) <- effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
-    # get all possible junctions of by start and end coordinates of upsteam and downstream exons
+
+    # get all possible junctions by start and end coordinates of upstream and downstream exons
     next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
 
     message("INFO: calculate junction coordinates from predicted effect...")
@@ -69,16 +84,34 @@ annotate_mut_effect <- function(effect_df, transcripts, transcripts_gr, gene_map
       filter(
         effect != "DL" | at_end,
         effect != "AL" | at_start
-      ) %>%
+      )
 
-      # add rules
+    # return empty tibble if non of the junctions fulfill the above filters (might be a problem in low mutation burden cases)
+    if(nrow(junc_df) == 0) {
+      junc_df <- junc_df %>%
+        tibble::add_column(
+          "class"= NA,
+          "rule_left"= NA,
+          "rule_right"= NA,
+          "strand_offset"= NA,
+          "coord_1"= NA ,
+          "coord_2"= NA,
+          "left"= NA,
+          "right" = NA,
+          "junc_id"= NA,
+          "tx_junc_id"= NA)
+      return(junc_df)
+    }
+
+    # add rules
+    junc_df <- junc_df %>%
       mutate(
         effect = as.character(effect),
-        # pos = as.integer(POS) + pos_rel
       ) %>%
       left_join(
-        effect_to_junction_rules,
-        by = c("effect")
+        effect_rule_table,
+        by = c("effect"),
+        relationship = "many-to-many"
       ) %>%
 
       # apply rules
@@ -250,6 +283,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 }
 
 #' Rules on how a splicing affecting variant creates a junction
+#' @keywords internal
 effect_to_junction_rules <- tribble(
   ~effect, ~event_type,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
@@ -262,3 +296,16 @@ effect_to_junction_rules <- tribble(
 
   "AG",    "alternative 3prim",  "upstream_end",     "pos",
 )
+
+
+#' Rules on how a splicing affecting variant creates a junction without intron
+#' retention
+#' @keywords internal
+effect_to_junction_rules_wo_ir <- tribble(
+  ~effect, ~event_type,             ~rule_left,        ~rule_right,
+  "DL",    "exon skipping",    "upstream_end",    "downstream_start",
+  "DG",    "alternative 5prim", "pos",             "downstream_start",
+  "AL",    "exon skipping",     "upstream_end",    "downstream_start",
+  "AG",    "alternative 3prim",  "upstream_end",     "pos",
+)
+

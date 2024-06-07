@@ -3,12 +3,15 @@ url: https://tron-bioinformatics.github.io/splice2neo/
 reference:
 
 - title: "Parse SpliceAI"
-  desc: "Functions to parse SpliceAI output into standard splice junction format"
+  desc: "Functions to parse SpliceAI and CI-SpliceAI output into standard splice junction format"
 - contents:
   - parse_spliceai
+  - parse_spliceai_thresh
+  - parse_cispliceai_thresh
   - format_spliceai
+  - format_spliceai_thresh
+  - format_cispliceai_thresh
   - annotate_mut_effect
-  - unique_mut_junc
 
 - title: "Parse MMsplice"
   desc: "Functions to parse MMsplice output into standard splice junction format"
@@ -25,7 +28,6 @@ reference:
   - parse_pangolin
   - format_pangolin
   - annotate_mut_effect
-  - unique_mut_junc
 
 - title: "Parse LeafCutter"
   desc: "Functions to parse LeafCutter output into standard splice junction format"
@@ -33,6 +35,13 @@ reference:
   - import_leafcutter_counts
   - leafcutter_transform
   - transform_leafcutter_counts
+
+- title: "Parse Regtools"
+  desc: "Functions to parse Regtools output into standard splice junction format"
+- contents:
+  - import_regtools_junc
+  - regtools_transform
+  - transform_regtools_junc
 
 - title: "Parse SplAdder"
   desc: "Functions to parse SplAdder output into standard splice junction format"
@@ -44,6 +53,38 @@ reference:
   - spladder_transform_intron_retention
   - spladder_transform_mutex_exon
   - spladder_transform_exon_skipping
+
+- title: "Parse IRfinder"
+  desc: "Functions to parse IRfinder output into standard splice junction format"
+- contents:
+  - import_irfinder_txt
+  - filter_irfinder_txt
+  - parse_irfinder_txt
+  - transform_irfinder_txt
+
+- title: "Parse SUPPA2"
+  desc: "Functions to parse SUPPA2 output into standard splice junction format"
+- contents:
+  - read_suppa_ioe
+  - transform_suppa_se_events
+  - transform_suppa_ir_events
+  - transform_suppa_ass_events
+  - transform_suppa_mxe_events
+  - suppa_transform_format
+  - suppa_import
+  - suppa_transform
+
+- title: "Parse STAR"
+  desc: "Functions to parse STAR SJ.out.tab into standard splice junction format"
+- contents:
+  - parse_star_sj
+
+- title: "Parse StringTie"
+  desc: "Functions to parse StringTie into standard splice junction format"
+- contents:
+  - import_stringtie_gtf
+  - stringtie_transform_format
+  - stringtie_transform
 
 - title: "Parse other formats"
   desc: "Functions to parse otherformats into standard splice junction format"
@@ -87,6 +128,7 @@ reference:
 - title: "Merge and filter"
   desc: "Functions annotate and filter for canonical splicing"
 - contents:
+  - unique_mut_junc
   - is_in_rnaseq
   - combine_mut_junc
   - add_identified_in_RNA
@@ -96,7 +138,6 @@ reference:
   desc: "Other functions"
 - contents:
   - junc_to_gr
-  - effect_to_junction_rules
   - get_intronretention_alt_pos
   - next_junctions
   - sort_columns
