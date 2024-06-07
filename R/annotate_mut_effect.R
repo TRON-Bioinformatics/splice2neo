@@ -283,6 +283,7 @@ next_junctions <- function(var_gr, transcripts, transcripts_gr){
 }
 
 #' Rules on how a splicing affecting variant creates a junction
+#' @keywords internal
 effect_to_junction_rules <- tribble(
   ~effect, ~event_type,             ~rule_left,        ~rule_right,
   "DL",    "intron retention", "pos",             "pos + strand_offset",
@@ -298,7 +299,8 @@ effect_to_junction_rules <- tribble(
 
 
 #' Rules on how a splicing affecting variant creates a junction without intron
-#' retentions
+#' retention
+#' @keywords internal
 effect_to_junction_rules_wo_ir <- tribble(
   ~effect, ~event_type,             ~rule_left,        ~rule_right,
   "DL",    "exon skipping",    "upstream_end",    "downstream_start",

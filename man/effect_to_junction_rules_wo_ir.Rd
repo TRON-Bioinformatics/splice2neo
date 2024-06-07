@@ -4,7 +4,7 @@
 \name{effect_to_junction_rules_wo_ir}
 \alias{effect_to_junction_rules_wo_ir}
 \title{Rules on how a splicing affecting variant creates a junction without intron
-retentions}
+retention}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 4 columns.
 }
@@ -13,6 +13,6 @@ effect_to_junction_rules_wo_ir
 }
 \description{
 Rules on how a splicing affecting variant creates a junction without intron
-retentions
+retention
 }
-\keyword{datasets}
+\keyword{internal}

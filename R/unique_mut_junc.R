@@ -1,7 +1,9 @@
-#' Filter junction datasets for unique `mut_id`,
-#' `junc_id`, `tx_id`. If there were multiple effects (DL/AL)
-#' predicted to lead to the same combination of `mut_id`, `junc_id`, `tx_id`,
-#' only the  effect with the maximal score is returned.
+#' Filter junctions for unique combinations of mutation, transcript, and
+#' junctions.
+#'
+#' Filters for unqiue `mut_id`,`junc_id`, `tx_id`. If there are multiple
+#' effects (DL/AL) predicted to lead to the same combination of `mut_id`,
+#' `junc_id`, `tx_id`, only the  effect with the maximal score is returned.
 #'
 #' @param junc_data A tibble with junctions. The tibble should contain the columns `mut_id`,
 #'    `tx_id`, `junc_id` and `score` and might have individual sets of other tool/source

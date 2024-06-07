@@ -2,10 +2,8 @@
 % Please edit documentation in R/unique_mut_junc.R
 \name{unique_mut_junc}
 \alias{unique_mut_junc}
-\title{Filter junction datasets for unique \code{mut_id},
-\code{junc_id}, \code{tx_id}. If there were multiple effects (DL/AL)
-predicted to lead to the same combination of \code{mut_id}, \code{junc_id}, \code{tx_id},
-only the  effect with the maximal score is returned.}
+\title{Filter junctions for unique combinations of mutation, transcript, and
+junctions.}
 \usage{
 unique_mut_junc(junc_data)
 }
@@ -20,8 +18,7 @@ A filtered tibble with unique junctions based on the columns
 \code{score} is kept.
 }
 \description{
-Filter junction datasets for unique \code{mut_id},
-\code{junc_id}, \code{tx_id}. If there were multiple effects (DL/AL)
-predicted to lead to the same combination of \code{mut_id}, \code{junc_id}, \code{tx_id},
-only the  effect with the maximal score is returned.
+Filters for unqiue \code{mut_id},\code{junc_id}, \code{tx_id}. If there are multiple
+effects (DL/AL) predicted to lead to the same combination of \code{mut_id},
+\code{junc_id}, \code{tx_id}, only the  effect with the maximal score is returned.
 }

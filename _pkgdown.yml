@@ -12,7 +12,6 @@ reference:
   - format_spliceai_thresh
   - format_cispliceai_thresh
   - annotate_mut_effect
-  - unique_mut_junc
 
 - title: "Parse MMsplice"
   desc: "Functions to parse MMsplice output into standard splice junction format"
@@ -29,7 +28,6 @@ reference:
   - parse_pangolin
   - format_pangolin
   - annotate_mut_effect
-  - unique_mut_junc
 
 - title: "Parse LeafCutter"
   desc: "Functions to parse LeafCutter output into standard splice junction format"
@@ -130,6 +128,7 @@ reference:
 - title: "Merge and filter"
   desc: "Functions annotate and filter for canonical splicing"
 - contents:
+  - unique_mut_junc
   - is_in_rnaseq
   - combine_mut_junc
   - add_identified_in_RNA
@@ -139,7 +138,6 @@ reference:
   desc: "Other functions"
 - contents:
   - junc_to_gr
-  - effect_to_junction_rules
   - get_intronretention_alt_pos
   - next_junctions
   - sort_columns
