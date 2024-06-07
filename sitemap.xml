@@ -76,13 +76,25 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/effect_to_junction_rules.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/effect_to_junction_rules_wo_ir.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/exon_in_intron.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/filter_irfinder_txt.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_cispliceai_thresh.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_pangolin.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_spliceai.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/format_spliceai_thresh.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/generate_combined_dataset.html</loc>
@@ -115,10 +127,22 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/get_unknown_exon_intron_retention.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_irfinder_txt.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_leafcutter_counts.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_regtools_junc.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_spladder.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_star_sj.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/import_stringtie_gtf.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/index.html</loc>
@@ -157,7 +181,13 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/pangolin_effect_translation.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_cispliceai_thresh.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_gtf.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_irfinder_txt.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_mmsplice.html</loc>
@@ -169,10 +199,22 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_spliceai.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_spliceai_thresh.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/parse_star_sj.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/read_requant.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/read_suppa_ioe.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/regtools_transform.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/seq_truncate_nonstop.html</loc>
@@ -199,6 +241,21 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/spladder_transform_mutex_exon.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/stringtie_transform.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/stringtie_transform_format.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/suppa_import.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/suppa_transform.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/suppa_transform_format.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/toy_cds.html</loc>
   </url>
   <url>
@@ -220,7 +277,28 @@
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_for_requant.html</loc>
   </url>
   <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_irfinder_txt.html</loc>
+  </url>
+  <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_leafcutter_counts.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_regtools_junc.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_star_sj.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_suppa_ass_events.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_suppa_ir_events.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_suppa_mxe_events.html</loc>
+  </url>
+  <url>
+    <loc>https://tron-bioinformatics.github.io/splice2neo/reference/transform_suppa_se_events.html</loc>
   </url>
   <url>
     <loc>https://tron-bioinformatics.github.io/splice2neo/reference/unique_junc_mmsplice.html</loc>

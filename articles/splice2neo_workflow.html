@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Splice2neo example analysis • splice2neo</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.7</span>
       </span>
     </div>
 
@@ -149,6 +149,8 @@ also from other resources.</p>
 <span></span>
 <span><span class="co"># parse GTF file as txdb object</span></span>
 <span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in call_fun_in_txdbmaker("makeTxDbFromGFF", ...): makeTxDbFromGFF() has moved to the txdbmaker package. Please call</span></span>
+<span><span class="co">#&gt;   txdbmaker::makeTxDbFromGFF() to get rid of this warning.</span></span>
 <span><span class="co">#&gt; Import genomic features from the file as a GRanges object ... OK</span></span>
 <span><span class="co">#&gt; Prepare the 'metadata' data frame ... OK</span></span>
 <span><span class="co">#&gt; Make the TxDb object ...</span></span>
@@ -180,7 +182,7 @@ exons from a list of transcripts with
 <span><span class="co">#&gt;  chr [1:1316] "chr2:28680064-28739675:+" "chr2:28739736-28741333:+" ...</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="splice-junciton-id">Splice junciton id<a class="anchor" aria-label="anchor" href="#splice-junciton-id"></a>
+<h3 id="splice-junction-id">Splice junction id<a class="anchor" aria-label="anchor" href="#splice-junction-id"></a>
 </h3>
 <p>In splice2neo, splice junctions are represented by a
 <code>junc_id</code>, which is defined by the genomic coordinates of the
@@ -237,8 +239,9 @@ LeafCutter and SplAdder.</p>
 <span><span class="va">leafcutter</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/leafcutter_transform.html">leafcutter_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">leafcutter_path</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Importing Leafcutter files...</span></span>
-<span><span class="co">#&gt; Importing Leafcutter files completed</span></span>
-<span></span>
+<span><span class="co">#&gt; Importing Leafcutter files completed</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">leafcutter</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
@@ -256,38 +259,18 @@ LeafCutter and SplAdder.</p>
 </h4>
 <p>The output of the tool <a href="https://github.com/ratschlab/spladder" class="external-link">SplAdder</a> <span class="citation">(Kahles et al. 2016)</span> can be transformed using
 <code><a href="../reference/spladder_transform.html">spladder_transform()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spladder_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/spladder"</span>, package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">spladder</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/spladder_transform.html">spladder_transform</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">spladder_path</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Importing Spladder files ...</span></span>
-<span><span class="co">#&gt; Importing Spladder files completed</span></span>
-<span></span>
+<span><span class="co">#&gt; Importing Spladder files completed</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spladder</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
-<span><span class="co">#&gt;   junction_start junction_end strand chromosome Gene               class junc_id</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 20921104       20922808     +      chr22      ENSG00000099917.1… A3SS  chr22:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 20921104       20922809     +      chr22      ENSG00000099917.1… A3SS  chr22:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 41108521       41109155     -      chr17      ENSG00000266967.7… A3SS  chr17:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 41108577       41109155     -      chr17      ENSG00000266967.7… A3SS  chr17:…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 148881736      148884821    +      chr3       ENSG00000163755.9… A3SS  chr3:1…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 148881736      148884852    +      chr3       ENSG00000163755.9… A3SS  chr3:1…</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="combine-rna-seq-derived-splice-junctions">Combine RNA-seq derived splice junctions<a class="anchor" aria-label="anchor" href="#combine-rna-seq-derived-splice-junctions"></a>
-</h4>
-<p>Now we want to get a single <code>data.frame</code> of all splice
-junctions identified by RNA-seq tools and information by which tool they
-were identified.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rna_junctions</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/generate_combined_dataset.html">generate_combined_dataset</a></span><span class="op">(</span>spladder_juncs <span class="op">=</span> <span class="va">spladder</span>, leafcutter_juncs <span class="op">=</span> <span class="va">leafcutter</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rna_junctions</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
 <span><span class="co">#&gt;   junction_start junction_end strand chromosome Gene               class junc_id</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 20921104       20922808     +      chr22      ENSG00000099917.1… A3SS  chr22:…</span></span>
@@ -296,8 +279,31 @@ were identified.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 41108577       41109155     -      chr17      ENSG00000266967.7… A3SS  chr17:…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 148881736      148884821    +      chr3       ENSG00000163755.9… A3SS  chr3:1…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 148881736      148884852    +      chr3       ENSG00000163755.9… A3SS  chr3:1…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: identified_by_leafcutter &lt;lgl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   identified_by_spladder &lt;lgl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: number_supporting_reads &lt;dbl&gt;</span></span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="combine-rna-seq-derived-splice-junctions">Combine RNA-seq derived splice junctions<a class="anchor" aria-label="anchor" href="#combine-rna-seq-derived-splice-junctions"></a>
+</h4>
+<p>Now we want to get a single <code>data.frame</code> of all splice
+junctions identified by RNA-seq tools and information by which tool they
+were identified.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rna_junctions</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/generate_combined_dataset.html">generate_combined_dataset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"spladder_juncs"</span> <span class="op">=</span> <span class="va">spladder</span>, <span class="st">"leafcutter_juncs"</span> <span class="op">=</span> <span class="va">leafcutter</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rna_junctions</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt;   junc_id   junction_start junction_end strand chromosome identified_by_leafcu…¹</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr1:266… 26627515       26628185     -      chr1       TRUE                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr1:849… 84964231       84971694     -      chr1       TRUE                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr10:82… 82267130       82269057     +      chr10      FALSE                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> chr10:82… 82267130       82271900     +      chr10      FALSE                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> chr10:82… 82269227       82271900     +      chr10      FALSE                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> chr11:18… 18026082       18029488     -      chr11      TRUE                  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated name: ¹​identified_by_leafcutter_juncs</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: identified_by_spladder_juncs &lt;lgl&gt;, Gene &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   class &lt;chr&gt;, spladder_juncs_number_supporting_reads &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -316,7 +322,7 @@ annotation of Pangolin results works analogously with SpliceAI.</p>
 </h4>
 <p>Effect predictions by SpliceAI can be read with
 <code><a href="../reference/parse_spliceai.html">parse_spliceai()</a></code></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spliceai_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/spliceAI.vcf"</span>, package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># parse SpliceAI results </span></span>
@@ -342,7 +348,7 @@ relates gene symbols with GENCODE gene ids. If <code>gene_table</code>
 is provided, the formatted <code>data.frame</code> contains the GENCODE
 gene ids. While this is advised to better select relevant transcripts,
 it is not required.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gene_table</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/gene_table.tsv"</span>, package <span class="op">=</span></span>
 <span>                                <span class="st">"splice2neo"</span><span class="op">)</span><span class="op">)</span></span>
@@ -352,8 +358,9 @@ it is not required.</p>
 <span><span class="co">#&gt; <span style="color: #BB0000;">chr</span> (3): strand, gene_id, gene_name</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gene_table</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   strand gene_id              gene_name</span></span>
@@ -364,7 +371,7 @@ it is not required.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> -      ENSG00000136237.19_8 RAPGEF5  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> +      ENSG00000147316.13_4 MCPH1    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> +      ENSG00000138182.14_3 KIF20B</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># format SpliceAI results</span></span>
 <span><span class="va">splicai_formatted</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/format_spliceai.html">format_spliceai</a></span><span class="op">(</span><span class="va">spliceai</span>, gene_table <span class="op">=</span> <span class="va">gene_table</span><span class="op">)</span></span>
@@ -390,7 +397,7 @@ transcripts per row, meaning that there can be multiple annotated
 transcripts per junction and also multiple junctions per mutation
 effect. At this point, no filtering based on effect size has been
 applied meaning that the dataframe contains unlikely events.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># annotate SpliceAI junctions with all potential junctions and transcripts</span></span>
 <span><span class="va">spliceai_annotated</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/annotate_mut_effect.html">annotate_mut_effect</a></span><span class="op">(</span></span>
@@ -405,8 +412,9 @@ applied meaning that the dataframe contains unlikely events.</p>
 <span><span class="co">#&gt; INFO: build pairs...</span></span>
 <span><span class="co">#&gt; INFO: find overlapping exons...</span></span>
 <span><span class="co">#&gt; INFO: calculate junction coordinates from predicted effect...</span></span>
-<span><span class="co">#&gt; INFO: Evaluation of rules done.</span></span>
-<span></span>
+<span><span class="co">#&gt; INFO: Evaluation of rules done.</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="va">spliceai_annotated</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">mut_id</span>, <span class="va">junc_id</span>, <span class="va">gene_id</span>, <span class="va">tx_id</span>, <span class="va">effect</span>, <span class="va">score</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -425,7 +433,7 @@ transcripts (defined by <code>mut_id</code>, <code>junc_id</code>,
 <code>tx_id</code> ). The function <code><a href="../reference/unique_mut_junc.html">unique_mut_junc()</a></code> can be
 used to filter for unique altered transcripts by keeping the effect with
 the highest effect score.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># unique altered transcripts</span></span>
 <span><span class="va">spliceai_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unique_mut_junc.html">unique_mut_junc</a></span><span class="op">(</span><span class="va">spliceai_annotated</span><span class="op">)</span></span>
 <span></span>
@@ -437,7 +445,7 @@ the highest effect score.</p>
 </h4>
 <p>We can read the effect predictions by MMSplice with
 <code><a href="../reference/parse_mmsplice.html">parse_mmsplice()</a></code></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmsplice_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/MMsplice.csv"</span>, package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># parse MMSplice results </span></span>
@@ -461,7 +469,7 @@ the highest effect score.</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   efficiency &lt;dbl&gt;, mut_id &lt;chr&gt;</span></span></span></code></pre></div>
 <p>The MMSplice data can be annotated with all potential splice
 junctions using <code><a href="../reference/annotate_mmsplice.html">annotate_mmsplice()</a></code></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mmsplice_annotated</span> <span class="op">&lt;-</span> <span class="va">mmsplice</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/annotate_mmsplice.html">annotate_mmsplice</a></span><span class="op">(</span>transcripts <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span></span>
 <span></span>
@@ -484,7 +492,7 @@ junctions using <code><a href="../reference/annotate_mmsplice.html">annotate_mms
 altered transcripts for exon inclusion events. We use the function
 <code><a href="../reference/unique_junc_mmsplice.html">unique_junc_mmsplice()</a></code> to filter for unique altered
 transcripts by keeping the effect with the highest effect score.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># unique altered transcripts</span></span>
 <span><span class="va">mmsplice_annotated_unique</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/unique_junc_mmsplice.html">unique_junc_mmsplice</a></span><span class="op">(</span><span class="va">mmsplice_annotated</span><span class="op">)</span></span>
 <span></span>
@@ -500,7 +508,7 @@ contain unique altered transcripts (defined by <code>mut_id</code>,
 <code>junc_id</code>, <code>tx_id</code>) in rows. Tool specific
 information are defined in columns starting with the respective tool
 name.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mut_junctions</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/combine_mut_junc.html">combine_mut_junc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"spliceai"</span> <span class="op">=</span> <span class="va">spliceai_annotated_unique</span>, </span>
 <span>    <span class="st">"mmsplice"</span> <span class="op">=</span> <span class="va">mmsplice_annotated_unique</span></span>
@@ -528,19 +536,19 @@ name.</p>
 <h4 id="annotate-canonical-junctions">Annotate canonical junctions<a class="anchor" aria-label="anchor" href="#annotate-canonical-junctions"></a>
 </h4>
 <p>To exclude junctions expressed in healthy tissues, we here want to
-filter predicted junctions for non-canoncal splice junctions. We can use
-for instance exon-exon junctions from GENCODE and junctions found in
+filter predicted junctions for non-canonical splice junctions. We can
+use for instance exon-exon junctions from GENCODE and junctions found in
 healthy tisssue samples. Splice2neo also provides the function
 <code><a href="../reference/bed_to_junc.html">bed_to_junc()</a></code> which allows to transform a bed file into a
 list of splice junctions.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># this is just an example file with a few canonical junctions --&gt; incomplete</span></span>
 <span><span class="va">canonical_juncs_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/test_canonical.bed"</span>, package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">canonical_junctios</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bed_to_junc.html">bed_to_junc</a></span><span class="op">(</span>bed_file <span class="op">=</span> <span class="va">canonical_juncs_file</span>, type <span class="op">=</span> <span class="st">"exon-exon"</span><span class="op">)</span></span></code></pre></div>
 <p>Annotate mutation-retrieved splice junction whether they are
 canonical splice junctions.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># annotated canonical junctions</span></span>
 <span><span class="va">mut_junctions</span> <span class="op">&lt;-</span> <span class="va">mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_canonical <span class="op">=</span> <span class="fu"><a href="../reference/is_canonical.html">is_canonical</a></span><span class="op">(</span><span class="va">junc_id</span>, ref_junc <span class="op">=</span> <span class="va">canonical_junctios</span>, exons_gr <span class="op">=</span> <span class="va">transcripts</span><span class="op">)</span><span class="op">)</span></span>
@@ -551,8 +559,9 @@ canonical splice junctions.</p>
 <span><span class="co">#&gt;   is_canonical     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> FALSE          202</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> TRUE           124</span></span>
-<span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> TRUE           124</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># remove canonical junctions </span></span>
 <span><span class="va">noncan_mut_junctions</span> <span class="op">&lt;-</span> <span class="va">mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="va">is_canonical</span><span class="op">)</span></span></code></pre></div>
@@ -562,7 +571,7 @@ canonical splice junctions.</p>
 </h4>
 <p>Annotate whether mutation-retrieved splice junction were also
 detected by a RNA-seq tool.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">noncan_mut_junctions</span> <span class="op">&lt;-</span> <span class="va">noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_in_rnaseq <span class="op">=</span> <span class="fu"><a href="../reference/is_in_rnaseq.html">is_in_rnaseq</a></span><span class="op">(</span><span class="va">junc_id</span>, rna_juncs <span class="op">=</span> <span class="va">rna_junctions</span><span class="op">$</span><span class="va">junc_id</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -573,7 +582,7 @@ detected by a RNA-seq tool.</p>
 altered transcript with <code><a href="../reference/add_context_seq.html">add_context_seq()</a></code>. Here, we set the
 <code>size</code> parameter to 400 to extract the sequence of +/-200
 nucleotides around the splice junctions as context sequence.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">noncan_mut_junctions</span> <span class="op">&lt;-</span> <span class="va">noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_context_seq.html">add_context_seq</a></span><span class="op">(</span></span>
 <span>    size <span class="op">=</span> <span class="fl">400</span>,</span>
@@ -605,7 +614,7 @@ wild-type amino acids flanking the junction or novel sequence caused by
 the splice junction to the left and to the right. If the junction leads
 to a reading frame shift, sequences are flanked by wild-type amino acids
 to the left and are annotated until the first stop codon.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">noncan_mut_junctions</span> <span class="op">&lt;-</span> <span class="va">noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_peptide.html">add_peptide</a></span><span class="op">(</span>flanking_size <span class="op">=</span> <span class="fl">13</span>,</span>
 <span>              bsg <span class="op">=</span> <span class="fu">BSgenome.Hsapiens.UCSC.hg19</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/BSgenome.Hsapiens.UCSC.hg19/man/package.html" class="external-link">BSgenome.Hsapiens.UCSC.hg19</a></span>,</span>
@@ -640,7 +649,7 @@ region of a predicted retained introns. We do not want to consider them
 in the downstream analysis as it is difficult to differentiate if the
 read support from RNA-seq relates to the retained intron or to the exon
 of the other transcript.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># annotate exons in introns of other transcript</span></span>
 <span><span class="va">noncan_mut_junctions</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -660,7 +669,7 @@ EasyQuant should be run in interval mode for the re-quantification of
 splice junction and it is advised to set the <code>BP_distannce</code>
 parameter to 10 (see <a href="https://github.com/TRON-Bioinformatics/easyquant" class="external-link">EasyQuant
 README</a>).</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># transform for EasyQuant</span></span>
 <span><span class="va">easyquant_input</span> <span class="op">&lt;-</span> <span class="va">noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/transform_for_requant.html">transform_for_requant</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -678,7 +687,7 @@ README</a>).</p>
 <p>After running EasyQuant (which is not shown here), we can import the
 EasyQuant results with the splice2neo function
 <code><a href="../reference/map_requant.html">map_requant()</a></code>.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># path to easyquant folder </span></span>
 <span><span class="va">easyquant_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/example/easyquant"</span>, package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span>
 <span></span>
@@ -700,7 +709,7 @@ skipping events, want use the number of junction reads that map on the
 splice junction (<code>junc_interval_start</code>) and/or the number of
 spanning reads that bridge the splice junction
 (<code>span_interval_start</code>).</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># re-quantification results</span></span>
 <span><span class="va">requant_noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">spliceai_event_type</span> <span class="op">!=</span> <span class="st">"intron retention"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -735,7 +744,7 @@ interest<br>
 interest. This value can be misleading by skewed read distribution and
 the user may rather want to use the median coverage</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># re-quantification results</span></span>
 <span><span class="va">requant_noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">spliceai_event_type</span> <span class="op">==</span> <span class="st">"intron retention"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -759,7 +768,7 @@ the user may rather want to use the median coverage</li>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> chr11_18028133_C_T chr11:… ENST…              85         0.937               4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> chr11_18028133_C_T chr11:… ENST…              85         0.937               4</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: coverage_mean &lt;dbl&gt;</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># alternative to only import EasyQuant results without merging </span></span>
 <span></span>
 <span><span class="va">requantification_results</span>  <span class="op">&lt;-</span></span>
@@ -771,8 +780,9 @@ the user may rather want to use the median coverage</li>
 <span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (6): overlap_interval_end_reads, span_interval_end_pairs, within_interva...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">requantification_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 20</span></span></span>
 <span><span class="co">#&gt;   name                 junc_interval_start junc_interval_end span_interval_start</span></span>
@@ -793,7 +803,7 @@ the user may rather want to use the median coverage</li>
 </div>
 </div>
 <div class="section level3">
-<h3 id="prediction-of-mutation-assoicated-splice-targets">Prediction of mutation-assoicated splice targets<a class="anchor" aria-label="anchor" href="#prediction-of-mutation-assoicated-splice-targets"></a>
+<h3 id="prediction-of-mutation-associated-splice-targets">Prediction of mutation-associated splice targets<a class="anchor" aria-label="anchor" href="#prediction-of-mutation-associated-splice-targets"></a>
 </h3>
 <p>In the analysis described above we identified mutation-retrieved
 splice junctions supported by RNA-seq. We have developed a stringent
@@ -805,7 +815,7 @@ and exon skipping and define such splice junctions as targets that have
 a |splice effect score| <span class="math inline">\(\geq\)</span> 0.35
 and are found by LeafCutter/SplAdder or have at least 3 junction
 reads.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># exclude intron retention</span></span>
 <span><span class="va">potential_targets</span> <span class="op">&lt;-</span> <span class="va">requant_noncan_mut_junctions</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">spliceai_event_type</span> <span class="op">!=</span> <span class="st">"intron retention"</span><span class="op">)</span></span>
@@ -828,7 +838,7 @@ reads.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 106 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated name: ¹​mmsplice_delta_logit_psi</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: junc_interval_start &lt;dbl&gt;</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># apply detection rule </span></span>
 <span><span class="va">targets</span> <span class="op">&lt;-</span> <span class="va">potential_targets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">spliceai_score</span> <span class="op">&gt;=</span> <span class="fl">0.35</span> <span class="op">|</span> <span class="va">mmsplice_delta_logit_psi</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.35</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -836,7 +846,7 @@ reads.</p>
 <p>The data in <code>targets</code> can contain several altered
 transcripts per junctions which may lead to several neoantigen candidate
 sequences per target splice junction.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># apply detection rule </span></span>
 <span><span class="va">targets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">junc_id</span>, <span class="va">peptide_context</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -862,10 +872,10 @@ sequences per target splice junction.</p>
 </h3>
 <p>Here, we have a list of splice junctions and want to know all
 potential affected transcripts.</p>
-<p>Given a <code>data.frame</code> of splice junctions (with a colum
+<p>Given a <code>data.frame</code> of splice junctions (with a column
 <code>junc_id</code>), the function <code><a href="../reference/add_tx.html">add_tx()</a></code> annotates all
 possible transcripts which overlap with the splice junctions.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  junc_id <span class="op">=</span> <span class="va">toy_junc_id</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">10</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
@@ -895,7 +905,7 @@ per junction that are more likely to be affected by a junction with
 <code><a href="../reference/choose_tx.html">choose_tx()</a></code>. Please note that this function may loose
 relevant or keep irrelevant junction-transcripts in particular in
 regions with multiple isoforms with distinct splicing pattern.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">selected_junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/choose_tx.html">choose_tx</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -969,10 +979,10 @@ Splicing from <span>DNA</span> Sequence Using
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.3.3 (2024-02-29)</span></span>
-<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
+<span><span class="co">#&gt; R version 4.4.0 (2024-04-24)</span></span>
+<span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">#&gt; Running under: Ubuntu 22.04.4 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
@@ -992,66 +1002,68 @@ Splicing from <span>DNA</span> Sequence Using
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] dplyr_1.1.4      splice2neo_0.6.6</span></span>
+<span><span class="co">#&gt; [1] dplyr_1.1.4      splice2neo_0.6.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;   [1] DBI_1.2.2                         bitops_1.0-7                     </span></span>
-<span><span class="co">#&gt;   [3] permute_0.9-7                     biomaRt_2.58.2                   </span></span>
-<span><span class="co">#&gt;   [5] rlang_1.1.3                       magrittr_2.0.3                   </span></span>
-<span><span class="co">#&gt;   [7] vcfR_1.15.0                       matrixStats_1.2.0                </span></span>
-<span><span class="co">#&gt;   [9] compiler_4.3.3                    RSQLite_2.3.5                    </span></span>
-<span><span class="co">#&gt;  [11] mgcv_1.9-1                        GenomicFeatures_1.54.4           </span></span>
-<span><span class="co">#&gt;  [13] png_0.1-8                         systemfonts_1.0.6                </span></span>
-<span><span class="co">#&gt;  [15] vctrs_0.6.5                       stringr_1.5.1                    </span></span>
-<span><span class="co">#&gt;  [17] memuse_4.2-3                      pkgconfig_2.0.3                  </span></span>
-<span><span class="co">#&gt;  [19] crayon_1.5.2                      fastmap_1.1.1                    </span></span>
-<span><span class="co">#&gt;  [21] dbplyr_2.5.0                      XVector_0.42.0                   </span></span>
-<span><span class="co">#&gt;  [23] utf8_1.2.4                        Rsamtools_2.18.0                 </span></span>
-<span><span class="co">#&gt;  [25] rmarkdown_2.26                    tzdb_0.4.0                       </span></span>
-<span><span class="co">#&gt;  [27] ragg_1.3.0                        purrr_1.0.2                      </span></span>
-<span><span class="co">#&gt;  [29] bit_4.0.5                         xfun_0.42                        </span></span>
-<span><span class="co">#&gt;  [31] zlibbioc_1.48.2                   cachem_1.0.8                     </span></span>
-<span><span class="co">#&gt;  [33] GenomeInfoDb_1.38.8               jsonlite_1.8.8                   </span></span>
-<span><span class="co">#&gt;  [35] progress_1.2.3                    blob_1.2.4                       </span></span>
-<span><span class="co">#&gt;  [37] DelayedArray_0.28.0               BiocParallel_1.36.0              </span></span>
-<span><span class="co">#&gt;  [39] parallel_4.3.3                    prettyunits_1.2.0                </span></span>
-<span><span class="co">#&gt;  [41] cluster_2.1.6                     R6_2.5.1                         </span></span>
-<span><span class="co">#&gt;  [43] bslib_0.6.2                       stringi_1.8.3                    </span></span>
-<span><span class="co">#&gt;  [45] rtracklayer_1.62.0                GenomicRanges_1.54.1             </span></span>
-<span><span class="co">#&gt;  [47] jquerylib_0.1.4                   Rcpp_1.0.12                      </span></span>
-<span><span class="co">#&gt;  [49] SummarizedExperiment_1.32.0       knitr_1.45                       </span></span>
-<span><span class="co">#&gt;  [51] readr_2.1.5                       IRanges_2.36.0                   </span></span>
-<span><span class="co">#&gt;  [53] Matrix_1.6-5                      splines_4.3.3                    </span></span>
-<span><span class="co">#&gt;  [55] tidyselect_1.2.1                  abind_1.4-5                      </span></span>
-<span><span class="co">#&gt;  [57] yaml_2.3.8                        vegan_2.6-4                      </span></span>
-<span><span class="co">#&gt;  [59] codetools_0.2-19                  curl_5.2.1                       </span></span>
-<span><span class="co">#&gt;  [61] lattice_0.22-5                    tibble_3.2.1                     </span></span>
-<span><span class="co">#&gt;  [63] Biobase_2.62.0                    withr_3.0.0                      </span></span>
-<span><span class="co">#&gt;  [65] KEGGREST_1.42.0                   evaluate_0.23                    </span></span>
-<span><span class="co">#&gt;  [67] pinfsc50_1.3.0                    desc_1.4.3                       </span></span>
-<span><span class="co">#&gt;  [69] BiocFileCache_2.10.1              xml2_1.3.6                       </span></span>
-<span><span class="co">#&gt;  [71] Biostrings_2.70.3                 pillar_1.9.0                     </span></span>
-<span><span class="co">#&gt;  [73] filelock_1.0.3                    MatrixGenerics_1.14.0            </span></span>
-<span><span class="co">#&gt;  [75] stats4_4.3.3                      generics_0.1.3                   </span></span>
-<span><span class="co">#&gt;  [77] vroom_1.6.5                       RCurl_1.98-1.14                  </span></span>
-<span><span class="co">#&gt;  [79] S4Vectors_0.40.2                  hms_1.1.3                        </span></span>
-<span><span class="co">#&gt;  [81] glue_1.7.0                        tools_4.3.3                      </span></span>
-<span><span class="co">#&gt;  [83] BiocIO_1.12.0                     BSgenome_1.70.2                  </span></span>
-<span><span class="co">#&gt;  [85] GenomicAlignments_1.38.2          fs_1.6.3                         </span></span>
-<span><span class="co">#&gt;  [87] XML_3.99-0.16.1                   grid_4.3.3                       </span></span>
-<span><span class="co">#&gt;  [89] tidyr_1.3.1                       ape_5.7-1                        </span></span>
-<span><span class="co">#&gt;  [91] AnnotationDbi_1.64.1              nlme_3.1-164                     </span></span>
-<span><span class="co">#&gt;  [93] GenomeInfoDbData_1.2.11           restfulr_0.0.15                  </span></span>
-<span><span class="co">#&gt;  [95] cli_3.6.2                         rappdirs_0.3.3                   </span></span>
-<span><span class="co">#&gt;  [97] textshaping_0.3.7                 fansi_1.0.6                      </span></span>
-<span><span class="co">#&gt;  [99] S4Arrays_1.2.1                    viridisLite_0.4.2                </span></span>
-<span><span class="co">#&gt; [101] BSgenome.Hsapiens.UCSC.hg19_1.4.3 sass_0.4.9                       </span></span>
-<span><span class="co">#&gt; [103] digest_0.6.35                     BiocGenerics_0.48.1              </span></span>
-<span><span class="co">#&gt; [105] SparseArray_1.2.4                 rjson_0.2.21                     </span></span>
-<span><span class="co">#&gt; [107] memoise_2.0.1                     htmltools_0.5.7                  </span></span>
-<span><span class="co">#&gt; [109] pkgdown_2.0.7                     lifecycle_1.0.4                  </span></span>
-<span><span class="co">#&gt; [111] httr_1.4.7                        bit64_4.0.5                      </span></span>
-<span><span class="co">#&gt; [113] MASS_7.3-60.0.1</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] DBI_1.2.3                         bitops_1.0-7                     </span></span>
+<span><span class="co">#&gt;   [3] httr2_1.0.1                       permute_0.9-7                    </span></span>
+<span><span class="co">#&gt;   [5] biomaRt_2.60.0                    rlang_1.1.4                      </span></span>
+<span><span class="co">#&gt;   [7] magrittr_2.0.3                    vcfR_1.15.0                      </span></span>
+<span><span class="co">#&gt;   [9] matrixStats_1.3.0                 compiler_4.4.0                   </span></span>
+<span><span class="co">#&gt;  [11] RSQLite_2.3.7                     mgcv_1.9-1                       </span></span>
+<span><span class="co">#&gt;  [13] GenomicFeatures_1.56.0            png_0.1-8                        </span></span>
+<span><span class="co">#&gt;  [15] systemfonts_1.1.0                 vctrs_0.6.5                      </span></span>
+<span><span class="co">#&gt;  [17] txdbmaker_1.0.0                   stringr_1.5.1                    </span></span>
+<span><span class="co">#&gt;  [19] memuse_4.2-3                      pkgconfig_2.0.3                  </span></span>
+<span><span class="co">#&gt;  [21] crayon_1.5.2                      fastmap_1.2.0                    </span></span>
+<span><span class="co">#&gt;  [23] dbplyr_2.5.0                      XVector_0.44.0                   </span></span>
+<span><span class="co">#&gt;  [25] utf8_1.2.4                        Rsamtools_2.20.0                 </span></span>
+<span><span class="co">#&gt;  [27] rmarkdown_2.27                    tzdb_0.4.0                       </span></span>
+<span><span class="co">#&gt;  [29] UCSC.utils_1.0.0                  ragg_1.3.2                       </span></span>
+<span><span class="co">#&gt;  [31] purrr_1.0.2                       bit_4.0.5                        </span></span>
+<span><span class="co">#&gt;  [33] xfun_0.44                         zlibbioc_1.50.0                  </span></span>
+<span><span class="co">#&gt;  [35] cachem_1.1.0                      GenomeInfoDb_1.40.1              </span></span>
+<span><span class="co">#&gt;  [37] jsonlite_1.8.8                    progress_1.2.3                   </span></span>
+<span><span class="co">#&gt;  [39] blob_1.2.4                        DelayedArray_0.30.1              </span></span>
+<span><span class="co">#&gt;  [41] BiocParallel_1.38.0               cluster_2.1.6                    </span></span>
+<span><span class="co">#&gt;  [43] parallel_4.4.0                    prettyunits_1.2.0                </span></span>
+<span><span class="co">#&gt;  [45] R6_2.5.1                          bslib_0.7.0                      </span></span>
+<span><span class="co">#&gt;  [47] stringi_1.8.4                     rtracklayer_1.64.0               </span></span>
+<span><span class="co">#&gt;  [49] GenomicRanges_1.56.0              jquerylib_0.1.4                  </span></span>
+<span><span class="co">#&gt;  [51] Rcpp_1.0.12                       SummarizedExperiment_1.34.0      </span></span>
+<span><span class="co">#&gt;  [53] knitr_1.47                        readr_2.1.5                      </span></span>
+<span><span class="co">#&gt;  [55] IRanges_2.38.0                    splines_4.4.0                    </span></span>
+<span><span class="co">#&gt;  [57] Matrix_1.7-0                      tidyselect_1.2.1                 </span></span>
+<span><span class="co">#&gt;  [59] abind_1.4-5                       yaml_2.3.8                       </span></span>
+<span><span class="co">#&gt;  [61] vegan_2.6-6.1                     codetools_0.2-20                 </span></span>
+<span><span class="co">#&gt;  [63] curl_5.2.1                        lattice_0.22-6                   </span></span>
+<span><span class="co">#&gt;  [65] tibble_3.2.1                      Biobase_2.64.0                   </span></span>
+<span><span class="co">#&gt;  [67] withr_3.0.0                       KEGGREST_1.44.0                  </span></span>
+<span><span class="co">#&gt;  [69] evaluate_0.23                     pinfsc50_1.3.0                   </span></span>
+<span><span class="co">#&gt;  [71] desc_1.4.3                        BiocFileCache_2.12.0             </span></span>
+<span><span class="co">#&gt;  [73] xml2_1.3.6                        Biostrings_2.72.1                </span></span>
+<span><span class="co">#&gt;  [75] pillar_1.9.0                      filelock_1.0.3                   </span></span>
+<span><span class="co">#&gt;  [77] MatrixGenerics_1.16.0             stats4_4.4.0                     </span></span>
+<span><span class="co">#&gt;  [79] generics_0.1.3                    vroom_1.6.5                      </span></span>
+<span><span class="co">#&gt;  [81] RCurl_1.98-1.14                   S4Vectors_0.42.0                 </span></span>
+<span><span class="co">#&gt;  [83] hms_1.1.3                         glue_1.7.0                       </span></span>
+<span><span class="co">#&gt;  [85] tools_4.4.0                       BiocIO_1.14.0                    </span></span>
+<span><span class="co">#&gt;  [87] BSgenome_1.72.0                   GenomicAlignments_1.40.0         </span></span>
+<span><span class="co">#&gt;  [89] fs_1.6.4                          XML_3.99-0.16.1                  </span></span>
+<span><span class="co">#&gt;  [91] grid_4.4.0                        tidyr_1.3.1                      </span></span>
+<span><span class="co">#&gt;  [93] ape_5.8                           AnnotationDbi_1.66.0             </span></span>
+<span><span class="co">#&gt;  [95] nlme_3.1-164                      GenomeInfoDbData_1.2.12          </span></span>
+<span><span class="co">#&gt;  [97] restfulr_0.0.15                   cli_3.6.2                        </span></span>
+<span><span class="co">#&gt;  [99] rappdirs_0.3.3                    textshaping_0.4.0                </span></span>
+<span><span class="co">#&gt; [101] fansi_1.0.6                       viridisLite_0.4.2                </span></span>
+<span><span class="co">#&gt; [103] S4Arrays_1.4.1                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span></span>
+<span><span class="co">#&gt; [105] sass_0.4.9                        digest_0.6.35                    </span></span>
+<span><span class="co">#&gt; [107] BiocGenerics_0.50.0               SparseArray_1.4.8                </span></span>
+<span><span class="co">#&gt; [109] rjson_0.2.21                      htmlwidgets_1.6.4                </span></span>
+<span><span class="co">#&gt; [111] memoise_2.0.1                     htmltools_0.5.8.1                </span></span>
+<span><span class="co">#&gt; [113] pkgdown_2.0.9                     lifecycle_1.0.4                  </span></span>
+<span><span class="co">#&gt; [115] httr_1.4.7                        MASS_7.3-60.2                    </span></span>
+<span><span class="co">#&gt; [117] bit64_4.0.5</span></span></code></pre></div>
 </div>
   </div>
 
@@ -1067,12 +1079,12 @@ Splicing from <span>DNA</span> Sequence Using
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Jonas Ibn-Salem, Franziska Lang.</p>
+<p>Developed by Jonas Ibn-Salem, Franziska Lang, Michelle Cervante, Johannes Hausmann, Patrick Sorn.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

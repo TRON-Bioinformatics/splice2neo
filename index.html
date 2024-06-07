@@ -6,18 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aberrant splice junction analysis with associated mutations • splice2neo</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Aberrant splice junction analysis with associated mutations">
-<meta property="og:description" content="This package provides functions for the analysis of alternative or 
- aberrant splicing junctions and their creation from or association with 
- somatic mutations. It integrates the output of several tools which predict 
- splicing effects from mutation or RNA-seq data into a common splice junction 
- format based on genomic coordinates. Splice junctions can be annotated with 
- affected transcript sequences, CDS, and resulting peptide sequences.  ">
+<meta property="og:description" content="This package provides functions for analyzing alternative splicing and aberrant splice junctions and their creation from or association with somatic mutations. It integrates the output of several tools that predict splicing effects from mutation or RNA-seq data into a unified splice junction format. Splice junctions can be annotated with affected transcript sequences, CDS, and resulting peptide sequences.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -38,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.7</span>
       </span>
     </div>
 
@@ -87,12 +82,33 @@
 </h1></div>
 <!-- badges: start -->
 
+<p>Documentation: <a href="https://tron-bioinformatics.github.io/splice2neo/" class="uri">https://tron-bioinformatics.github.io/splice2neo/</a></p>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>This package provides functions for the analysis of splice junctions and their association with somatic mutations. It integrates the output of several tools which predict splicing effects from mutations or which detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Detected splice junctions can be filtered against canonical splice junctsion and annotated with affected transcript sequences, CDS, and resulting peptide sequences. Splice2neo currently supports splice events from alternative 3’/5’ splice sites, exons skipping, intron retentions, exitrons and mutually exclusive exons.<br>
-Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions which are tumor-specific and can encode neoantigen candidates.</p>
-<p>Documentation: <a href="https://tron-bioinformatics.github.io/splice2neo/" class="uri">https://tron-bioinformatics.github.io/splice2neo/</a></p>
+<p>This package provides functions for the analysis of splice junctions and their association with somatic mutations. It integrates the output of several tools that predict splicing effects from mutations or detect expressed splice junctions from RNA-seq data into a standardized splice junction format based on genomic coordinates. Users can filter detected splice junctions against canonical splice junctions and annotate them with affected transcript sequences, CDS, and resulting peptide sequences. Splice2neo supports splice events from alternative 3’/5’ splice sites, exons skipping, intron retentions, exitrons, and mutually exclusive exons. Integrating splice2neo functions and detection rules based on splice effect scores and RNA-seq support facilitates the identification of mutation-associated splice junctions that are tumor-specific and can encode neoantigen candidates.</p>
+<p>Currently, splice2neo supports the output data from the following tools:</p>
+<ul>
+<li>Mutation effect prediction tools:
+<ul>
+<li><a href="https://github.com/Illumina/SpliceAI" class="external-link">SpliceAI</a></li>
+<li><a href="https://github.com/YStrauch/CI-SpliceAI__Annotation" class="external-link">CI-SpliceAI</a></li>
+<li><a href="https://github.com/gagneurlab/MMSplice_MTSplice" class="external-link">MMsplice</a></li>
+<li><a href="https://github.com/tkzeng/Pangolin" class="external-link">Pangolin</a></li>
+</ul>
+</li>
+<li>RNA-seq-based splice junction detection tools:
+<ul>
+<li><a href="https://github.com/davidaknowles/leafcutter" class="external-link">LeafCutter</a></li>
+<li><a href="https://github.com/griffithlab/regtools" class="external-link">RegTools</a></li>
+<li><a href="https://github.com/ratschlab/spladder" class="external-link">SplAdder</a></li>
+<li><a href="https://github.com/RitchieLabIGH/IRFinder" class="external-link">IRfinder</a></li>
+<li><a href="https://github.com/comprna/SUPPA" class="external-link">SUPPA2</a></li>
+<li><a href="https://github.com/alexdobin/STAR" class="external-link">STAR</a></li>
+<li><a href="https://github.com/gpertea/stringtie" class="external-link">StringTie</a></li>
+</ul>
+</li>
+</ul>
 <p>For a more detailed description and a full example workflow see the <a href="https://tron-bioinformatics.github.io/splice2neo/articles/splice2neo_workflow.html">vignette</a></p>
 </div>
 <div class="section level2">
@@ -188,7 +204,6 @@ Integrating splice2neo functions and detection rules based on splice effect scor
 <p>Here, we use the splice junctions to modify the coding sequences (CDS) of the reference transcripts. The resulting CDS sequences are translated into protein sequence and further annotated with the peptide around the junction, the relative position of the splice junction in the peptide, and the location of the junction in an open reading frame (ORF).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span></span>
 <span><span class="va">toy_junc_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
 <span>  </span>
 <span>  <span class="co"># add peptide sequence</span></span>
@@ -250,6 +265,9 @@ Integrating splice2neo functions and detection rules based on splice effect scor
 <ul class="list-unstyled">
 <li>Jonas Ibn-Salem <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9886-113X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Franziska Lang <br><small class="roles"> Author </small>  </li>
+<li>Michelle Cervante <br><small class="roles"> Author </small>  </li>
+<li>Johannes Hausmann <br><small class="roles"> Author </small>  </li>
+<li>Patrick Sorn <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -258,7 +276,7 @@ Integrating splice2neo functions and detection rules based on splice effect scor
 <ul class="list-unstyled">
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/actions" class="external-link"><img src="https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master" class="external-link"><img src="https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.7-blue.svg"></a></li>
+<li><a href="https://github.com/TRON-Bioinformatics/splice2neo" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.6.6-blue.svg"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-blue.svg"></a></li>
 <li><a href="https://github.com/TRON-Bioinformatics/splice2neo/commits/dev" class="external-link"><img src="https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg"></a></li>
 </ul>
@@ -270,12 +288,12 @@ Integrating splice2neo functions and detection rules based on splice effect scor
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Jonas Ibn-Salem, Franziska Lang.</p>
+<p>Developed by Jonas Ibn-Salem, Franziska Lang, Michelle Cervante, Johannes Hausmann, Patrick Sorn.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
