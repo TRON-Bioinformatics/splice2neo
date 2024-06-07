@@ -12,7 +12,7 @@ transform_star_sj(tib)
 \value{
 A tibble in standardized junction format
 
-Junctions without strand annotatoin "*" are filtered out.
+Junctions without strand annotation "*" are filtered out.
 }
 \description{
 Transforms STAR intermediate table into standardized junction format

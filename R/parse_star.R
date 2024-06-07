@@ -49,7 +49,7 @@ import_star_sj <- function(file.name) {
 #'
 #' @return A tibble in standardized junction format
 #'
-#' Junctions without strand annotatoin "*" are filtered out.
+#' Junctions without strand annotation "*" are filtered out.
 #'
 #' @examples
 #' path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")

@@ -73,7 +73,9 @@ combine_mut_junc <- function(junc_data_list){
 
   for (df in junc_data_list_names){
     junc_df <- junc_df %>%
-      left_join(df, by = c("mut_id", "tx_id", "junc_id"))
+      left_join(df,
+                by = c("mut_id", "tx_id", "junc_id"),
+                relationship = "many-to-many")
   }
 
   return(junc_df)

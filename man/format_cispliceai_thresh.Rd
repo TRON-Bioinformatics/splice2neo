@@ -7,8 +7,8 @@
 format_cispliceai_thresh(cispliceai_variants)
 }
 \arguments{
-\item{spliceai_variants}{\link[tibble:tibble-package]{tibble} with parsed
-spliceAI mutations from \code{\link{parse_spliceai}}}
+\item{cispliceai_variants}{\link[tibble:tibble-package]{tibble} with parsed
+CI-SpliceAI mutations from \code{\link{parse_spliceai}}}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with splicing effects per row

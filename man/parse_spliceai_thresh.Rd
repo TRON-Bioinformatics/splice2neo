@@ -23,5 +23,5 @@ parse_spliceai_thresh(spliceai_file)
 
 }
 \seealso{
-\code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
+\code{\link{parse_spliceai}}, \code{\link{format_spliceai_thresh}}, \code{\link{annotate_mut_effect}}
 }

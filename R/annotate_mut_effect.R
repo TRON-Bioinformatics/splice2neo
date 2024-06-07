@@ -69,7 +69,8 @@ annotate_mut_effect <- function(effect_df,
     names(var_gr) <- effect_df$effect_index
 
     message("INFO: calculate coordinates of upstream and downstream exons...")
-    # get all possible junctions of by start and end coordinates of upsteam and downstream exons
+
+    # get all possible junctions by start and end coordinates of upstream and downstream exons
     next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
 
     message("INFO: calculate junction coordinates from predicted effect...")
@@ -109,7 +110,8 @@ annotate_mut_effect <- function(effect_df,
       ) %>%
       left_join(
         effect_rule_table,
-        by = c("effect")
+        by = c("effect"),
+        relationship = "many-to-many"
       ) %>%
 
       # apply rules

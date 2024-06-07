@@ -28,7 +28,8 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
 
     # as no annotation on acceptor or donor existst in pangolin, both are considered
     left_join(pangolin_effect_translation,
-              by = "effect_direction") %>%
+              by = "effect_direction",
+              relationship = "many-to-many") %>%
 
     # add unique IDs for mutation
     mutate(
