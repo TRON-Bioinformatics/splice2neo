@@ -1,3 +1,35 @@
+# splice2neo 0.6.7
+
+## Added:
+
+ - Functionality from splice2neo_neoants:
+    - CI-SpliceAI parsing and formatting functions with example data and tests
+    - IRFinder parsing and filtering functions with example data and tests
+    - StringTie parsing and formatting functions
+    - SUPPA2 parsing and formatting functions
+    - STAR parsing and formatting functions with example data and tests
+    - RegTools parsing and formatting functions with example data and tests
+ - add test for empty CI-SpliceAI input file
+ - add more global variables to avoid notes in R CMD check
+
+## Changed:
+
+ - Update CI/CD pipeline for less verbosity during R pkg installations
+ - Return single-row data.frame for empty input in `annotate_mut_effect()`
+ - include 'number_of_supporting_reads` when parsing SplAdder output
+ - generalize `generate_combined_dataset()` to multiple inputs
+ - Update README with list of supported tools
+ - add option consider_intron_retention to `annotate_mut_effect()`
+ - adjust syntax for dplyr >= 1.1.1
+ - remove rarely used pkgs from Imports
+ - simplify code in parse_spliceai_thresh()
+ - minor spell check fixes and doc updates
+
+## Fixed: 
+
+ - fix warnings due to NA's in CI-SpliceAI parsing function
+ - fix use of `generate_combined_dataset()` in vignette
+
 # splice2neo 0.6.6
 
 * add vignette with example workflow
