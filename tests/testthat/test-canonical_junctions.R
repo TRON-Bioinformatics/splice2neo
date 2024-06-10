@@ -2,7 +2,7 @@ test_that("canonical_junctions works on test gtf", {
 
 
   gtf_file <- system.file("extdata","GTF_files","Aedes_aegypti.partial.gtf",
-                          package="GenomicFeatures")
+                          package="splice2neo")
 
   tx <- parse_gtf(gtf_file, format = "gtf")
 

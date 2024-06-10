@@ -7,7 +7,7 @@
 #' @return A \code{\link[GenomicRanges]{GRangesList}} of exons grouped by transcripts
 #'
 #' @examples
-#' gff_file <- system.file("extdata","GFF3_files","a.gff3",package="GenomicFeatures")
+#' gff_file <- system.file("extdata","GFF3_files","a.gff3",package="splice2neo")
 #'
 #' parse_gtf(gff_file)
 #'
