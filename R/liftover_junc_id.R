@@ -1,12 +1,4 @@
 
-# TODO:
-# - min start, max end for multiple junction liftovers
-# - check if both (start and end) coordinates are on same base (length = 1)
-
-
-# see: https://gitlab.rlp.net/tron/bnt_neoants/neoants/-/blob/dev/workflow/scripts/liftover_junc_id.R?ref_type=heads
-# See:  https://gitlab.rlp.net/tron/bnt_neoants/neoants/-/blob/dev/workflow/scripts/check_liftover_sequence.R?ref_type=heads
-
 
 #' LiftOver junction IDs using the liftOver tool
 #'
@@ -15,10 +7,13 @@
 #' @param junc_df a data.frame with at least one column `junc_id` containing junction IDs
 #' @param chain_file path to a chain file for the UCSC liftOver tool. See also \code{\link[rtracklayer]{liftOver}}
 #' @return a data.frame like the input `junc_df` with the following additional columns:
-#'   - `junc_id_lifted_unique` a logical vector indicating if the liftOver was successful and unique (1-to-1 correspondance).
-#'   - `junc_id_lifted` a character vector with the lifted junction IDs.
+#'   - `junc_id_lifted_is_unique` a logical vector indicating if the liftOver was successful and unique (1-to-1 correspondence).
+#'   - `junc_id_lifted_collapsed` a character vector with the lifted junction IDs.
 #'   Multiple IDs are separated by `|`.
-#'   NA represnt junc_ids that could not be lifted.
+#'   NA represent junc_ids that could not be lifted.
+#'   - `junc_id_lifted` a character vector with a unique lifted junction IDs.
+#'   Potentially multiple lifted IDs are combined by the minmal start and maximal
+#'   end coordinate. NA represent junc_ids that could not be lifted.
 #'
 #' @examples
 #'
@@ -36,23 +31,36 @@ liftover_junc_id <- function(junc_df, chain_file){
   # read chain file
   chain <- rtracklayer::import.chain(chain_file)
 
-  # Lift over junc_id to genomic position in the personalized genome
+  # Lift over junc ranges to genomic position in the personalized genome
   junc_id_lifted_grl  <- rtracklayer::liftOver(gr, chain)
 
   junc_df %>%
     dplyr::mutate(
 
-      # add lifted junctions ranges as a list and covert back to junc_id
-      junc_id_lifted_lst = as.list(junc_id_lifted_grl) %>%
-        purrr::map(as.character),
+      # add lifted junctions ranges as a list
+      junc_id_lifted_lst = as.list(junc_id_lifted_grl),
 
       # check if liftOver was successful and unique
-      junc_id_lifted_unique = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) == 1),
+      junc_id_lifted_is_unique = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) == 1),
 
-      # collapse multiple IDs with `|` and replace empty junc_ids with NA
-      junc_id_lifted = junc_id_lifted_lst %>%
+      # covert back to junc_id and collapse multiple IDs with `|`, and replace empty junc_id with NA
+      junc_id_lifted_collapsed = junc_id_lifted_lst %>%
+        purrr::map(as.character) %>%
         purrr::map_chr(stringr::str_c, collapse = "|") %>%
-        dplyr::na_if("")
+        dplyr::na_if(""),
+
+      # build unique lifted junctions by minimal start and maximal end
+      # coordinate of potentially multiple lifted junction ranges
+      junc_id_lifted = junc_id_lifted_lst %>%
+
+        # take min start and max end across potentially multiple junctions
+        purrr::map(base::range) %>%
+
+        # convert to junc_id and replace empty entries with NA
+        purrr::map(as.character) %>%
+        purrr::map_if(is_empty, ~ NA_character_) %>%
+        unlist()
+
     ) %>%
 
     # remove temporary column

@@ -264,6 +264,7 @@ utils::globalVariables(
     "within_interval_3",
     "within_interval_left",
     "within_interval_right",
-    "WT_protein_length_difference"
+    "WT_protein_length_difference",
+    "junc_id_lifted_lst"
   )
 )
