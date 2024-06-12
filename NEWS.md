@@ -1,3 +1,9 @@
+# splice2neo 0.6.8
+
+- Add function `liftover_junc_id() to liftOver splice junctions to other 
+ reference genomes or personalized genomes
+
+
 # splice2neo 0.6.7
 
 ## Added:
