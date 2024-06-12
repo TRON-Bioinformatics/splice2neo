@@ -31,7 +31,7 @@ Build canonical junctions from transcripts
 }
 \examples{
 gtf_file <- system.file("extdata","GTF_files","Aedes_aegypti.partial.gtf",
-  package="GenomicFeatures")
+  package="splice2neo")
 
 tx <- parse_gtf(gtf_file)
 
