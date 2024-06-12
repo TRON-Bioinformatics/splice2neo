@@ -124,6 +124,7 @@ reference:
   - generate_junction_id
   - breakpoint2junc
   - junc2breakpoint
+  - liftover_junc_id
 
 - title: "Merge and filter"
   desc: "Functions annotate and filter for canonical splicing"
