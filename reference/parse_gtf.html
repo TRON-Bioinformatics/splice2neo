@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.8</span>
       </span>
     </div>
 
@@ -85,11 +85,54 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">gff_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"GFF3_files"</span>,<span class="st">"a.gff3"</span>,package<span class="op">=</span><span class="st">"GenomicFeatures"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">gff_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"GFF3_files"</span>,<span class="st">"a.gff3"</span>,package<span class="op">=</span><span class="st">"splice2neo"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">parse_gtf</span><span class="op">(</span><span class="va">gff_file</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (file, format = c("auto", "gff3", "gtf"), dataSource = NA,     organism = NA, taxonomyId = NA, circ_seqs = NULL, chrominfo = NULL,     miRBaseBuild = NA, metadata = NULL, dbxrefTag) {    format &lt;- match.arg(format)    if (format == "auto") {        format &lt;- .detect_file_format(file)        if (!(format %in% c("gff3", "gff", "gtf")))             stop(wmsg("Cannot detect whether 'file' is a GFF3 or GTF file. ",                 "Please use the 'format' argument to specify the ",                 "format (\"gff3\" or \"gtf\")."))    }    if (format == "gff3") {        colnames &lt;- GFF3_COLNAMES    }    else if (format == "gtf") {        colnames &lt;- GTF_COLNAMES    }    else {        colnames &lt;- union(GFF3_COLNAMES, GTF_COLNAMES)    }    message("Import genomic features from the file as a GRanges object ... ",         appendLF = FALSE)    gr &lt;- import(file, format = format, colnames = colnames,         feature.type = GFF_FEATURE_TYPES)    gr &lt;- .tidy_seqinfo(gr, circ_seqs, chrominfo)    if (!missing(dbxrefTag)) {        gr &lt;- .rename_by_dbxrefTag(gr, dbxrefTag)    }    message("OK")    metadata &lt;- .prepareGFFMetadata(file, dataSource, organism,         taxonomyId, miRBaseBuild, metadata)    message("Make the TxDb object ... ", appendLF = FALSE)    txdb &lt;- makeTxDbFromGRanges(gr, metadata = metadata)    message("OK")    txdb})(""):</span> Cannot detect whether 'file' is a GFF3 or GTF file. Please use the</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   'format' argument to specify the format ("gff3" or "gtf").</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Import genomic features from the file as a GRanges object ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Prepare the 'metadata' data frame ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Make the TxDb object ... </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> OK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRangesList object of length 488:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Solyc00g005000.2.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 2 ranges and 3 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         seqnames      ranges strand |   exon_id            exon_name exon_rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;Rle&gt;   &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;          &lt;character&gt; &lt;integer&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] SL2.40ch00 16437-17275      + |         1 Solyc00g005000.2.1.1         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] SL2.40ch00 17336-18189      + |         2 Solyc00g005000.2.1.2         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Solyc00g005020.1.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 3 ranges and 3 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         seqnames      ranges strand |   exon_id            exon_name exon_rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;Rle&gt;   &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;          &lt;character&gt; &lt;integer&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] SL2.40ch00 68062-68211      + |         3 Solyc00g005020.1.1.1         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] SL2.40ch00 68344-68568      + |         4 Solyc00g005020.1.1.2         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] SL2.40ch00 68654-68764      + |         5 Solyc00g005020.1.1.3         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Solyc00g005040.2.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 4 ranges and 3 metadata columns:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         seqnames        ranges strand |   exon_id            exon_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;Rle&gt;     &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;          &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] SL2.40ch00 550920-550945      + |         6 Solyc00g005040.2.1.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2] SL2.40ch00 551034-551132      + |         7 Solyc00g005040.2.1.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3] SL2.40ch00 551218-551250      + |         8 Solyc00g005040.2.1.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4] SL2.40ch00 551343-551576      + |         9 Solyc00g005040.2.1.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       exon_rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;integer&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2]         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3]         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4]         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;485 more elements&gt;</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
