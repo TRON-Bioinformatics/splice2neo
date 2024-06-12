@@ -1,6 +1,6 @@
 Package: splice2neo
 Title: Aberrant splice junction analysis with associated mutations
-Version: 0.6.7
+Version: 0.6.8
 Authors@R: 
     c(
     person(given = "Jonas",
@@ -41,6 +41,7 @@ Suggests:
     ggbio,
     rmarkdown,
     BSgenome,
+    liftOver,
 Config/testthat/edition: 3
 Language: en-US
 Imports: 
