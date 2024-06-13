@@ -59,49 +59,51 @@ annotate_mut_effect <- function(effect_df,
       effect_index = str_c("EIDX_", row_number())
     )
 
-  if(nrow(effect_df) != 0){
-    var_gr <- GenomicRanges::GRanges(
-      str_c(
-        effect_df$chr,
-        ":",
-        as.character(effect_df$pos)
+  var_gr <- GenomicRanges::GRanges(
+    str_c(
+      effect_df$chr,
+      ":",
+      as.character(effect_df$pos)
     ))
-    names(var_gr) <- effect_df$effect_index
+  names(var_gr) <- effect_df$effect_index
 
-    message("INFO: calculate coordinates of upstream and downstream exons...")
+  message("INFO: calculate coordinates of upstream and downstream exons...")
 
-    # get all possible junctions by start and end coordinates of upstream and downstream exons
-    next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
+  # get all possible junctions by start and end coordinates of upstream and downstream exons
+  next_junc_df <- next_junctions(var_gr, transcripts, transcripts_gr)
 
-    message("INFO: calculate junction coordinates from predicted effect...")
+  message("INFO: calculate junction coordinates from predicted effect...")
 
-    junc_df <- effect_df %>%
+  junc_df <- effect_df %>%
 
-      # add next exon coordinates of next exons
-      left_join(next_junc_df, by = "effect_index") %>%
+    # add next exon coordinates of next exons
+    left_join(next_junc_df, by = "effect_index") %>%
 
-      # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
-      filter(
-        effect != "DL" | at_end,
-        effect != "AL" | at_start
-      )
+    # Filter out donor loss and acceptor loss which is not on exon-intron boundaries
+    filter(
+      effect != "DL" | at_end,
+      effect != "AL" | at_start
+    )
 
-    # return empty tibble if non of the junctions fulfill the above filters (might be a problem in low mutation burden cases)
-    if(nrow(junc_df) == 0) {
-      junc_df <- junc_df %>%
-        tibble::add_column(
-          "class"= NA,
-          "rule_left"= NA,
-          "rule_right"= NA,
-          "strand_offset"= NA,
-          "coord_1"= NA ,
-          "coord_2"= NA,
-          "left"= NA,
-          "right" = NA,
-          "junc_id"= NA,
-          "tx_junc_id"= NA)
-      return(junc_df)
-    }
+  if(nrow(junc_df) != 0){
+
+
+    # # return empty tibble if non of the junctions fulfill the above filters (might be a problem in low mutation burden cases)
+    # if(nrow(junc_df) == 0) {
+    #   junc_df <- junc_df %>%
+    #     tibble::add_column(
+    #       "class"= NA,
+    #       "rule_left"= NA,
+    #       "rule_right"= NA,
+    #       "strand_offset"= NA,
+    #       "coord_1"= NA ,
+    #       "coord_2"= NA,
+    #       "left"= NA,
+    #       "right" = NA,
+    #       "junc_id"= NA,
+    #       "tx_junc_id"= NA)
+    #   return(junc_df)
+    # }
 
     # add rules
     junc_df <- junc_df %>%
