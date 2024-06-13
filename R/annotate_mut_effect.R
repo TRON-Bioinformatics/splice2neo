@@ -85,25 +85,8 @@ annotate_mut_effect <- function(effect_df,
       effect != "AL" | at_start
     )
 
+
   if(nrow(junc_df) != 0){
-
-
-    # # return empty tibble if non of the junctions fulfill the above filters (might be a problem in low mutation burden cases)
-    # if(nrow(junc_df) == 0) {
-    #   junc_df <- junc_df %>%
-    #     tibble::add_column(
-    #       "class"= NA,
-    #       "rule_left"= NA,
-    #       "rule_right"= NA,
-    #       "strand_offset"= NA,
-    #       "coord_1"= NA ,
-    #       "coord_2"= NA,
-    #       "left"= NA,
-    #       "right" = NA,
-    #       "junc_id"= NA,
-    #       "tx_junc_id"= NA)
-    #   return(junc_df)
-    # }
 
     # add rules
     junc_df <- junc_df %>%
@@ -172,7 +155,7 @@ annotate_mut_effect <- function(effect_df,
 
     message("INFO: Evaluation of rules done.")
   } else{
-    message("WARNING: There are no mutations with predicted splice effect by SpliceAI")
+    message("WARNING: There are no mutations with predicted splice effect")
     junc_df <- effect_df %>%
       tibble::add_column(
         "var_nr" = NA ,
