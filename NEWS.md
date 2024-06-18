@@ -1,3 +1,8 @@
+# splice2neo 0.6.9
+
+- Simplification of function `annotate_mut_effect()` and ensuring that return of same column names in case of empty output
+
+
 # splice2neo 0.6.8
 
 - Add function `liftover_junc_id() to liftOver splice junctions to other 
