@@ -35,22 +35,17 @@ combine_mut_junc <- function(junc_data_list){
     # select distinct junctions by the indicator columns
     purrr::map(dplyr::distinct, mut_id, tx_id, junc_id) %>%
 
-    # combine into a single data.frame with tool column
-    dplyr::bind_rows(.id = "tool") %>%
+    # make sure to add detected column for each spliceai tool
+    purrr::imap(~dplyr::mutate(.x, "{.y}_detected" := TRUE)) %>%
 
-    # mark as detected
-    mutate(detected = TRUE) %>%
+    # join lists
+    purrr::reduce(dplyr::full_join, by = c("mut_id", "tx_id", "junc_id")) %>%
 
-    # expand by junction and tool
+    # set not detected to FALSE
     complete(
       nesting(mut_id, tx_id, junc_id),
-      tool,
-      fill = list(detected = FALSE)
-    ) %>%
-
-    # add tools as separate columns
-    pivot_wider(names_from = "tool", values_from = "detected",
-                names_glue = "{.name}_detected")
+      fill = names(junc_data_list) %>% purrr::map( ~ FALSE) %>% set_names(paste0(names(junc_data_list), "_detected"))
+    )
 
 
   # rename annotation columns
