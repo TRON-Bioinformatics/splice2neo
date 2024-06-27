@@ -41,10 +41,12 @@ format_cispliceai_thresh <- function(cispliceai_variants, transcripts_gr = NULL)
 
   if(!is.null(transcripts_gr)){
 
+    stopifnot("gene_id" %in% names(S4Vectors::mcols(transcripts_gr)))
+
     # CI-SpliceAI does not return the version part of the gene id if gene table from CI-SPliceAi is used as annotation
     # we need to map them based on the transcripts_gr object
     # if gene_id should be kept
-    gene_table <- tibble::tibble(gene_id = unique(unlist(transcripts_gr@elementMetadata$gene_id))) %>%
+    gene_table <- tibble::tibble(gene_id = unique(unlist(transcripts_gr$gene_id))) %>%
       dplyr::mutate(gene_id_short = gsub("\\..*", "", gene_id))
 
     formated_variants <- cispliceai_variants %>%

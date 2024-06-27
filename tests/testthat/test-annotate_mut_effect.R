@@ -31,8 +31,8 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
   gene_transcript_mapping <-
     tibble::tibble(
-      gene_id = unlist(toy_transcripts_gr@elementMetadata$gene_id),
-      tx_name = toy_transcripts_gr@elementMetadata$tx_name
+      gene_id = unlist(toy_transcripts_gr$gene_id),
+      tx_name = toy_transcripts_gr$tx_name
     )
 
   pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
@@ -45,12 +45,12 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
   # we need to do a dirty fix because different versions of gencode annotations in effect_df and toy_transcripts
   toy_transcripts_gr_fix <- toy_transcripts_gr
-  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("_.*", "", unlist(toy_transcripts_gr@elementMetadata$gene_id))
+  toy_transcripts_gr_fix$gene_id = gsub("_.*", "", unlist(toy_transcripts_gr$gene_id))
   effect_df$gene_id <- gsub("_.*", "", effect_df$gene_id)
   effect_df$gene_id <- gsub("\\...*", "", effect_df$gene_id)
-  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("\\...*", "", unlist(toy_transcripts_gr_fix@elementMetadata$gene_id))
+  toy_transcripts_gr_fix$gene_id = gsub("\\...*", "", unlist(toy_transcripts_gr_fix$gene_id))
   effect_df <- effect_df %>%
-    filter(gene_id %in% toy_transcripts_gr_fix@elementMetadata$gene_id)
+    filter(gene_id %in% toy_transcripts_gr_fix$gene_id)
 
 
   # without gene mapping
@@ -76,8 +76,8 @@ test_that("annotate_mut_effect works on toy example with CI-SpliceAI with gene_m
 
   gene_transcript_mapping <-
     tibble::tibble(
-      gene_id = unlist(toy_transcripts_gr@elementMetadata$gene_id),
-      tx_name = toy_transcripts_gr@elementMetadata$tx_name
+      gene_id = unlist(toy_transcripts_gr$gene_id),
+      tx_name = toy_transcripts_gr$tx_name
     )
 
   cispliceai_file <- system.file("extdata", "cispliceai_thresh_output.vcf", package = "splice2neo")
