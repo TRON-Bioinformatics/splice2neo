@@ -11,6 +11,7 @@ testing:
       - testing.log
   stage: check
   script:
+    - sudo apt-get install -y qpdf
     - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
     - R -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
     - R -e 'devtools::check()'
