@@ -1,6 +1,7 @@
 test_that("liftover_junc_id works on toy example data", {
 
   chain_file = system.file(package="liftOver", "extdata", "hg38ToHg19.over.chain")
+  stopifnot(chain_file != "")
 
   junc_df <- toy_junc_df
 
@@ -16,6 +17,7 @@ test_that("liftover_junc_id works on toy example data", {
 test_that("liftover_junc_id works with non-unique mappings", {
 
   chain_file = system.file(package="liftOver", "extdata", "hg38ToHg19.over.chain")
+  stopifnot(chain_file != "")
 
   junc_df <- toy_junc_df %>%
     head(3) %>%

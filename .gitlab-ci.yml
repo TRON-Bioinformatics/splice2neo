@@ -12,7 +12,7 @@ testing:
   stage: check
   script:
     - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
-    - R -e 'devtools::install(quiet=TRUE)'
+    - R -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
     - R -e 'devtools::check()'
 
 pages:
