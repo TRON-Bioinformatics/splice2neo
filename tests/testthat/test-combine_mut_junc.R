@@ -111,7 +111,7 @@ test_that("combine_mut_junc provides expected number of rows", {
     "pangolin" = pangolin_annot_df
   )
 
-  df_comb <- combine_mut_junc(junc_data_list)
+  df_comb <- combine_mut_junc(junc_data_list_wo_mmsplice)
 
   expect_true(nrow(df_comb) == nrow(merged_df))
 
