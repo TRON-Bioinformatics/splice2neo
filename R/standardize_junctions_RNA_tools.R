@@ -9,7 +9,7 @@
 #'   format.
 #'
 #' @return A combined table with unique junctions. The columns
-#'   identified_by_{name} contains information which tools identified the given
+#'   identified_by_\{name\} contains information which tools identified the given
 #'   junction
 #'
 #' @examples

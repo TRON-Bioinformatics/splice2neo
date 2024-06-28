@@ -31,8 +31,8 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
   gene_transcript_mapping <-
     tibble::tibble(
-      gene_id = unlist(toy_transcripts_gr@elementMetadata$gene_id),
-      tx_name = toy_transcripts_gr@elementMetadata$tx_name
+      gene_id = unlist(toy_transcripts_gr$gene_id),
+      tx_name = toy_transcripts_gr$tx_name
     )
 
   pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
@@ -45,12 +45,12 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
   # we need to do a dirty fix because different versions of gencode annotations in effect_df and toy_transcripts
   toy_transcripts_gr_fix <- toy_transcripts_gr
-  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("_.*", "", unlist(toy_transcripts_gr@elementMetadata$gene_id))
+  toy_transcripts_gr_fix$gene_id = gsub("_.*", "", unlist(toy_transcripts_gr$gene_id))
   effect_df$gene_id <- gsub("_.*", "", effect_df$gene_id)
   effect_df$gene_id <- gsub("\\...*", "", effect_df$gene_id)
-  toy_transcripts_gr_fix@elementMetadata$gene_id = gsub("\\...*", "", unlist(toy_transcripts_gr_fix@elementMetadata$gene_id))
+  toy_transcripts_gr_fix$gene_id = gsub("\\...*", "", unlist(toy_transcripts_gr_fix$gene_id))
   effect_df <- effect_df %>%
-    filter(gene_id %in% toy_transcripts_gr_fix@elementMetadata$gene_id)
+    filter(gene_id %in% toy_transcripts_gr_fix$gene_id)
 
 
   # without gene mapping
@@ -71,6 +71,40 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
   expect_true(all(df_not_mapped$gene_id.x != df_not_mapped$gene_id.y))
 
 })
+
+test_that("annotate_mut_effect works on toy example with CI-SpliceAI with gene_mapping = TRUE", {
+
+  gene_transcript_mapping <-
+    tibble::tibble(
+      gene_id = unlist(toy_transcripts_gr$gene_id),
+      tx_name = toy_transcripts_gr$tx_name
+    )
+
+  cispliceai_file <- system.file("extdata", "cispliceai_thresh_output.vcf", package = "splice2neo")
+  df_raw <- parse_cispliceai_thresh(cispliceai_file)
+  df_with_gene <- format_cispliceai_thresh(df_raw, transcripts_gr = toy_transcripts_gr)
+
+  # without gene mapping
+  annot_df <- annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE)
+  # with gene mapping
+  annot_df_map <- annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE)
+
+  expect_true(nrow(annot_df_map) >= nrow(df_with_gene))
+
+
+  # check that additional rows if gene_mapping = FALSE are because of not fitting gene-transcript pair
+  df_not_mapped <- annot_df %>%
+    dplyr::select(mut_id, junc_id, tx_id, gene_id) %>%
+    #get additional rows in not mapped table
+    anti_join(annot_df_map, by = c("mut_id", "junc_id", "tx_id")) %>%
+    #map genes related to those transcripts
+    left_join(gene_transcript_mapping, by = c("tx_id" = "tx_name"), suffix = c("_cisplicai", "_mapped"))
+
+  expect_true(all(df_not_mapped$gene_id_cisplicai != df_not_mapped$gene_id_mapped))
+
+})
+
+
 
 test_that("annotate_mut_effect works on empty tibble", {
 

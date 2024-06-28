@@ -134,8 +134,8 @@ annotate_mut_effect <- function(effect_df,
       # gene and transcripts
       gene_transcript_mapping <-
         tibble::tibble(
-          gene_id = unlist(transcripts_gr@elementMetadata$gene_id),
-          tx_name = transcripts_gr@elementMetadata$tx_name
+          gene_id = unlist(transcripts_gr$gene_id),
+          tx_name = transcripts_gr$tx_name
         )
 
       # consider only transcripts that relate to gene that is provided in the
