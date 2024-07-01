@@ -4,11 +4,16 @@
 \alias{format_cispliceai_thresh}
 \title{Formats CI-SpliceAI with -t flag output and filter for predicted effects}
 \usage{
-format_cispliceai_thresh(cispliceai_variants)
+format_cispliceai_thresh(cispliceai_variants, transcripts_gr = NULL)
 }
 \arguments{
 \item{cispliceai_variants}{\link[tibble:tibble-package]{tibble} with parsed
 CI-SpliceAI mutations from \code{\link{parse_spliceai}}}
+
+\item{transcripts_gr}{\emph{Optionally}, A GRanges object with transcript ranges created by
+\code{GenomicFeatures::transcripts(txdb)}can be provided which will allow to annotate full gene ids
+to the formatted table and to consider only transcripts related to the annotated gene in \code{annotate_mut_effect}.
+This parameter is optionally.}
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with splicing effects per row
