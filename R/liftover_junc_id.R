@@ -40,10 +40,13 @@ liftover_junc_id <- function(junc_df, chain_file){
       # add lifted junctions ranges as a list
       junc_id_lifted_lst = as.list(junc_id_lifted_grl),
 
-      # check if liftOver was successful and unique
-      junc_id_lifted_is_unique = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) == 1),
+      # check that lifted junctions are valid intervals (not single positions)
+      valid_range = purrr::map_lgl(junc_id_lifted_lst, ~ all(BiocGenerics::width(.x) >= 2)),
 
-      # covert back to junc_id and collapse multiple IDs with `|`, and replace empty junc_id with NA
+      # check if liftOver was successful and unique
+      junc_id_lifted_is_unique = valid_range & purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) == 1),
+
+      # covert back to junc_id, collapse multiple IDs with `|`, and replace empty junc_id with NA
       junc_id_lifted_collapsed = junc_id_lifted_lst %>%
         purrr::map(as.character) %>%
         purrr::map_chr(stringr::str_c, collapse = "|") %>%
@@ -64,7 +67,7 @@ liftover_junc_id <- function(junc_df, chain_file){
     ) %>%
 
     # remove temporary column
-    dplyr::select(-junc_id_lifted_lst)
+    dplyr::select(-junc_id_lifted_lst, -valid_range)
 
 }
 
