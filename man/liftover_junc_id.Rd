@@ -14,12 +14,13 @@ liftover_junc_id(junc_df, chain_file)
 \value{
 a data.frame like the input \code{junc_df} with the following additional columns:
 \itemize{
-\item \code{junc_id_lifted_is_unique} a logical vector indicating if the liftOver was successful and unique (1-to-1 correspondence).
+\item \code{liftover_successful} a logical vector indicating if the liftOver was successful and lifted junction positions build valid genomic intervals and not single positions.
+\item \code{liftover_unique} a logical vector indicating if the liftOver was unique (1-to-1 correspondence).
 \item \code{junc_id_lifted_collapsed} a character vector with the lifted junction IDs.
 Multiple IDs are separated by \code{|}.
 NA represent junc_ids that could not be lifted.
 \item \code{junc_id_lifted} a character vector with a unique lifted junction IDs.
-Potentially multiple lifted IDs are combined by the minmal start and maximal
+Potentially multiple lifted IDs are combined by the minimal start and maximal
 end coordinate. NA represent junc_ids that could not be lifted.
 }
 }
