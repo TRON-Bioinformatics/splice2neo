@@ -21,7 +21,7 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
 
   # get all splicing affects for each variant in rows
   variants %>%
-    mutate(effect_direction = ifelse(pangolin_score < 0, "decrease", "increase")) %>%
+    mutate(effect_direction = as.character(ifelse(pangolin_score < 0, "decrease", "increase"))) %>%
 
     # filter out effects without score or score == 0
     filter(!is.na(pangolin_score) & pangolin_score != 0) %>%
@@ -40,7 +40,6 @@ format_pangolin <- function(variants, keep_gene_id = FALSE){
 
     # use only absolute value of pangolin score as the +/- is now integrated int the effect column
     mutate(score = abs(pangolin_score)) %>%
-    select(-pangolin_score) %>%
 
     # keep only relevant columns
     {
