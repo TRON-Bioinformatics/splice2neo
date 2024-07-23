@@ -1,3 +1,11 @@
+# splice2neo 0.6.11
+
+- fix of liftover function 
+- improve warning and add more tests
+- update of combine_mut_junc() to accept empty tables as input
+- update of format_cispliceai() to optionally keep gene_ids
+- add more test
+
 # splice2neo 0.6.9
 
 - Simplification of function `annotate_mut_effect()` and ensuring that return of same column names in case of empty output

@@ -11,6 +11,18 @@ test_that("format_pangolin works on pangolin example file", {
 
 })
 
+test_that("format_pangolin works on pangolin example with no predicted effects", {
+
+  pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
+  pangolin_df <- parse_pangolin(pangolin_file) %>% filter(is.na(pangolin_score))
+
+  df <- format_pangolin(pangolin_df)
+
+  expect_true(nrow(df) == 0)
+  expect_true("score" %in% names(df))
+
+})
+
 test_that("format_pangolin works on pangolin example file with keep_gene_id = TRUE", {
 
   pangolin_file <- system.file("extdata", "spliceai_output.pangolin.vcf", package = "splice2neo")
