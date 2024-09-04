@@ -1,0 +1,100 @@
+Bootstrap: docker
+From: rocker/r-ver:4.2.3
+Stage: spython-base
+
+%files
+../DESCRIPTION /usr/local/src/
+%labels
+MAINTAINER johannes.hausmann@tron-mainz.de
+%post
+
+
+SRC=/usr/local/src
+BIN=/usr/local/bin
+
+
+apt update && apt install -y \
+build-essential \
+libxml2-dev \
+libcairo2-dev \
+libgit2-dev \
+default-libmysqlclient-dev \
+libpq-dev \
+libsasl2-dev \
+libsqlite3-dev \
+libssh2-1-dev \
+libxtst6 \
+libcurl4-openssl-dev \
+libharfbuzz-dev \
+libfribidi-dev \
+libfreetype6-dev \
+libpng-dev \
+libtiff5-dev \
+libjpeg-dev \
+unixodbc-dev \
+libbz2-dev \
+git && \
+apt clean && \
+apt autoremove -y
+
+install2.r --error --skipinstalled -n 8 \
+readr \
+tibble \
+dplyr \
+magrittr \
+argparse \
+stringr \
+tidyr \
+purrr \
+devtools \
+remotes \
+BiocManager \
+vroom
+
+export SPLICE2NEO_VERSION=$(grep 'Version:' /usr/local/src/DESCRIPTION | awk '{print $2}') && \
+R --no-save <<__EOF__
+
+BiocManager::install("BSgenome.Hsapiens.UCSC.hg38", Ncpus=8)
+
+library(remotes)
+remotes::install_version("Matrix", version = "1.6-5", repos = "http://cran.us.r-project.org")
+remotes::install_version("MASS", version = "7.3-60", repos = "http://cran.us.r-project.org")
+remotes::install_git('https://github.com/TRON-Bioinformatics/splice2neo.git', ref = "v${SPLICE2NEO_VERSION}")
+
+__EOF__
+
+
+apt autoremove -y
+
+# Remove build dependencies from container
+apt remove -y \
+build-essential \
+libxml2-dev \
+libcairo2-dev \
+libgit2-dev \
+default-libmysqlclient-dev \
+libpq-dev \
+libsasl2-dev \
+libsqlite3-dev \
+libssh2-1-dev \
+libxtst6 \
+libcurl4-openssl-dev \
+libharfbuzz-dev \
+libfribidi-dev \
+libfreetype6-dev \
+libpng-dev \
+libtiff5-dev \
+libjpeg-dev \
+unixodbc-dev \
+libbz2-dev
+
+
+%environment
+export SRC=/usr/local/src
+export BIN=/usr/local/bin
+%runscript
+cd /
+exec tini -- /bin/bash "$@"
+%startscript
+cd /
+exec tini -- /bin/bash "$@"
