@@ -11,6 +11,7 @@ coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/gra
 [![](https://img.shields.io/badge/devel%20version-0.6.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/tronbioinformatics/splice2neo/tags)
 <!-- badges: end -->
 
 Documentation: <https://tron-bioinformatics.github.io/splice2neo/>
