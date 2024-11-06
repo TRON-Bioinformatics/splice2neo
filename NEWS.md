@@ -1,3 +1,8 @@
+# splice2neo 0.6.12
+
+- Add docker container support
+- support parsing of junctions with no strand info from STAR output 
+
 # splice2neo 0.6.11
 
 - fix of liftover function 
