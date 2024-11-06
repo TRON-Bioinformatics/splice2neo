@@ -196,5 +196,6 @@ Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A,
 Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U,
 Ibn-Salem J. Prediction of tumor-specific splicing from somatic
 mutations as a source of neoantigen candidates. Bioinform Adv. 2024 May
-29;4(1):vbae080. doi: 10.1093/bioadv/vbae080. PMID: 38863673; PMCID:
-PMC11165244.
+29;4(1):vbae080. doi:
+[10.1093/bioadv/vbae080](https://doi.org/10.1093/bioadv/vbae080). PMID:
+38863673; PMCID: PMC11165244.
