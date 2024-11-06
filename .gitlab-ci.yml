@@ -1,4 +1,4 @@
-image: bioconductor/bioconductor_docker:RELEASE_3_19
+image: bioconductor/bioconductor_docker:RELEASE_3_20
 
 stages:
   - check
