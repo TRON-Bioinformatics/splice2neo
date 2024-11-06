@@ -5,10 +5,14 @@
 \title{Imports "*SJ.out.tab" from STAR and transforms the raw output
 into standardized junction output format.}
 \usage{
-parse_star_sj(path)
+parse_star_sj(path, keep_unstranded = FALSE)
 }
 \arguments{
 \item{path}{The path to STAR SJ.out.tab}
+
+\item{keep_unstranded}{Logical, to keep junctions without strand annotation.
+If FALSE (default) junctions without strand annotation "*" are filtered out,
+otherwise they are considered as two separate junctions with "+" and "-" strand.}
 }
 \value{
 A tibble in standardized junction format

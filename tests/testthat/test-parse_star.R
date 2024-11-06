@@ -12,11 +12,16 @@ test_that("transform_star_sj works", {
 
   path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
   star_raw <- import_star_sj(path)
-  star_transformed <- transform_star_sj(star_raw)
+  star_transformed <- transform_star_sj(star_raw, keep_unstranded = FALSE)
+  star_transformed_keep <- transform_star_sj(star_raw, keep_unstranded = TRUE)
 
   expect_true(ncol(star_transformed) > 0)
   expect_true(nrow(star_transformed) > 0)
   expect_true(nrow(star_transformed) <=  nrow(star_raw))
+
+  expect_true(ncol(star_transformed_keep) > 0)
+  expect_true(nrow(star_transformed_keep) > 0)
+  expect_true(nrow(star_transformed_keep) >=  nrow(star_raw))
 
 })
 
@@ -32,7 +37,19 @@ test_that("parse.star.sj works", {
 
 })
 
-test_that("parse.star.sj works correctly", {
+test_that("parse_star_sj works with keep_unstranded option", {
+
+  path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
+  dat.combined <- parse_star_sj(path, keep_unstranded = TRUE)
+
+  expect_true(ncol(dat.combined) == 9)
+  expect_true(nrow(dat.combined) == 11)
+  expect_true(all(!is.na(dat.combined$junc_id)))
+
+})
+
+
+test_that("parse_star_sj works correctly", {
 
   path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
   dat.combined <- parse_star_sj(path)
@@ -55,7 +72,7 @@ test_that("parse.star.sj works correctly", {
   expect_true(all(! exepected_unknown_strand %in% expected_junc_ids))
 })
 
-test_that("parse.star.sj returns parses raw RNA-seq support", {
+test_that("parse_star_sj returns parses raw RNA-seq support", {
 
   unique_reads <- c(0, 0, 0, 0, 0, 0, 14)
   multi_reads <- c(13, 7, 3, 61, 8, 9, 132)
@@ -72,3 +89,4 @@ test_that("import_star_sj returns error message when file doesn't exists", {
   expect_error(import_star_sj("./test_star_SJ.out.tab"))
 
 })
+
