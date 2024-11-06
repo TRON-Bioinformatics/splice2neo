@@ -8,13 +8,15 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.6.6-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
+[![](https://img.shields.io/badge/devel%20version-0.6.12-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
 [![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/tronbioinformatics/splice2neo/tags)
 <!-- badges: end -->
 
-Documentation: <https://tron-bioinformatics.github.io/splice2neo/>
+- Documentation: <https://tron-bioinformatics.github.io/splice2neo/>
+- Publication: Lang et al. (2024) [Prediction of tumor-specific splicing
+  from somatic mutations as a source of neoantigen
+  candidates](https://doi.org/10.1093/bioadv/vbae080)
 
 ## Overview
 
@@ -135,6 +137,9 @@ toy_junc_df %>%
 #> 4 chr2:152388410-152392205:- ENST00000409198
 #> 5 chr2:152388410-152390729:- ENST00000409198
 #> 6 chr2:179415981-179416357:- ENST00000342992
+```
+
+``` r
 
 
 toy_junc_df %>% 
@@ -185,9 +190,11 @@ toy_junc_df %>%
 Please report issues here:
 <https://github.com/TRON-Bioinformatics/splice2neo/issues>
 
-## Citation
+## Reference
 
-Lang, Franziska, Patrick Sorn, Martin Suchan, Alina Henrich, Christian
-Albrecht, Nina Koehl, Aline Beicht, et al. 2023. “Prediction of
-Tumor-Specific Splicing from Somatic Mutations as a Source of Neoantigen
-Candidates.” bioRxiv. <https://doi.org/10.1101/2023.06.27.546494>.
+Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A,
+Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U,
+Ibn-Salem J. Prediction of tumor-specific splicing from somatic
+mutations as a source of neoantigen candidates. Bioinform Adv. 2024 May
+29;4(1):vbae080. doi: 10.1093/bioadv/vbae080. PMID: 38863673; PMCID:
+PMC11165244.
