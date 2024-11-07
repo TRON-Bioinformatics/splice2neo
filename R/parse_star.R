@@ -46,10 +46,11 @@ import_star_sj <- function(file.name) {
 #' Transforms STAR intermediate table into standardized junction format
 #'
 #' @param tib STAR *SJ.out.tab as tibble
+#' @param keep_unstranded Logical, to keep junctions without strand annotation.
+#'     If FALSE (default) junctions without strand annotation "*" are filtered out,
+#'     otherwise they are considered as two separate junctions with "+" and "-" strand.
 #'
 #' @return A tibble in standardized junction format
-#'
-#' Junctions without strand annotation "*" are filtered out.
 #'
 #' @examples
 #' path <-  system.file("extdata", "test_star_SJ.out.tab", package = "splice2neo")
@@ -58,21 +59,30 @@ import_star_sj <- function(file.name) {
 #'
 #' @import dplyr
 #' @keywords internal
-transform_star_sj <- function(tib){
+transform_star_sj <- function(tib, keep_unstranded = FALSE){
 
   tib <- tib %>%
     mutate(
       junction_start = as.character(intron_start - 1),
       junction_end = as.character(intron_end + 1),
       strand = case_when(
-        strand_enc == "0"  ~ "*",
+        strand_enc == "0"  ~ "+|-",
         strand_enc == "1"  ~ "+",
         strand_enc == "2"  ~ "-",
       ),
       Gene = NA,
       class = NA
-    ) %>%
-    filter(strand != "*") %>%
+    )
+
+    if(!keep_unstranded){
+      tib <- tib %>%
+        filter(strand != "+|-")
+    } else {
+      tib <- tib %>%
+        tidyr::separate_rows(strand, sep = '[|]')
+    }
+
+  tib <- tib %>%
     mutate(
       junc_id = generate_junction_id(chromosome, junction_start, junction_end, strand)
     ) %>%
@@ -95,6 +105,9 @@ transform_star_sj <- function(tib){
 #' into standardized junction output format.
 #'
 #' @param path The path to STAR SJ.out.tab
+#' @param keep_unstranded Logical, to keep junctions without strand annotation.
+#'     If FALSE (default) junctions without strand annotation "*" are filtered out,
+#'     otherwise they are considered as two separate junctions with "+" and "-" strand.
 #'
 #' @return A tibble in standardized junction format
 #'
@@ -105,10 +118,10 @@ transform_star_sj <- function(tib){
 #'
 #' @import readr
 #' @export
-parse_star_sj <- function(path) {
+parse_star_sj <- function(path, keep_unstranded = FALSE) {
 
   dat.junc <- path %>%
     import_star_sj() %>%
-    transform_star_sj()
+    transform_star_sj(keep_unstranded)
   return(dat.junc)
 }

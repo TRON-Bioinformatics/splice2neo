@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # splice2neo
 
 <!-- badges: start -->
@@ -23,8 +24,9 @@ knitr::opts_chunk$set(
 `r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
 <!-- badges: end -->
 
-Documentation: https://tron-bioinformatics.github.io/splice2neo/
 
+- Documentation: https://tron-bioinformatics.github.io/splice2neo/
+- Publication: Lang et al. (2024) [Prediction of tumor-specific splicing from somatic mutations as a source of neoantigen candidates](https://doi.org/10.1093/bioadv/vbae080)
 
 ## Overview
 
@@ -145,7 +147,6 @@ toy_junc_df %>%
 
 Please report issues here: https://github.com/TRON-Bioinformatics/splice2neo/issues
 
-## Citation
+## Reference
 
-Lang, Franziska, Patrick Sorn, Martin Suchan, Alina Henrich, Christian Albrecht, Nina Koehl, Aline Beicht, et al. 2023. “Prediction of Tumor-Specific Splicing from Somatic Mutations as a Source of Neoantigen Candidates.” bioRxiv. https://doi.org/10.1101/2023.06.27.546494.
-
+Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A, Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U, Ibn-Salem J. Prediction of tumor-specific splicing from somatic mutations as a source of neoantigen candidates. Bioinform Adv. 2024 May 29;4(1):vbae080. doi: [10.1093/bioadv/vbae080](https://doi.org/10.1093/bioadv/vbae080). PMID: 38863673; PMCID: PMC11165244.
