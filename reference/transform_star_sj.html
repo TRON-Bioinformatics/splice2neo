@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.12</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Transforms STAR intermediate table into standardized junction format</h1>
-    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/v0.6.11/R/parse_star.R" class="external-link"><code>R/parse_star.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/master/R/parse_star.R" class="external-link"><code>R/parse_star.R</code></a></small>
     <div class="hidden name"><code>transform_star_sj.Rd</code></div>
     </div>
 
@@ -63,7 +63,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">transform_star_sj</span><span class="op">(</span><span class="va">tib</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">transform_star_sj</span><span class="op">(</span><span class="va">tib</span>, keep_unstranded <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,11 +73,16 @@
 <dl><dt id="arg-tib">tib<a class="anchor" aria-label="anchor" href="#arg-tib"></a></dt>
 <dd><p>STAR *SJ.out.tab as tibble</p></dd>
 
+
+<dt id="arg-keep-unstranded">keep_unstranded<a class="anchor" aria-label="anchor" href="#arg-keep-unstranded"></a></dt>
+<dd><p>Logical, to keep junctions without strand annotation.
+If FALSE (default) junctions without strand annotation "*" are filtered out,
+otherwise they are considered as two separate junctions with "+" and "-" strand.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>A tibble in standardized junction format</p>
-<p>Junctions without strand annotation "*" are filtered out.</p>
     </div>
 
     <div id="ref-examples">
@@ -111,7 +116,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

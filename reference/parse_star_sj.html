@@ -18,7 +18,7 @@ into standardized junction output format.'><!-- mathjax --><script src="https://
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.12</span>
       </span>
     </div>
 
@@ -55,7 +55,7 @@ into standardized junction output format.'><!-- mathjax --><script src="https://
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Imports "*SJ.out.tab" from STAR and transforms the raw output into standardized junction output format.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/v0.6.11/R/parse_star.R" class="external-link"><code>R/parse_star.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/master/R/parse_star.R" class="external-link"><code>R/parse_star.R</code></a></small>
     <div class="hidden name"><code>parse_star_sj.Rd</code></div>
     </div>
 
@@ -65,7 +65,7 @@ into standardized junction output format.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_star_sj</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parse_star_sj</span><span class="op">(</span><span class="va">path</span>, keep_unstranded <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,6 +74,12 @@ into standardized junction output format.</p>
 
 <dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>The path to STAR SJ.out.tab</p></dd>
+
+
+<dt id="arg-keep-unstranded">keep_unstranded<a class="anchor" aria-label="anchor" href="#arg-keep-unstranded"></a></dt>
+<dd><p>Logical, to keep junctions without strand annotation.
+If FALSE (default) junctions without strand annotation "*" are filtered out,
+otherwise they are considered as two separate junctions with "+" and "-" strand.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -112,7 +118,7 @@ into standardized junction output format.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
