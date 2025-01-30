@@ -57,14 +57,21 @@ get_junc_pos <- function(tx, jx){
   empty_range <- GenomicRanges::GRanges("Z", IRanges::IRanges(0, 0), "+")
   on_tx <- ifelse(j_start == empty_range, FALSE, on_tx)
 
-  # initialize with NA
+
+  jstart = purrr::map(seq_along(j_start), ~j_start[.x])
+
   pos_tx <- rep(NA, length(tx))
 
   # map junction positions on transcript sequence position
   suppressWarnings(
-    pos_tx[on_tx] <- GenomicFeatures::pmapToTranscripts(j_start[on_tx], tx[on_tx]) %>%
-      BiocGenerics::start()
+    pos_tx[on_tx] <- purrr::map2_int(
+      jstart[on_tx],
+      seq_along(jstart[on_tx]),
+      ~ GenomicFeatures::pmapToTranscripts(.x, tx[on_tx][.y]) %>%
+        BiocGenerics::start()
+    )
   )
+
 
   return(pos_tx)
 }
