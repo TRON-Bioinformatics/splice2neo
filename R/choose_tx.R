@@ -47,17 +47,17 @@ choose_tx <- function(df){
   tx_glst <- GenomicRanges::GRangesList(df$tx_lst)
 
   # exon starts
-  exon_starts <- GenomicRanges::resize(tx_glst, width = 1, fix = "start")
+  exon_starts <- GenomicRanges::resize(tx_glst, width = 1, fix = "start", ignore.strand=T)
 
   # exon ends
-  exon_ends <- GenomicRanges::resize(tx_glst, width = 1, fix = "end")
+  exon_ends <- GenomicRanges::resize(tx_glst, width = 1, fix = "end", ignore.strand=T)
 
   # junction starts
-  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start")
+  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start", ignore.strand=T)
   junc_starts_grl <- S4Vectors::split(junc_starts, 1:length(jx))
 
   # junction ends
-  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end")
+  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end", ignore.strand=T)
   junc_ends_grl <- S4Vectors::split(junc_ends, 1:length(jx))
 
   df1 <- df %>%
@@ -79,6 +79,8 @@ choose_tx <- function(df){
   df_annot <- annotate_exon_idx(df1)
   # annotate putative classes of junction - transcripts
   df_annot_class <- classify_junc_tx(df_annot)
+  # Annotate distance to next splice sites
+  df_annot_class <- distance_to_splice_site(df_annot_class)
 
   df_fil <- df_annot_class %>%
     filter(!is.na(putative_event_type)) %>%
@@ -249,4 +251,131 @@ annotate_exon_idx <- function(df){
     )
 
 }
+
+#' Annotate for each junction the distance to the next canoncial donor and acceptor splice sites.
+#'
+#' @param df  A data.frame with junctions- transcripts combination in rows.
+#'
+#'   -  `junc_id` junction id consisting of genomic coordinates
+#'   -  `tx_id` transcript id
+#'   -  `tx_lst` a list of \code{\link[GenomicRanges]{GRanges}} with the transcript
+#'   -  `pos_left_on_exon_end` exon index if junction start matches with exon end coordinate
+#'   -  `pos_right_on_exon_start`  exon index if junction end matches with exon start coordinate
+#'   -  `pos_left_on_exon_idx` exon index in transcript if junction start overlaps exon
+#'   -  `pos_right_on_exon_idx` exon index in transcript if junction end overlaps exon
+#'
+#'   and additional columns.
+#'
+#'
+#' @return A data.frame of the input annotated with distances to canoncial splice sites:
+#'
+#'  - `distance_to_next_canonical_donor` Genomic distance to the next canonical donor in the transcript
+#'  - `distance_to_next_canonical_acceptor` Genomic distance to the next canonical acceptor in the transcript
+#'
+#' @import dplyr
+#' @keywords internal
+distance_to_splice_site <- function(df) {
+  df <-df %>%
+    rowwise() %>%
+    mutate(
+      left_distance =
+        dplyr::case_when(
+          putative_event_type == "IR" ~ 0,
+          putative_event_type == "exitron" ~ calc_distance_exitron(pos_left_lst, tx_lst, pos_left_on_exon_idx, site="left"),
+          TRUE ~ calc_distance_regular(pos_left_lst, tx_lst, pos_left_on_exon_idx, pos_left_on_exon_end, site="left")
+        ),
+      right_distance =
+        dplyr::case_when(
+          putative_event_type == "IR" ~ 0,
+          putative_event_type == "exitron" ~ calc_distance_exitron(pos_right_lst, tx_lst, pos_right_on_exon_idx, site="right"),
+          TRUE ~ calc_distance_regular(pos_right_lst, tx_lst, pos_right_on_exon_idx, pos_right_on_exon_start, site="right")
+        )
+    ) %>%
+    mutate(
+      distance_to_next_canonical_donor =
+        dplyr::case_when(
+          strand_junc == "+" ~ left_distance,
+          strand_junc == "-" ~ right_distance
+        ),
+      distance_to_next_canonical_acceptor =
+        dplyr::case_when(
+          strand_junc == "+" ~ right_distance,
+          strand_junc == "-" ~ left_distance,
+        ),
+    ) %>%
+    dplyr::select(-left_distance, -right_distance) %>% dplyr::ungroup()
+
+}
+
+
+
+#' Calculate distance of splice site to next canonical splice site in the transcript.
+#'
+#' @param pos A \code{\link[GenomicRanges]{GRanges}} representation of the splice junction.
+#' @param tx_lst A list of \code{\link[GenomicRanges]{GRanges}} with the transcript.
+#' @param pos_exon_idx Exon index in transcript if splice site overlaps exon.
+#' @param pos_exon_boundary Exon index in transcript if junction matches exon boundary.
+#' @param site A string describing the site of the junction to be annotated.
+#'
+#'
+#' @return An integer of the genomic distance in bp.
+#'
+#'
+#' @import dplyr
+#' @keywords internal
+calc_distance_regular <- function(pos, tx_lst, pos_exon_idx, pos_exon_boundary, site="left") {
+
+  stopifnot(site %in% c("left", "right"))
+  next_exon <- pos_exon_idx
+  distance_ss <- 0
+  intron_ss <- is.na(pos_exon_boundary) & is.na(pos_exon_idx)
+
+  # When splice site is located in intron find previous(follow) exon for left side
+  # and next (precede) exon for right side-
+  if (intron_ss) {
+    next_exon <- ifelse(site=="left",
+                        GenomicRanges::follow(pos, tx_lst, ignore.strand=T),
+                        GenomicRanges::precede(pos, tx_lst, ignore.strand=T))
+  }
+
+  # splice site is canonical and located on exon boundary -> 0
+  if (is.na(pos_exon_boundary)) {
+
+    # For cases where junction is located in exon or /intron
+    # Calculation is done with left and right centric view of junction ignoring the strand
+    distance_ss <- ifelse(site=="left",
+                          abs(BiocGenerics::start(pos) - BiocGenerics::end(tx_lst[next_exon])),
+                          abs(BiocGenerics::start(pos) - BiocGenerics::start(tx_lst[next_exon])))
+   }
+
+  return(distance_ss)
+}
+
+#' Calculate distance of splice sites of an exitron to next canonical splice sites in the transcript.
+#'
+#' @param pos A \code{\link[GenomicRanges]{GRanges}} representation of the exitron splice junction.
+#' @param tx_lst A list of \code{\link[GenomicRanges]{GRanges}} with the transcript.
+#' @param pos_exon_idx Exon index in transcript if splice site overlaps exon.
+#' @param site A string describing the site of the exitron to be annotated.
+#'
+#'
+#' @return An integer of the genomic distance in bp.
+#'
+#'
+#' @import dplyr
+#' @keywords internal
+calc_distance_exitron <- function(pos, tx_lst, pos_exon_idx, site="left") {
+
+  if (is.na(pos_exon_idx)){
+    return(NA)
+  }
+  # The distance calculation for exitrons is different from regular linear splice junctions
+  # as the next canonical splice sites are the exon boundaries itself.
+  distance_ss <- ifelse(site=="left",
+                        abs(BiocGenerics::start(pos) - BiocGenerics::start(tx_lst[pos_exon_idx])),
+                        abs(BiocGenerics::start(pos) - BiocGenerics::end(tx_lst[pos_exon_idx])))
+  return(distance_ss)
+
+}
+
 
