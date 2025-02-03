@@ -281,12 +281,14 @@ distance_to_splice_site <- function(df) {
       left_distance =
         dplyr::case_when(
           putative_event_type == "IR" ~ 0,
+          putative_event_type == "ref junction" ~ 0,
           putative_event_type == "exitron" ~ calc_distance_exitron(pos_left_lst, tx_lst, pos_left_on_exon_idx, site="left"),
           TRUE ~ calc_distance_regular(pos_left_lst, tx_lst, pos_left_on_exon_idx, pos_left_on_exon_end, site="left")
         ),
       right_distance =
         dplyr::case_when(
           putative_event_type == "IR" ~ 0,
+          putative_event_type == "ref junction" ~ 0,
           putative_event_type == "exitron" ~ calc_distance_exitron(pos_right_lst, tx_lst, pos_right_on_exon_idx, site="right"),
           TRUE ~ calc_distance_regular(pos_right_lst, tx_lst, pos_right_on_exon_idx, pos_right_on_exon_start, site="right")
         )

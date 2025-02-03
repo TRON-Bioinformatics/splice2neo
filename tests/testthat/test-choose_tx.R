@@ -91,15 +91,16 @@ test_that("choose_tx annotates correctly the distance to canonical splice sites 
                                "chr1:17-28:+", # ES
                                "chr1:30-33:+", # Exitron
                                "chr1:10-11:+", # IR like junction
-                               "chr1:10-24:+"),# Complex - ES with ASS at acceptor end
+                               "chr1:10-24:+", # Complex - ES with ASS at acceptor end
+                               "chr1:3-8:+"),  #
                    tx_lst = toy_tx %>% as.list(), tx_id = "E1")
 
   toy_jx <- toy_jx %>% choose_tx()
 
   # Works with test data?
-  expect_true(all(toy_jx$putative_event_type %in% c("ASS", "ASS", "ASS", "ASS", "ES", "exitron", "IR", "ASS")))
-  expect_true(all(toy_jx$distance_to_next_canonical_donor == c(1, 2, 0, 0, 0, 2, 0, 0)))
-  expect_true(all(toy_jx$distance_to_next_canonical_acceptor == c(0, 0, 1, 1, 0, 2, 0, 2)))
+  expect_true(all(toy_jx$putative_event_type %in% c("ASS", "ASS", "ASS", "ASS", "ES", "exitron", "IR", "ASS", "ref junction")))
+  expect_true(all(toy_jx$distance_to_next_canonical_donor == c(1, 2, 0, 0, 0, 2, 0, 0, 0)))
+  expect_true(all(toy_jx$distance_to_next_canonical_acceptor == c(0, 0, 1, 1, 0, 2, 0, 2, 0)))
 
 })
 
