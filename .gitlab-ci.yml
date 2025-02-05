@@ -13,9 +13,9 @@ testing:
   script:
     - sudo apt-get update
     - sudo apt-get install -y qpdf
-    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
-    - R -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
-    - R -e 'devtools::check()'
+    - Rscript -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - Rscript -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
+    - Rscript -e 'devtools::check()'
 
 pages:
   stage: deploy
