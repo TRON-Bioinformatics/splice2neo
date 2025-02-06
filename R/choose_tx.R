@@ -276,6 +276,7 @@ annotate_exon_idx <- function(df){
 #' @keywords internal
 distance_to_splice_site <- function(df) {
   df <-df %>%
+  rowwise () %>%
     mutate(
       left_distance =
         dplyr::case_when(
