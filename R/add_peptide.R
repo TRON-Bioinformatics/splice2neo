@@ -453,7 +453,6 @@ get_peptide_context <- function(df, flanking_size = 14){
         # no frame-shift  & novel AAs:
         # WT-AA + novel seq + WT-AA or until stop
         # (e.g. ASS, IRs)
-        # TODO: do we need additional_novel_AA?
         !frame_shift & cds_length_difference > 0 ~
           pmin(normalized_protein_junc_pos + additional_novel_AA + (cds_length_difference / 3) + flanking_size, protein_len)
 
