@@ -1,4 +1,4 @@
-image: ghcr.io/rocker-org/devcontainer/tidyverse
+image: bioconductor/bioconductor_docker:RELEASE_3_20
 
 stages:
   - check
@@ -13,8 +13,9 @@ testing:
   script:
     # - sudo apt-get update
     # - sudo apt-get install -y qpdf
-    # - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
-    - R -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
+    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - R -e 'devtools::install_dev_deps(quiet=TRUE)'
+    - R -e 'devtools::install(quiet=TRUE)'
     - R -e 'devtools::check()'
 
 pages:
