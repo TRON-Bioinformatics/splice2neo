@@ -11,18 +11,19 @@ testing:
       - testing.log
   stage: check
   script:
-    # - sudo apt-get update
-    # - sudo apt-get install -y qpdf
-    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
-    - R -e 'devtools::install(quiet=TRUE, dependencies = TRUE)'
-    - R -e 'devtools::check()'
+    - sudo apt-get update
+    - sudo apt-get install -y qpdf
+    - Rscript -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - Rscript -e 'devtools::install_deps(quiet=TRUE)'
+    - Rscript -e 'devtools::install(quiet=TRUE)'
+    - Rscript -e 'devtools::check()'
 
 pages:
   stage: deploy
   dependencies:
     - testing
   script:
-    # - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
+    - R -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
     - R -e 'devtools::install(quiet=TRUE)'
     - R -e 'install.packages("pkgdown", verbose = FALSE, quiet = TRUE)'
     - R -e 'pkgdown::build_site()'
