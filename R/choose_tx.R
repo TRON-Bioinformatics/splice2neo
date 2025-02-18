@@ -47,17 +47,17 @@ choose_tx <- function(df){
   tx_glst <- GenomicRanges::GRangesList(df$tx_lst)
 
   # exon starts
-  exon_starts <- GenomicRanges::resize(tx_glst, width = 1, fix = "start", ignore.strand=T)
+  exon_starts <- GenomicRanges::resize(tx_glst, width = 1, fix = "start", ignore.strand = TRUE)
 
   # exon ends
-  exon_ends <- GenomicRanges::resize(tx_glst, width = 1, fix = "end", ignore.strand=T)
+  exon_ends <- GenomicRanges::resize(tx_glst, width = 1, fix = "end", ignore.strand = TRUE)
 
   # junction starts
-  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start", ignore.strand=T)
+  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start", ignore.strand = TRUE)
   junc_starts_grl <- S4Vectors::split(junc_starts, 1:length(jx))
 
   # junction ends
-  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end", ignore.strand=T)
+  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end", ignore.strand = TRUE)
   junc_ends_grl <- S4Vectors::split(junc_ends, 1:length(jx))
 
   df1 <- df %>%

@@ -4,8 +4,7 @@
 \alias{get_normalized_protein_junc_pos}
 \title{Annotate the normalized junction position in the protein,
 \code{frame_shift}
-\code{intron_retention}
-\code{protein_length_difference}
+\code{is_intron_retention}
 \code{protein_junc_pos}
 \code{protein}
 \code{protein_wt}
@@ -22,8 +21,7 @@ get_normalized_protein_junc_pos(df)
 \description{
 Annotate the normalized junction position in the protein,
 \code{frame_shift}
-\code{intron_retention}
-\code{protein_length_difference}
+\code{is_intron_retention}
 \code{protein_junc_pos}
 \code{protein}
 \code{protein_wt}
