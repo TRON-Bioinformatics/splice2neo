@@ -1,4 +1,4 @@
-#' Annotate if splice junction points overlap with genomic positions of retroelements.
+#' Annotate if splice sites of a junction overlap with genomic positions of retroelements.
 #'
 #' @param df A data.frame with splice junctions in rows and at least the columns:
 #'
@@ -24,11 +24,12 @@
 #'
 #' annotate_potential_jet(junc_df, rmsk)
 #'
-#' @import dplyr
+#' @import dplyr purrr
 #' @export
 annotate_potential_jet <- function(df, rmsk) {
   
   stopifnot(is.data.frame(df))
+  stopifnot(is.data.frame(rmsk))
   stopifnot("junc_id" %in% names(df))
   
   # build GRanges of junctions
@@ -36,36 +37,51 @@ annotate_potential_jet <- function(df, rmsk) {
   
   # junction starts
   junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start")
-  junc_starts_grl <- S4Vectors::split(junc_starts, 1:length(jx))
   
   # junction ends
   junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end")
-  junc_ends_grl <- S4Vectors::split(junc_ends, 1:length(jx))
   
-  df <- df %>%
-    dplyr::mutate(
-        pos_left_lst  = junc_starts_grl %>% as.list(),
-        pos_right_lst = junc_ends_grl %>% as.list()
-    )
+  # Annotate overlaps of left splice-site with RepeatMasker predictions
+  left_overlaps <- GenomicRanges::findOverlaps(junc_starts, rmsk, ignore.strand=F)
+  left_jx_idx <- left_overlaps %>% S4Vectors::queryHits()
+  left_retroelement_idx <- left_overlaps %>% S4Vectors::subjectHits()
   
-  df <- df %>%
-    dplyr::mutate(
-      pos_left_retroelement_idx =
-        purrr::map_dbl(pos_left_lst, ~ GenomicRanges::findOverlaps(.x, rmsk, select = "first")),
-      pos_right_retroelement_idx =
-        purrr::map_dbl(pos_right_lst, ~ GenomicRanges::findOverlaps(.x, rmsk, select = "first")),
-      pos_left_retroelement =
-        dplyr::if_else(is.na(pos_left_on_retroelement), NA, rmsk$repName[pos_left_retroelement_idx]),
-      pos_right_retroelement =
-        dplyr::if_else(is.na(pos_right_on_retroelement), NA, rmsk$repName[pos_right_retroelement_idx]),
-    ) %>%
-    mutate(
-      potential_jet = dplyr::if_any(c(pos_left_retroelement, pos_right_retroelement),~!is.na(.x))
-    )
-  
-  df <- df %>%
-    dplyr::select(-pos_left_lst, -pos_right_lst, -pos_left_retroelement_idx, -pos_right_retroelement_idx)
-  
-  return(df)
+  left_to_retroelement <- tibble::tibble(
+    junc_id = df$junc_id[left_jx_idx],
+    pos_left_retroelement = rmsk$repName[left_retroelement_idx],
+    pos_left_retroelement_class = rmsk$repClass[left_retroelement_idx]
+  )
 
-}
+  # Annotate overlaps of right splice-site with RepeatMasker predictions
+  right_overlaps <- GenomicRanges::findOverlaps(junc_ends, rmsk, ignore.strand=F)
+  right_jx_idx <- right_overlaps %>% S4Vectors::queryHits()
+  right_retroelement_idx <- right_overlaps %>% S4Vectors::subjectHits()
+  
+  right_to_retroelement <- tibble::tibble(
+    junc_id = df$junc_id[right_jx_idx],
+    pos_right_retroelement = rmsk$repName[right_retroelement_idx],
+    pos_right_retroelement_class = rmsk$repClass[right_retroelement_idx]
+  )
+  
+  # Combine by junc_id. If multiple Elements overlap they are collapsed
+  retro_element_overlap <- left_to_retroelement %>%
+    full_join(right_to_retroelement) %>%
+    dplyr::distinct() %>%
+    dplyr::group_by(junc_id) %>%
+    dplyr::summarize(
+      left_side_retroelement = str_c(unique(purrr::discard(pos_left_retroelement, is.na)), collapse = "|"),
+      left_side_retroelement_class = str_c(unique(purrr::discard(pos_left_retroelement_class, is.na)), collapse = "|"),
+      right_side_retroelement = str_c(unique(purrr::discard(pos_right_retroelement, is.na)), collapse = "|"),
+      right_side_retroelement_class = str_c(unique(purrr::discard(pos_right_retroelement_class, is.na)), collapse = "|"),
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate_all(., list(~dplyr::na_if(.,"")))
+  
+  df <- df %>%
+    dplyr::left_join(retro_element_overlap) %>%
+    dplyr::mutate(
+      potential_jet = dplyr::if_any(c(left_side_retroelement, right_side_retroelement), ~!is.na(.x))
+    )
+
+  return(df)
+}  
