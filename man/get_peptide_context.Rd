@@ -3,17 +3,12 @@
 \name{get_peptide_context}
 \alias{get_peptide_context}
 \title{Get peptide context sequence given a tibble with
-\code{intron_retention}
 \code{normalized_protein_junc_pos}
 \code{is_first_reading_frame}
 \code{frame_shift}
-\code{exon1_end_AA}
-\code{exon1_end_AA_WT}
-\code{exon2_start_AA_WT},
-\code{protein_len}
-\code{protein_len}
-\code{protein_length_difference}
-\code{protein}}
+\code{additional_novel_AA}
+\code{protein}
+\code{cds_length_difference}}
 \usage{
 get_peptide_context(df, flanking_size = 14)
 }
@@ -24,16 +19,11 @@ get_peptide_context(df, flanking_size = 14)
 }
 \description{
 Get peptide context sequence given a tibble with
-\code{intron_retention}
 \code{normalized_protein_junc_pos}
 \code{is_first_reading_frame}
 \code{frame_shift}
-\code{exon1_end_AA}
-\code{exon1_end_AA_WT}
-\code{exon2_start_AA_WT},
-\code{protein_len}
-\code{protein_len}
-\code{protein_length_difference}
+\code{additional_novel_AA}
 \code{protein}
+\code{cds_length_difference}
 }
 \keyword{internal}
