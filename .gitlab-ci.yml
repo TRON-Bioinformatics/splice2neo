@@ -15,7 +15,7 @@ testing:
     - sudo apt-get install -y qpdf
     - Rscript -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
     - Rscript -e 'install.packages("renv", verbose = FALSE, quiet = TRUE)'
-    - Rscript -e 'BiocManager::install(renv::dependencies("DESCRIPTION")$Package, ask=F, upgrade=F, dependencies=c("Depends", "Imports", "Suggests"))'
+    - Rscript -e 'BiocManager::install(renv::dependencies("DESCRIPTION")$Package, ask=F, upgrade=F, dependencies=c("Depends", "Imports"))'
     - Rscript -e 'devtools::install(quiet=TRUE)'
     - Rscript -e 'devtools::check()'
 
