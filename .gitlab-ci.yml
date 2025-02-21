@@ -16,7 +16,7 @@ testing:
     - Rscript -e 'install.packages("devtools", verbose = FALSE, quiet = TRUE)'
     - Rscript -e 'install.packages("renv", verbose = FALSE, quiet = TRUE)'
     - Rscript -e 'BiocManager::install(unique(renv::dependencies(".")$Package), ask=F, upgrade=F, dependencies=c("Depends", "Imports"))'
-    - Rscript -e 'devtools::install(quiet=TRUE)'
+    - Rscript -e 'devtools::install(quiet=TRUE, dependencies=c("Depends", "Imports"))'
     - Rscript -e 'devtools::check()'
 
 pages:
