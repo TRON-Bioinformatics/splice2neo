@@ -29,7 +29,7 @@
 annotate_potential_jet <- function(df, rmsk) {
   
   stopifnot(is.data.frame(df))
-  stopifnot(is.data.frame(rmsk))
+  stopifnot(class(rmsk) %in% c("GRanges", "CompressedGRanges"))
   stopifnot("junc_id" %in% names(df))
   
   # build GRanges of junctions
