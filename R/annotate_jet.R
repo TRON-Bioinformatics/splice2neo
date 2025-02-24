@@ -9,17 +9,18 @@
 #' @return A data.frame as the input with additional columns annotating overlaps with retroelemts.
 #'
 #'  - `potential_jet` Indicator if junction is potentially a jet
-#'  - `pos_left_retroelement`: Name of retroelement overlapping left splice site
-#'  - `pos_right_retroelement`: Name of retroelement overlapping right splice site
+#'  - `left_side_retroelement`: Name of retroelement overlapping left splice site
+#'  - `left_side_retroelement_class`: Class of retroelement overlapping left splice site
+#'  - `right_side_retroelement`: Name of retroelement overlapping right splice site
+#'  - `right_side_retroelement_class`: Class of retroelement overlapping right splice site
 #'
 #' @examples
-#' ah <- AnnotationHub()
-#' query(ah, c("RepeatMasker", "Homo sapiens"))
-#' rmsk <- ah[["AH99003"]]
-#'
+#' 
+#' 
+#' rmsk <- readr::read_tsv(system.file("extdata", "rmsk_hg19_subset.tsv.gz", package = "splice2neo"))
+#' rmsk <- GenomicRanges::makeGRangesFromDataFrame(rmsk)
 #' junc_df <- tibble::tibble(
-#'   junc_id = c("chr2:152389996-152392205:-", "chr2:152389996-152390729:-",
-#'               "chr2:152389955-152389956:-")
+#'   junc_id = c("chr2:152407458-152408252:-")
 #' )
 #'
 #' annotate_potential_jet(junc_df, rmsk)
@@ -36,10 +37,10 @@ annotate_potential_jet <- function(df, rmsk) {
   jx <- junc_to_gr(df$junc_id)
   
   # junction starts
-  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start")
+  junc_starts <- GenomicRanges::resize(jx, width = 1, fix = "start", ignore.strand = TRUE)
   
   # junction ends
-  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end")
+  junc_ends <- GenomicRanges::resize(jx, width = 1, fix = "end", ignore.strand = TRUE)
   
   # Annotate overlaps of left splice-site with RepeatMasker predictions
   left_overlaps <- GenomicRanges::findOverlaps(junc_starts, rmsk, ignore.strand=F)
