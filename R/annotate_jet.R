@@ -25,7 +25,6 @@
 #'
 #' annotate_potential_jet(junc_df, rmsk)
 #'
-#' @import dplyr purrr GenomicRanges tibble
 #' @export
 annotate_potential_jet <- function(df, rmsk) {
 
@@ -66,7 +65,7 @@ annotate_potential_jet <- function(df, rmsk) {
 
   # Combine by junc_id. If multiple Elements overlap they are collapsed
   retro_element_overlap <- left_to_retroelement %>%
-    full_join(right_to_retroelement) %>%
+    full_join(right_to_retroelement, by = "junc_id") %>%
     dplyr::distinct() %>%
     dplyr::group_by(junc_id) %>%
     dplyr::summarize(
@@ -79,7 +78,7 @@ annotate_potential_jet <- function(df, rmsk) {
     dplyr::mutate_all(., list(~dplyr::na_if(.,"")))
 
   df <- df %>%
-    dplyr::left_join(retro_element_overlap) %>%
+    dplyr::left_join(retro_element_overlap, by = "junc_id") %>%
     dplyr::mutate(
       potential_jet = dplyr::if_any(c(left_side_retroelement, right_side_retroelement), ~!is.na(.x))
     )
