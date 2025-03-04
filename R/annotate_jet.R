@@ -17,13 +17,13 @@
 #' @examples
 #'
 #'
-#' rmsk <- readr::read_tsv(system.file("extdata", "rmsk_hg19_subset.tsv.gz", package = "splice2neo"))
-#' rmsk <- GenomicRanges::makeGRangesFromDataFrame(rmsk, keep.extra.columns = T)
-#' junc_df <- tibble::tibble(
-#'   junc_id = c("chr2:152407458-152408252:-")
-#' )
+#'rmsk <- readr::read_tsv(system.file("extdata", "rmsk_hg19_subset.tsv.gz", package = "splice2neo"))
+#'rmsk <- GenomicRanges::makeGRangesFromDataFrame(rmsk, keep.extra.columns = TRUE)
+#'junc_df <- tibble::tibble(
+#'  junc_id = c("chr2:152407458-152408252:-")
+#')
 #'
-#' annotate_potential_jet(junc_df, rmsk)
+#'annotate_potential_jet(junc_df, rmsk)
 #'
 #' @export
 annotate_potential_jet <- function(df, rmsk) {
