@@ -63,7 +63,9 @@ Imports:
     XVector,
     rlang,
     rtracklayer,
-    BSgenome.Hsapiens.UCSC.hg19
+    BSgenome.Hsapiens.UCSC.hg19,
+    liftOver,
+    txdbmaker
 URL: https://github.com/TRON-Bioinformatics/splice2neo
 Depends: 
     R (>= 2.10)
