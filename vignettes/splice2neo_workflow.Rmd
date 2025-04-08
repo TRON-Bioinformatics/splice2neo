@@ -530,6 +530,22 @@ selected_junc_df <- junc_df %>%
 selected_junc_df
 ```
 
+> Warning! The current implementation of `choose_tx` fails on dataframes with many input splice junctions due to a bug in the GenomicFeatures packages.
+
+```
+Error in validObject(.Object) : 
+  invalid class “RangeNSBS” object: invalid object for slot "upper_bound" in class "RangeNSBS": got class "numeric", should be or extend class "integer"
+```
+
+As a temporary workaround, you can group/split the dataframe by junction and apply the method to smaller sub-dataframes. 
+The following code snippet uses `furrr::future_map` to parallelize the method across multiple cores.
+
+```
+selected_junc_df <- junc_df %>%
+  split(.$junc_id) %>% 
+  furrr::future_map(~splice2neo::choose_tx(.x))
+```
+
 
 ## References
 
