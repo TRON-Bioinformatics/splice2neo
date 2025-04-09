@@ -530,7 +530,7 @@ selected_junc_df <- junc_df %>%
 selected_junc_df
 ```
 
-> Warning! The current implementation of `choose_tx` fails on dataframes with many input splice junctions due to a bug in the GenomicFeatures packages.
+> Warning! The current implementation of `choose_tx` fails on dataframes with many input splice junctions, likely due to a bug in a dependency.
 
 ```
 Error in validObject(.Object) : 
