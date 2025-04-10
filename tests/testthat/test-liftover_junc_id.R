@@ -52,3 +52,22 @@ test_that("liftover_junc_id for deleted junction position", {
   expect_true(all(junc_df_lifted$liftover_unique))
 
 })
+
+
+test_that("liftover_junc_id for deletion located at the beginning of the junction", {
+
+  chain_file = system.file(package="splice2neo", "extdata", "test.chain")
+  stopifnot(chain_file != "")
+
+  junc_df <- dplyr::tibble(
+    junc_id = "chr6:30704795-30705795"
+  )
+
+  junc_df_lifted <- liftover_junc_id(junc_df, chain_file)
+
+  expect_equal(nrow(junc_df_lifted), nrow(junc_df))
+  expect_true(all(junc_df_lifted$liftover_successful))
+  expect_false(all(junc_df_lifted$liftover_unique))
+
+})
+
