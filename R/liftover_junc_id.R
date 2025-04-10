@@ -42,7 +42,7 @@ liftover_junc_id <- function(junc_df, chain_file){
       junc_id_lifted_lst = as.list(junc_id_lifted_grl),
 
       # check that lifted junctions are valid intervals (not single positions)
-      liftover_successful = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) > 0 & all(BiocGenerics::width(.x) >= 2)),
+      liftover_successful = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) > 0 & any(BiocGenerics::width(.x) >= 2)),
 
       # check if liftOver was unique
       liftover_unique = purrr::map_lgl(junc_id_lifted_lst, ~ length(.x) == 1),
