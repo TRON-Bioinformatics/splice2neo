@@ -1,7 +1,5 @@
 FROM docker://rocker/r-ver:4.2.3
 
-MAINTAINER johannes.hausmann@tron-mainz.de
-
 ENV SRC /usr/local/src
 ENV BIN /usr/local/bin
 
@@ -36,8 +34,6 @@ RUN apt update && apt install -y \
     apt autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN locale-gen en_US.UTF-8
-
 RUN install2.r --error --skipinstalled -n 8 \
     readr \
     tibble \
@@ -50,7 +46,8 @@ RUN install2.r --error --skipinstalled -n 8 \
     devtools \
     remotes \
     BiocManager \
-    vroom
+    vroom \
+    furrr
 
 
 RUN Rscript -e 'library(remotes); remotes::install_version("Matrix", version = "1.6-5", repos = "http://cran.us.r-project.org", Ncpus=8)'
