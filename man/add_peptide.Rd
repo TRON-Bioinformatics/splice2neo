@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_peptide.R
 \name{add_peptide}
 \alias{add_peptide}
-\title{Annotate splice junctions with resulting CDS and peptide sequence}
+\title{Annotates splice junctions with resulting CDS and peptide sequence.}
 \usage{
 add_peptide(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = FALSE)
 }
@@ -25,34 +25,41 @@ Frame shift junctions are flanked by wild-type amino acids to the left and are a
 kept? If TRUE, the list columns \code{cds_lst} and \code{cds_mod_lst} are added to the output.}
 }
 \value{
-A data.frame as the input with the additional column(s):
+A data.frame with the same rows as the input \code{df} but with the
+following additional column(s):
 \itemize{
-\item \code{cds_mod_id} an identifier made from \code{tx_id} and \code{junc_id}
+\item \code{cds_mod_id} An identifier made from \code{tx_id} and \code{junc_id}
 \item \code{junc_pos_cds} the junction position in the modified CDS sequence
 \item \code{frame_shift} Indicator whether junction leads to frame shift.
-\item \code{is_first_reading_frame} Indicator whether modified CDS sequence is translated into \code{protein} sequence using the 1st reading frame (i.e. reading is starting from the first nucleotide) for in-frame peptides.
-\item \code{normalized_cds_junc_pos} The normalized position of the junction in the modified CDS sequence to the left junction side.
-\item \code{protein} the full protein sequence of the translated modified CDS.
-\item \code{normalized_protein_junc_pos} The normalized position of the junction in the \code{protein} sequence to the left junction side.
+\item \code{is_first_reading_frame} Indicator whether modified CDS sequence is
+translated into \code{protein} sequence using the 1st reading frame
+(i.e. reading is starting from the first nucleotide) for in-frame peptides.
+\item \code{normalized_cds_junc_pos} The normalized position of the junction in the
+modified CDS sequence to the left junction side.
+\item \code{protein} The full protein sequence of the translated modified CDS.
+\item \code{normalized_protein_junc_pos} The normalized position of the junction in
+the \code{protein} sequence to the left junction side.
 \item \code{peptide_context_junc_pos} The junction position relative to the \code{peptide_context} sequence
 \item \code{junc_in_orf} Indicator whether the junction is located in an open reading frame.
-\item \code{peptide_context_seq_raw} the peptide sequence around the junction including stop codons.
-\item \code{peptide_context} the peptide sequence around the junction truncated after stop codons.
-\item \code{truncated_cds} Indicator whether the mutated gene product is a truncated from of the WT gene product. If TRUE, \code{peptide_context} = NA.
-\item \code{cds_description} Descriptor of of the mutated gene product. Can be one of c("mutated cds", "truncated cds", "no mutated gene product", "no wt cds", "not in ORF")
+\item \code{peptide_context_seq_raw} The peptide sequence around the junction including stop codons.
+\item \code{peptide_context} The peptide sequence around the junction truncated after stop codons.
+\item \code{truncated_cds} Indicator whether the mutated gene product is a truncated
+from of the WT gene product. If TRUE, \code{peptide_context} = NA.
+\item \code{cds_description} Descriptor of of the mutated gene product. Can be one of
+c("mutated cds", "truncated wt cds", "no mutated gene product", "no wt cds", "not in ORF")
 }
 
 If the \code{keep_ranges} is TRUE, the following additional columns are added to
 the output data.frame:
 \itemize{
-\item \code{cds_lst} a list of \code{\link[GenomicRanges]{GRanges}} with
+\item \code{cds_lst} A list of \code{\link[GenomicRanges]{GRanges}} with
 the original CDS as provided in \code{tx_id} column and \code{cds} object..
-\item \code{cds_mod_lst} a list of \code{\link[GenomicRanges]{GRanges}} with the
+\item \code{cds_mod_lst} A list of \code{\link[GenomicRanges]{GRanges}} with the
 modified CDS ranges.
 }
 }
 \description{
-Annotate splice junctions with resulting CDS and peptide sequence
+Annotates splice junctions with resulting CDS and peptide sequence.
 }
 \examples{
 requireNamespace("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)

@@ -73,3 +73,65 @@ test_that("choose_tx works for exon skippings", {
 
 })
 
+test_that("choose_tx annotates correctly the distance to canonical splice sites on the plus strand ", {
+
+
+  # Fake multi exon transcript on plus strand
+  toy_tx <- GenomicRanges::GRanges(
+    c("chr1:1-3:+", "chr1:8-10:+", "chr1:15-17:+", "chr1:22-26:+", "chr1:28-35:+")
+  )
+  toy_tx <- GenomicRanges::GRangesList(toy_tx)
+  names(toy_tx) <- "E1"
+
+
+  toy_jx <- tibble(junc_id = c("chr1:2-8:+",   # ASS with donor in exon
+                               "chr1:5-8:+",   # ASS with donor in intron
+                               "chr1:10-14:+", # ASS with acceptor in intron
+                               "chr1:10-16:+", # ASS with acceptor in exon
+                               "chr1:17-28:+", # ES
+                               "chr1:30-33:+", # Exitron
+                               "chr1:10-11:+", # IR like junction
+                               "chr1:10-24:+", # Complex - ES with ASS at acceptor end
+                               "chr1:3-8:+"),  #
+                   tx_lst = toy_tx %>% as.list(), tx_id = "E1")
+
+  toy_jx <- toy_jx %>% choose_tx()
+
+  # Works with test data?
+  expect_true(all(toy_jx$putative_event_type %in% c("ASS", "ASS", "ASS", "ASS", "ES", "exitron", "IR", "ASS", "ref junction")))
+  expect_true(all(toy_jx$distance_to_next_canonical_donor == c(1, 2, 0, 0, 0, 2, 0, 0, 0)))
+  expect_true(all(toy_jx$distance_to_next_canonical_acceptor == c(0, 0, 1, 1, 0, 2, 0, 2, 0)))
+
+})
+
+test_that("choose_tx annotates correctly the distance to canonical splice sites on the minus strand ", {
+
+
+  # Fake multi exon transcript on minus strand
+  toy_tx <- GenomicRanges::GRanges(
+    c("chr1:1-3:-", "chr1:8-10:-", "chr1:15-17:-", "chr1:22-26:-", "chr1:28-35:-")
+  )
+  toy_tx <- GenomicRanges::GRangesList(toy_tx)
+  names(toy_tx) <- "E2"
+
+
+  toy_jx <- tibble(junc_id = c("chr1:2-8:-",   # ASS with acceptor in exon
+                               "chr1:5-8:-",   # ASS with acceptor in intron
+                               "chr1:10-14:-", # ASS with donor in intron
+                               "chr1:10-16:-", # ASS with donor in exon
+                               "chr1:17-28:-", # ES
+                               "chr1:30-34:-", # Exitron
+                               "chr1:10-11:-", # IR like junction
+                               "chr1:10-24:-"),# Complex - ES with ASS at donor end
+                   tx_lst = toy_tx %>% as.list(), tx_id = "E2")
+
+  toy_jx <- toy_jx %>% choose_tx()
+
+  # Works with test data?
+  expect_true(all(toy_jx$putative_event_type %in% c("ASS", "ASS", "ASS", "ASS", "ES", "exitron", "IR", "ASS")))
+  expect_true(all(toy_jx$distance_to_next_canonical_donor == c(0, 0, 1, 1, 0, 1, 0, 2)))
+  expect_true(all(toy_jx$distance_to_next_canonical_acceptor == c(1, 2, 0, 0, 0, 2, 0, 0)))
+
+})
+
+

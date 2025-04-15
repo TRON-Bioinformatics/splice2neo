@@ -1,3 +1,10 @@
+# splice2neo 0.6.13
+
+- Fixed bug leading to incorret peptide sequences
+- Simplified code of `add_peptide()` function
+- Added function to calculate distances to next canonical splice sites
+- Added function to annotate if junction is potentially a JET (Exon-TE chimera)
+
 # splice2neo 0.6.12
 
 - Add docker container support
