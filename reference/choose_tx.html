@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.13</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Select a subset of transcripts per junction that are more likely to be affected by a junction.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/v0.6.12/R/choose_tx.R" class="external-link"><code>R/choose_tx.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/master/R/choose_tx.R" class="external-link"><code>R/choose_tx.R</code></a></small>
     <div class="hidden name"><code>choose_tx.Rd</code></div>
     </div>
 
@@ -99,28 +99,30 @@ This function may loose relevant or keep irrelevant junction-transcripts in part
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">junc_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_tx.html">add_tx</a></span><span class="op">(</span><span class="va">junc_df</span>, <span class="va">toy_transcripts</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">choose_tx</span><span class="op">(</span><span class="va">junc_df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id                    tx_id           tx_lst       putative_event_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:152389996-152392205:- ENST00000409198 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:152389996-152392205:- ENST00000172853 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:152389996-152392205:- ENST00000397345 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:152389996-152392205:- ENST00000427231 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:152389996-152392205:- ENST00000618972 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:152389996-152392205:- ENST00000413693 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:152389996-152392205:- ENST00000603639 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:152389996-152392205:- ENST00000604864 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:152389996-152392205:- ENST00000420924 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:152389996-152390729:- ENST00000409198 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:152389996-152390729:- ENST00000172853 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:152389996-152390729:- ENST00000427231 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:152389996-152390729:- ENST00000618972 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:152389996-152390729:- ENST00000413693 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:152389996-152390729:- ENST00000604864 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:152389955-152389956:- ENST00000397345 <span style="color: #949494;">&lt;GRanges&gt;</span>    IR                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:152389955-152389956:- ENST00000618972 <span style="color: #949494;">&lt;GRanges&gt;</span>    IR                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> chr2:152389955-152389956:- ENST00000603639 <span style="color: #949494;">&lt;GRanges&gt;</span>    IR                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> chr2:152389955-152389956:- ENST00000420924 <span style="color: #949494;">&lt;GRanges&gt;</span>    IR                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    junc_id            tx_id tx_lst    putative_event_type distance_to_next_can…¹</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named l&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> chr2:152389955-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> IR                                       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> chr2:152389955-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> IR                                       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> chr2:152389955-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> IR                                       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> chr2:152389955-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> IR                                       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated name: ¹​distance_to_next_canonical_donor</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: distance_to_next_canonical_acceptor &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

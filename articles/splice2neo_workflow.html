@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">splice2neo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.13</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <h1 data-toc-skip>Splice2neo example analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/v0.6.12/vignettes/splice2neo_workflow.Rmd" class="external-link"><code>vignettes/splice2neo_workflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/TRON-Bioinformatics/splice2neo/blob/master/vignettes/splice2neo_workflow.Rmd" class="external-link"><code>vignettes/splice2neo_workflow.Rmd</code></a></small>
       <div class="hidden name"><code>splice2neo_workflow.Rmd</code></div>
 
     </div>
@@ -148,13 +148,16 @@ also from other resources.</p>
 <span></span>
 <span><span class="co"># parse GTF file as txdb object</span></span>
 <span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu">GenomicFeatures</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/makeTxDbFromGFF.html" class="external-link">makeTxDbFromGFF</a></span><span class="op">(</span><span class="va">gtf_file</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in call_fun_in_txdbmaker("makeTxDbFromGFF", ...): makeTxDbFromGFF() has moved to the txdbmaker package. Please call</span></span>
+<span><span class="co">#&gt; Warning in call_fun_in_txdbmaker("makeTxDbFromGFF", ...): makeTxDbFromGFF() has moved from GenomicFeatures to the txdbmaker package,</span></span>
+<span><span class="co">#&gt;   and is formally deprecated in GenomicFeatures &gt;= 1.59.1. Please call</span></span>
 <span><span class="co">#&gt;   txdbmaker::makeTxDbFromGFF() to get rid of this warning.</span></span>
 <span><span class="co">#&gt; Import genomic features from the file as a GRanges object ... OK</span></span>
 <span><span class="co">#&gt; Prepare the 'metadata' data frame ... OK</span></span>
 <span><span class="co">#&gt; Make the TxDb object ...</span></span>
 <span><span class="co">#&gt; Warning in .get_cds_IDX(mcols0$type, mcols0$phase): The "phase" metadata column contains non-NA values for features of type</span></span>
 <span><span class="co">#&gt;   stop_codon. This information was ignored.</span></span>
+<span><span class="co">#&gt; Warning in .makeTxDb_normarg_chrominfo(chrominfo): genome version information</span></span>
+<span><span class="co">#&gt; is not available for this TxDb object</span></span>
 <span><span class="co">#&gt; OK</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># optionally save database for later re-use </span></span>
@@ -904,20 +907,36 @@ regions with multiple isoforms with distinct splicing pattern.</p>
 <span>  <span class="fu"><a href="../reference/choose_tx.html">choose_tx</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">selected_junc_df</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 4</span></span></span>
-<span><span class="co">#&gt;    junc_id                    tx_id           tx_lst       putative_event_type</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr2:152389996-152392205:- ENST00000409198 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr2:152389996-152392205:- ENST00000172853 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr2:152389996-152392205:- ENST00000397345 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr2:152389996-152392205:- ENST00000427231 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr2:152389996-152392205:- ENST00000618972 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr2:152389996-152392205:- ENST00000413693 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr2:152389996-152392205:- ENST00000603639 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr2:152389996-152392205:- ENST00000604864 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr2:152389996-152392205:- ENST00000420924 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr2:179415981-179416357:- ENST00000342992 <span style="color: #949494;">&lt;GRanges&gt;</span>    ASS                </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21 × 6</span></span></span>
+<span><span class="co">#&gt;    junc_id            tx_id tx_lst    putative_event_type distance_to_next_can…¹</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named l&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr2:152389996-15… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr2:179415981-17… ENST… <span style="color: #949494;">&lt;GRanges&gt;</span> ASS                                      0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated name: ¹​distance_to_next_canonical_donor</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: distance_to_next_canonical_acceptor &lt;dbl&gt;</span></span></span></code></pre></div>
+<blockquote>
+<p>Warning! The current implementation of <code>choose_tx</code> fails
+on dataframes with many input splice junctions, likely due to a bug in a
+dependency.</p>
+</blockquote>
+<pre><code>Error in validObject(.Object) : 
+  invalid class “RangeNSBS” object: invalid object for slot "upper_bound" in class "RangeNSBS": got class "numeric", should be or extend class "integer"</code></pre>
+<p>As a temporary workaround, you can group/split the dataframe by
+junction and apply the method to smaller sub-dataframes. The following
+code snippet uses <code>furrr::future_map</code> to parallelize the
+method across multiple cores.</p>
+<pre><code><span><span class="va">selected_junc_df</span> <span class="op">&lt;-</span> <span class="va">junc_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">.</span><span class="op">$</span><span class="va">junc_id</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">furrr</span><span class="fu">::</span><span class="fu">future_map</span><span class="op">(</span><span class="op">~</span><span class="fu">splice2neo</span><span class="fu">::</span><span class="fu"><a href="../reference/choose_tx.html">choose_tx</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -973,15 +992,15 @@ Splicing from <span>DNA</span> Sequence Using
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; R version 4.4.2 (2024-10-31)</span></span>
+<span><span class="co">#&gt; R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 22.04.5 LTS</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 24.04.2 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
-<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; locale:</span></span>
 <span><span class="co">#&gt;  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       </span></span>
@@ -996,68 +1015,67 @@ Splicing from <span>DNA</span> Sequence Using
 <span><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] dplyr_1.1.4       splice2neo_0.6.12</span></span>
+<span><span class="co">#&gt; [1] dplyr_1.1.4       splice2neo_0.6.13</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;   [1] DBI_1.2.3                         bitops_1.0-9                     </span></span>
-<span><span class="co">#&gt;   [3] httr2_1.0.6                       permute_0.9-7                    </span></span>
-<span><span class="co">#&gt;   [5] biomaRt_2.62.0                    rlang_1.1.4                      </span></span>
+<span><span class="co">#&gt;   [3] httr2_1.1.2                       permute_0.9-7                    </span></span>
+<span><span class="co">#&gt;   [5] biomaRt_2.63.3                    rlang_1.1.6                      </span></span>
 <span><span class="co">#&gt;   [7] magrittr_2.0.3                    vcfR_1.15.0                      </span></span>
-<span><span class="co">#&gt;   [9] matrixStats_1.4.1                 compiler_4.4.2                   </span></span>
-<span><span class="co">#&gt;  [11] RSQLite_2.3.7                     mgcv_1.9-1                       </span></span>
-<span><span class="co">#&gt;  [13] GenomicFeatures_1.58.0            png_0.1-8                        </span></span>
-<span><span class="co">#&gt;  [15] systemfonts_1.1.0                 vctrs_0.6.5                      </span></span>
-<span><span class="co">#&gt;  [17] txdbmaker_1.2.0                   stringr_1.5.1                    </span></span>
+<span><span class="co">#&gt;   [9] matrixStats_1.5.0                 compiler_4.5.0                   </span></span>
+<span><span class="co">#&gt;  [11] RSQLite_2.3.9                     mgcv_1.9-1                       </span></span>
+<span><span class="co">#&gt;  [13] GenomicFeatures_1.59.1            png_0.1-8                        </span></span>
+<span><span class="co">#&gt;  [15] systemfonts_1.2.2                 vctrs_0.6.5                      </span></span>
+<span><span class="co">#&gt;  [17] txdbmaker_1.3.1                   stringr_1.5.1                    </span></span>
 <span><span class="co">#&gt;  [19] memuse_4.2-3                      pkgconfig_2.0.3                  </span></span>
 <span><span class="co">#&gt;  [21] crayon_1.5.3                      fastmap_1.2.0                    </span></span>
-<span><span class="co">#&gt;  [23] dbplyr_2.5.0                      XVector_0.46.0                   </span></span>
-<span><span class="co">#&gt;  [25] utf8_1.2.4                        Rsamtools_2.22.0                 </span></span>
-<span><span class="co">#&gt;  [27] rmarkdown_2.29                    tzdb_0.4.0                       </span></span>
-<span><span class="co">#&gt;  [29] UCSC.utils_1.2.0                  ragg_1.3.3                       </span></span>
-<span><span class="co">#&gt;  [31] purrr_1.0.2                       bit_4.5.0                        </span></span>
-<span><span class="co">#&gt;  [33] xfun_0.49                         zlibbioc_1.52.0                  </span></span>
-<span><span class="co">#&gt;  [35] cachem_1.1.0                      GenomeInfoDb_1.42.0              </span></span>
-<span><span class="co">#&gt;  [37] jsonlite_1.8.9                    progress_1.2.3                   </span></span>
-<span><span class="co">#&gt;  [39] blob_1.2.4                        DelayedArray_0.32.0              </span></span>
-<span><span class="co">#&gt;  [41] BiocParallel_1.40.0               cluster_2.1.6                    </span></span>
-<span><span class="co">#&gt;  [43] parallel_4.4.2                    prettyunits_1.2.0                </span></span>
-<span><span class="co">#&gt;  [45] R6_2.5.1                          bslib_0.8.0                      </span></span>
-<span><span class="co">#&gt;  [47] stringi_1.8.4                     rtracklayer_1.66.0               </span></span>
-<span><span class="co">#&gt;  [49] GenomicRanges_1.58.0              jquerylib_0.1.4                  </span></span>
-<span><span class="co">#&gt;  [51] Rcpp_1.0.13-1                     SummarizedExperiment_1.36.0      </span></span>
-<span><span class="co">#&gt;  [53] knitr_1.48                        readr_2.1.5                      </span></span>
-<span><span class="co">#&gt;  [55] IRanges_2.40.0                    splines_4.4.2                    </span></span>
-<span><span class="co">#&gt;  [57] Matrix_1.7-1                      tidyselect_1.2.1                 </span></span>
-<span><span class="co">#&gt;  [59] abind_1.4-8                       yaml_2.3.10                      </span></span>
-<span><span class="co">#&gt;  [61] vegan_2.6-8                       codetools_0.2-20                 </span></span>
-<span><span class="co">#&gt;  [63] curl_6.0.0                        lattice_0.22-6                   </span></span>
-<span><span class="co">#&gt;  [65] tibble_3.2.1                      Biobase_2.66.0                   </span></span>
-<span><span class="co">#&gt;  [67] withr_3.0.2                       KEGGREST_1.46.0                  </span></span>
-<span><span class="co">#&gt;  [69] evaluate_1.0.1                    pinfsc50_1.3.0                   </span></span>
-<span><span class="co">#&gt;  [71] desc_1.4.3                        BiocFileCache_2.14.0             </span></span>
-<span><span class="co">#&gt;  [73] xml2_1.3.6                        Biostrings_2.74.0                </span></span>
-<span><span class="co">#&gt;  [75] pillar_1.9.0                      filelock_1.0.3                   </span></span>
-<span><span class="co">#&gt;  [77] MatrixGenerics_1.18.0             stats4_4.4.2                     </span></span>
-<span><span class="co">#&gt;  [79] generics_0.1.3                    vroom_1.6.5                      </span></span>
-<span><span class="co">#&gt;  [81] RCurl_1.98-1.16                   S4Vectors_0.44.0                 </span></span>
-<span><span class="co">#&gt;  [83] hms_1.1.3                         glue_1.8.0                       </span></span>
-<span><span class="co">#&gt;  [85] tools_4.4.2                       BiocIO_1.16.0                    </span></span>
-<span><span class="co">#&gt;  [87] BSgenome_1.74.0                   GenomicAlignments_1.42.0         </span></span>
-<span><span class="co">#&gt;  [89] fs_1.6.5                          XML_3.99-0.17                    </span></span>
-<span><span class="co">#&gt;  [91] grid_4.4.2                        tidyr_1.3.1                      </span></span>
-<span><span class="co">#&gt;  [93] ape_5.8                           AnnotationDbi_1.68.0             </span></span>
-<span><span class="co">#&gt;  [95] nlme_3.1-166                      GenomeInfoDbData_1.2.13          </span></span>
-<span><span class="co">#&gt;  [97] restfulr_0.0.15                   cli_3.6.3                        </span></span>
-<span><span class="co">#&gt;  [99] rappdirs_0.3.3                    textshaping_0.4.0                </span></span>
-<span><span class="co">#&gt; [101] fansi_1.0.6                       viridisLite_0.4.2                </span></span>
-<span><span class="co">#&gt; [103] S4Arrays_1.6.0                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span></span>
-<span><span class="co">#&gt; [105] sass_0.4.9                        digest_0.6.37                    </span></span>
-<span><span class="co">#&gt; [107] BiocGenerics_0.52.0               SparseArray_1.6.0                </span></span>
-<span><span class="co">#&gt; [109] rjson_0.2.23                      htmlwidgets_1.6.4                </span></span>
-<span><span class="co">#&gt; [111] memoise_2.0.1                     htmltools_0.5.8.1                </span></span>
-<span><span class="co">#&gt; [113] pkgdown_2.1.1                     lifecycle_1.0.4                  </span></span>
-<span><span class="co">#&gt; [115] httr_1.4.7                        MASS_7.3-61                      </span></span>
-<span><span class="co">#&gt; [117] bit64_4.5.2</span></span></code></pre></div>
+<span><span class="co">#&gt;  [23] dbplyr_2.5.0                      XVector_0.47.2                   </span></span>
+<span><span class="co">#&gt;  [25] utf8_1.2.4                        Rsamtools_2.23.1                 </span></span>
+<span><span class="co">#&gt;  [27] rmarkdown_2.29                    tzdb_0.5.0                       </span></span>
+<span><span class="co">#&gt;  [29] UCSC.utils_1.3.1                  ragg_1.4.0                       </span></span>
+<span><span class="co">#&gt;  [31] purrr_1.0.4                       bit_4.6.0                        </span></span>
+<span><span class="co">#&gt;  [33] xfun_0.52                         cachem_1.1.0                     </span></span>
+<span><span class="co">#&gt;  [35] GenomeInfoDb_1.43.4               jsonlite_2.0.0                   </span></span>
+<span><span class="co">#&gt;  [37] progress_1.2.3                    blob_1.2.4                       </span></span>
+<span><span class="co">#&gt;  [39] DelayedArray_0.33.6               BiocParallel_1.41.5              </span></span>
+<span><span class="co">#&gt;  [41] parallel_4.5.0                    prettyunits_1.2.0                </span></span>
+<span><span class="co">#&gt;  [43] cluster_2.1.8.1                   R6_2.6.1                         </span></span>
+<span><span class="co">#&gt;  [45] bslib_0.9.0                       stringi_1.8.7                    </span></span>
+<span><span class="co">#&gt;  [47] rtracklayer_1.67.1                GenomicRanges_1.59.1             </span></span>
+<span><span class="co">#&gt;  [49] jquerylib_0.1.4                   Rcpp_1.0.14                      </span></span>
+<span><span class="co">#&gt;  [51] SummarizedExperiment_1.37.0       knitr_1.50                       </span></span>
+<span><span class="co">#&gt;  [53] readr_2.1.5                       IRanges_2.41.3                   </span></span>
+<span><span class="co">#&gt;  [55] splines_4.5.0                     Matrix_1.7-3                     </span></span>
+<span><span class="co">#&gt;  [57] tidyselect_1.2.1                  abind_1.4-8                      </span></span>
+<span><span class="co">#&gt;  [59] yaml_2.3.10                       vegan_2.6-10                     </span></span>
+<span><span class="co">#&gt;  [61] codetools_0.2-20                  curl_6.2.2                       </span></span>
+<span><span class="co">#&gt;  [63] lattice_0.22-6                    tibble_3.2.1                     </span></span>
+<span><span class="co">#&gt;  [65] Biobase_2.67.0                    withr_3.0.2                      </span></span>
+<span><span class="co">#&gt;  [67] KEGGREST_1.47.1                   evaluate_1.0.3                   </span></span>
+<span><span class="co">#&gt;  [69] pinfsc50_1.3.0                    desc_1.4.3                       </span></span>
+<span><span class="co">#&gt;  [71] BiocFileCache_2.15.1              xml2_1.3.8                       </span></span>
+<span><span class="co">#&gt;  [73] Biostrings_2.75.4                 pillar_1.10.2                    </span></span>
+<span><span class="co">#&gt;  [75] filelock_1.0.3                    MatrixGenerics_1.19.1            </span></span>
+<span><span class="co">#&gt;  [77] stats4_4.5.0                      generics_0.1.3                   </span></span>
+<span><span class="co">#&gt;  [79] vroom_1.6.5                       RCurl_1.98-1.17                  </span></span>
+<span><span class="co">#&gt;  [81] S4Vectors_0.45.4                  hms_1.1.3                        </span></span>
+<span><span class="co">#&gt;  [83] glue_1.8.0                        tools_4.5.0                      </span></span>
+<span><span class="co">#&gt;  [85] BiocIO_1.17.2                     BSgenome_1.75.1                  </span></span>
+<span><span class="co">#&gt;  [87] GenomicAlignments_1.43.0          fs_1.6.6                         </span></span>
+<span><span class="co">#&gt;  [89] XML_3.99-0.18                     grid_4.5.0                       </span></span>
+<span><span class="co">#&gt;  [91] tidyr_1.3.1                       ape_5.8-1                        </span></span>
+<span><span class="co">#&gt;  [93] AnnotationDbi_1.69.1              nlme_3.1-168                     </span></span>
+<span><span class="co">#&gt;  [95] GenomeInfoDbData_1.2.14           restfulr_0.0.15                  </span></span>
+<span><span class="co">#&gt;  [97] cli_3.6.4                         rappdirs_0.3.3                   </span></span>
+<span><span class="co">#&gt;  [99] textshaping_1.0.0                 viridisLite_0.4.2                </span></span>
+<span><span class="co">#&gt; [101] S4Arrays_1.7.3                    BSgenome.Hsapiens.UCSC.hg19_1.4.3</span></span>
+<span><span class="co">#&gt; [103] sass_0.4.10                       digest_0.6.37                    </span></span>
+<span><span class="co">#&gt; [105] BiocGenerics_0.53.6               SparseArray_1.7.7                </span></span>
+<span><span class="co">#&gt; [107] rjson_0.2.23                      htmlwidgets_1.6.4                </span></span>
+<span><span class="co">#&gt; [109] memoise_2.0.1                     htmltools_0.5.8.1                </span></span>
+<span><span class="co">#&gt; [111] pkgdown_2.1.1                     lifecycle_1.0.4                  </span></span>
+<span><span class="co">#&gt; [113] httr_1.4.7                        bit64_4.6.0-1                    </span></span>
+<span><span class="co">#&gt; [115] MASS_7.3-65</span></span></code></pre></div>
 </div>
   </div>
 
