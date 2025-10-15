@@ -11,7 +11,7 @@ require(tidyverse)
 
 gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
 
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_url)
+txdb <- txdbmaker::makeTxDbFromGFF(gtf_url)
 
 # filter for a subset of chromosomes. See https://bioconductor.org/packages/devel/bioc/vignettes/GenomicFeatures/inst/doc/GenomicFeatures.pdf
 # head(GenomeInfoDb::seqlevels(txdb))
