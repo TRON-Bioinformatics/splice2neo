@@ -2,8 +2,8 @@
 
 #' Parse a GFF/GTF file as \code{\link[GenomicRanges]{GRangesList}} of exons
 #'
-#' @param file path to a GFF or GTF file (See \code{\link[GenomicFeatures]{makeTxDbFromGFF}}))
-#' @param ... other options passed to file path to \code{\link[GenomicFeatures]{makeTxDbFromGFF}})
+#' @param file path to a GFF or GTF file (See \code{\link[txdbmaker]{makeTxDbFromGFF}}))
+#' @param ... other options passed to file path to \code{\link[txdbmaker]{makeTxDbFromGFF}})
 #' @return A \code{\link[GenomicRanges]{GRangesList}} of exons grouped by transcripts
 #'
 #' @examples
@@ -14,7 +14,7 @@
 #' @export
 parse_gtf <- function(file, ...){
 
-  txdb <- suppressWarnings(GenomicFeatures::makeTxDbFromGFF(file, ...))
+  txdb <- suppressWarnings(txdbmaker::makeTxDbFromGFF(file, ...))
   transcripts <- GenomicFeatures::exonsBy(txdb, by = c("tx"), use.names = TRUE)
 
   return(transcripts)

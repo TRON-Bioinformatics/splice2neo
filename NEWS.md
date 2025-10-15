@@ -1,3 +1,7 @@
+# splice2neo 0.6.14
+
+- fix changed dependency package for makeTxDbFromGFF() function
+
 # splice2neo 0.6.13
 
 - Fixed bug leading to incorret peptide sequences
