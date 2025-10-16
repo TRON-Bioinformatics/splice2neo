@@ -8,8 +8,7 @@
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-[![](https://img.shields.io/badge/devel%20version-0.6.12-blue.svg)](https://github.com/TRON-Bioinformatics/splice2neo)
-[![](https://img.shields.io/badge/lifecycle-experimental-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://img.shields.io/github/v/release/TRON-Bioinformatics/splice2neo)](https://github.com/TRON-Bioinformatics/splice2neo/releases)
 [![](https://img.shields.io/github/last-commit/TRON-Bioinformatics/splice2neo.svg)](https://github.com/TRON-Bioinformatics/splice2neo/commits/dev)
 <!-- badges: end -->
 
@@ -69,6 +68,16 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("TRON-Bioinformatics/splice2neo")
 ```
 
+### Docker image
+
+Since release v0.6.13 we provide a [docker image for
+splice2neo](https://github.com/TRON-Bioinformatics/splice2neo/pkgs/container/splice2neo).
+Install it with:
+
+    docker pull ghcr.io/tron-bioinformatics/splice2neo:vX.Y.Z
+
+whereby `X.Y.Z` is the latest release version.
+
 ## Example usage
 
 This is a basic example of how to use some functions.
@@ -106,17 +115,21 @@ the splice junction and that may be affected by the junction.
 
 ``` r
 junc_df %>% 
-  add_tx(toy_transcripts) %>% 
-  head()
-#> # A tibble: 6 × 3
-#>   junc_id                    tx_id           tx_lst      
-#>   <chr>                      <chr>           <named list>
-#> 1 chr2:152389996-152392205:- ENST00000409198 <GRanges>   
-#> 2 chr2:152389996-152392205:- ENST00000172853 <GRanges>   
-#> 3 chr2:152389996-152392205:- ENST00000397345 <GRanges>   
-#> 4 chr2:152389996-152392205:- ENST00000427231 <GRanges>   
-#> 5 chr2:152389996-152392205:- ENST00000618972 <GRanges>   
-#> 6 chr2:152389996-152392205:- ENST00000413693 <GRanges>
+  add_tx(toy_transcripts)
+#> # A tibble: 21 × 3
+#>    junc_id                    tx_id           tx_lst      
+#>    <chr>                      <chr>           <named list>
+#>  1 chr2:152389996-152392205:- ENST00000409198 <GRanges>   
+#>  2 chr2:152389996-152392205:- ENST00000172853 <GRanges>   
+#>  3 chr2:152389996-152392205:- ENST00000397345 <GRanges>   
+#>  4 chr2:152389996-152392205:- ENST00000427231 <GRanges>   
+#>  5 chr2:152389996-152392205:- ENST00000618972 <GRanges>   
+#>  6 chr2:152389996-152392205:- ENST00000413693 <GRanges>   
+#>  7 chr2:152389996-152392205:- ENST00000603639 <GRanges>   
+#>  8 chr2:152389996-152392205:- ENST00000604864 <GRanges>   
+#>  9 chr2:152389996-152392205:- ENST00000420924 <GRanges>   
+#> 10 chr2:179415981-179416357:- ENST00000342992 <GRanges>   
+#> # ℹ 11 more rows
 ```
 
 ### 3 Modify transcripts with junctions
@@ -126,34 +139,51 @@ Then we add the transcript sequence in a fixed-sized window around the
 junction positions, the context sequence.
 
 ``` r
+toy_junc_df 
+#> # A tibble: 17 × 2
+#>    junc_id                    tx_id          
+#>    <chr>                      <chr>          
+#>  1 chr2:152389996-152392205:- ENST00000409198
+#>  2 chr2:152389996-152390729:- ENST00000409198
+#>  3 chr2:152389955-152389956:- ENST00000397345
+#>  4 chr2:152388410-152392205:- ENST00000409198
+#>  5 chr2:152388410-152390729:- ENST00000409198
+#>  6 chr2:179415981-179416357:- ENST00000342992
+#>  7 chr2:179415987-179415988:- ENST00000342992
+#>  8 chr2:179415000-179416357:- ENST00000342992
+#>  9 chr2:179445336-179446207:- ENST00000342992
+#> 10 chr2:179446225-179446226:- ENST00000342992
+#> 11 chr2:179445336-179446633:- ENST00000342992
+#> 12 chr2:179642044-179642187:- ENST00000342992
+#> 13 chr2:179642146-179642147:- ENST00000342992
+#> 14 chr2:179642044-179642431:- ENST00000342992
+#> 15 chr2:152226533-152226534:+ ENST00000460812
+#> 16 chr2:152222731-152222732:+ ENST00000460812
+#> 17 chr2:152388410-152388411:- ENST00000397345
+
+
 toy_junc_df %>% 
-  head()
-#> # A tibble: 6 × 2
-#>   junc_id                    tx_id          
-#>   <chr>                      <chr>          
-#> 1 chr2:152389996-152392205:- ENST00000409198
-#> 2 chr2:152389996-152390729:- ENST00000409198
-#> 3 chr2:152389955-152389956:- ENST00000397345
-#> 4 chr2:152388410-152392205:- ENST00000409198
-#> 5 chr2:152388410-152390729:- ENST00000409198
-#> 6 chr2:179415981-179416357:- ENST00000342992
-```
-
-``` r
-
-
-toy_junc_df %>% 
-  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg) %>% 
-  head()
-#> # A tibble: 6 × 8
-#>   junc_id       tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
-#>   <chr>         <chr> <chr>           <int> <chr>   <chr>           <int> <chr> 
-#> 1 chr2:1523899… ENST… ENST0000…       16412 AAGAAG… 200               400 90bfc…
-#> 2 chr2:1523899… ENST… ENST0000…       16517 AAGAAG… 200               400 26f77…
-#> 3 chr2:1523899… ENST… ENST0000…       21620 AAGAAG… 0,200,1745,…     1945 f1f2c…
-#> 4 chr2:1523884… ENST… ENST0000…       16412 AAGAAG… 200               400 d4f9e…
-#> 5 chr2:1523884… ENST… ENST0000…       16517 AAGAAG… 200               400 c715a…
-#> 6 chr2:1794159… ENST… ENST0000…       83789 TGGATT… 200               400 0128d…
+  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg)
+#> # A tibble: 17 × 8
+#>    junc_id      tx_id tx_mod_id junc_pos_tx cts_seq cts_junc_pos cts_size cts_id
+#>    <chr>        <chr> <chr>           <int> <chr>   <chr>           <int> <chr> 
+#>  1 chr2:152389… ENST… ENST0000…       16412 AAGAAG… 200               400 90bfc…
+#>  2 chr2:152389… ENST… ENST0000…       16517 AAGAAG… 200               400 26f77…
+#>  3 chr2:152389… ENST… ENST0000…       21620 AAGAAG… 0,200,1745,…     1945 f1f2c…
+#>  4 chr2:152388… ENST… ENST0000…       16412 AAGAAG… 200               400 d4f9e…
+#>  5 chr2:152388… ENST… ENST0000…       16517 AAGAAG… 200               400 c715a…
+#>  6 chr2:179415… ENST… ENST0000…       83789 TGGATT… 200               400 0128d…
+#>  7 chr2:179415… ENST… ENST0000…       84158 TGGATT… 0,200,569,7…      769 50119…
+#>  8 chr2:179415… ENST… ENST0000…       83789 TGGATT… 200               400 c5083…
+#>  9 chr2:179445… ENST… ENST0000…       59307 CGGGCT… 200               400 38759…
+#> 10 chr2:179446… ENST… ENST0000…       59288 TTATCT… 0,200,1089,…     1289 c4f9e…
+#> 11 chr2:179445… ENST… ENST0000…       58982 TGGCTA… 200               400 4796f…
+#> 12 chr2:179642… ENST… ENST0000…        4828 TAGAAG… 200               400 a4759…
+#> 13 chr2:179642… ENST… ENST0000…        4868 TAGACC… 0,200,302,5…      502 46a57…
+#> 14 chr2:179642… ENST… ENST0000…        4703 GTCTCC… 200               400 77c18…
+#> 15 chr2:152226… ENST… ENST0000…        3878 AAAACT… 0,76,3878,4…     4078 b8f7a…
+#> 16 chr2:152222… ENST… ENST0000…          76 AAAACT… 0,76,3878,4…     4078 b8f7a…
+#> 17 chr2:152388… ENST… ENST0000…       23165 AAGAAG… 0,200,1745,…     1945 f1f2c…
 ```
 
 ### 4 Annotate peptide sequence
@@ -172,17 +202,27 @@ toy_junc_df %>%
   add_peptide(cds=toy_cds, flanking_size = 13, bsg = bsg) %>% 
 
   # select subset of columns
-  dplyr::select(junc_id, peptide_context, junc_in_orf, cds_description) %>% 
-  head()
-#> # A tibble: 6 × 4
-#>   junc_id                    peptide_context         junc_in_orf cds_description
-#>   <chr>                      <chr>                   <lgl>       <chr>          
-#> 1 chr2:152389996-152392205:- NRHFKYATQLMNEIC         TRUE        mutated cds    
-#> 2 chr2:152389996-152390729:- HLLAKTAGDQISQIC         TRUE        mutated cds    
-#> 3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSDGM     TRUE        mutated cds    
-#> 4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYRKNYEK… TRUE        mutated cds    
-#> 5 chr2:152388410-152390729:- <NA>                    TRUE        truncated cds  
-#> 6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTPDYIDV… TRUE        mutated cds
+  dplyr::select(junc_id, peptide_context, junc_in_orf, cds_description)
+#> # A tibble: 17 × 4
+#>    junc_id                    peptide_context        junc_in_orf cds_description
+#>    <chr>                      <chr>                  <lgl>       <chr>          
+#>  1 chr2:152389996-152392205:- NRHFKYATQLMNEIC        TRUE        mutated cds    
+#>  2 chr2:152389996-152390729:- HLLAKTAGDQISQIC        TRUE        mutated cds    
+#>  3 chr2:152389955-152389956:- MLTALYNSHMWSQVMSDGM    TRUE        mutated cds    
+#>  4 chr2:152388410-152392205:- NRHFKYATQLMNEIKYRKNYE… TRUE        mutated cds    
+#>  5 chr2:152388410-152390729:- <NA>                   TRUE        wt cds         
+#>  6 chr2:179415981-179416357:- SDPSKFTLAVSPVAGTPDYID… TRUE        mutated cds    
+#>  7 chr2:179415987-179415988:- SDPSKFTLAVSPVGK        TRUE        mutated cds    
+#>  8 chr2:179415000-179416357:- SDPSKFTLAVSPVVPPIVEFG… TRUE        mutated cds    
+#>  9 chr2:179445336-179446207:- SDVPDKHYPKDILSKYYQGDST TRUE        mutated cds    
+#> 10 chr2:179446225-179446226:- SDVPDKHYPKDILSKYYQGEY… TRUE        mutated cds    
+#> 11 chr2:179445336-179446633:- SDASKAAYARDPQFPPEGELD… TRUE        mutated cds    
+#> 12 chr2:179642044-179642187:- SDSGEWTVVAQNRLWNIR     TRUE        mutated cds    
+#> 13 chr2:179642146-179642147:- AGRSSISVILTVEGKMR      TRUE        mutated cds    
+#> 14 chr2:179642044-179642431:- VGRPMPETFWFHDAVEHQVKP… TRUE        mutated cds    
+#> 15 chr2:152226533-152226534:+ <NA>                   NA          no wt cds      
+#> 16 chr2:152222731-152222732:+ <NA>                   NA          no wt cds      
+#> 17 chr2:152388410-152388411:- MLTALYNSHMWSQVMSDGM    TRUE        mutated cds
 ```
 
 ## Issues
@@ -194,8 +234,8 @@ Please report issues here:
 
 Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A,
 Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U,
-Ibn-Salem J. Prediction of tumor-specific splicing from somatic
-mutations as a source of neoantigen candidates. Bioinform Adv. 2024 May
-29;4(1):vbae080. doi:
+Ibn-Salem J. **Prediction of tumor-specific splicing from somatic
+mutations as a source of neoantigen candidates**. *Bioinform Adv.* 2024
+May 29;4(1):vbae080. doi:
 [10.1093/bioadv/vbae080](https://doi.org/10.1093/bioadv/vbae080). PMID:
 38863673; PMCID: PMC11165244.
