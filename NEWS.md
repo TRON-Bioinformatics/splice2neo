@@ -1,6 +1,8 @@
 # splice2neo 0.6.14
 
 - fix changed dependency package for makeTxDbFromGFF() function
+- Require R >= 4.4
+- add automated docker building support
 
 # splice2neo 0.6.13
 
