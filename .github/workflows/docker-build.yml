@@ -4,6 +4,7 @@ on:
   release:
     types:
       - published
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -31,9 +32,15 @@ jobs:
           latest_release=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r .tag_name)
           echo "LATEST_RELEASE=$latest_release" >> $GITHUB_ENV
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           file: ./Docker/Dockerfile
-          push: true
+          push: false
           tags: ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
+          outputs:
+            image: built-image
+
+      # - name: Push Docker image
+      #   if: github.event_name == 'release' && github.event.action == 'published'
+      #   run: docker push ${{ built-image }}
