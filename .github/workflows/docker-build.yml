@@ -4,6 +4,8 @@ on:
   release:
     types:
       - published
+  push:
+    branches: [dev, main, master, github_actions]
   pull_request:
     branches: [dev, main, master, github_actions]
   workflow_dispatch:
