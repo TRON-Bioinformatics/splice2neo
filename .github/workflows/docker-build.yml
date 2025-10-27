@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  docker-build-and-push-if-published:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -36,6 +36,7 @@ jobs:
           echo "LATEST_RELEASE=$latest_release" >> $GITHUB_ENV
 
       - name: Build Docker image
+        if: github.event_name == 'release' && github.event.action == 'published'
         uses: docker/build-push-action@v5
         with:
           file: ./Docker/Dockerfile
@@ -44,4 +45,4 @@ jobs:
 
       # - name: Push Docker image
       #   if: github.event_name == 'release' && github.event.action == 'published'
-      #   run: docker push ${{ built-image }}
+      #   run: docker push ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
