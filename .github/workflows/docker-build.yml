@@ -4,9 +4,8 @@ on:
   release:
     types:
       - published
-  push:
-    branches:
-      - "157-update-r-version-in-description-file"
+  pull_request:
+    branches: [dev, main, master, github_actions]
   workflow_dispatch:
 
 jobs:
