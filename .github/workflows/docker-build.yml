@@ -36,13 +36,12 @@ jobs:
           echo "LATEST_RELEASE=$latest_release" >> $GITHUB_ENV
 
       - name: Build Docker image
-        if: github.event_name == 'release' && github.event.action == 'published'
         uses: docker/build-push-action@v5
         with:
           file: ./Docker/Dockerfile
           push: false
           tags: ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
 
-      # - name: Push Docker image
-      #   if: github.event_name == 'release' && github.event.action == 'published'
-      #   run: docker push ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
+      - name: Push Docker image
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: docker push ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
