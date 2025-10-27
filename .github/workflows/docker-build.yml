@@ -4,6 +4,9 @@ on:
   release:
     types:
       - published
+  push:
+    branches:
+      - "157-update-r-version-in-description-file"
   workflow_dispatch:
 
 jobs:
