@@ -38,8 +38,6 @@ jobs:
           file: ./Docker/Dockerfile
           push: false
           tags: ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
-          outputs:
-            image: built-image
 
       # - name: Push Docker image
       #   if: github.event_name == 'release' && github.event.action == 'published'
