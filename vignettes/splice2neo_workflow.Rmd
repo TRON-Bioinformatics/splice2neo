@@ -60,7 +60,7 @@ A database of transcripts is required for transcript annotation with splice2neo.
 gtf_file <- system.file("extdata/example/gencode.v34lift37.annotation.subset.gtf.gz", package="splice2neo")
 
 # parse GTF file as txdb object
-txdb <- GenomicFeatures::makeTxDbFromGFF(gtf_file)
+txdb <- txdbmaker::makeTxDbFromGFF(gtf_file)
 ```
 
 ```{r}

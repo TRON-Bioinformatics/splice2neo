@@ -268,6 +268,18 @@ utils::globalVariables(
     "within_interval_left",
     "within_interval_right",
     "WT_protein_length_difference",
-    "junc_id_lifted_lst"
+    "junc_id_lifted_lst",
+    "pos_left_retroelement",
+    "pos_left_retroelement_class",
+    "pos_right_retroelement",
+    "pos_right_retroelement_class",
+    "left_side_retroelement",
+    "right_side_retroelement"
   )
 )
+
+# This function will never be called it is just to supress NOTEs in R CMD check
+# See https://r-pkgs.org/dependencies-in-practice.html#how-to-not-use-a-package-in-imports
+ignore_unused_imports <- function() {
+  liftOver::cur
+}

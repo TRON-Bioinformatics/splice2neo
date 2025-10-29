@@ -19,9 +19,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/TRON-Bioinformatics/splice2neo/workflows/R-CMD-check/badge.svg)](https://github.com/TRON-Bioinformatics/splice2neo/actions)
 [![Codecov test coverage](https://codecov.io/gh/TRON-Bioinformatics/splice2neo/branch/master/graph/badge.svg)](https://codecov.io/gh/TRON-Bioinformatics/splice2neo?branch=master)
-`r badger::badge_devel("TRON-Bioinformatics/splice2neo", "blue")`
-`r badger::badge_lifecycle("experimental", "blue")`
-`r badger::badge_last_commit("TRON-Bioinformatics/splice2neo")`
+`r badger::badge_github_release()`
+`r badger::badge_last_commit(branch = "dev")`
 <!-- badges: end -->
 
 
@@ -65,8 +64,18 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("TRON-Bioinformatics/splice2neo")
 ```
 
-## Example usage
+### Docker image
 
+Since release v0.6.13 we provide a [docker image for splice2neo](https://github.com/TRON-Bioinformatics/splice2neo/pkgs/container/splice2neo). Install it with:
+
+```
+docker pull ghcr.io/tron-bioinformatics/splice2neo:vX.Y.Z
+```
+whereby `X.Y.Z` is the latest release version.
+
+
+
+## Example usage
 
 This is a basic example of how to use some functions.
 
@@ -97,8 +106,8 @@ Next, we find the transcripts which are in the same genomic region as the splice
 
 ```{r}
 junc_df %>% 
-  add_tx(toy_transcripts) %>% 
-  head()
+  add_tx(toy_transcripts)
+
 
 ```
 
@@ -111,13 +120,11 @@ positions, the context sequence.
 
 
 ```{r}
-toy_junc_df %>% 
-  head()
+toy_junc_df 
 
 
 toy_junc_df %>% 
-  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg) %>% 
-  head()
+  add_context_seq(transcripts = toy_transcripts, size = 400, bsg = bsg)
 
 ```
 
@@ -137,8 +144,7 @@ toy_junc_df %>%
   add_peptide(cds=toy_cds, flanking_size = 13, bsg = bsg) %>% 
 
   # select subset of columns
-  dplyr::select(junc_id, peptide_context, junc_in_orf, cds_description) %>% 
-  head()
+  dplyr::select(junc_id, peptide_context, junc_in_orf, cds_description)
 
 ```
 
@@ -149,4 +155,4 @@ Please report issues here: https://github.com/TRON-Bioinformatics/splice2neo/iss
 
 ## Reference
 
-Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A, Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U, Ibn-Salem J. Prediction of tumor-specific splicing from somatic mutations as a source of neoantigen candidates. Bioinform Adv. 2024 May 29;4(1):vbae080. doi: [10.1093/bioadv/vbae080](https://doi.org/10.1093/bioadv/vbae080). PMID: 38863673; PMCID: PMC11165244.
+Lang F, Sorn P, Suchan M, Henrich A, Albrecht C, Köhl N, Beicht A, Riesgo-Ferreiro P, Holtsträter C, Schrörs B, Weber D, Löwer M, Sahin U, Ibn-Salem J. **Prediction of tumor-specific splicing from somatic mutations as a source of neoantigen candidates**. *Bioinform Adv.* 2024 May 29;4(1):vbae080. doi: [10.1093/bioadv/vbae080](https://doi.org/10.1093/bioadv/vbae080). PMID: 38863673; PMCID: PMC11165244.

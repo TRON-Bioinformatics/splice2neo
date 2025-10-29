@@ -202,7 +202,7 @@ test_that("add_peptide works for junctions outside CDS (issue #40)", {
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
   gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
-  txdb <- suppressWarnings(GenomicFeatures::makeTxDbFromGFF(gtf_url))
+  txdb <- suppressWarnings(txdbmaker::makeTxDbFromGFF(gtf_url))
   cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
   # ----------------------------------------------------------------------------
 
@@ -257,7 +257,7 @@ test_that("add_peptide works in strange combination(issue #47)", {
   bsg <- BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19
 
   gtf_url <- "ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh37_mapping/gencode.v34lift37.annotation.gtf.gz"
-  txdb <- suppressWarnings(GenomicFeatures::makeTxDbFromGFF(gtf_url))
+  txdb <- suppressWarnings(txdbmaker::makeTxDbFromGFF(gtf_url))
   cds <- GenomicFeatures::cdsBy(txdb, by = c("tx"), use.name = TRUE)
   # ----------------------------------------------------------------------------
 
