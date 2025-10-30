@@ -5,10 +5,17 @@ on:
     types:
       - published
   push:
+<<<<<<< HEAD
     branches: [docker-build]
+=======
+    branches: [dev, main, master, github_actions]
+  pull_request:
+    branches: [dev, main, master, github_actions]
+  workflow_dispatch:
+>>>>>>> origin/dev
 
 jobs:
-  build-and-push:
+  docker-build-and-push-if-published:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -33,9 +40,13 @@ jobs:
           latest_release=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r .tag_name)
           echo "LATEST_RELEASE=$latest_release" >> $GITHUB_ENV
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           file: ./Docker/Dockerfile
-          push: true
+          push: false
           tags: ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}
+
+      - name: Push Docker image
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: docker push ghcr.io/${{ env.GITHUB_REPOSITORY_OWNER_LOWERCASE }}/splice2neo:${{ env.LATEST_RELEASE }}

@@ -1,4 +1,4 @@
-FROM rocker/r-ver:4.2.3
+FROM rocker/r-ver:4.4
 
 ENV SRC /usr/local/src
 ENV BIN /usr/local/bin
