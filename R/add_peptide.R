@@ -218,7 +218,7 @@ seq_truncate_nonstop <- function(seq, pos){
   suffix_before_stop <- suffix %>%
     str_extract("[^*]+")
 
-  str_c(prefix, suffix_before_stop)
+  unname(str_c(prefix, suffix_before_stop))
 
 }
 
