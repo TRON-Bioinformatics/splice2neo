@@ -47,12 +47,15 @@ RUN install2.r --error --skipinstalled -n 8 \
     remotes \
     BiocManager \
     vroom \
-    furrr
+    furrr \
+    BH
 
 
 RUN Rscript -e 'library(remotes); remotes::install_version("Matrix", version = "1.6-5", repos = "http://cran.us.r-project.org", Ncpus=8)'
 RUN Rscript -e 'library(remotes); remotes::install_version("MASS", version = "7.3-60", repos = "http://cran.us.r-project.org", Ncpus=8)'
 RUN Rscript -e 'BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19"), Ncpus=8)'
+RUN Rscript -e 'BiocManager::install(c("txdbmaker"), Ncpus=8)'
+RUN Rscript -e 'BiocManager::install(c("liftOver"), Ncpus=8)'
 RUN export SPLICE2NEO_VERSION=$(grep 'Version:' /usr/local/src/DESCRIPTION | awk '{print $2}') && \
 Rscript -e "library(remotes); remotes::install_git('https://github.com/TRON-Bioinformatics/splice2neo.git', ref = 'v${SPLICE2NEO_VERSION}', Ncpus=8)"
 
