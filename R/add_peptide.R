@@ -147,8 +147,8 @@ add_peptide <- function(df, cds, flanking_size = 14, bsg = NULL, keep_ranges = F
     dplyr::mutate(
       # add NA for context sequences if the junction position is not in an open reading frame
       # or cds is truncated, i.e. mutated gene product is truncated version of the WT gene product
-      peptide_context_seq_raw = ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context_seq_raw), NA),
-      peptide_context = ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context), NA),
+      peptide_context_seq_raw = unname(ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context_seq_raw), NA)),
+      peptide_context = unname(ifelse(junc_in_orf & !truncated_cds, as.character(peptide_context), NA)),
       peptide_context_junc_pos = ifelse(junc_in_orf & !truncated_cds, peptide_context_junc_pos, NA),
     )
 
