@@ -54,7 +54,7 @@ Imports:
     dplyr (>= 1.1.1),
     readr,
     tidyr,
-    vcfR,
+    vcfR (>= 1.16.0),
     purrr,
     S4Vectors,
     GenomicFeatures (>= 1.21.10),

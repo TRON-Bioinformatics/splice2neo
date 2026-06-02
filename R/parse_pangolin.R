@@ -58,5 +58,5 @@ parse_pangolin <- function(vcf_file){
     select(-annot, -annot_gene)
 
   vcf_data$fix %>%
-    left_join(pangolin_df, by = "Key")
+    left_join(pangolin_df, by = "VariantKey")
 }

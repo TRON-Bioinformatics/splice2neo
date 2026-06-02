@@ -12,7 +12,8 @@ parse_vcf <- function(vcf_file, info_fields) {
 
   info_df <- vcf %>%
     vcfR::extract_info_tidy(
-      info_fields = info_fields
+      info_fields = info_fields,
+      VariantKey = seq_len(nrow(.))
     )
 
   fix_df <- vcfR::getFIX(vcf) %>%
@@ -25,7 +26,7 @@ parse_vcf <- function(vcf_file, info_fields) {
         tibble::as_tibble(.)
       }
     } %>%
-    mutate(Key = row_number())
+    mutate(VariantKey = row_number())
 
   list(
     "info" = info_df,

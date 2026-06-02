@@ -45,5 +45,5 @@ parse_cispliceai_thresh <- function(vcf_file) {
     )
 
   vcf_data$fix %>%
-    dplyr::left_join(splice_df, by = "Key")
+    dplyr::left_join(splice_df, by = "VariantKey")
 }

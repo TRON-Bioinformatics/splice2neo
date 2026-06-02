@@ -44,7 +44,7 @@ parse_spliceai <- function(vcf_file){
     )
 
   vcf_data$fix %>%
-    left_join(splice_df, by = "Key")
+    left_join(splice_df, by = "VariantKey")
 }
 
 
@@ -105,6 +105,6 @@ parse_spliceai_thresh <- function(vcf_file){
     )
 
   vcf_data$fix %>%
-    left_join(splice_df, by = "Key")
+    left_join(splice_df, by = "VariantKey")
 }
 
