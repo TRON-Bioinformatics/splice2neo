@@ -20,11 +20,10 @@ test_that("parse_cispliceai_thresh works on a single-variant CI-SpliceAI example
   expect_true(nrow(df) == 1)
 })
 
-test_that("parse_cispliceai_thresh works on empty CI-SpliceAI example file", {
-
+test_that(
+  "parse_cispliceai_thresh returns a 0-row df on empty CI-SpliceAI example file", {
   cispliceai_file <- system.file("extdata", "cispliceai_thresh_output.empty.vcf", package = "splice2neo")
   df <- parse_cispliceai_thresh(cispliceai_file)
 
-  expect_true(nrow(df) == 1)
-
+  expect_true(nrow(df) == 0)
 })

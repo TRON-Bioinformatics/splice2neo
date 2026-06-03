@@ -15,25 +15,14 @@
 #' @seealso \code{\link{format_cispliceai_thresh}}, \code{\link{annotate_mut_effect}}
 #' @import dplyr stringr tidyr
 #' @export
-parse_cispliceai_thresh <- function(vcf_file){
-
-  # read in vcf file
+parse_cispliceai_thresh <- function(vcf_file) {
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
-
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
 
   # get annotations
   splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("CI-SpliceAI")) %>%
+    vcfR::extract_info_tidy(
+      info_fields = c("CI-SpliceAI")
+    ) %>%
     mutate(fields = `CI-SpliceAI` %>% stringr::str_split(",")) %>%
     dplyr::select(-`CI-SpliceAI`) %>%
     tidyr::unnest(fields) %>%
@@ -58,7 +47,12 @@ parse_cispliceai_thresh <- function(vcf_file){
       effect = as.factor(effect)
     )
 
-  fix_df %>%
+  vcfR::getFIX(vcf) %>%
+    {
+      # When only EXACTLY one variant is found `getFIX` will return a character
+      # vector.
+      if (nrow(vcf) == 1) tibble::as_tibble_row(.) else tibble::as_tibble(.)
+    } %>%
+    mutate(Key = row_number()) %>%
     dplyr::left_join(splice_df, by = "Key")
-
 }
