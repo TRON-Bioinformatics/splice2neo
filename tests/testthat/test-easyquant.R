@@ -22,8 +22,9 @@ test_that("transform_for_requant works", {
 
 test_that("transform_for_requant works with IR", {
 
-  toy_junc_df_annot <- toy_junc_df %>%
-    add_context_seq(transcripts = toy_transcripts)
+  # Currently this function is not expected to provide important messages.
+  toy_junc_df_annot <- suppressMessages(toy_junc_df %>%
+    add_context_seq(transcripts = toy_transcripts))
   df_easy <- toy_junc_df_annot %>%
     transform_for_requant()
 

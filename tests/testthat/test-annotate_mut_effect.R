@@ -4,7 +4,8 @@ test_that("annotate_mut_effect works on toy example", {
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
 
-  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr))
 
   expect_true(nrow(annot_df) >= nrow(df))
   expect_true(length(unique(annot_df$tx_id)) > 1)
@@ -19,7 +20,7 @@ test_that("annotate_mut_effect works on toy example with pangolin", {
   effect_df <- parse_pangolin(pangolin_file) %>%
     format_pangolin()
 
-  annot_df <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr)
+  annot_df <- suppressMessages(annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr))
 
   expect_true(nrow(annot_df) >= nrow(effect_df))
   expect_true(length(unique(annot_df$tx_id)) > 1)
@@ -54,9 +55,10 @@ test_that("annotate_mut_effect works on toy example with pangolin with gene_mapp
 
 
   # without gene mapping
-  annot_df <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE)
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE))
   # with gene mapping
-  annot_df_map <- annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr_fix, gene_mapping = TRUE)
+  annot_df_map <- suppressMessages(annotate_mut_effect(effect_df, toy_transcripts, toy_transcripts_gr_fix, gene_mapping = TRUE))
 
   expect_true(nrow(annot_df) >= nrow(effect_df))
   expect_true(nrow(annot_df_map) >= nrow(effect_df))
@@ -85,9 +87,10 @@ test_that("annotate_mut_effect works on toy example with CI-SpliceAI with gene_m
   df_with_gene <- format_cispliceai_thresh(df_raw, transcripts_gr = toy_transcripts_gr)
 
   # without gene mapping
-  annot_df <- annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE)
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = FALSE))
   # with gene mapping
-  annot_df_map <- annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE)
+  annot_df_map <- suppressMessages(annotate_mut_effect(df_with_gene, toy_transcripts, toy_transcripts_gr, gene_mapping = TRUE))
 
   expect_true(nrow(annot_df_map) >= nrow(df_with_gene))
 
@@ -115,8 +118,9 @@ test_that("annotate_mut_effect works on empty tibble", {
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
 
-  annot_df_empty <- annotate_mut_effect(df_empty, toy_transcripts, toy_transcripts_gr)
-  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
+  # Currently this function is not expected to provide important messages.
+  annot_df_empty <- suppressMessages(annotate_mut_effect(df_empty, toy_transcripts, toy_transcripts_gr))
+  annot_df <- suppressMessages(annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr))
 
   expect_true(nrow(annot_df_empty) == 0)
   expect_true(ncol(annot_df_empty) == ncol(annot_df))
@@ -138,7 +142,7 @@ test_that("annotate_mut_effect does not predict events outside of exon range", {
     pos = 152043101 + 8
   )
 
-  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr)
+  annot_df <- suppressMessages(annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr))
 
   expect_true(nrow(annot_df) == 0 )
 
@@ -183,7 +187,8 @@ test_that("annotate_mut_effect works on toy example without intron retention", {
   df_raw <- parse_spliceai(spliceai_file)
   df <- format_spliceai(df_raw)
 
-  annot_df <- annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr, consider_intron_retention = FALSE)
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(df, toy_transcripts, toy_transcripts_gr, consider_intron_retention = FALSE))
 
   expect_false("intron retention" %in% annot_df$event_type)
   expect_true(nrow(annot_df) >= nrow(df))
@@ -264,7 +269,8 @@ test_that("annotate_mut_effect works for donor gain and aceptor gain in introns"
   expected_neg = c("1:17-27:-", "1:8-10:-", "1:12-15:-")
   expected_jx = c(expected_pos, expected_neg)
 
-  annot_df <- annotate_mut_effect(toy_df, toy_tx, range(toy_tx))
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(toy_df, toy_tx, range(toy_tx)))
 
   expect_equal(sort(annot_df$junc_id), sort(expected_jx))
 
@@ -337,7 +343,8 @@ test_that("annotate_mut_effect does not annotate intron-retention at positions w
   expected_neg = c("1:8-10:-", "1:12-15:-")
   expected_jx = c(expected_pos, expected_neg)
 
-  annot_df <- annotate_mut_effect(toy_df, toy_tx, range(toy_tx))
+  # Currently this function is not expected to provide important messages.
+  annot_df <- suppressMessages(annotate_mut_effect(toy_df, toy_tx, range(toy_tx)))
 
   expect_equal(sort(annot_df$junc_id), sort(expected_jx))
 
