@@ -94,23 +94,31 @@ parse_spliceai_thresh <- function(vcf_file){
   # get effect annotations for all mutations (separate alleles on same position)
   splice_df <- vcf %>%
     vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
-    mutate(fields = SpliceAI %>% stringr::str_split(",")) %>%
-    dplyr::select(-SpliceAI) %>%
-    tidyr::unnest(fields) %>%
-    dplyr::filter(!is.na(fields))
-
-  # separate multiple effect predictions per mutation (unique alleles)
-  splice_df <- splice_df %>%
-    tidyr::separate(fields,
-                    into = c("ALLELE", "SYMBOL", "splice_sites"),
-                    sep = "\\|",
-                    extra = "merge") %>%
-    mutate(fields = splice_sites %>% stringr::str_split("\\|")) %>%
-    dplyr::select(-splice_sites) %>%
-    tidyr::unnest(fields) %>%
+    mutate(
+      spliceai_fields = stringr::str_split(SpliceAI, ","),
+      .keep = "unused"
+    ) %>%
+    tidyr::unnest_longer(spliceai_fields) %>%
+    dplyr::filter(!is.na(spliceai_fields)) %>%
+    # separate multiple effect predictions per mutation (unique alleles)
+    tidyr::separate(
+      spliceai_fields,
+      into = c("ALLELE", "SYMBOL", "splice_sites"),
+      sep = "\\|",
+      extra = "merge"
+    ) %>%
+    mutate(
+      site_fields = stringr::str_split(splice_sites, "\\|"),
+      .keep = "unused"
+    ) %>%
+    tidyr::unnest(site_fields) %>%
     # replace empty fields with NA
-    mutate(fields = na_if(fields, "")) %>%
-    tidyr::separate(fields, into = c("effect", "score", "pos_rel"), sep = ":") %>%
+    mutate(site_fields = na_if(site_fields, "")) %>%
+    tidyr::separate(
+      site_fields,
+      into = c("effect", "score", "pos_rel"),
+      sep = ":"
+    ) %>%
     mutate(
       score = as.numeric(score),
       pos_rel = as.integer(pos_rel),
