@@ -80,20 +80,11 @@ parse_spliceai_thresh <- function(vcf_file){
   # read in vcf file
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
 
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
-
   # get effect annotations for all mutations (separate alleles on same position)
   splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
+    vcfR::extract_info_tidy(
+      info_fields = c("SpliceAI")
+    ) %>%
     mutate(
       spliceai_fields = stringr::str_split(SpliceAI, ","),
       .keep = "unused"
@@ -111,9 +102,10 @@ parse_spliceai_thresh <- function(vcf_file){
       site_fields = stringr::str_split(splice_sites, "\\|"),
       .keep = "unused"
     ) %>%
-    tidyr::unnest(site_fields) %>%
-    # replace empty fields with NA
-    mutate(site_fields = na_if(site_fields, "")) %>%
+    tidyr::unnest_longer(site_fields) %>%
+    # replace empty fields with NA. To ensure consistency, we need to coerce the
+    # fields to a common type.
+    mutate(site_fields = na_if(as.character(site_fields), "")) %>%
     tidyr::separate(
       site_fields,
       into = c("effect", "score", "pos_rel"),
@@ -125,8 +117,13 @@ parse_spliceai_thresh <- function(vcf_file){
       effect = as.factor(effect)
     )
 
-  fix_df %>%
+  vcfR::getFIX(vcf) %>%
+    {
+      # When only EXACTLY one variant is found `getFIX` will return a character
+      # vector.
+      if (nrow(vcf) == 1) tibble::as_tibble_row(.) else tibble::as_tibble(.)
+    } %>%
+    mutate(Key = row_number()) %>%
     left_join(splice_df, by = "Key")
-
 }
 
