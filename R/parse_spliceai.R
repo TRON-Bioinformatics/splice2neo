@@ -24,20 +24,11 @@ parse_spliceai <- function(vcf_file){
 
   vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
 
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
-
   # get annotations
   splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
+    vcfR::extract_info_tidy(
+      info_fields = c("SpliceAI")
+    ) %>%
     mutate(
       fields = SpliceAI %>% stringr::str_split(",")
     ) %>%
@@ -55,7 +46,13 @@ parse_spliceai <- function(vcf_file){
       across(starts_with("DP_"), as.integer)
     )
 
-  fix_df %>%
+  vcfR::getFIX(vcf) %>%
+    {
+      # When only EXACTLY one variant is found `getFIX` will return a character
+      # vector.
+      if (nrow(vcf) == 1) tibble::as_tibble_row(.) else tibble::as_tibble(.)
+    } %>%
+    mutate(Key = row_number()) %>%
     left_join(splice_df, by = "Key")
 
 }
