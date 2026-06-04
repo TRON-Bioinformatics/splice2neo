@@ -23,26 +23,10 @@ parse_pangolin <- function(vcf_file){
   col_names <- c("gene_id",
                  "pos_largest_increase","pos_largest_decrease")
 
-  vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
-
-  # get fixed fields for variants
-  fix_df <- vcfR::getFIX(vcf)
-
-  # required for vcf with only one mutation
-  if(is.null(nrow(fix_df))){
-    fix_df <- fix_df %>%
-      t()
-  }
-
-  fix_df <- fix_df %>%
-    tibble::as_tibble() %>%
-    mutate(
-      Key = row_number()
-    )
+  vcf_data <- parse_vcf(vcf_file, info_fields = "Pangolin")
 
   # get annotations
-  pangolin_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("Pangolin")) %>%
+  pangolin_df <- vcf_data$info %>%
     mutate(
       annot_gene = Pangolin %>%
 
@@ -73,8 +57,6 @@ parse_pangolin <- function(vcf_file){
     ) %>%
     select(-annot, -annot_gene)
 
-
-  fix_df %>%
+  vcf_data$fix %>%
     left_join(pangolin_df, by = "Key")
-
 }

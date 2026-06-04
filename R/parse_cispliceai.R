@@ -16,13 +16,10 @@
 #' @import dplyr stringr tidyr
 #' @export
 parse_cispliceai_thresh <- function(vcf_file) {
-  vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
+  vcf_data <- parse_vcf(vcf_file, info_fields = "CI-SpliceAI")
 
   # get annotations
-  splice_df <- vcf %>%
-    vcfR::extract_info_tidy(
-      info_fields = c("CI-SpliceAI")
-    ) %>%
+  splice_df <- vcf_data$info %>%
     mutate(fields = `CI-SpliceAI` %>% stringr::str_split(",")) %>%
     dplyr::select(-`CI-SpliceAI`) %>%
     tidyr::unnest(fields) %>%
@@ -47,12 +44,6 @@ parse_cispliceai_thresh <- function(vcf_file) {
       effect = as.factor(effect)
     )
 
-  vcfR::getFIX(vcf) %>%
-    {
-      # When only EXACTLY one variant is found `getFIX` will return a character
-      # vector.
-      if (nrow(vcf) == 1) tibble::as_tibble_row(.) else tibble::as_tibble(.)
-    } %>%
-    mutate(Key = row_number()) %>%
+  vcf_data$fix %>%
     dplyr::left_join(splice_df, by = "Key")
 }
