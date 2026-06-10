@@ -1,6 +1,9 @@
 test_that("Annotate of potential JETs works", {
 
-  rmsk <- readr::read_tsv(system.file("extdata", "rmsk_hg19_subset.tsv.gz", package = "splice2neo"))
+  rmsk <- readr::read_tsv(
+    system.file("extdata", "rmsk_hg19_subset.tsv.gz", package = "splice2neo"),
+    progress = FALSE, show_col_types = FALSE
+  )
   rmsk <- GenomicRanges::makeGRangesFromDataFrame(rmsk, keep.extra.columns = TRUE)
 
   junc_df <- tibble::tibble(

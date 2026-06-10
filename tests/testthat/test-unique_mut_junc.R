@@ -4,9 +4,12 @@ test_that("unique_mut_junc works", {
   spliceai_file <- system.file("extdata", "spliceai_output.vcf", package = "splice2neo")
   splicai_df <- parse_spliceai(spliceai_file)
 
-  spliceai_annot_df <- splicai_df %>%
+  # Currently this chain is not expected to provide important messages.
+  spliceai_annot_df <- suppressMessages(
+    splicai_df %>%
     format_spliceai() %>%
     annotate_mut_effect(toy_transcripts, toy_transcripts_gr)
+  )
 
   spliceai_annot_df_unique <- unique_mut_junc(spliceai_annot_df)
   deduplicated_count <- spliceai_annot_df_unique %>% count(mut_id, junc_id, tx_id) %>% filter(n > 1)

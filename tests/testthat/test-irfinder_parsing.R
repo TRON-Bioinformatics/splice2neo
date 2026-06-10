@@ -1,6 +1,7 @@
 test_that("parse.irfinder.txt works correctly", {
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat.combined <- parse_irfinder_txt(path, warnings = FALSE, irratio = 0.01, cnn=FALSE)
+  # Currently this function is not expected to provide important messages.
+  dat.combined <- suppressMessages(parse_irfinder_txt(path, warnings = FALSE, irratio = 0.01, cnn=FALSE))
 
   expected_junc_ids <- c("chr6:96538810-96538811:+",
                          "chr6:96540534-96540535:+",
@@ -18,7 +19,8 @@ test_that("parse.irfinder.txt works correctly", {
 
 test_that("parse.irfinder.txt works correctly with CNN input", {
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat.combined <- parse_irfinder_txt(path, warnings = FALSE, irratio = 0.01, cnn=TRUE)
+  # Currently this function is not expected to provide important messages.
+  dat.combined <- suppressMessages(parse_irfinder_txt(path, warnings = FALSE, irratio = 0.01, cnn=TRUE))
   expect_true(ncol(dat.combined) == 12)
   expect_true(nrow(dat.combined) == 16)
   expect_true(all(c("overlapping_feature", "IRratio", "Warnings", "IntronDepth") %in% colnames(dat.combined)))
@@ -38,7 +40,8 @@ test_that("parse.irfinder.txt works correctly with CNN input", {
 test_that("filter.irfinder.txt works with warnings", {
 
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat_with_warnings <- parse_irfinder_txt(path, warnings = TRUE, irratio = 0.01, cnn=FALSE)
+  # Currently this function is not expected to provide important messages.
+  dat_with_warnings <- suppressMessages(parse_irfinder_txt(path, warnings = TRUE, irratio = 0.01, cnn=FALSE))
   expect_true(ncol(dat_with_warnings) == 12)
   expect_true(nrow(dat_with_warnings) == 6)
   expect_false(all(dat_with_warnings$Warnings == "-"))
@@ -47,8 +50,8 @@ test_that("filter.irfinder.txt works with warnings", {
 
 test_that("parse.irfinder.txt fails and returns error message when IRFinder-IR-nondir.txt is missing", {
   path <-  "."
-  expect_error(parse_irfinder_txt(path))
-  expect_error(parse_irfinder_txt(path, cnn=TRUE))
+  expect_error(suppressMessages(parse_irfinder_txt(path)))
+  expect_error(suppressMessages(parse_irfinder_txt(path, cnn=TRUE)))
 
 
 })

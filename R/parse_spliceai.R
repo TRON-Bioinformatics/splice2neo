@@ -22,22 +22,10 @@ parse_spliceai <- function(vcf_file){
   col_names <- c("ALLELE","SYMBOL","DS_AG",
                  "DS_AL","DS_DG","DS_DL","DP_AG","DP_AL","DP_DG","DP_DL")
 
-  vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
-
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
+  vcf_data <- parse_vcf(vcf_file, info_fields = "SpliceAI")
 
   # get annotations
-  splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
+  splice_df <- vcf_data$info %>%
     mutate(
       fields = SpliceAI %>% stringr::str_split(",")
     ) %>%
@@ -55,9 +43,8 @@ parse_spliceai <- function(vcf_file){
       across(starts_with("DP_"), as.integer)
     )
 
-  fix_df %>%
-    left_join(splice_df, by = "Key")
-
+  vcf_data$fix %>%
+    left_join(splice_df, by = "VariantKey")
 }
 
 
@@ -81,47 +68,43 @@ parse_spliceai <- function(vcf_file){
 parse_spliceai_thresh <- function(vcf_file){
 
   # read in vcf file
-  vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
-
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
+  vcf_data <- parse_vcf(vcf_file, info_fields = "SpliceAI")
 
   # get effect annotations for all mutations (separate alleles on same position)
-  splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("SpliceAI")) %>%
-    mutate(fields = SpliceAI %>% stringr::str_split(",")) %>%
-    dplyr::select(-SpliceAI) %>%
-    tidyr::unnest(fields) %>%
-    dplyr::filter(!is.na(fields))
-
-  # separate multiple effect predictions per mutation (unique alleles)
-  splice_df <- splice_df %>%
-    tidyr::separate(fields,
-                    into = c("ALLELE", "SYMBOL", "splice_sites"),
-                    sep = "\\|",
-                    extra = "merge") %>%
-    mutate(fields = splice_sites %>% stringr::str_split("\\|")) %>%
-    dplyr::select(-splice_sites) %>%
-    tidyr::unnest(fields) %>%
-    # replace empty fields with NA
-    mutate(fields = na_if(fields, "")) %>%
-    tidyr::separate(fields, into = c("effect", "score", "pos_rel"), sep = ":") %>%
+  splice_df <- vcf_data$info %>%
+    mutate(
+      spliceai_fields = stringr::str_split(SpliceAI, ","),
+      .keep = "unused"
+    ) %>%
+    tidyr::unnest_longer(spliceai_fields) %>%
+    dplyr::filter(!is.na(spliceai_fields)) %>%
+    # separate multiple effect predictions per mutation (unique alleles)
+    tidyr::separate(
+      spliceai_fields,
+      into = c("ALLELE", "SYMBOL", "splice_sites"),
+      sep = "\\|",
+      extra = "merge"
+    ) %>%
+    mutate(
+      site_fields = stringr::str_split(splice_sites, "\\|"),
+      .keep = "unused"
+    ) %>%
+    tidyr::unnest_longer(site_fields) %>%
+    # replace empty fields with NA. To ensure consistency, we need to coerce the
+    # fields to a common type.
+    mutate(site_fields = na_if(as.character(site_fields), "")) %>%
+    tidyr::separate(
+      site_fields,
+      into = c("effect", "score", "pos_rel"),
+      sep = ":"
+    ) %>%
     mutate(
       score = as.numeric(score),
       pos_rel = as.integer(pos_rel),
       effect = as.factor(effect)
     )
 
-  fix_df %>%
-    left_join(splice_df, by = "Key")
-
+  vcf_data$fix %>%
+    left_join(splice_df, by = "VariantKey")
 }
 

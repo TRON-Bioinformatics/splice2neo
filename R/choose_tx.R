@@ -186,7 +186,7 @@ classify_junc_tx <- function(df){
                pos_right_on_exon_boundary & intron_retention ~ "IR",
                # ASS on the left side
                pos_right_on_exon_boundary ~ "ASS",
-               TRUE ~ "rm"
+               .default = "rm"
 
              )) %>%
     mutate(putative_event_type = ifelse(putative_event_type == "rm", NA, putative_event_type)) %>%
@@ -282,14 +282,14 @@ distance_to_splice_site <- function(df) {
           putative_event_type == "IR" ~ 0,
           putative_event_type == "ref junction" ~ 0,
           putative_event_type == "exitron" ~ calc_distance_exitron(pos_left_lst, tx_lst, pos_left_on_exon_idx, site="left"),
-          TRUE ~ calc_distance_regular(pos_left_lst, tx_lst, pos_left_on_exon_idx, pos_left_on_exon_end, site="left")
+          .default = calc_distance_regular(pos_left_lst, tx_lst, pos_left_on_exon_idx, pos_left_on_exon_end, site="left")
         ),
       right_distance =
         dplyr::case_when(
           putative_event_type == "IR" ~ 0,
           putative_event_type == "ref junction" ~ 0,
           putative_event_type == "exitron" ~ calc_distance_exitron(pos_right_lst, tx_lst, pos_right_on_exon_idx, site="right"),
-          TRUE ~ calc_distance_regular(pos_right_lst, tx_lst, pos_right_on_exon_idx, pos_right_on_exon_start, site="right")
+          .default = calc_distance_regular(pos_right_lst, tx_lst, pos_right_on_exon_idx, pos_right_on_exon_start, site="right")
         )
     ) %>%
     mutate(
@@ -331,30 +331,52 @@ calc_distance_regular <- function(pos, tx_lst, pos_exon_idx, pos_exon_boundary, 
 
   next_exon <- dplyr::case_when(
     # Intronic splice site left --> find previous(follow) exon
-    intron_ss & site == "left" ~
-      purrr::map2_dbl(pos, tx_lst, ~ GenomicRanges::follow(.x, .y, ignore.strand =T)),
+    intron_ss & site == "left" ~ purrr::map2_dbl(
+      pos,
+      tx_lst,
+      ~ GenomicRanges::follow(.x, .y, ignore.strand = TRUE)
+    ),
     # Intronic splice site right --> find next(precede) exon
-    intron_ss & site == "right" ~
-      purrr::map2_dbl(pos, tx_lst, ~ GenomicRanges::precede(.x, .y, ignore.strand = T)),
+    intron_ss & site == "right" ~ purrr::map2_dbl(
+      pos,
+      tx_lst,
+      ~ GenomicRanges::precede(.x, .y, ignore.strand = TRUE)
+    ),
     # Splice site in exon
-    TRUE ~ pos_exon_idx
+    .default = pos_exon_idx
   )
 
   not_on_exon_boundary <- is.na(pos_exon_boundary)
   distance_ss <- rep(0, length(not_on_exon_boundary))
 
-  distance_ss[not_on_exon_boundary] <- dplyr::case_when(
+  distance_ss[not_on_exon_boundary] <- if (site == "left") {
     # Intronic/exonic splice site --> Distance to end of previous/containing exon (donor for + and acceptor for +)
-    site == "left" ~
-      purrr::pmap_dbl(list(pos[not_on_exon_boundary], tx_lst[not_on_exon_boundary], next_exon[not_on_exon_boundary]), function(.x, .y, .z)
-        abs(BiocGenerics::start(.x) - BiocGenerics::end(.y[.z]))),
+    purrr::pmap_dbl(
+      list(
+        pos[not_on_exon_boundary],
+        tx_lst[not_on_exon_boundary],
+        next_exon[not_on_exon_boundary]
+      ),
+      function(.x, .y, .z) {
+        abs(BiocGenerics::start(.x) - BiocGenerics::end(.y[.z]))
+      }
+    )
+  } else if (site == "right") {
     # Intronic/exonic splice site --> Distance to start of next/containing exon (donor for - and acceptor for +)
-    site == "right" ~
-      purrr::pmap_dbl(list(pos[not_on_exon_boundary], tx_lst[not_on_exon_boundary], next_exon[not_on_exon_boundary]), function(.x, .y, .z)
-        abs(BiocGenerics::start(.x) - BiocGenerics::start(.y[.z]))),
+    purrr::pmap_dbl(
+      list(
+        pos[not_on_exon_boundary],
+        tx_lst[not_on_exon_boundary],
+        next_exon[not_on_exon_boundary]
+      ),
+      function(.x, .y, .z) {
+        abs(BiocGenerics::start(.x) - BiocGenerics::start(.y[.z]))
+      }
+    )
+  } else {
     # Splice site on canonical exon boundary
-    TRUE ~ 0
-  )
+    0
+  }
 
   return(distance_ss)
 }
@@ -373,22 +395,38 @@ calc_distance_regular <- function(pos, tx_lst, pos_exon_idx, pos_exon_boundary, 
 #' @import dplyr
 #' @keywords internal
 calc_distance_exitron <- function(pos, tx_lst, pos_exon_idx, site="left") {
+  stopifnot(site %in% c("left", "right"))
 
   distance_ss <- rep(NA, length(pos_exon_idx))
   not_on_exon <- is.na(pos_exon_idx)
 
   # The distance calculation for exitrons is different from regular linear
   # splice junctions as the next canonical splice sites are the exon boundaries itself.
-  distance_ss[!not_on_exon] <- dplyr::case_when(
+  distance_ss[!not_on_exon] <- if (site == "left") {
     # Distance between exon start and junction start (donor for +; acceptor for -)
-    site == "left" ~
-      purrr::pmap_dbl(list(pos[!not_on_exon], tx_lst[!not_on_exon], pos_exon_idx[!not_on_exon]), function(.x, .y, .z)
-        abs(BiocGenerics::start(.x) - BiocGenerics::start(.y[.z]))),
+    purrr::pmap_dbl(
+        list(
+          pos[!not_on_exon],
+          tx_lst[!not_on_exon],
+          pos_exon_idx[!not_on_exon]
+        ),
+        function(.x, .y, .z) {
+          abs(BiocGenerics::start(.x) - BiocGenerics::start(.y[.z]))
+        }
+      )
+  } else if (site == "right") {
     # Distance between exon end and junction end/start (donor for -; acceptor for +)
-    site == "right" ~
-      purrr::pmap_dbl(list(pos[!not_on_exon], tx_lst[!not_on_exon], pos_exon_idx[!not_on_exon]), function(.x, .y, .z)
-        abs(BiocGenerics::start(.x) - BiocGenerics::end(.y[.z])))
+     purrr::pmap_dbl(
+      list(
+        pos[!not_on_exon],
+        tx_lst[!not_on_exon],
+        pos_exon_idx[!not_on_exon]
+      ),
+      function(.x, .y, .z) {
+        abs(BiocGenerics::start(.x) - BiocGenerics::end(.y[.z]))
+      }
     )
+  }
 
   return(distance_ss)
 }

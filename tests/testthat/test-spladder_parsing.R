@@ -2,7 +2,9 @@
 
 test_that("spladder.transform works", {
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat.combined <- spladder_transform(path)
+
+  # Currently this function is not expected to provide important messages.
+  dat.combined <- suppressMessages(spladder_transform(path))
   expect_true(ncol(dat.combined) == 8)
   expect_true(nrow(dat.combined) == 26)
   expect_true(all(!is.na(dat.combined$junc_id)))
@@ -11,7 +13,8 @@ test_that("spladder.transform works", {
 
 test_that("spladder.transform works correctly", {
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat.combined <- spladder_transform(path)
+  # Currently this function is not expected to provide important messages.
+  dat.combined <- suppressMessages(spladder_transform(path))
 
   expected_junc_ids <-
     c(
@@ -50,7 +53,9 @@ test_that("spladder.transform works correctly", {
 
 test_that("spladder_import works", {
   path <-  system.file("extdata", "", package = "splice2neo")
-  dat.combined <- import_spladder(path)
+
+  # Currently this function is not expected to provide important messages.
+  dat.combined <- suppressMessages(import_spladder(path))
   expect_true(length(dat.combined) == 5)
   expect_true("mutex_exons" %in% names(dat.combined))
 
@@ -59,7 +64,8 @@ test_that("spladder_import works", {
 
 test_that("spladder_import fails returns error message when wrong folder", {
 
-  expect_error(import_spladder("."))
+  # Currently this function is not expected to provide important messages.
+  expect_error(suppressMessages(import_spladder(".")))
 
 })
 

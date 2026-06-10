@@ -40,6 +40,7 @@ Suggests:
     covr,
     ggbio,
     rmarkdown,
+    badger,
     BSgenome,
 Config/testthat/edition: 3
 Language: en-US
@@ -54,7 +55,7 @@ Imports:
     dplyr (>= 1.1.1),
     readr,
     tidyr,
-    vcfR,
+    vcfR (>= 1.16.0),
     purrr,
     S4Vectors,
     GenomicFeatures (>= 1.21.10),

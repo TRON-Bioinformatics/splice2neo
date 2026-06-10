@@ -21,7 +21,8 @@ test_that("leafcutter count transformation works", {
 test_that("complete leafcutter import function works", {
 
   path <-  system.file("extdata", "", package = "splice2neo")
-  df <- leafcutter_transform(path)
+  # Currently this function is not expected to provide important messages.
+  df <- suppressMessages(leafcutter_transform(path))
 
   expect_true(ncol(df) == 7)
   expect_true(nrow(df) == 3)
@@ -32,7 +33,8 @@ test_that("complete leafcutter import function works", {
 test_that("complete leafcutter import function works correctly", {
 
   path <-  system.file("extdata", "", package = "splice2neo")
-  df <- leafcutter_transform(path)
+  # Currently this function is not expected to provide important messages.
+  df <- suppressMessages(leafcutter_transform(path))
 
   expected_junc_ids <- c("chr1:896180-897009:+",
                           "chr1:889462-889844:-",

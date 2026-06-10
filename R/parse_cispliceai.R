@@ -15,25 +15,11 @@
 #' @seealso \code{\link{format_cispliceai_thresh}}, \code{\link{annotate_mut_effect}}
 #' @import dplyr stringr tidyr
 #' @export
-parse_cispliceai_thresh <- function(vcf_file){
-
-  # read in vcf file
-  vcf <- vcfR::read.vcfR(vcf_file, verbose = FALSE)
-
-  # get fixed fields for variants
-  if (nrow(vcf) > 1){
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble() %>%
-      mutate(Key = row_number())
-  } else {
-    fix_df <-  vcfR::getFIX(vcf) %>%
-      tibble::as_tibble_row() %>%
-      mutate(Key = row_number())
-  }
+parse_cispliceai_thresh <- function(vcf_file) {
+  vcf_data <- parse_vcf(vcf_file, info_fields = "CI-SpliceAI")
 
   # get annotations
-  splice_df <- vcf %>%
-    vcfR::extract_info_tidy(info_fields = c("CI-SpliceAI")) %>%
+  splice_df <- vcf_data$info %>%
     mutate(fields = `CI-SpliceAI` %>% stringr::str_split(",")) %>%
     dplyr::select(-`CI-SpliceAI`) %>%
     tidyr::unnest(fields) %>%
@@ -58,7 +44,6 @@ parse_cispliceai_thresh <- function(vcf_file){
       effect = as.factor(effect)
     )
 
-  fix_df %>%
-    dplyr::left_join(splice_df, by = "Key")
-
+  vcf_data$fix %>%
+    dplyr::left_join(splice_df, by = "VariantKey")
 }
