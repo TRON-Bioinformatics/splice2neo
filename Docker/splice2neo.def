@@ -57,8 +57,8 @@ R --no-save <<__EOF__
 BiocManager::install("BSgenome.Hsapiens.UCSC.hg38", Ncpus=8)
 
 library(remotes)
-remotes::install_version("Matrix", version = "1.6-5", repos = "http://cran.us.r-project.org")
-remotes::install_version("MASS", version = "7.3-60", repos = "http://cran.us.r-project.org")
+remotes::install_version("Matrix", version = "1.6-5", repos = "https://cloud.r-project.org/")
+remotes::install_version("MASS", version = "7.3-60", repos = "https://cloud.r-project.org/")
 remotes::install_git('https://github.com/TRON-Bioinformatics/splice2neo.git', ref = "v${SPLICE2NEO_VERSION}")
 
 __EOF__

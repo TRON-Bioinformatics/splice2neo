@@ -51,8 +51,8 @@ RUN install2.r --error --skipinstalled -n 8 \
     BH
 
 
-RUN Rscript -e 'library(remotes); remotes::install_version("Matrix", version = "1.6-5", repos = "http://cran.us.r-project.org", Ncpus=8)'
-RUN Rscript -e 'library(remotes); remotes::install_version("MASS", version = "7.3-60", repos = "http://cran.us.r-project.org", Ncpus=8)'
+RUN Rscript -e 'library(remotes); remotes::install_version("Matrix", version = "1.6-5", repos = "https://cloud.r-project.org/", Ncpus=8)'
+RUN Rscript -e 'library(remotes); remotes::install_version("MASS", version = "7.3-60", repos = "https://cloud.r-project.org/", Ncpus=8)'
 RUN Rscript -e 'BiocManager::install(c("BSgenome.Hsapiens.UCSC.hg19"), Ncpus=8)'
 RUN Rscript -e 'BiocManager::install(c("txdbmaker"), Ncpus=8)'
 RUN Rscript -e 'BiocManager::install(c("liftOver"), Ncpus=8)'
